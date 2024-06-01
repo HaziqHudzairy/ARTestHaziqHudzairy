@@ -33,22 +33,19 @@
         </a-marker>
 
         <!-- Virtual 3D space -->
-        <a-entity id="virtual-space" visible="false">
-            <!-- Example AR content -->
+        <a-entity id="virtual-space">
+            <!-- Object in front of the camera (marker side) -->
             <a-entity
-                geometry="primitive: box; height: 0.5; width: 0.5; depth: 0.5"
-                material="color: blue"
-                position="0 0.25 0"
+                geometry="primitive: box; height: 0.3; width: 0.3; depth: 0.3"
+                material="color: yellow"
+                position="0 0 -0.5"
             ></a-entity>
+
+            <!-- Object behind the camera -->
             <a-entity
-                geometry="primitive: sphere; radius: 0.5"
-                material="color: red"
-                position="1 0.5 -1"
-            ></a-entity>
-            <a-entity
-                geometry="primitive: cylinder; radius: 0.3; height: 1.0"
-                material="color: green"
-                position="-1 0.5 1"
+                geometry="primitive: sphere; radius: 0.2"
+                material="color: cyan"
+                position="0 0 2"
             ></a-entity>
         </a-entity>
 
@@ -74,7 +71,6 @@
             }
 
             virtualSpace.object3D.position.copy(originPosition);
-            virtualSpace.setAttribute('visible', true);
 
             environmentInitialized = true;
         }
