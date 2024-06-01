@@ -3,11 +3,8 @@
 <head>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.controls.min.js"></script>
 </head>
-
 <body style="margin: 0; overflow: hidden;">
     <a-scene
         vr-mode-ui="enabled: false;"
@@ -16,87 +13,97 @@
         arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
         id="scene"
         embedded
-        gesture-detector
     >
         <a-assets>
-            <a-asset-item
-                id="animated-asset"
-                src="asset/asset.gltf"
-            ></a-asset-item>
+            <a-asset-item id="animated-asset" src="asset/asset.gltf"></a-asset-item>
         </a-assets>
 
+        <!-- Origin marker -->
         <a-marker
-            id="animated-marker"
+            id="origin-marker"
             type="pattern"
-            preset="custom"
             url="assets/marker.patt"
-            raycaster="objects: .clickable"
             emitevents="true"
-            cursor="fuse: false; rayOrigin: mouse;"
-            id="markerA"
         >
             <a-entity
-                id="bowser-model"
-                scale="0.22538080715099623 0.22538080715099623 0.22538080715099623"
-                animation-mixer="loop: repeat"
+                id="origin-model"
+                scale="0.5 0.5 0.5"
                 gltf-model="#animated-asset"
-                class="clickable"
-                gesture-handler
-                marker-fallback
             ></a-entity>
         </a-marker>
 
-        <a-entity camera></a-entity>
+        <!-- Virtual 3D space -->
+        <a-entity id="virtual-space" visible="false">
+            <!-- Example AR content -->
+            <a-entity
+                geometry="primitive: box; height: 0.5; width: 0.5; depth: 0.5"
+                material="color: blue"
+                position="0 0.25 0"
+            ></a-entity>
+            <a-entity
+                geometry="primitive: sphere; radius: 0.5"
+                material="color: red"
+                position="1 0.5 -1"
+            ></a-entity>
+            <a-entity
+                geometry="primitive: cylinder; radius: 0.3; height: 1.0"
+                material="color: green"
+                position="-1 0.5 1"
+            ></a-entity>
+        </a-entity>
+
+        <!-- Camera with controls -->
+        <a-entity camera look-controls></a-entity>
     </a-scene>
 
     <script>
-        AFRAME.registerComponent('marker-fallback', {
-            init: function () {
-                var el = this.el;
-                var scene = document.querySelector('a-scene');
+        let originPosition = null;
+        let environmentInitialized = false;
 
-                // Function to adjust AR content based on device orientation
-                function adjustARBasedOnGyro() {
-                    if (window.DeviceOrientationEvent) {
-                        window.addEventListener('deviceorientation', function (event) {
-                            var rotationX = event.alpha;
-                            var rotationY = event.beta;
-                            var rotationZ = event.gamma;
+        // Function to initialize the AR environment
+        function initializeAREnvironment() {
+            const marker = document.querySelector("#origin-marker");
+            const virtualSpace = document.querySelector("#virtual-space");
 
-                            // Adjust AR content based on device rotation
-                            el.setAttribute('rotation', {
-                                x: rotationX,
-                                y: rotationY,
-                                z: rotationZ
-                            });
-                        }, false);
-                    }
-                }
+            // Set the position of the virtual space based on the marker's position
+            const markerPosition = new THREE.Vector3();
+            marker.object3D.getWorldPosition(markerPosition);
 
-                // Call the function to adjust AR content based on gyro
-                adjustARBasedOnGyro();
+            if (!originPosition) {
+                originPosition = markerPosition.clone();
+            }
 
-                // Event listener for gesture to set origin and calculate distance
-                el.addEventListener('gestureDetected', function () {
-                    // Once a gesture is detected, set the origin of the AR environment
-                    // to the current position and rotation of the device
-                    var camera = scene.querySelector('[camera]');
-                    var cameraPosition = camera.object3D.getWorldPosition();
-                    var cameraRotation = camera.object3D.getWorldRotation();
+            virtualSpace.object3D.position.copy(originPosition);
+            virtualSpace.setAttribute('visible', true);
 
-                    // Set the position and rotation of the AR content relative to the device
-                    el.setAttribute('position', cameraPosition);
-                    el.setAttribute('rotation', cameraRotation);
+            environmentInitialized = true;
+        }
 
-                    // Calculate distance between camera and marker
-                    var marker = scene.querySelector('#animated-marker');
-                    var markerPosition = marker.object3D.getWorldPosition();
-                    var distance = cameraPosition.distanceTo(markerPosition);
-
-                    console.log('Distance to marker:', distance);
-                });
+        // Marker found event
+        document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
+            if (!environmentInitialized) {
+                initializeAREnvironment();
             }
         });
+
+        // Marker lost event
+        document.querySelector("#origin-marker").addEventListener("markerLost", (e) => {
+            // Environment remains static after marker is lost
+            environmentInitialized = false;
+        });
+
+        // Function to maintain AR environment and update positions
+        function maintainAREnvironment() {
+            if (environmentInitialized && originPosition) {
+                const virtualSpace = document.querySelector("#virtual-space");
+
+                // Ensure virtual space remains at the initial position
+                virtualSpace.object3D.position.copy(originPosition);
+            }
+        }
+
+        // Set an interval to maintain the AR environment
+        setInterval(maintainAREnvironment, 100);
     </script>
 </body>
 </html>
