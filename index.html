@@ -22,7 +22,7 @@
         <a-marker
             id="origin-marker"
             type="pattern"
-            url="assets/marker.patt"
+            url="assets/-marker.patt"
             emitevents="true"
         >
             <a-entity
@@ -32,13 +32,13 @@
             ></a-entity>
         </a-marker>
 
-        <!-- Virtual 3D space -->
-        <a-entity id="virtual-space">
+        <!-- Virtual 3D space (initially hidden) -->
+        <a-entity id="virtual-space" visible="false">
             <!-- Object in front of the camera (marker side) -->
             <a-entity
                 geometry="primitive: box; height: 0.3; width: 0.3; depth: 0.3"
                 material="color: yellow"
-                position="10 0 -0.5"
+                position="0 0 -0.5"
             ></a-entity>
 
             <!-- Object behind the camera -->
@@ -55,7 +55,6 @@
 
     <script>
         let originPosition = null;
-        let environmentInitialized = false;
 
         // Function to initialize the AR environment
         function initializeAREnvironment() {
@@ -72,34 +71,21 @@
 
             virtualSpace.object3D.position.copy(originPosition);
 
-            environmentInitialized = true;
+            // Show the virtual space
+            virtualSpace.setAttribute('visible', true);
         }
 
         // Marker found event
         document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
-            if (!environmentInitialized) {
-                initializeAREnvironment();
-            }
+            initializeAREnvironment();
         });
 
         // Marker lost event
         document.querySelector("#origin-marker").addEventListener("markerLost", (e) => {
-            // Environment remains static after marker is lost
-            environmentInitialized = false;
+            // Hide the virtual space when marker is lost
+            const virtualSpace = document.querySelector("#virtual-space");
+            virtualSpace.setAttribute('visible', false);
         });
-
-        // Function to maintain AR environment and update positions
-        function maintainAREnvironment() {
-            if (environmentInitialized && originPosition) {
-                const virtualSpace = document.querySelector("#virtual-space");
-
-                // Ensure virtual space remains at the initial position
-                virtualSpace.object3D.position.copy(originPosition);
-            }
-        }
-
-        // Set an interval to maintain the AR environment
-        setInterval(maintainAREnvironment, 100);
     </script>
 </body>
 </html>
