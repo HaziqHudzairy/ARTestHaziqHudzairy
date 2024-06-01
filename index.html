@@ -95,12 +95,6 @@
             initializeAREnvironment();
         });
 
-        // Marker lost event
-        document.querySelector("#origin-marker").addEventListener("markerLost", (e) => {
-            // Hide the virtual space when marker is lost
-            const virtualSpace = document.querySelector("#virtual-space");
-            virtualSpace.setAttribute('visible', false);
-        });
     </script>
 </body>
 </html>
