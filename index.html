@@ -36,31 +36,42 @@
         <a-entity id="virtual-space" visible="false">
             <!-- Object in front of the camera (marker side) -->
             <a-entity
+                id="object1"
                 geometry="primitive: box; height: 0.3; width: 0.3; depth: 0.3"
                 material="color: yellow"
-                position="0 0 -0.5"
+                position="0 0 -2"
             ></a-entity>
 
             <!-- Object behind the camera -->
             <a-entity
+                id="object2"
                 geometry="primitive: sphere; radius: 0.2"
-                material="color: green"
+                material="color: cyan"
                 position="0 0 8"
             ></a-entity>
+
+            <!-- Object right of the camera -->
             <a-entity
-                geometry="primitive: sphere; radius: 0.2"
-                material="color: black"
-                position="1 -1 2"
-            ></a-entity>
-            <a-entity
-                geometry="primitive: sphere; radius: 0.2"
-                material="color: red"
-                position="0 1 -0.5"
-            ></a-entity>
-            <a-entity
+                id="object3"
                 geometry="primitive: sphere; radius: 0.2"
                 material="color: blue"
-                position="1 1 2"
+                position="8 0 0"
+            ></a-entity>
+
+            <!-- Object left of the camera -->
+            <a-entity
+                id="object4"
+                geometry="primitive: sphere; radius: 0.2"
+                material="color: green"
+                position="-8 0 0"
+            ></a-entity>
+
+            <!-- Object top of the camera -->
+            <a-entity
+                id="object5"
+                geometry="primitive: sphere; radius: 0.2"
+                material="color: red"
+                position="0 8 0"
             ></a-entity>
         </a-entity>
 
@@ -105,22 +116,34 @@
         });
 
         // Update object positions based on camera distance
-        function updateObjectPositions() {
-            const camera = document.querySelector("#cameraRig");
-            const object1 = document.querySelector("#object1");
-            const object2 = document.querySelector("#object2");
+        // Update object positions based on camera distance
+            function updateObjectPositions() {
+                const camera = document.querySelector("#cameraRig");
+                const object1 = document.querySelector("#object1");
+                const object2 = document.querySelector("#object2");
+                const object3 = document.querySelector("#object3");
+                const object4 = document.querySelector("#object4");
+                const object5 = document.querySelector("#object5");
 
-            // Calculate distance between camera and objects
-            const distanceToObj1 = camera.object3D.position.distanceTo(object1.object3D.position);
-            const distanceToObj2 = camera.object3D.position.distanceTo(object2.object3D.position);
+                // Calculate distance between camera and objects
+                const distanceToObj1 = camera.object3D.getWorldPosition().distanceTo(object1.object3D.getWorldPosition());
+                const distanceToObj2 = camera.object3D.getWorldPosition().distanceTo(object2.object3D.getWorldPosition());
+                const distanceToObj3 = camera.object3D.getWorldPosition().distanceTo(object3.object3D.getWorldPosition());
+                const distanceToObj4 = camera.object3D.getWorldPosition().distanceTo(object4.object3D.getWorldPosition());
+                const distanceToObj5 = camera.object3D.getWorldPosition().distanceTo(object5.object3D.getWorldPosition());
 
-            // Adjust object positions based on distance
-            object1.object3D.position.set(0, 0, -1.5 - distanceToObj1 / 2);
-            object2.object3D.position.set(0, 0, 2.5 + distanceToObj2 / 2);
-        }
+                // Adjust object positions based on distance
+                object1.object3D.position.set(0, 0, -2 - distanceToObj1 / 2);
+                object2.object3D.position.set(0, 0, 8 + distanceToObj2 / 2);
+                object3.object3D.position.set(8 + distanceToObj3 / 2, 0, 0);
+                object4.object3D.position.set(-8 - distanceToObj4 / 2, 0, 0);
+                object5.object3D.position.set(0, 8 + distanceToObj5 / 2, 0);
+            }
 
-        // Update object positions continuously
-        setInterval(updateObjectPositions, 100);
-    </script>
-</body>
+
+            // Update object positions continuously
+            setInterval(updateObjectPositions, 100);
+        </script>
+    </body>
 </html>
+
