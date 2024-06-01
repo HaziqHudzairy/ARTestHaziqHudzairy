@@ -22,7 +22,7 @@
         <a-marker
             id="origin-marker"
             type="pattern"
-            url="assets/marker.patt"
+            url="assets/origin-marker.patt"
             emitevents="true"
         >
             <a-entity
@@ -44,28 +44,28 @@
             <!-- Object behind the camera -->
             <a-entity
                 geometry="primitive: sphere; radius: 0.2"
-                material="color: cyan"
+                material="color: green"
                 position="0 0 8"
             ></a-entity>
             <a-entity
                 geometry="primitive: sphere; radius: 0.2"
-                material="color: cyan"
+                material="color: black"
                 position="1 -1 2"
             ></a-entity>
             <a-entity
                 geometry="primitive: sphere; radius: 0.2"
-                material="color: cyan"
+                material="color: red"
                 position="0 1 -0.5"
             ></a-entity>
             <a-entity
                 geometry="primitive: sphere; radius: 0.2"
-                material="color: cyan"
+                material="color: blue"
                 position="1 1 2"
             ></a-entity>
         </a-entity>
 
         <!-- Camera with controls -->
-        <a-entity camera look-controls></a-entity>
+        <a-entity camera look-controls wasd-controls="fly: true;"></a-entity>
     </a-scene>
 
     <script>
