@@ -1,98 +1,70 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+    <script src="https://immersive-web.github.io/webxr-polyfill/build/webxr-polyfill.module.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
-
 <body style="margin: 0; overflow: hidden;">
-    <a-scene
-        vr-mode-ui="enabled: false;"
-        loading-screen="enabled: false;"
-        renderer="logarithmicDepthBuffer: true;"
-        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-        id="scene"
-        embedded
-        gesture-detector
-    >
-        <a-assets>
-            <a-asset-item
-                id="animated-asset"
-                src="asset/asset.gltf"
-            ></a-asset-item>
-        </a-assets>
 
-        <!-- Marker-based tracking -->
-        <a-marker
-            id="animated-marker"
-            type="pattern"
-            preset="custom"
-            url="assets/marker.patt"
-            raycaster="objects: .clickable"
-            emitevents="true"
-            cursor="fuse: false; rayOrigin: mouse;"
-            id="markerA"
-        >
-            <a-entity
-                id="bowser-model"
-                scale="0.22538080715099623 0.22538080715099623 0.22538080715099623"
-                animation-mixer="loop: repeat"
-                gltf-model="#animated-asset"
-                class="clickable"
-                gesture-handler
-            ></a-entity>
-        </a-marker>
+<a-scene 
+    vr-mode-ui="enabled: false;"
+    loading-screen="enabled: false;"
+    renderer="logarithmicDepthBuffer: true;"
+    arjs="sourceType: webcam; debugUIEnabled: false;"
+    embedded>
 
-        <!-- Fallback object -->
-        <a-box id="fallback-object" position="0 0.5 0" color="blue"></a-box>
+    <!-- Add your AR.js marker here -->
+    <a-marker type="pattern" url="assets/marker.patt">
+        <!-- Define your virtual object -->
+        <a-entity gltf-model="assets/asset.gltf" scale="0.22538080715099623 0.22538080715099623 0.22538080715099623"></a-entity>
+    </a-marker>
 
-        <!-- Camera -->
-        <a-entity camera></a-entity>
+    <!-- Camera -->
+    <a-entity camera></a-entity>
 
-        <script>
-            // Get references to the marker and fallback object
-            var marker = document.getElementById('animated-marker');
-            var fallbackObject = document.getElementById('fallback-object');
-
-            // Register an event listener for marker found event
-            marker.addEventListener('markerFound', function () {
-                // When marker is found, hide the fallback object
-                fallbackObject.setAttribute('visible', 'false');
+    <!-- JavaScript for WebXR-based AR -->
+    <script>
+        function initAR(referenceSpace, session) {
+            // Create Three.js scene
+            const scene = new THREE.Scene();
+    
+            // Create Three.js camera
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 0);
+    
+            // Create Three.js renderer
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+    
+            // Create a cube as AR content
+            const geometry = new THREE.BoxGeometry();
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            const cube = new THREE.Mesh(geometry, material);
+            cube.position.set(0, 0, -1); // Position the cube in front of the camera
+            scene.add(cube);
+    
+            // Handle XR session events
+            session.addEventListener('end', () => {
+                // Clean up resources when session ends
+                renderer.dispose();
             });
+    
+            // Update XR session
+            function animate() {
+                session.requestAnimationFrame(animate);
+    
+                // Update AR content
+                renderer.render(scene, camera);
+            }
+    
+            animate();
+        }
+    </script>
+    
+</a-scene>
 
-            // Register an event listener for marker lost event
-            marker.addEventListener('markerLost', function () {
-                // When marker is lost, show the fallback object
-                fallbackObject.setAttribute('visible', 'true');
-            });
-
-            // Simulate SLAM-like behavior using device orientation
-            var lastOrientation = { x: 0, y: 0, z: 0 };
-
-            window.addEventListener('deviceorientation', function(event) {
-                var alpha = event.alpha || 0; // Z-axis rotation (compass)
-                var beta = event.beta || 0; // X-axis rotation (tilt forward/backward)
-                var gamma = event.gamma || 0; // Y-axis rotation (tilt left/right)
-
-                // Calculate delta orientation
-                var deltaOrientation = {
-                    x: beta - lastOrientation.x,
-                    y: gamma - lastOrientation.y,
-                    z: alpha - lastOrientation.z
-                };
-
-                // Update position of fallback object based on delta orientation
-                fallbackObject.object3D.position.x += deltaOrientation.x / 100; // Scale factor for movement
-                fallbackObject.object3D.position.y += deltaOrientation.y / 100; // Scale factor for movement
-                fallbackObject.object3D.position.z += deltaOrientation.z / 100; // Scale factor for movement
-
-                // Update last orientation
-                lastOrientation = { x: beta, y: gamma, z: alpha };
-            });
-        </script>
-    </a-scene>
 </body>
 </html>
