@@ -75,6 +75,26 @@
 
                 // Call the function to adjust AR content based on gyro
                 adjustARBasedOnGyro();
+
+                // Event listener for gesture to set origin and calculate distance
+                el.addEventListener('gestureDetected', function () {
+                    // Once a gesture is detected, set the origin of the AR environment
+                    // to the current position and rotation of the device
+                    var camera = scene.querySelector('[camera]');
+                    var cameraPosition = camera.object3D.getWorldPosition();
+                    var cameraRotation = camera.object3D.getWorldRotation();
+
+                    // Set the position and rotation of the AR content relative to the device
+                    el.setAttribute('position', cameraPosition);
+                    el.setAttribute('rotation', cameraRotation);
+
+                    // Calculate distance between camera and marker
+                    var marker = scene.querySelector('#animated-marker');
+                    var markerPosition = marker.object3D.getWorldPosition();
+                    var distance = cameraPosition.distanceTo(markerPosition);
+
+                    console.log('Distance to marker:', distance);
+                });
             }
         });
     </script>
