@@ -1,51 +1,60 @@
-<!doctype html>
-<html>
-    <head>
-        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-        <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
-    </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR.js with GPS Tracking</title>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+    <a-scene
+    vr-mode-ui="enabled: false"
+    embedded
+    arjs="sourceType: webcam; debugUIEnabled: false;"
+>
+    <!-- Assets -->
+    <a-assets>
+        <!-- Load GLTF model -->
+        <a-asset-item id="myModel" src="asset/asset.gltf"></a-asset-item>
+    </a-assets>
 
-    <body style="margin: 0; overflow: hidden;">
-        <a-scene
-            vr-mode-ui="enabled: false;"
-            loading-screen="enabled: false;"
-            renderer="logarithmicDepthBuffer: true;"
-            arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-            id="scene"
-            embedded
-            gesture-detector
-        >
-            <a-assets>
-                <a-asset-item
-                    id="animated-asset"
-                    src="asset/asset.gltf"
-                ></a-asset-item>
-            </a-assets>
+    <!-- AR content -->
+    <a-entity gltf-model="#myModel" scale="0.1 0.1 0.1" position="0 0 -5"></a-entity>
+    <!-- Adjust the 'position' attribute to move the object further away -->
 
-            <a-marker
-                id="animated-marker"
-                type="pattern"
-                preset="custom"
-                url="assets/marker.patt"
-                raycaster="objects: .clickable"
-                emitevents="true"
-                cursor="fuse: false; rayOrigin: mouse;"
-                id="markerA"
-            >
-                <a-entity
-                    id="bowser-model"
-                    scale="0.22538080715099623 0.22538080715099623 0.22538080715099623"
-                    animation-mixer="loop: repeat"
-                    gltf-model="#animated-asset"
-                    class="clickable"
-                    gesture-handler
-                ></a-entity>
-            </a-marker>
+    <!-- Camera entity -->
+    <a-entity camera></a-entity>
+</a-scene>
+    <script>
+        // Function to retrieve current location using Geolocation API
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                console.error("Geolocation is not supported by this browser.");
+            }
+        }
 
-            <a-entity camera></a-entity>
-        </a-scene>
-    </body>
+        // Callback function to handle retrieved location
+        function showPosition(position) {
+            console.log("Latitude: " + position.coords.latitude + ", Longitude: " + position.coords.longitude);
+
+            // Calculate 3D position in AR scene based on latitude and longitude
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Convert latitude and longitude to 3D coordinates relative to the user's position
+            const latitudeToY = latitude * 100; // Adjust scale as needed
+            const longitudeToX = longitude * 100; // Adjust scale as needed
+
+            // Update AR content position based on calculated coordinates
+            const arContent = document.querySelector('a-box');
+            arContent.setAttribute('position', `${longitudeToX} 0 ${latitudeToY}`);
+        }
+
+        // Call getLocation function to start retrieving location
+        getLocation();
+    </script>
+</body>
 </html>
