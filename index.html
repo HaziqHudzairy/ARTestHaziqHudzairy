@@ -75,10 +75,11 @@
             ></a-entity>
         </a-entity>
 
-        <!-- Camera with controls -->
-        <a-entity id="cameraRig" position="0 1.6 0">
-            <a-entity camera look-controls wasd-controls="fly: true;"></a-entity>
+        <!-- Camera with device motion controls -->
+        <a-entity id="cameraRig" position="0 0 0" device-orientation-camera>
+            <a-entity camera look-controls></a-entity>
         </a-entity>
+
     </a-scene>
 
     <script>
