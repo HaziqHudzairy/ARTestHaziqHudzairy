@@ -155,7 +155,7 @@ User
         </a-entity>
 
         <!-- Camera -->
-        <a-entity id="camera" camera look-controls> <!-- Changed the camera setup here -->
+        <a-entity camera look-controls> <!-- Changed the camera setup here -->
         </a-entity>
     </a-scene>
 
@@ -169,42 +169,32 @@ User
 
     <script>
         let originPosition = null;
-    
-        // Initially hide the QR animation
-        document.querySelector("#QR-animation").style.display = "none";
-    
-        // Event listener for when the camera starts
-        document.querySelector("#camera").addEventListener("camera-ready", (e) => {
-            document.querySelector("#QR-animation").style.display = "block";
-        });
-    
+
         // Function to initialize the AR environment
         function initializeAREnvironment() {
             const marker = document.querySelector("#origin-marker");
             const virtualSpace = document.querySelector("#virtual-space");
-    
+
             // Set the position of the virtual space based on the marker's position
             const markerPosition = new THREE.Vector3();
             marker.object3D.getWorldPosition(markerPosition);
-    
+
             if (!originPosition) {
                 originPosition = markerPosition.clone();
             }
-    
+
             virtualSpace.object3D.position.copy(originPosition);
-    
-            // Hide the QR animation once the AR environment is initialized
+
             document.querySelector("#QR-animation").style.display = "none";
             
             // Show the virtual space
             virtualSpace.setAttribute('visible', true);
         }
-    
+
         // Marker found event
         document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
             initializeAREnvironment();
         });
     </script>
-    
 </body>
 </html>
