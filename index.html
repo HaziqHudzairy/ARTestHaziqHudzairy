@@ -16,7 +16,7 @@
     >
         <a-assets>
             <a-asset-item id="animated-asset" src="asset/asset.gltf"></a-asset-item>
-            <a-asset-item id="GameConsole" src="asset/Console_Game.gltf"></a-asset-item>
+            <a-asset-item id="GameConsole" src="asset/GameConsole2.glb"></a-asset-item>
         </a-assets>
 
         <!-- Origin marker -->
@@ -26,11 +26,14 @@
             url="assets/marker.patt"
             emitevents="true"
         >
-            <a-entity
-                id="origin-model"
-                scale="0.5 0.5 0.5"
-                gltf-model="#Game_Console"
-            ></a-entity>
+        <a-entity
+            id="origin-model"
+            scale="4.158927133771977 4.158927133771977 4.158927133771977"
+            animation-mixer="loop: repeat"
+            gltf-model="#Game_Console"
+            class="clickable"
+            gesture-handler
+        ></a-entity>
         </a-marker>
 
         <!-- Virtual 3D space (initially hidden) -->
@@ -40,7 +43,7 @@
                 id="Game_Console"
                 scale="2 2 2"
                 gltf-model="#animated-asset"
-                position="0 1 5"
+                position="0 2 0"
             ></a-entity>
             <!-- Object in front of the camera (marker side) -->
             <a-entity
