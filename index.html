@@ -4,6 +4,46 @@
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.controls.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .center {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+    
+        .square {
+          position: relative; /* Add this for absolute positioning inside */
+          width: 350px;
+          height: 350px;
+          background: transparent;
+          border: 10px solid #000;
+        }
+    
+        .fa-qrcode {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 300px;
+          color: #000;
+        }
+    
+        .scan {
+          position: relative;
+          bottom: 0; /* Adjusted to align at the bottom */
+          width: 100%;
+          height: 80px;
+          background: linear-gradient(cyan, transparent);
+          animation: scanning 1.5s linear alternate infinite;
+        }
+    
+        @keyframes scanning {
+          0% { transform: translateY(0px); }
+          100% { transform: translateY(270px); }
+        }
+      </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
     <a-scene
@@ -20,13 +60,23 @@
             <a-asset-item id="Console" src="asset/Console_Game.gltf"></a-asset-item>
         </a-assets>
 
+        <div id="QR-animation" class="center">
+            <div class="square">
+              <i class="fa fa-qrcode"></i>
+              <div class="scan"></div>
+            </div>
+        </div>
+
         <!-- Origin marker -->
         <a-marker
             id="origin-marker"
             type="pattern"
             url="assets/marker.patt"
             emitevents="true"
+            
         >
+
+        
         <a-entity
             id="origin-model"
             scale="4.158927133771977 4.158927133771977 4.158927133771977"
@@ -118,6 +168,8 @@
 
             virtualSpace.object3D.position.copy(originPosition);
 
+            document.querySelector("#QR-animation").style.display = "none";
+            
             // Show the virtual space
             virtualSpace.setAttribute('visible', true);
         }
