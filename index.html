@@ -75,9 +75,7 @@
         <a-assets>
             <a-asset-item id="Dog" src="asset/asset.gltf"></a-asset-item>
             <a-asset-item id="GameConsole" src="asset/Console_Game.gltf"></a-asset-item>
-            <a-asset-item id="Console" src="asset/Console_Game.gltf"></a-asset-item>
-            <a-asset-item id="Clouds1" src="asset/Clouds/CloudAnimatedFullOP.glb"></a-asset-item>
-
+            <a-asset-item id="Environment" src="asset/SceneAR.glb"></a-asset-item>
         </a-assets>
 
         <!-- Origin marker -->
@@ -113,14 +111,12 @@
                 rotation="120 0 0"
             ></a-entity>
             <a-entity
-                id="Clouds_1"
-                scale="0.7 0.7 0.7"
-                gltf-model="#Clouds1"
-                animation-mixer="clip: defaultMaterialAction"
-                position="-15 -2 -15"
-                rotation="50 0 0"
+                id="Env"
+                scale="10 10 10"
+                gltf-model="#Environment"
+                position="0 0 0"
+                rotation="0 0 0"
             ></a-entity>
-           
 
             <!-- Object in front of the camera (marker side) -->
             <a-entity
@@ -204,16 +200,29 @@
             initializeAREnvironment();
         });
     
-        // Model loaded event to debug animation clips
+        // Model loaded event to debug animation clips and play all animations
         document.querySelectorAll('a-entity[gltf-model]').forEach((entity) => {
             entity.addEventListener('model-loaded', (e) => {
                 const model = e.detail.model;
                 const animations = model.animations;
-                if (animations.length > 0) {
+
+                if (animations && animations.length > 0) {
                     console.log('Available animation clips:', animations.map(anim => anim.name));
                     const mixer = new THREE.AnimationMixer(model);
-                    const action = mixer.clipAction(animations[0]);
-                    action.play();
+                    animations.forEach((clip) => {
+                        const action = mixer.clipAction(clip);
+                        action.play();
+                    });
+
+                    const clock = new THREE.Clock();
+
+                    const animate = () => {
+                        requestAnimationFrame(animate);
+                        const delta = clock.getDelta();
+                        mixer.update(delta);
+                    };
+
+                    animate();
                 } else {
                     console.log('No animations found for model:', entity);
                 }
