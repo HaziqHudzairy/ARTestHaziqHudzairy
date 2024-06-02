@@ -16,7 +16,10 @@
     >
         <a-assets>
             <a-asset-item id="animated-asset" src="asset/asset.gltf"></a-asset-item>
+            <a-asset-item id="GameConsole" src="asset/Console_Game.glb"></a-asset-item>
         </a-assets>
+
+            
 
         <!-- Origin marker -->
         <a-marker
@@ -34,6 +37,13 @@
 
         <!-- Virtual 3D space (initially hidden) -->
         <a-entity id="virtual-space" visible="false">
+
+            <a-entity
+                id="Game_Console"
+                scale="2 2 2"
+                gltf-model="#GameConsole"
+                position="0 1 5"
+            ></a-entity>
             <!-- Object in front of the camera (marker side) -->
             <a-entity
                 id="object1"
@@ -118,6 +128,7 @@
                 const object3 = document.querySelector("#object3");
                 const object4 = document.querySelector("#object4");
                 const object5 = document.querySelector("#object5");
+                const Game_Console = document.querySelector("#Game_Console");
 
                 // Calculate distance between camera and objects
                 const distanceToObj1 = camera.object3D.getWorldPosition().distanceTo(object1.object3D.getWorldPosition());
@@ -125,6 +136,7 @@
                 const distanceToObj3 = camera.object3D.getWorldPosition().distanceTo(object3.object3D.getWorldPosition());
                 const distanceToObj4 = camera.object3D.getWorldPosition().distanceTo(object4.object3D.getWorldPosition());
                 const distanceToObj5 = camera.object3D.getWorldPosition().distanceTo(object5.object3D.getWorldPosition());
+                const distanceToGC = camera.object3D.getWorldPosition().distanceTo(Game_Console.object3D.getWorldPosition());
 
                 // Adjust object positions based on distance
                 object1.object3D.position.set(0, 0, -2 - distanceToObj1 / 2);
@@ -132,6 +144,7 @@
                 object3.object3D.position.set(8 + distanceToObj3 / 2, 0, 0);
                 object4.object3D.position.set(-8 - distanceToObj4 / 2, 0, 0);
                 object5.object3D.position.set(0, 8 + distanceToObj5 / 2, 0);
+                Game_Console.object3D.position.set(0, 8 + distanceToGC / 2, 0);
             }
 
 
