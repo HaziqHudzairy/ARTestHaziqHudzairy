@@ -95,9 +95,8 @@
             ></a-entity>
         </a-entity>
 
-        <!-- Camera with device motion controls -->
-        <a-entity id="cameraRig" position="0 0 0" device-orientation-camera>
-            <a-entity camera look-controls></a-entity>
+        <!-- Camera -->
+        <a-entity camera look-controls> <!-- Changed the camera setup here -->
         </a-entity>
     </a-scene>
 
@@ -127,47 +126,6 @@
         document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
             initializeAREnvironment();
         });
-
-        // // Update object positions based on camera distance
-        // function updateObjectPositions() {
-        //     const camera = document.querySelector("#cameraRig");
-        //     const object1 = document.querySelector("#object1");
-        //     const object2 = document.querySelector("#object2");
-        //     const object3 = document.querySelector("#object3");
-        //     const object4 = document.querySelector("#object4");
-        //     const object5 = document.querySelector("#object5");
-        //     const Game_Console = document.querySelector("#Game_Console");
-
-        //     // Calculate distance between camera and objects
-        //     const cameraPosition = new THREE.Vector3();
-        //     camera.object3D.getWorldPosition(cameraPosition);
-
-        //     const distanceToObj1 = cameraPosition.distanceTo(object1.object3D.getWorldPosition());
-        //     const distanceToObj2 = cameraPosition.distanceTo(object2.object3D.getWorldPosition());
-        //     const distanceToObj3 = cameraPosition.distanceTo(object3.object3D.getWorldPosition());
-        //     const distanceToObj4 = cameraPosition.distanceTo(object4.object3D.getWorldPosition());
-        //     const distanceToObj5 = cameraPosition.distanceTo(object5.object3D.getWorldPosition());
-        //     const distanceToGC = cameraPosition.distanceTo(Game_Console.object3D.getWorldPosition());
-
-        //     // Adjust object positions based on distance
-        //     object1.object3D.position.set(0, 0, -2 - distanceToObj1 / 2);
-        //     object2.object3D.position.set(0, 0, 8 + distanceToObj2 / 2);
-        //     object3.object3D.position.set(8 + distanceToObj3 / 2, 0, 0);
-        //     object4.object3D.position.set(-8 - distanceToObj4 / 2, 0, 0);
-        //     object5.object3D.position.set(0, 8 + distanceToObj5 / 2, 0);
-        //     Game_Console.object3D.position.set(0, 1 + distanceToGC / 2, 5);
-        // }
-
-        // // Update object positions continuously
-        // setInterval(updateObjectPositions, 100);
-
-        // // Debugging: Check asset loading
-        // document.querySelector('#GameConsole').addEventListener('error', function (event) {
-        //     console.error('Failed to load GameConsole asset:', event.detail.src);
-        // });
-        // document.querySelector('#Dog').addEventListener('error', function (event) {
-        //     console.error('Failed to load animated-asset:', event.detail.src);
-        // });
     </script>
 </body>
 </html>
