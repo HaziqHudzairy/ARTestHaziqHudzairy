@@ -61,7 +61,6 @@
         #QR-animation .scan {
             height: 40px; /* Adjust the height to make the scan animation smaller */
         }
-
       </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
@@ -79,24 +78,13 @@
             <a-asset-item id="Console" src="asset/Console_Game.gltf"></a-asset-item>
         </a-assets>
 
-        
-
         <!-- Origin marker -->
         <a-marker
             id="origin-marker"
             type="pattern"
             url="assets/marker.patt"
             emitevents="true"
-            
         >
-
-        <div id="QR-animation" class="center">
-            <div class="square">
-              <i class="fa fa-qrcode"></i>
-              <div class="scan"></div>
-            </div>
-        </div>
-        
         <a-entity
             id="origin-model"
             scale="4.158927133771977 4.158927133771977 4.158927133771977"
@@ -170,6 +158,14 @@
         </a-entity>
     </a-scene>
 
+    <!-- QR animation -->
+    <div id="QR-animation" class="center">
+        <div class="square">
+            <i class="fa fa-qrcode"></i>
+            <div class="scan"></div>
+        </div>
+    </div>
+
     <script>
         let originPosition = null;
 
@@ -197,6 +193,11 @@
         // Marker found event
         document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
             initializeAREnvironment();
+        });
+
+        // Camera permission and start event
+        document.querySelector("a-scene").addEventListener("arjs-video-loaded", (e) => {
+            document.querySelector("#QR-animation").style.display = "block";
         });
     </script>
 </body>
