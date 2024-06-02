@@ -13,12 +13,18 @@
         arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
         id="scene"
         embedded
+
     >
         <a-assets>
             <a-asset-item id="Dog" src="asset/asset.gltf"></a-asset-item>
             <a-asset-item id="GameConsole" src="asset/Console_Game.gltf"></a-asset-item>
             <a-asset-item id="Console" src="asset/Console_Game.gltf"></a-asset-item>
         </a-assets>
+
+        <a-entity
+            position="0 1.5 -2"
+            text="value: Debug Text; align: center; width: 4; color: black"
+        ></a-entity>
 
         <!-- Origin marker -->
         <a-marker
@@ -123,12 +129,18 @@
 
         // Function to handle obtaining the current position
         function showPosition(position) {
+            // Log latitude and longitude
+            console.log("Latitude:", position.coords.latitude);
+            console.log("Longitude:", position.coords.longitude);
+
             // Convert latitude and longitude to Cartesian coordinates
             var cartesianCoordinates = latLongToCartesian(position.coords.latitude, position.coords.longitude);
+            console.log("Cartesian Coordinates:", cartesianCoordinates);
             
             if (!markerFound) {
                 // Set the origin position to the current device location
                 originPosition = cartesianCoordinates;
+                console.log("Origin Position Set:", originPosition);
             }
 
             // Use the Cartesian coordinates for further operations (e.g., setting the position in the 3D space)
@@ -142,6 +154,7 @@
         function updateVirtualSpacePosition(position) {
             const virtualSpace = document.querySelector("#virtual-space");
             virtualSpace.object3D.position.set(position.x, position.y, position.z);
+            console.log("Virtual Space Position Updated:", position);
         }
 
         // Obtain the current position
@@ -162,12 +175,15 @@
 
             if (!originPosition) {
                 originPosition = markerPosition.clone();
+                console.log("Origin Position Set:", originPosition);
             }
 
             virtualSpace.object3D.position.copy(originPosition);
+            console.log("Virtual Space Position Set:", originPosition);
 
             // Show the virtual space
             virtualSpace.setAttribute('visible', true);
+            console.log("Virtual Space Visible:", true);
 
             // Set markerFound to true
             markerFound = true;
@@ -176,12 +192,14 @@
         // Marker found event
         document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
             initializeAREnvironment();
+            console.log("Marker Found:", true);
         });
 
         // Continuous update of position based on device geolocation
         setInterval(() => {
             if (markerFound) {
                 navigator.geolocation.getCurrentPosition(showPosition);
+                console.log("Continuous Position Update");
             }
         }, 1000); // Update every second
 
@@ -195,6 +213,7 @@
             // Update camera position and rotation based on device orientation
             const cameraWrapper = document.querySelector("#camera-wrapper");
             cameraWrapper.setAttribute("rotation", { x: beta, y: gamma, z: alpha }); // Adjust according to your camera setup
+            console.log("Device Orientation Updated:", { alpha, beta, gamma });
         }
 
         // Listen for device orientation changes
