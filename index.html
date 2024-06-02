@@ -1,10 +1,9 @@
-User
 <!doctype html>
 <html>
 <head>
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.controls.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .center {
@@ -15,7 +14,7 @@ User
         }
     
         .square {
-          position: relative; /* Add this for absolute positioning inside */
+          position: relative;
           width: 350px;
           height: 350px;
           background: transparent;
@@ -33,7 +32,7 @@ User
     
         .scan {
           position: relative;
-          bottom: 0; /* Adjusted to align at the bottom */
+          bottom: 0;
           width: 100%;
           height: 40px;
           background: linear-gradient(cyan, transparent);
@@ -46,21 +45,21 @@ User
         }
 
         #QR-animation {
-            width: 200px; /* Adjust the width to make it smaller */
-            height: 200px; /* Adjust the height to make it smaller */
+            width: 200px;
+            height: 200px;
         }
 
         #QR-animation .square {
-            width: 100%; /* Occupy full width of parent */
-            height: 100%; /* Occupy full height of parent */
+            width: 100%;
+            height: 100%;
         }
 
         #QR-animation .fa-qrcode {
-            font-size: 150px; /* Adjust the font size to make the icon smaller */
+            font-size: 150px;
         }
 
         #QR-animation .scan {
-            height: 40px; /* Adjust the height to make the scan animation smaller */
+            height: 40px;
         }
       </style>
 </head>
@@ -77,11 +76,11 @@ User
             <a-asset-item id="Dog" src="asset/asset.gltf"></a-asset-item>
             <a-asset-item id="GameConsole" src="asset/Console_Game.gltf"></a-asset-item>
             <a-asset-item id="Console" src="asset/Console_Game.gltf"></a-asset-item>
-            <a-asset-item id="Clouds1" src="asset/Clouds/Clouds.gltf"></a-asset-item>
-            <a-asset-item id="Clouds2" src="asset/Clouds/Clouds.gltf"></a-asset-item>
-            <a-asset-item id="Clouds3" src="asset/Clouds/Clouds.gltf"></a-asset-item>
-            <a-asset-item id="Clouds4" src="asset/Clouds/Clouds.gltf"></a-asset-item>
-            <a-asset-item id="Clouds5" src="asset/Clouds/Clouds.gltf"></a-asset-item>
+            <a-asset-item id="Clouds1" src="asset/Clouds/CloudAnimatedFullOP.glb"></a-asset-item>
+            <a-asset-item id="Clouds2" src="asset/Clouds/CloudAnimatedFullOP.glb"></a-asset-item>
+            <a-asset-item id="Clouds3" src="asset/Clouds/CloudAnimatedFullOP.glb"></a-asset-item>
+            <a-asset-item id="Clouds4" src="asset/Clouds/CloudAnimatedFullOP.glb"></a-asset-item>
+            <a-asset-item id="Clouds5" src="asset/Clouds/CloudAnimatedFullOP.glb"></a-asset-item>
         </a-assets>
 
         <!-- Origin marker -->
@@ -103,56 +102,59 @@ User
 
         <!-- Virtual 3D space (initially hidden) -->
         <a-entity id="virtual-space" visible="false">
-
             <a-entity
                 id="Dog"
                 scale="2 2 2"
                 gltf-model="#Dog"
-                position="5 0 0"
+                position="15 0 10"
             ></a-entity>
             <a-entity
                 id="Game_Console"
                 scale="3 3 3"
                 gltf-model="#Console"
-                position="-4 0 0"
+                position="-14 0 10"
                 rotation="120 0 0"
             ></a-entity>
             <a-entity
                 id="Clouds_1"
-                scale="6 6 6"
+                scale="0.7 0.7 0.7"
                 gltf-model="#Clouds1"
-                position="-5 -2 -5"
+                animation-mixer="clip: defaultMaterialAction"
+                position="-15 -2 -15"
                 rotation="50 0 0"
             ></a-entity>
             <a-entity
                 id="Clouds_2"
-                scale="7 7 7"
+                scale="0.7 0.7 0.7"
                 gltf-model="#Clouds2"
-                position="-8 1 -1"
+                animation-mixer="clip: defaultMaterialAction"
+                position="-18 1 -11"
                 rotation="25 90 0"
             ></a-entity>
             <a-entity
                 id="Clouds_3"
-                scale="1.5 1.5 1.5"
+                scale="0.7 0.7 0.7"
                 gltf-model="#Clouds3"
-                position="7 1 8"
+                animation-mixer="clip: defaultMaterialAction"
+                position="17 1 18"
                 rotation="11 90 0"
             ></a-entity>
             <a-entity
                 id="Clouds_4"
-                scale="6 6 6"
+                scale="0.7 0.7 0.7"
                 gltf-model="#Clouds4"
-                position="4 -1 9"
+                animation-mixer="clip: defaultMaterialAction"
+                position="14 -1 19"
                 rotation="170 90 0"
             ></a-entity>
             <a-entity
                 id="Clouds_5"
-                scale="10 10 10"
+                scale="0.7 0.7 0.7"
                 gltf-model="#Clouds5"
-                position="6 -3 -5"
+                animation-mixer="clip: defaultMaterialAction"
+                position="16 -3 -15"
                 rotation="20 90 0"
             ></a-entity>
-            
 
             <!-- Object in front of the camera (marker side) -->
             <a-entity
@@ -196,8 +198,7 @@ User
         </a-entity>
 
         <!-- Camera -->
-        <a-entity camera look-controls> <!-- Changed the camera setup here -->
-        </a-entity>
+        <a-entity camera look-controls></a-entity>
     </a-scene>
 
     <!-- QR animation -->
@@ -210,32 +211,49 @@ User
 
     <script>
         let originPosition = null;
-
+    
         // Function to initialize the AR environment
         function initializeAREnvironment() {
             const marker = document.querySelector("#origin-marker");
             const virtualSpace = document.querySelector("#virtual-space");
-
+    
             // Set the position of the virtual space based on the marker's position
             const markerPosition = new THREE.Vector3();
             marker.object3D.getWorldPosition(markerPosition);
-
+    
             if (!originPosition) {
                 originPosition = markerPosition.clone();
             }
-
+    
             virtualSpace.object3D.position.copy(originPosition);
-
+    
             document.querySelector("#QR-animation").style.display = "none";
             
             // Show the virtual space
             virtualSpace.setAttribute('visible', true);
         }
-
+    
         // Marker found event
         document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
             initializeAREnvironment();
         });
+    
+        // Model loaded event to debug animation clips
+        document.querySelectorAll('a-entity[gltf-model]').forEach((entity) => {
+            entity.addEventListener('model-loaded', (e) => {
+                const model = e.detail.model;
+                const animations = model.animations;
+                if (animations.length > 0) {
+                    console.log('Available animation clips:', animations.map(anim => anim.name));
+                    const mixer = new THREE.AnimationMixer(model);
+                    const action = mixer.clipAction(animations[0]);
+                    action.play();
+                } else {
+                    console.log('No animations found for model:', entity);
+                }
+            });
+        });
     </script>
+    
 </body>
 </html>
