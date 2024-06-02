@@ -1,3 +1,4 @@
+User
 <!doctype html>
 <html>
 <head>
@@ -14,7 +15,7 @@
         }
     
         .square {
-          position: relative;
+          position: relative; /* Add this for absolute positioning inside */
           width: 350px;
           height: 350px;
           background: transparent;
@@ -32,7 +33,7 @@
     
         .scan {
           position: relative;
-          bottom: 0;
+          bottom: 0; /* Adjusted to align at the bottom */
           width: 100%;
           height: 40px;
           background: linear-gradient(cyan, transparent);
@@ -45,24 +46,23 @@
         }
 
         #QR-animation {
-            width: 200px;
-            height: 200px;
-            display: none; /* Hide initially */
+            width: 200px; /* Adjust the width to make it smaller */
+            height: 200px; /* Adjust the height to make it smaller */
         }
 
         #QR-animation .square {
-            width: 100%;
-            height: 100%;
+            width: 100%; /* Occupy full width of parent */
+            height: 100%; /* Occupy full height of parent */
         }
 
         #QR-animation .fa-qrcode {
-            font-size: 150px;
+            font-size: 150px; /* Adjust the font size to make the icon smaller */
         }
 
         #QR-animation .scan {
-            height: 40px;
+            height: 40px; /* Adjust the height to make the scan animation smaller */
         }
-    </style>
+      </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
     <a-scene
@@ -109,8 +109,8 @@
                 id="Game_Console"
                 scale="6 6 6"
                 gltf-model="#Console"
-                position="-1 -2 0"
-                rotation="45 90 0"
+                position="-5 0 0"
+                rotation="0 90 0"
             ></a-entity>
 
             <!-- Object in front of the camera (marker side) -->
@@ -155,7 +155,7 @@
         </a-entity>
 
         <!-- Camera -->
-        <a-entity camera look-controls>
+        <a-entity id="camera" camera look-controls> <!-- Changed the camera setup here -->
         </a-entity>
     </a-scene>
 
@@ -168,36 +168,43 @@
     </div>
 
     <script>
-
-        
         let originPosition = null;
-
-        //document.querySelector("#QR-animation").setAttribute(false);
+    
+        // Initially hide the QR animation
+        document.querySelector("#QR-animation").style.display = "none";
+    
+        // Event listener for when the camera starts
+        document.querySelector("#camera").addEventListener("camera-ready", (e) => {
+            document.querySelector("#QR-animation").style.display = "block";
+        });
+    
         // Function to initialize the AR environment
         function initializeAREnvironment() {
             const marker = document.querySelector("#origin-marker");
             const virtualSpace = document.querySelector("#virtual-space");
-
+    
             // Set the position of the virtual space based on the marker's position
             const markerPosition = new THREE.Vector3();
             marker.object3D.getWorldPosition(markerPosition);
-
+    
             if (!originPosition) {
                 originPosition = markerPosition.clone();
             }
-
+    
             virtualSpace.object3D.position.copy(originPosition);
-
-            document.querySelector("#QR-animation").setAttribute(true);
+    
+            // Hide the QR animation once the AR environment is initialized
+            document.querySelector("#QR-animation").style.display = "none";
             
             // Show the virtual space
             virtualSpace.setAttribute('visible', true);
         }
-
+    
         // Marker found event
         document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
             initializeAREnvironment();
         });
     </script>
+    
 </body>
 </html>
