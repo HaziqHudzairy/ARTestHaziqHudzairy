@@ -27,14 +27,14 @@
             url="assets/marker.patt"
             emitevents="true"
         >
-        <a-entity
-            id="origin-model"
-            scale="4.158927133771977 4.158927133771977 4.158927133771977"
-            animation-mixer="loop: repeat"
-            gltf-model="#GameConsole"
-            class="clickable"
-            gesture-handler
-        ></a-entity>
+            <a-entity
+                id="origin-model"
+                scale="4.158927133771977 4.158927133771977 4.158927133771977"
+                animation-mixer="loop: repeat"
+                gltf-model="#GameConsole"
+                class="clickable"
+                gesture-handler
+            ></a-entity>
         </a-marker>
 
         <!-- Virtual 3D space (initially hidden) -->
@@ -96,12 +96,58 @@
         </a-entity>
 
         <!-- Camera -->
-        <a-entity camera look-controls> <!-- Changed the camera setup here -->
+        <a-entity camera look-controls gps-new-camera>
         </a-entity>
     </a-scene>
 
     <script>
         let originPosition = null;
+        let markerFound = false;
+
+        // Function to convert latitude and longitude to 3D Cartesian coordinates
+        function latLongToCartesian(latitude, longitude) {
+            var latRad = latitude * Math.PI / 180;
+            var longRad = longitude * Math.PI / 180;
+            var earthRadius = 6371000; // Approximate value for Earth's radius in meters
+
+            var x = earthRadius * Math.cos(latRad) * Math.cos(longRad);
+            var z = earthRadius * Math.cos(latRad) * Math.sin(longRad);
+
+            // Y coordinate can be set to 0 or any desired altitude
+            var y = 0; // Assuming ground level
+
+            return { x: x, y: y, z: z };
+        }
+
+        // Function to handle obtaining the current position
+        function showPosition(position) {
+            // Convert latitude and longitude to Cartesian coordinates
+            var cartesianCoordinates = latLongToCartesian(position.coords.latitude, position.coords.longitude);
+            
+            if (!markerFound) {
+                // Set the origin position to the current device location
+                originPosition = cartesianCoordinates;
+            }
+
+            // Use the Cartesian coordinates for further operations (e.g., setting the position in the 3D space)
+            console.log("Current position in 3D space:", cartesianCoordinates);
+
+            // Update the position of the virtual space
+            updateVirtualSpacePosition(cartesianCoordinates);
+        }
+
+        // Function to update the position of the virtual space
+        function updateVirtualSpacePosition(position) {
+            const virtualSpace = document.querySelector("#virtual-space");
+            virtualSpace.object3D.position.set(position.x, position.y, position.z);
+        }
+
+        // Obtain the current position
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
 
         // Function to initialize the AR environment
         function initializeAREnvironment() {
@@ -120,12 +166,22 @@
 
             // Show the virtual space
             virtualSpace.setAttribute('visible', true);
+
+            // Set markerFound to true
+            markerFound = true;
         }
 
         // Marker found event
         document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
             initializeAREnvironment();
         });
+
+        // Continuous update of position based on device geolocation
+        setInterval(() => {
+            if (markerFound) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }
+        }, 1000); // Update every second
     </script>
 </body>
 </html>
