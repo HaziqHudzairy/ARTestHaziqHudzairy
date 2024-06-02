@@ -109,8 +109,8 @@
                 id="Game_Console"
                 scale="6 6 6"
                 gltf-model="#Console"
-                position="-5 0 0"
-                rotation="0 90 0"
+                position="-1 -2 0"
+                rotation="45 90 0"
             ></a-entity>
 
             <!-- Object in front of the camera (marker side) -->
@@ -168,8 +168,11 @@
     </div>
 
     <script>
+
+        
         let originPosition = null;
 
+        //document.querySelector("#QR-animation").setAttribute(false);
         // Function to initialize the AR environment
         function initializeAREnvironment() {
             const marker = document.querySelector("#origin-marker");
@@ -185,7 +188,7 @@
 
             virtualSpace.object3D.position.copy(originPosition);
 
-            document.querySelector("#QR-animation").style.display = "none";
+            document.querySelector("#QR-animation").setAttribute(true);
             
             // Show the virtual space
             virtualSpace.setAttribute('visible', true);
@@ -194,11 +197,6 @@
         // Marker found event
         document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
             initializeAREnvironment();
-        });
-
-        // Start the QR animation after the camera is initialized
-        document.querySelector("a-scene").addEventListener("camera-init", (e) => {
-            document.querySelector("#QR-animation").style.display = "block";
         });
     </script>
 </body>
