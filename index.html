@@ -19,8 +19,6 @@
             <a-asset-item id="GameConsole" src="asset/Console_Game.glb"></a-asset-item>
         </a-assets>
 
-            
-
         <!-- Origin marker -->
         <a-marker
             id="origin-marker"
@@ -31,7 +29,7 @@
             <a-entity
                 id="origin-model"
                 scale="0.5 0.5 0.5"
-                gltf-model="#animated-asset"
+                gltf-model="#Game_Console"
             ></a-entity>
         </a-marker>
 
@@ -41,7 +39,7 @@
             <a-entity
                 id="Game_Console"
                 scale="2 2 2"
-                gltf-model="#GameConsole"
+                gltf-model="#animated-asset"
                 position="0 1 5"
             ></a-entity>
             <!-- Object in front of the camera (marker side) -->
@@ -89,7 +87,6 @@
         <a-entity id="cameraRig" position="0 0 0" device-orientation-camera>
             <a-entity camera look-controls></a-entity>
         </a-entity>
-
     </a-scene>
 
     <script>
@@ -120,37 +117,45 @@
         });
 
         // Update object positions based on camera distance
-        // Update object positions based on camera distance
-            function updateObjectPositions() {
-                const camera = document.querySelector("#cameraRig");
-                const object1 = document.querySelector("#object1");
-                const object2 = document.querySelector("#object2");
-                const object3 = document.querySelector("#object3");
-                const object4 = document.querySelector("#object4");
-                const object5 = document.querySelector("#object5");
-                const Game_Console = document.querySelector("#Game_Console");
+        function updateObjectPositions() {
+            const camera = document.querySelector("#cameraRig");
+            const object1 = document.querySelector("#object1");
+            const object2 = document.querySelector("#object2");
+            const object3 = document.querySelector("#object3");
+            const object4 = document.querySelector("#object4");
+            const object5 = document.querySelector("#object5");
+            const Game_Console = document.querySelector("#Game_Console");
 
-                // Calculate distance between camera and objects
-                const distanceToObj1 = camera.object3D.getWorldPosition().distanceTo(object1.object3D.getWorldPosition());
-                const distanceToObj2 = camera.object3D.getWorldPosition().distanceTo(object2.object3D.getWorldPosition());
-                const distanceToObj3 = camera.object3D.getWorldPosition().distanceTo(object3.object3D.getWorldPosition());
-                const distanceToObj4 = camera.object3D.getWorldPosition().distanceTo(object4.object3D.getWorldPosition());
-                const distanceToObj5 = camera.object3D.getWorldPosition().distanceTo(object5.object3D.getWorldPosition());
-                const distanceToGC = camera.object3D.getWorldPosition().distanceTo(Game_Console.object3D.getWorldPosition());
+            // Calculate distance between camera and objects
+            const cameraPosition = new THREE.Vector3();
+            camera.object3D.getWorldPosition(cameraPosition);
 
-                // Adjust object positions based on distance
-                object1.object3D.position.set(0, 0, -2 - distanceToObj1 / 2);
-                object2.object3D.position.set(0, 0, 8 + distanceToObj2 / 2);
-                object3.object3D.position.set(8 + distanceToObj3 / 2, 0, 0);
-                object4.object3D.position.set(-8 - distanceToObj4 / 2, 0, 0);
-                object5.object3D.position.set(0, 8 + distanceToObj5 / 2, 0);
-                Game_Console.object3D.position.set(0, 8 + distanceToGC / 2, 0);
-            }
+            const distanceToObj1 = cameraPosition.distanceTo(object1.object3D.getWorldPosition());
+            const distanceToObj2 = cameraPosition.distanceTo(object2.object3D.getWorldPosition());
+            const distanceToObj3 = cameraPosition.distanceTo(object3.object3D.getWorldPosition());
+            const distanceToObj4 = cameraPosition.distanceTo(object4.object3D.getWorldPosition());
+            const distanceToObj5 = cameraPosition.distanceTo(object5.object3D.getWorldPosition());
+            const distanceToGC = cameraPosition.distanceTo(Game_Console.object3D.getWorldPosition());
 
+            // Adjust object positions based on distance
+            object1.object3D.position.set(0, 0, -2 - distanceToObj1 / 2);
+            object2.object3D.position.set(0, 0, 8 + distanceToObj2 / 2);
+            object3.object3D.position.set(8 + distanceToObj3 / 2, 0, 0);
+            object4.object3D.position.set(-8 - distanceToObj4 / 2, 0, 0);
+            object5.object3D.position.set(0, 8 + distanceToObj5 / 2, 0);
+            Game_Console.object3D.position.set(0, 1 + distanceToGC / 2, 5);
+        }
 
-            // Update object positions continuously
-            setInterval(updateObjectPositions, 100);
-        </script>
-    </body>
+        // Update object positions continuously
+        setInterval(updateObjectPositions, 100);
+
+        // Debugging: Check asset loading
+        document.querySelector('#GameConsole').addEventListener('error', function (event) {
+            console.error('Failed to load GameConsole asset:', event.detail.src);
+        });
+        document.querySelector('#animated-asset').addEventListener('error', function (event) {
+            console.error('Failed to load animated-asset:', event.detail.src);
+        });
+    </script>
+</body>
 </html>
-
