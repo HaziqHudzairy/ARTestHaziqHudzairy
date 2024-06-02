@@ -96,7 +96,9 @@
         </a-entity>
 
         <!-- Camera -->
-        <a-entity camera look-controls gps-new-camera>
+        <a-entity id="camera-wrapper">
+            <a-entity camera look-controls gps-new-camera>
+            </a-entity>
         </a-entity>
     </a-scene>
 
@@ -182,6 +184,22 @@
                 navigator.geolocation.getCurrentPosition(showPosition);
             }
         }, 1000); // Update every second
+
+        // Function to handle device orientation and movement updates
+        function handleOrientation(event) {
+            // Get device orientation data
+            const alpha = event.alpha; // Rotation around the z-axis (0 to 360 degrees)
+            const beta = event.beta;   // Rotation around the x-axis (-180 to 180 degrees)
+            const gamma = event.gamma; // Rotation around the y-axis (-90 to 90 degrees)
+
+            // Update camera position and rotation based on device orientation
+            const cameraWrapper = document.querySelector("#camera-wrapper");
+            cameraWrapper.setAttribute("rotation", { x: beta, y: gamma, z: alpha }); // Adjust according to your camera setup
+        }
+
+        // Listen for device orientation changes
+        window.addEventListener("deviceorientation", handleOrientation);
     </script>
 </body>
 </html>
+
