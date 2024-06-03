@@ -5,65 +5,20 @@
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .center {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-    
-        .square {
-          position: relative;
-          width: 350px;
-          height: 350px;
-          background: transparent;
-          border: 10px solid #000;
-        }
-    
-        .fa-qrcode {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          font-size: 300px;
-          color: #000;
-        }
-    
-        .scan {
-          position: relative;
-          bottom: 0;
-          width: 100%;
-          height: 40px;
-          background: linear-gradient(cyan, transparent);
-          animation: scanning 1.5s linear alternate infinite;
-        }
-    
-        @keyframes scanning {
-          0% { transform: translateY(0px); }
-          100% { transform: translateY(170px); }
-        }
+    <link rel="stylesheet" href="Styles.css">
 
-        #QR-animation {
-            width: 200px;
-            height: 200px;
-        }
-
-        #QR-animation .square {
-            width: 100%;
-            height: 100%;
-        }
-
-        #QR-animation .fa-qrcode {
-            font-size: 150px;
-        }
-
-        #QR-animation .scan {
-            height: 40px;
-        }
-      </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
+
+    <div id="Loading"class="box">
+        <div class="cat">
+          <div class="cat__body"></div>
+          <div class="cat__body"></div>
+          <div class="cat__tail"></div>
+          <div class="cat__head"></div>
+        </div>
+      </div>
+    
     <a-scene
         vr-mode-ui="enabled: false;"
         loading-screen="enabled: false;"
@@ -154,15 +109,47 @@
         <a-entity camera look-controls></a-entity>
     </a-scene>
 
-    <!-- QR animation -->
-    <div id="QR-animation" class="center">
+    <div id="QR-animation" class="center" style="display:none;">
         <div class="square">
             <i class="fa fa-qrcode"></i>
             <div class="scan"></div>
         </div>
     </div>
+    
 
     <script>
+
+// Wait for the A-Frame scene to be fully loaded
+document.querySelector('a-scene').addEventListener('loaded', function () {
+    document.getElementById("Loading").style.display = "none";
+    // Call the function to check camera permission status
+    checkCameraPermission();
+});
+
+// Function to check the camera permission status
+function checkCameraPermission() {
+    // Check if getUserMedia is supported by the browser
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Check if the camera permission is granted
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                console.log('Camera access granted. AR scene is ready.');
+                document.getElementById("QR-animation").style.display = "block";
+                // Do further initialization here
+            })
+            .catch(function (error) {
+                console.log('Failed to access camera:', error);
+                // Handle camera access denied or failed state here
+            });
+    } else {
+        console.log('getUserMedia not supported by the browser.');
+    }
+}
+
+// Rest of your JavaScript code...
+
+        
+        
         let originPosition = null;
     
         // Function to initialize the AR environment
