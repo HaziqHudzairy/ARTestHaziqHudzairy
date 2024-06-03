@@ -116,23 +116,23 @@
                 id="Env"
                 scale="10 10 10"
                 gltf-model="#Environment"
-                position="0 -40 0"
+                position="0 -50 0"
                 rotation="0 0 0"
             ></a-entity>
             <a-entity
                 id="Env"
                 scale="10 10 10"
                 gltf-model="#Gundam"
-                position="0 -120 0"
+                position="0 -60 0"
                 rotation="0 0 0"
             ></a-entity>
 
             <a-entity
-                id="Env"
+                id="ConsoleGame"
                 scale="10 10 10"
                 gltf-model="#InfoContainer1"
-                position="0 0 0"
-                rotation="0 0 0"
+                position="-2 0 0"
+                rotation="30 0 0"
             ></a-entity>
 
             <!-- Object in front of the camera (marker side) -->
@@ -177,7 +177,7 @@
         </a-entity>
 
         <!-- Camera -->
-        <a-entity camera look-controls></a-entity>
+        <a-entity id="cameraRig" camera look-controls position="0 1.6 0"></a-entity>
     </a-scene>
 
     <!-- QR animation -->
@@ -190,33 +190,33 @@
 
     <script>
         let originPosition = null;
-    
+
         // Function to initialize the AR environment
         function initializeAREnvironment() {
             const marker = document.querySelector("#origin-marker");
             const virtualSpace = document.querySelector("#virtual-space");
-    
+
             // Set the position of the virtual space based on the marker's position
             const markerPosition = new THREE.Vector3();
             marker.object3D.getWorldPosition(markerPosition);
-    
+
             if (!originPosition) {
                 originPosition = markerPosition.clone();
             }
-    
+
             virtualSpace.object3D.position.copy(originPosition);
-    
+
             document.querySelector("#QR-animation").style.display = "none";
             
             // Show the virtual space
             virtualSpace.setAttribute('visible', true);
         }
-    
+
         // Marker found event
         document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
             initializeAREnvironment();
         });
-    
+
         // Model loaded event to debug animation clips and play all animations
         document.querySelectorAll('a-entity[gltf-model]').forEach((entity) => {
             entity.addEventListener('model-loaded', (e) => {
@@ -244,6 +244,32 @@
                     console.log('No animations found for model:', entity);
                 }
             });
+        });
+
+        // Capture device motion and orientation
+        let startX = null, startY = null, startZ = null;
+
+        window.addEventListener('devicemotion', (event) => {
+            if (!startX || !startY || !startZ) {
+                startX = event.accelerationIncludingGravity.x;
+                startY = event.accelerationIncludingGravity.y;
+                startZ = event.accelerationIncludingGravity.z;
+                return;
+            }
+
+            const deltaX = event.accelerationIncludingGravity.x - startX;
+            const deltaY = event.accelerationIncludingGravity.y - startY;
+            const deltaZ = event.accelerationIncludingGravity.z - startZ;
+
+            const cameraRig = document.querySelector('#cameraRig');
+            const currentPosition = cameraRig.getAttribute('position');
+
+            // Simple threshold to move forward
+            if (deltaZ > 1) {
+                currentPosition.z -= 0.1;  // Adjust this value to control the movement speed
+            }
+
+            cameraRig.setAttribute('position', currentPosition);
         });
     </script>
     
