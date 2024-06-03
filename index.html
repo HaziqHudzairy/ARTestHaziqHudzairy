@@ -74,11 +74,12 @@
     >
         <a-assets>
             <a-asset-item id="Dog" src="asset/asset.gltf"></a-asset-item>
-            <a-asset-item id="GameConsole" src="asset/Console_Game.gltf"></a-asset-item>
             <a-asset-item id="Environment" src="asset/CloudsEnv.glb"></a-asset-item>
             <a-asset-item id="Gundam" src="asset/Gundam.glb"></a-asset-item>
             <a-asset-item id="InfoContainer1" src="asset/console.glb"></a-asset-item>
             <a-asset-item id="FSKTMLogo" src="asset/FSKTMAnim3.glb"></a-asset-item>
+            <a-asset-item id="TV" src="asset/tv.glb"></a-asset-item>
+            <a-asset-item id="Pin" src="asset/Location.glb"></a-asset-item>
             <video muted id="FSKTMVideo" src="Videos/Welcome to Faculty of Computer Science and Information Technology, University of Malaya.mp4" autoplay loop="true"></video>
         </a-assets>
 
@@ -101,18 +102,17 @@
 
         <!-- Virtual 3D space (initially hidden) -->
         <a-entity id="virtual-space" visible="false">
+            <a-entity 
+                id="Pin Location"
+                scale="0.2 0.2 0.2"
+                gltf-model="#Pin"
+                position="0 4 -5"
+            ></a-entity>
             <a-entity
                 id="Fsktm"
                 scale="2 2 2"
                 gltf-model="#FSKTMLogo"
                 position="0 0 -5"
-            ></a-entity>
-            <a-entity
-                id="Game_Console"
-                scale="3 3 3"
-                gltf-model="#Console"
-                position="-14 0 10"
-                rotation="120 0 0"
             ></a-entity>
             <a-entity
                 id="Env"
@@ -131,14 +131,22 @@
 
             <a-entity
                 id="ConsoleGame"
-                scale="10 10 10"
+                scale="6 6 6"
                 gltf-model="#InfoContainer1"
-                position="-7 0 3"
-                rotation="30 0 0"
+                position="12 -1 8"
+                rotation="10 260 0"
+            ></a-entity>
+
+            <a-entity
+                id="TVPlayer"
+                scale="5.2 4 5 "
+                gltf-model="#TV"
+                position="18 -2.4 -5.37"
+                rotation="0 -60 0"
             ></a-entity>
 
             
-            <a-video src="#FSKTMVideo" width="8" height="4.5" position="7 2 -8" rotation="0 -45 0"></a-video>
+            <a-video src="#FSKTMVideo" width="8" height="4.5" position="14 2 -3.3" rotation="0 -60 0"></a-video>
              
         </a-entity>
 
