@@ -17,10 +17,12 @@
     height: 40px;
 }
 
+
 .backButton {
-    margin-top: 10px;
-    position: relative;
-    left: 10px; /* Default position */
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    left: 10px; /* Adjust as needed */
+    z-index: 9999; /* Ensure the button appears on top of other elements */
 }
 
 @media screen and (max-width: 768px) {
