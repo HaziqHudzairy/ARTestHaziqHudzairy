@@ -1,4 +1,17 @@
 
+.logo-container {
+    display: flex; /* Use flexbox layout */
+    justify-content: center; /* Center the logos horizontally */
+    align-items: center; /* Center the logos vertically */
+    padding: 10px; /* Add some padding around the logos */
+    gap: 12px;
+    background-color: white;
+}
+.logoTop {
+    width: auto; /* Set the width of the logos */
+    height: 40px; /* Maintain aspect ratio */
+}
+
 .roboto-thin {
     font-family: "Roboto", sans-serif;
     font-weight: 100;
