@@ -5,6 +5,9 @@
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Styles.css">
 
 </head>
@@ -29,12 +32,12 @@
     >
         <a-assets>
             <a-asset-item id="Dog" src="asset/asset.gltf"></a-asset-item>
-            <a-asset-item id="Environment" src="asset/CloudsEnv.glb"></a-asset-item>
+            <a-asset-item id="Environment" src="asset/CloudScene.glb"></a-asset-item>
             <a-asset-item id="Gundam" src="asset/Gundam.glb"></a-asset-item>
             <a-asset-item id="InfoContainer1" src="asset/console.glb"></a-asset-item>
             <a-asset-item id="FSKTMLogo" src="asset/FSKTMAnim3.glb"></a-asset-item>
             <a-asset-item id="TV" src="asset/tv.glb"></a-asset-item>
-            <a-asset-item id="Pin" src="asset/Location.glb"></a-asset-item>
+            <a-asset-item id="Pin" src="asset/LocationPin.glb"></a-asset-item>
             <video muted id="FSKTMVideo" src="Videos/Welcome to Faculty of Computer Science and Information Technology, University of Malaya.mp4" autoplay loop="true"></video>
         </a-assets>
 
@@ -49,7 +52,7 @@
             id="origin-model"
             scale="4.158927133771977 4.158927133771977 4.158927133771977"
             animation-mixer="loop: repeat"
-            gltf-model="#GameConsole"
+            gltf-model="#Gundam"
             class="clickable"
             gesture-handler
         ></a-entity>
@@ -99,7 +102,6 @@
                 position="18 -2.4 -5.37"
                 rotation="0 -60 0"
             ></a-entity>
-
             
             <a-video src="#FSKTMVideo" width="8" height="4.5" position="14 2 -3.3" rotation="0 -60 0"></a-video>
              
@@ -114,10 +116,13 @@
             <i class="fa fa-qrcode"></i>
             <div class="scan"></div>
         </div>
+        <h6 style="text-align:center; font-size: large;" class="roboto-black">Find UM.AR marker</h6>
     </div>
     
 
     <script>
+        // Get a reference to the video element
+        var video = document.querySelector('#FSKTMVideo');
 
 // Wait for the A-Frame scene to be fully loaded
 document.querySelector('a-scene').addEventListener('loaded', function () {
@@ -146,8 +151,6 @@ function checkCameraPermission() {
     }
 }
 
-// Rest of your JavaScript code...
-
         
         
         let originPosition = null;
@@ -171,6 +174,14 @@ function checkCameraPermission() {
             
             // Show the virtual space
             virtualSpace.setAttribute('visible', true);
+
+            // Check if the video element exists
+            if (video) {
+            setTimeout(function() {
+                // Autoplay the video
+                video.play();
+            }, 2000); // 3000 milliseconds = 3 seconds
+        }
         }
     
         // Marker found event
@@ -208,14 +219,9 @@ function checkCameraPermission() {
             });
         });
 
-        // Get a reference to the video element
-        var video = document.querySelector('#FSKTMVideo');
+        
 
-        // Check if the video element exists
-        if (video) {
-            // Autoplay the video
-            video.play();
-        }
+        
 
     </script>
     
