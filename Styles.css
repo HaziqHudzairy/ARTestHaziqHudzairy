@@ -20,7 +20,7 @@
 
 .backButton {
     position: absolute;
-    top: 60px; /* Adjust as needed */
+    top: 10%; /* Adjust as needed */
     left: 10px; /* Adjust as needed */
     z-index: 9999; /* Ensure the button appears on top of other elements */
 }
@@ -29,7 +29,6 @@
     .backButton {
         position: absolute;
         left: 5%; /* Adjust as needed */
-        top: 13%; /* Adjust as needed */
     }
 }
 
