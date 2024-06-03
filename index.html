@@ -263,8 +263,8 @@
             const currentPosition = cameraRig.getAttribute('position');
 
             // Adjust movement based on device motion along the forward/backward axis
-            const sensitivity = 0.1; // Adjust sensitivity to control movement speed
-            const moveSpeed = 0.1; // Adjust move speed to control movement distance
+            const sensitivity = 1; // Adjust sensitivity to control movement speed
+            const moveSpeed = 1; // Adjust move speed to control movement distance
             
             currentPosition.z -= deltaAccelerationZ * sensitivity * moveSpeed;
 
