@@ -246,7 +246,6 @@
             });
         });
 
-        // Capture device motion and orientation
         let startX = null, startY = null, startZ = null;
 
         window.addEventListener('devicemotion', (event) => {
@@ -264,12 +263,20 @@
             const cameraRig = document.querySelector('#cameraRig');
             const currentPosition = cameraRig.getAttribute('position');
 
-            // Simple threshold to move forward
-            if (deltaZ > 1) {
-                currentPosition.z -= 2;  // Adjust this value to control the movement speed
-            }
+            // Adjust movement based on device motion
+            const sensitivity = 0.01; // Adjust sensitivity to control movement speed
+            const moveSpeed = 0.1; // Adjust move speed to control movement distance
+            
+            currentPosition.x += deltaX * sensitivity;
+            currentPosition.y -= deltaY * sensitivity; // Invert Y-axis
+            currentPosition.z -= deltaZ * sensitivity;
 
             cameraRig.setAttribute('position', currentPosition);
+
+            // Update starting position for next iteration
+            startX = event.accelerationIncludingGravity.x;
+            startY = event.accelerationIncludingGravity.y;
+            startZ = event.accelerationIncludingGravity.z;
         });
     </script>
     
