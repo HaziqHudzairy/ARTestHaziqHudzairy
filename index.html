@@ -79,6 +79,7 @@
             <a-asset-item id="Gundam" src="asset/Gundam.glb"></a-asset-item>
             <a-asset-item id="InfoContainer1" src="asset/console.glb"></a-asset-item>
             <a-asset-item id="FSKTMLogo" src="asset/FSKTMAnim3.glb"></a-asset-item>
+            <video muted id="FSKTMVideo" src="Videos/Welcome to Faculty of Computer Science and Information Technology, University of Malaya.mp4" autoplay loop="true"></video>
         </a-assets>
 
         <!-- Origin marker -->
@@ -104,7 +105,7 @@
                 id="Fsktm"
                 scale="2 2 2"
                 gltf-model="#FSKTMLogo"
-                position="0 5 0"
+                position="0 0 -5"
             ></a-entity>
             <a-entity
                 id="Game_Console"
@@ -132,49 +133,13 @@
                 id="ConsoleGame"
                 scale="10 10 10"
                 gltf-model="#InfoContainer1"
-                position="-2 0 0"
+                position="-7 0 3"
                 rotation="30 0 0"
             ></a-entity>
 
-            <!-- Object in front of the camera (marker side) -->
-            <a-entity
-                id="object1"
-                geometry="primitive: box; height: 0.3; width: 0.3; depth: 0.3"
-                material="color: yellow"
-                position="0 0 -2"
-            ></a-entity>
-
-            <!-- Object behind the camera -->
-            <a-entity
-                id="object2"
-                geometry="primitive: sphere; radius: 0.2"
-                material="color: cyan"
-                position="0 0 8"
-            ></a-entity>
-
-            <!-- Object right of the camera -->
-            <a-entity
-                id="object3"
-                geometry="primitive: sphere; radius: 0.2"
-                material="color: blue"
-                position="8 0 0"
-            ></a-entity>
-
-            <!-- Object left of the camera -->
-            <a-entity
-                id="object4"
-                geometry="primitive: sphere; radius: 0.2"
-                material="color: green"
-                position="-8 0 0"
-            ></a-entity>
-
-            <!-- Object top of the camera -->
-            <a-entity
-                id="object5"
-                geometry="primitive: sphere; radius: 0.2"
-                material="color: red"
-                position="0 8 0"
-            ></a-entity>
+            
+            <a-video src="#FSKTMVideo" width="8" height="4.5" position="7 2 -8" rotation="0 -45 0"></a-video>
+             
         </a-entity>
 
         <!-- Camera -->
@@ -217,6 +182,7 @@
         document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
             initializeAREnvironment();
         });
+
     
         // Model loaded event to debug animation clips and play all animations
         document.querySelectorAll('a-entity[gltf-model]').forEach((entity) => {
@@ -246,6 +212,16 @@
                 }
             });
         });
+
+        // Get a reference to the video element
+        var video = document.querySelector('#FSKTMVideo');
+
+        // Check if the video element exists
+        if (video) {
+            // Autoplay the video
+            video.play();
+        }
+
     </script>
     
 </body>
