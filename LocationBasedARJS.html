@@ -25,15 +25,38 @@
                 ></a-asset-item>
             </a-assets>
 
-                <a-entity
-                    look-at="[gps-camera]"
-                    animation-mixer="loop: repeat"
-                    gltf-model="#animated-asset"
-                    scale="0.5513976828973354 0.5513976828973354 0.5513976828973354"
-                    gps-entity-place="latitude: 3.12672; longitude: 101.650183;"
-                ></a-entity>
+            <a-entity
+                look-at="[gps-camera]"
+                animation-mixer="loop: repeat"
+                gltf-model="#animated-asset"
+                scale="0.5513976828973354 0.5513976828973354 0.5513976828973354"
+                gps-entity-place="latitude: 3.12672; longitude: 101.650183;"
+            ></a-entity>
 
             <a-camera gps-camera rotation-reader></a-camera>
+
+            <!-- UI for displaying latitude and longitude -->
+            <a-entity id="locationText"
+                position="-0.8 0.5 -1"
+                text="value: Latitude: 0\nLongitude: 0; color: white; width: 3; wrapCount: 15;"
+            ></a-entity>
         </a-scene>
+
+        <script>
+            // Get the text entity for updating
+            var locationText = document.querySelector('#locationText');
+
+            // Function to update the text with current latitude and longitude
+            function updateLocationText(latitude, longitude) {
+                locationText.setAttribute('text', 'value', 'Latitude: ' + latitude.toFixed(6) + '\nLongitude: ' + longitude.toFixed(6));
+            }
+
+            // Get current device's latitude and longitude
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+                updateLocationText(latitude, longitude);
+            });
+        </script>
     </body>
 </html>
