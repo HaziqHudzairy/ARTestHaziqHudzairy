@@ -71,6 +71,7 @@
         });
 
         function checkPermissions() {
+            document.getElementById("data-container").style.display = "block";
             // Request camera access
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 navigator.mediaDevices.getUserMedia({ video: true })
@@ -84,20 +85,19 @@
                 alert('getUserMedia not supported by the browser.');
             }
         }
+
         // Function to update the latitude and longitude display
         function updateLocationDisplay(latitude, longitude) {
-            document.getElementById("data-container").style.display = "block";
-            document.getElementById('userLocation').innerText = 'Your Location: \n Latitude: '+ latitude.toFixed(6) + '\n'+ 'Longitude: ' + longitude.toFixed(6);
+            document.getElementById('userLocation').innerText = 'Your Location: \nLatitude: ' + latitude.toFixed(6) + '\nLongitude: ' + longitude.toFixed(6);
             
             // Get the latitude and longitude of the object
             var entity = document.getElementById('entity');
             if (entity) {
                 var objectLatitude = entity.getAttribute('gps-entity-place').latitude;
                 var objectLongitude = entity.getAttribute('gps-entity-place').longitude;
-                document.getElementById('objectLocation').innerText = 'Object Location: \n Latitude: ' + objectLatitude.toFixed(6) + '\n'+ 'Longitude: ' + objectLongitude.toFixed(6);
+                document.getElementById('objectLocation').innerText = 'Object Location: \nLatitude: ' + parseFloat(objectLatitude).toFixed(6) + '\nLongitude: ' + parseFloat(objectLongitude).toFixed(6);
             }
         }
-        
 
         // Update the location continuously
         function updateLocation() {
@@ -111,7 +111,6 @@
 
         // Call the function to start updating the location
         updateLocation();
-        setInterval(updateLocation, 1); // Update every second
     </script>
 </body>
 </html>
