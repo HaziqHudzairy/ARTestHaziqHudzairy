@@ -57,23 +57,17 @@
                 document.getElementById('objectLocation').innerText = 'Object Location: Latitude: ' + objectLatitude.toFixed(6) + ', Longitude: ' + objectLongitude.toFixed(6);
             }
         }
-    
+
         // Update the location continuously
         function updateLocation() {
-            navigator.geolocation.getCurrentPosition(function(position) {
+            navigator.geolocation.watchPosition(function(position) {
                 var latitude = position.coords.latitude;
                 var longitude = position.coords.longitude;
-    
+
                 updateLocationDisplay(latitude, longitude);
-                
-                // Update the object's position
-                var entity = document.getElementById('entity');
-                if (entity) {
-                    entity.setAttribute('gps-entity-place', {latitude: latitude, longitude: longitude});
-                }
             });
         }
-    
+
         // Call the function to start updating the location
         updateLocation();
         setInterval(updateLocation, 1000); // Update every second
