@@ -33,7 +33,7 @@
                 animation-mixer="loop: repeat"
                 gltf-model="#animated-asset"
                 scale="0.5513976828973354 0.5513976828973354 0.5513976828973354"
-                gps-entity-place="latitude: 3.12672; longitude: 101.650183;"
+                gps-entity-place="latitude: 0; longitude: 0;"
             ></a-entity>
 
             <a-camera gps-camera rotation-reader></a-camera>
@@ -45,12 +45,17 @@
                 document.getElementById('locationDisplay').innerText = 'Latitude: ' + latitude.toFixed(6) + ', Longitude: ' + longitude.toFixed(6);
             }
 
-            // Get current device's latitude and longitude
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var latitude = position.coords.latitude;
-                var longitude = position.coords.longitude;
-                updateLocationDisplay(latitude, longitude);
-            });
+            // Update the location continuously
+            function updateLocation() {
+                navigator.geolocation.watchPosition(function(position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+                    updateLocationDisplay(latitude, longitude);
+                });
+            }
+
+            // Call the function to start updating the location
+            updateLocation();
         </script>
     </body>
 </html>
