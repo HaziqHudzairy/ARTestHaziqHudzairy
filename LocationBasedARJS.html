@@ -12,6 +12,9 @@
     </head>
 
     <body style="margin: 0; overflow: hidden;">
+        <!-- Display for latitude and longitude outside the A-Frame environment -->
+        <div id="locationDisplay" style="position: absolute; top: 10px; left: 10px; background-color: rgba(0, 0, 0, 0.5); color: white; padding: 10px;"></div>
+
         <a-scene
             renderer="logarithmicDepthBuffer: true;"
             embedded
@@ -34,28 +37,19 @@
             ></a-entity>
 
             <a-camera gps-camera rotation-reader></a-camera>
-
-            <!-- UI for displaying latitude and longitude -->
-            <a-entity id="locationText"
-                position="-0.8 0.5 -1"
-                text="value: Latitude: 0\nLongitude: 0; color: white; width: 3; wrapCount: 15;"
-            ></a-entity>
         </a-scene>
 
         <script>
-            // Get the text entity for updating
-            var locationText = document.querySelector('#locationText');
-
-            // Function to update the text with current latitude and longitude
-            function updateLocationText(latitude, longitude) {
-                locationText.setAttribute('text', 'value', 'Latitude: ' + latitude.toFixed(6) + '\nLongitude: ' + longitude.toFixed(6));
+            // Function to update the latitude and longitude display
+            function updateLocationDisplay(latitude, longitude) {
+                document.getElementById('locationDisplay').innerText = 'Latitude: ' + latitude.toFixed(6) + ', Longitude: ' + longitude.toFixed(6);
             }
 
             // Get current device's latitude and longitude
             navigator.geolocation.getCurrentPosition(function(position) {
                 var latitude = position.coords.latitude;
                 var longitude = position.coords.longitude;
-                updateLocationText(latitude, longitude);
+                updateLocationDisplay(latitude, longitude);
             });
         </script>
     </body>
