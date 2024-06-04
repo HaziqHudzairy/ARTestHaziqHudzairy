@@ -83,7 +83,6 @@
                     navigator.mediaDevices.getUserMedia({ video: true })
                         .then(function (stream) {
                             console.log('Camera access granted. AR scene is ready.');
-                            document.getElementById("QR-animation").style.display = "block";
                             // Do further initialization here
                         })
                         .catch(function (error) {
