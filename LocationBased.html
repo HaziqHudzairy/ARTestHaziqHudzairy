@@ -20,6 +20,11 @@
                     });
                 }
             });
+
+            document.querySelector('[gps-camera]').addEventListener('gps-camera-update-position', function (e) {
+                console.log('Position updated:', e.detail.position);
+            });
+
         </script>
 
         <div class="container">
@@ -59,6 +64,7 @@
             </a-assets>
             
             <a-entity
+                id="location-pin"
                 look-at="[gps-camera]"
                 animation-mixer="loop: repeat"
                 gltf-model="#animated-asset"
@@ -71,6 +77,9 @@
             document.querySelector('a-scene').addEventListener('loaded', function () {
                 document.getElementById("Loading").style.display = "none";
                 checkCameraPermission();
+                // Debug: Check if the entity is in the scene
+                const locationPin = document.getElementById('location-pin');
+                console.log('Location Pin Entity:', locationPin);
             });
 
             function checkCameraPermission() {
