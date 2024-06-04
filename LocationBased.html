@@ -16,16 +16,14 @@
             AFRAME.registerComponent('locationfinder',{
                 init : function(){
                     navigator.geolocation.getCurrentPosition(function(location){
-                        console.log(location);
+                        console.log('Location:', location);
+                    }, function(error) {
+                        console.error('Error getting location:', error);
                     });
                 }
             });
-
-            document.querySelector('[gps-camera]').addEventListener('gps-camera-update-position', function (e) {
-                console.log('Position updated:', e.detail.position);
-            });
-
         </script>
+        
 
         <div class="container">
             <div class="logo-container">
@@ -95,6 +93,9 @@
                     console.log('getUserMedia not supported by the browser.');
                 }
             }
+            document.querySelector('[gps-camera]').addEventListener('gps-camera-update-position', function (e) {
+                console.log('Position updated:', e.detail.position);
+            });
         </script>
     </body>
 </html>
