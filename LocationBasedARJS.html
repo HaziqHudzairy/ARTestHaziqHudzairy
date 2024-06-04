@@ -66,16 +66,17 @@
     </a-scene>
 
     <script>
+        document.getElementById("data-container").style.display = "block";
         // Function to update the latitude and longitude display
         function updateLocationDisplay(latitude, longitude) {
-            document.getElementById('userLocation').innerText = 'Your Location: Latitude: ' + latitude.toFixed(6) + ', Longitude: ' + longitude.toFixed(6);
+            document.getElementById('userLocation').innerText = 'Your Location: \n Latitude: '+ latitude.toFixed(6) + '\n'+ 'Longitude: ' + longitude.toFixed(6);
             
             // Get the latitude and longitude of the object
             var entity = document.getElementById('entity');
             if (entity) {
                 var objectLatitude = entity.getAttribute('gps-entity-place').latitude;
                 var objectLongitude = entity.getAttribute('gps-entity-place').longitude;
-                document.getElementById('objectLocation').innerText = 'Object Location: Latitude: ' + objectLatitude.toFixed(6) + ', Longitude: ' + objectLongitude.toFixed(6);
+                document.getElementById('objectLocation').innerText = 'Object Location: \n Latitude: ' + objectLatitude.toFixed(6) + '\n'+ 'Longitude: ' + objectLongitude.toFixed(6);
             }
         }
 
