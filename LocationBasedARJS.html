@@ -1,61 +1,67 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-        <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-        <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
-        <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.loaders.min.js"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="Styles.css">
-    </head>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.loaders.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Styles.css">
+</head>
 
-    <body style="margin: 0; overflow: hidden;">
-        <!-- Display for latitude and longitude outside the A-Frame environment -->
-        <div id="locationDisplay" style="position: absolute; top: 10px; left: 10px; background-color: rgba(0, 0, 0, 0.5); color: white; padding: 10px;"></div>
+<body style="margin: 0; overflow: hidden;">
+    <!-- Display for latitude and longitude outside the A-Frame environment -->
+    <div id="locationDisplay" style="position: absolute; top: 10px; left: 10px; background-color: rgba(0, 0, 0, 0.5); color: white; padding: 10px;"></div>
 
-        <a-scene
-            renderer="logarithmicDepthBuffer: true;"
-            embedded
-            loading-screen="enabled: false;"
-            arjs="sourceType: webcam; debugUIEnabled: false;"
-        >
-            <a-assets>
-                <a-asset-item
-                    id="animated-asset"
-                    src="asset/LocationPin.glb"
-                ></a-asset-item>
-            </a-assets>
+    <a-scene
+        renderer="logarithmicDepthBuffer: true;"
+        embedded
+        loading-screen="enabled: false;"
+        arjs="sourceType: webcam; debugUIEnabled: false;"
+    >
+        <a-assets>
+            <a-asset-item
+                id="animated-asset"
+                src="asset/LocationPin.glb"
+            ></a-asset-item>
+        </a-assets>
 
-            <a-entity
-                look-at="[gps-camera]"
-                animation-mixer="loop: repeat"
-                gltf-model="#animated-asset"
-                scale="10 10 10"
-                gps-entity-place="latitude: 3.126720; longitude: 101.650183;"
-            ></a-entity>
+        <a-entity
+            id="entity"
+            look-at="[gps-camera]"
+            animation-mixer="loop: repeat"
+            gltf-model="#animated-asset"
+            scale="10 10 10"
+        ></a-entity>
 
-            <a-camera gps-camera rotation-reader></a-camera>
-        </a-scene>
+        <a-camera gps-camera rotation-reader></a-camera>
+    </a-scene>
 
-        <script>
-            // Function to update the latitude and longitude display
-            function updateLocationDisplay(latitude, longitude) {
-                document.getElementById('locationDisplay').innerText = 'Latitude: ' + latitude.toFixed(6) + ', Longitude: ' + longitude.toFixed(6);
-            }
+    <script>
+        var entity = document.getElementById('entity');
 
-            // Update the location continuously
-            function updateLocation() {
-                navigator.geolocation.watchPosition(function(position) {
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
-                    updateLocationDisplay(latitude, longitude);
-                });
-            }
+        // Function to update the latitude and longitude display
+        function updateLocationDisplay(latitude, longitude) {
+            document.getElementById('locationDisplay').innerText = 'Latitude: ' + latitude.toFixed(6) + ', Longitude: ' + longitude.toFixed(6);
+        }
 
-            // Call the function to start updating the location
-            updateLocation();
-        </script>
-    </body>
+        // Update the location continuously
+        function updateLocation() {
+            navigator.geolocation.watchPosition(function(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+
+                updateLocationDisplay(latitude, longitude);
+
+                // Update entity position to match the specified latitude and longitude
+                entity.setAttribute('gps-entity-place', {latitude: 3.126720, longitude: 101.650183});
+            });
+        }
+
+        // Call the function to start updating the location
+        updateLocation();
+    </script>
+</body>
 </html>
