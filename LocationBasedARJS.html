@@ -25,6 +25,10 @@
             </svg>
         </a>
     </div>
+    <div id="data-container" class="data-container" style="display:none;">
+        <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
+        <p id="objectLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
+    </div>
     
         <div id="Loading"class="box">
             <div class="cat">
@@ -34,11 +38,6 @@
               <div class="cat__head"></div>
             </div>
           </div>
-    <!-- Display for user's latitude and longitude outside the A-Frame environment -->
-    <div id="userLocation" style="position: absolute; top: 10px; left: 10px; background-color: rgba(0, 0, 0, 0.5); color: white; padding: 10px;"></div>
-
-    <!-- Display for object's latitude and longitude outside the A-Frame environment -->
-    <div id="objectLocation" style="position: absolute; top: 30px; left: 10px; background-color: rgba(0, 0, 0, 0.5); color: white; padding: 10px;"></div>
 
     <a-scene
         renderer="logarithmicDepthBuffer: true;"
