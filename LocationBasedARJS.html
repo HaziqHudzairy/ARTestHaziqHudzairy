@@ -67,17 +67,23 @@
 
     <script>
         document.getElementById("data-container").style.display = "block";
+
+        var entity = document.getElementById('entity');
+        if (entity) {
+            var objectLatLng = entity.getAttribute('gps-entity-place');
+            if (objectLatLng) {
+                var objectLatitude = parseFloat(objectLatLng.latitude);
+                var objectLongitude = parseFloat(objectLatLng.longitude);
+                document.getElementById('objectLocation').innerText = 'Object Location: \n Latitude: ' + objectLatitude.toFixed(6) + '\n'+ 'Longitude: ' + objectLongitude.toFixed(6);
+            }
+        }
+        
         // Function to update the latitude and longitude display
         function updateLocationDisplay(latitude, longitude) {
             document.getElementById('userLocation').innerText = 'Your Location: \n Latitude: '+ latitude.toFixed(6) + '\n'+ 'Longitude: ' + longitude.toFixed(6);
             
             // Get the latitude and longitude of the object
-            var entity = document.getElementById('entity');
-            if (entity) {
-                var objectLatitude = entity.getAttribute('gps-entity-place').latitude;
-                var objectLongitude = entity.getAttribute('gps-entity-place').longitude;
-                document.getElementById('objectLocation').innerText = 'Object Location: \n Latitude: ' + objectLatitude.toFixed(6) + '\n'+ 'Longitude: ' + objectLongitude.toFixed(6);
-            }
+            
         }
 
         // Update the location continuously
@@ -92,6 +98,7 @@
 
         // Call the function to start updating the location
         updateLocation();
+
         document.querySelector('a-scene').addEventListener('loaded', function () {
             document.getElementById("Loading").style.display = "none";
         });
