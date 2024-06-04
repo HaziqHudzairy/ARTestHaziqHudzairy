@@ -99,22 +99,7 @@
             } else {
                 alert('getUserMedia not supported by the browser.');
             }
-
-            // Request geolocation access
-            if ('geolocation' in navigator) {
-                navigator.geolocation.getCurrentPosition(function (location) {
-                    alert('Geolocation access granted. Initial position: ' + JSON.stringify(location));
-                }, function (error) {
-                    alert('Failed to access geolocation: ' + error.message);
-                });
-            } else {
-                alert('Geolocation not supported by the browser.');
-            }
         }
-
-        document.querySelector('[gps-camera]').addEventListener('gps-camera-update-position', function (e) {
-            alert('Position updated: ' + JSON.stringify(e.detail.position));
-        });
     </script>
 </body>
 </html>
