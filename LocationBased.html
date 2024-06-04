@@ -15,17 +15,21 @@
     <script>
         AFRAME.registerComponent('locationfinder', {
             init: function () {
-                navigator.geolocation.getCurrentPosition(function (location) {
-                    console.log('Initial Location:', location);
-                }, function (error) {
-                    console.error('Error getting location:', error);
-                });
+                if ('geolocation' in navigator) {
+                    navigator.geolocation.getCurrentPosition(function (location) {
+                        alert('Geolocation access granted. Initial position: ' + JSON.stringify(location));
+                    }, function (error) {
+                        alert('Failed to access geolocation: ' + error.message);
+                    });
 
-                navigator.geolocation.watchPosition(function (location) {
-                    console.log('Updated Location:', location);
-                }, function (error) {
-                    console.error('Error watching location:', error);
-                });
+                    navigator.geolocation.watchPosition(function (location) {
+                        alert('Updated Location: ' + JSON.stringify(location));
+                    }, function (error) {
+                        alert('Error watching location: ' + error.message);
+                    });
+                } else {
+                    alert('Geolocation is not supported by this browser.');
+                }
             }
         });
     </script>
@@ -79,25 +83,37 @@
     <script>
         document.querySelector('a-scene').addEventListener('loaded', function () {
             document.getElementById("Loading").style.display = "none";
-            checkCameraPermission();
+            checkPermissions();
         });
 
-        function checkCameraPermission() {
+        function checkPermissions() {
+            // Request camera access
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 navigator.mediaDevices.getUserMedia({ video: true })
                     .then(function (stream) {
-                        console.log('Camera access granted. AR scene is ready.');
+                        alert('Camera access granted. AR scene is ready.');
                     })
                     .catch(function (error) {
-                        console.log('Failed to access camera:', error);
+                        alert('Failed to access camera: ' + error.message);
                     });
             } else {
-                console.log('getUserMedia not supported by the browser.');
+                alert('getUserMedia not supported by the browser.');
+            }
+
+            // Request geolocation access
+            if ('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(function (location) {
+                    alert('Geolocation access granted. Initial position: ' + JSON.stringify(location));
+                }, function (error) {
+                    alert('Failed to access geolocation: ' + error.message);
+                });
+            } else {
+                alert('Geolocation not supported by the browser.');
             }
         }
 
         document.querySelector('[gps-camera]').addEventListener('gps-camera-update-position', function (e) {
-            console.log('Position updated:', e.detail.position);
+            alert('Position updated: ' + JSON.stringify(e.detail.position));
         });
     </script>
 </body>
