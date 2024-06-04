@@ -4,16 +4,14 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-        <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-        <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+        <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+        <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
+        <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.loaders.min.js"></script>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="Styles.css">
     </head>
 
     <body style="margin: 0; overflow: hidden;">
-
         <script>
             AFRAME.registerComponent('locationfinder',{
                 init : function(){
@@ -26,7 +24,6 @@
 
         <div class="container">
             <div class="logo-container">
-                <!-- First logo -->
                 <img src="asset/University_of_Malaya-Logo.png" alt="UM Logo" class="logoTop">
                 <img src="asset/UM.AR_Logo_Font_Black.png" alt="UM AR Logo" class="logoTop">
             </div>
@@ -39,10 +36,10 @@
         </div>
         <div id="Loading" class="box">
             <div class="cat">
-              <div class="cat__body"></div>
-              <div class="cat__body"></div>
-              <div class="cat__tail"></div>
-              <div class="cat__head"></div>
+                <div class="cat__body"></div>
+                <div class="cat__body"></div>
+                <div class="cat__tail"></div>
+                <div class="cat__head"></div>
             </div>
         </div>
         
@@ -71,26 +68,19 @@
         </a-scene>
 
         <script>
-            // Wait for the A-Frame scene to be fully loaded
             document.querySelector('a-scene').addEventListener('loaded', function () {
                 document.getElementById("Loading").style.display = "none";
-                // Call the function to check camera permission status
                 checkCameraPermission();
             });
 
-            // Function to check the camera permission status
             function checkCameraPermission() {
-                // Check if getUserMedia is supported by the browser
                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                    // Check if the camera permission is granted
                     navigator.mediaDevices.getUserMedia({ video: true })
                         .then(function (stream) {
                             console.log('Camera access granted. AR scene is ready.');
-                            // Do further initialization here
                         })
                         .catch(function (error) {
                             console.log('Failed to access camera:', error);
-                            // Handle camera access denied or failed state here
                         });
                 } else {
                     console.log('getUserMedia not supported by the browser.');
