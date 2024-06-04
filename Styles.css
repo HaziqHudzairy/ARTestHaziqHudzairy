@@ -32,6 +32,28 @@
     }
 }
 
+.data-container{
+  background-color: rgba(0, 0, 0, 0.301);
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  width: 35%;
+  gap: 12px;
+  margin-top: 10px;
+  top: 65px;
+  right :10px;
+  z-index: 999;
+}
+
+@media screen and (max-width: 768px) {
+  .data-container {
+      position: absolute;
+  }
+}
+
+
 
 
 

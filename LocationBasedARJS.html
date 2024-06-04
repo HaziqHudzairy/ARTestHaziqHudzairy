@@ -12,11 +12,31 @@
 </head>
 
 <body style="margin: 0; overflow: hidden;">
-    <!-- Display for user's latitude and longitude outside the A-Frame environment -->
-    <div id="userLocation" style="position: absolute; top: 10px; left: 10px; background-color: rgba(0, 0, 0, 0.5); color: white; padding: 10px;"></div>
 
-    <!-- Display for object's latitude and longitude outside the A-Frame environment -->
-    <div id="objectLocation" style="position: absolute; top: 30px; left: 10px; background-color: rgba(0, 0, 0, 0.5); color: white; padding: 10px;"></div>
+    <div class="container">
+        <div class="logo-container">
+            <img src="asset/University_of_Malaya-Logo.png" alt="UM Logo" class="logoTop">
+            <img src="asset/UM.AR_Logo_Font_Black.png" alt="UM AR Logo" class="logoTop">
+        </div>
+    
+        <a href="https://um-ar.netlify.app/main.html" class="backButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+            </svg>
+        </a>
+    </div>
+    <div id="data-container" class="data-container" style="display:none;">
+        <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
+        <p id="objectLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
+    </div>
+    <div id="Loading" class="box">
+        <div class="cat">
+            <div class="cat__body"></div>
+            <div class="cat__body"></div>
+            <div class="cat__tail"></div>
+            <div class="cat__head"></div>
+        </div>
+    </div>
 
     <a-scene
         renderer="logarithmicDepthBuffer: true;"
@@ -45,16 +65,36 @@
     </a-scene>
 
     <script>
+        document.querySelector('a-scene').addEventListener('loaded', function () {
+            document.getElementById("Loading").style.display = "none";
+            checkPermissions();
+        });
+
+        function checkPermissions() {
+            // Request camera access
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        alert('Camera access granted. AR scene is ready.');
+                        document.getElementById("data-container").style.display = "block";
+                    })
+                    .catch(function (error) {
+                        alert('Failed to access camera: ' + error.message);
+                    });
+            } else {
+                alert('getUserMedia not supported by the browser.');
+            }
+        }
         // Function to update the latitude and longitude display
         function updateLocationDisplay(latitude, longitude) {
-            document.getElementById('userLocation').innerText = 'Your Location: Latitude: ' + latitude.toFixed(6) + ', Longitude: ' + longitude.toFixed(6);
+            document.getElementById('userLocation').innerText = 'Your Location: \n Latitude: '+ latitude.toFixed(6) + '\n'+ 'Longitude: ' + longitude.toFixed(6);
             
             // Get the latitude and longitude of the object
             var entity = document.getElementById('entity');
             if (entity) {
                 var objectLatitude = entity.getAttribute('gps-entity-place').latitude;
                 var objectLongitude = entity.getAttribute('gps-entity-place').longitude;
-                document.getElementById('objectLocation').innerText = 'Object Location: Latitude: ' + objectLatitude.toFixed(6) + ', Longitude: ' + objectLongitude.toFixed(6);
+                document.getElementById('objectLocation').innerText = 'Object Location: \n Latitude: ' + objectLatitude.toFixed(6) + '\n'+ 'Longitude: ' + objectLongitude.toFixed(6);
             }
         }
 
