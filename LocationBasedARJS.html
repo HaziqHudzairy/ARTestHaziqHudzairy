@@ -71,7 +71,6 @@
         });
 
         function checkPermissions() {
-            document.getElementById("data-container").style.display = "block";
             // Request camera access
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 navigator.mediaDevices.getUserMedia({ video: true })
@@ -87,6 +86,7 @@
         }
         // Function to update the latitude and longitude display
         function updateLocationDisplay(latitude, longitude) {
+            document.getElementById("data-container").style.display = "block";
             document.getElementById('userLocation').innerText = 'Your Location: \n Latitude: '+ latitude.toFixed(6) + '\n'+ 'Longitude: ' + longitude.toFixed(6);
             
             // Get the latitude and longitude of the object
@@ -97,6 +97,7 @@
                 document.getElementById('objectLocation').innerText = 'Object Location: \n Latitude: ' + objectLatitude.toFixed(6) + '\n'+ 'Longitude: ' + objectLongitude.toFixed(6);
             }
         }
+        
 
         // Update the location continuously
         function updateLocation() {
