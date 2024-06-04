@@ -71,12 +71,12 @@
         });
 
         function checkPermissions() {
+            document.getElementById("data-container").style.display = "block";
             // Request camera access
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 navigator.mediaDevices.getUserMedia({ video: true })
                     .then(function (stream) {
                         alert('Camera access granted. AR scene is ready.');
-                        document.getElementById("data-container").style.display = "block";
                     })
                     .catch(function (error) {
                         alert('Failed to access camera: ' + error.message);
