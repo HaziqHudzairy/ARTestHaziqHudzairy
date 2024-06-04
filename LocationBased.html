@@ -12,27 +12,6 @@
 </head>
 
 <body style="margin: 0; overflow: hidden;">
-    <script>
-        AFRAME.registerComponent('locationfinder', {
-            init: function () {
-                if ('geolocation' in navigator) {
-                    navigator.geolocation.getCurrentPosition(function (location) {
-                        alert('Geolocation access granted. Initial position: ' + JSON.stringify(location));
-                    }, function (error) {
-                        alert('Failed to access geolocation: ' + error.message);
-                    });
-
-                    navigator.geolocation.watchPosition(function (location) {
-                        alert('Updated Location: ' + JSON.stringify(location));
-                    }, function (error) {
-                        alert('Error watching location: ' + error.message);
-                    });
-                } else {
-                    alert('Geolocation is not supported by this browser.');
-                }
-            }
-        });
-    </script>
 
     <div class="container">
         <div class="logo-container">
@@ -61,7 +40,7 @@
         loading-screen="enabled: false;"
         arjs="sourceType: webcam; debugUIEnabled: false;"
     >
-        <a-camera gps-camera locationfinder rotation-reader></a-camera>
+        <a-camera gps-camera rotation-reader></a-camera>
         
         <a-assets>
             <a-asset-item
