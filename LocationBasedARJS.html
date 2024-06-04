@@ -67,32 +67,6 @@
     </a-scene>
 
     <script>
-        // Wait for the A-Frame scene to be fully loaded
-        document.querySelector('a-scene').addEventListener('loaded', function () {
-            document.getElementById("Loading").style.display = "none";
-            // Call the function to check camera permission status
-            checkCameraPermission();
-        });
-
-        // Function to check the camera permission status
-        function checkCameraPermission() {
-            // Check if getUserMedia is supported by the browser
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                // Check if the camera permission is granted
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(function (stream) {
-                        console.log('Camera access granted. AR scene is ready.');
-                        document.getElementById("QR-animation").style.display = "block";
-                        // Do further initialization here
-                    })
-                    .catch(function (error) {
-                        console.log('Failed to access camera:', error);
-                        // Handle camera access denied or failed state here
-                    });
-            } else {
-                console.log('getUserMedia not supported by the browser.');
-            }
-        }
         // Function to update the latitude and longitude display
         function updateLocationDisplay(latitude, longitude) {
             document.getElementById('userLocation').innerText = 'Your Location: Latitude: ' + latitude.toFixed(6) + ', Longitude: ' + longitude.toFixed(6);
@@ -118,6 +92,25 @@
 
         // Call the function to start updating the location
         updateLocation();
+        document.querySelector('a-scene').addEventListener('loaded', function () {
+            document.getElementById("Loading").style.display = "none";
+            checkPermissions();
+        });
+
+        function checkPermissions() {
+            // Request camera access
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        alert('Camera access granted. AR scene is ready.');
+                    })
+                    .catch(function (error) {
+                        alert('Failed to access camera: ' + error.message);
+                    });
+            } else {
+                alert('getUserMedia not supported by the browser.');
+            }
+        }
     </script>
 </body>
 </html>
