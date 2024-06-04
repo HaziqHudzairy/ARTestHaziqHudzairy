@@ -94,23 +94,7 @@
         updateLocation();
         document.querySelector('a-scene').addEventListener('loaded', function () {
             document.getElementById("Loading").style.display = "none";
-            checkPermissions();
         });
-
-        function checkPermissions() {
-            // Request camera access
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(function (stream) {
-                        alert('Camera access granted. AR scene is ready.');
-                    })
-                    .catch(function (error) {
-                        alert('Failed to access camera: ' + error.message);
-                    });
-            } else {
-                alert('getUserMedia not supported by the browser.');
-            }
-        }
     </script>
 </body>
 </html>
