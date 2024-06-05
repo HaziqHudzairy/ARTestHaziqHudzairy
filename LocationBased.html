@@ -49,6 +49,10 @@
                 id="animated-asset"
                 src="asset/LocationPin.glb"
             ></a-asset-item>
+            <a-asset-item
+                id="animated-asset"
+                src="asset/FSKTMAnim3.glb"
+            ></a-asset-item>
         </a-assets>
 
         <a-entity
@@ -57,7 +61,16 @@
             animation-mixer="loop: repeat"
             gltf-model="#animated-asset"
             scale="10 10 10"
-            gps-entity-place="latitude: 3.126720; longitude: 101.650183;"
+            gps-entity-place="latitude: 3.126843; longitude: 101.650017;"
+            loaded="true"
+        ></a-entity>
+        <a-entity
+            id="FSKTM"
+            look-at="[gps-camera]"
+            animation-mixer="loop: repeat"
+            gltf-model="#animated-asset"
+            scale="30 30 30"
+            gps-entity-place="latitude: 3.128011; longitude: 101.650516;"
             loaded="true"
         ></a-entity>
 
