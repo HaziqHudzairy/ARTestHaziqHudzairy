@@ -46,19 +46,25 @@
       >
           <a-assets>
             
-                <a-asset-item id="FSKTMLogo" src="asset/logo/Logo FSKTM.png"></a-asset-item>
+                <img id="FSKTMLogo" src="asset/logo/Logo FSKTM.png">
               <a-asset-item id="animated-asset" src="asset/LocationPin.glb"></a-asset-item>
               <a-asset-item id="FSKTM" src="asset/FSKTMAnim3.glb"></a-asset-item>
           </a-assets>
       
           <a-camera id="camera" gps-camera rotation-reader></a-camera>
       
-          <a-image
+          <!-- <a-image
                 src="#FSKTMLogo"
                 scale="100 100 100" 
                 look-at="[gps-camera]"
                 gps-entity-place="latitude: 3.128011; longitude: 101.650516;" 
-            ></a-image>
+            ></a-image> -->
+
+            <a-box src="#FSKTMLogo"
+                look-at="[gps-camera]"
+                scale="120 120 120"
+                gps-entity-place="latitude: 3.128011; longitude: 101.650516;"
+            ></a-box>
 
           <!-- <a-entity
               id="FSKTM"
