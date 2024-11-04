@@ -1,148 +1,314 @@
 <!doctype html>
 <html>
+
 <head>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-<script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
-<script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.loaders.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="Styles.css">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.loaders.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="Styles.css">
 </head>
 
 <body style="margin: 0; overflow: hidden;">
-<div class="container">
-    <div class="logo-container">
-        <!-- First logo -->
-        <img src="asset/University_of_Malaya-Logo.png" alt="UM Logo" class="logoTop">
-        <img src="asset/UM.AR_Logo_Font_Black.png" alt="UM AR Logo" class="logoTop">
+    <div class="container">
+        <div class="logo-container">
+            <!-- First logo -->
+            <img src="asset/University_of_Malaya-Logo.png" alt="UM Logo" class="logoTop">
+            <img src="asset/UM.AR_Logo_Font_Black.png" alt="UM AR Logo" class="logoTop">
+        </div>
+
+        <a href="https://um-ar.netlify.app/main.html" class="backButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white"
+                class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                <path
+                    d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
+            </svg>
+        </a>
+    </div>
+    <div id="data-container" class="data-container" style="display:none;">
+        <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
     </div>
 
-    <a href="https://um-ar.netlify.app/main.html" class="backButton">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-        </svg>
-    </a>
-</div>
-<div id="data-container" class="data-container" style="display:none;">
-    <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
-</div>
-
-    <div id="Loading"class="box">
+    <div id="Loading" class="box">
         <div class="cat">
             <div class="cat__body"></div>
             <div class="cat__body"></div>
             <div class="cat__tail"></div>
             <div class="cat__head"></div>
         </div>
-        </div>
+    </div>
 
-        <a-scene
-        renderer="logarithmicDepthBuffer: true;"
-        embedded
-        loading-screen="enabled: false;"
-        arjs="sourceType: webcam; debugUIEnabled: false;"
-    >
+    <a-scene renderer="logarithmicDepthBuffer: true;" embedded loading-screen="enabled: false;"
+        arjs="sourceType: webcam; debugUIEnabled: false;">
         <a-assets>
-        
+
             <img id="FSKTMLogo" src="asset/logo/Logo FSKTM.png">
             <a-asset-item id="animated-asset" src="asset/LocationPin.glb"></a-asset-item>
             <a-asset-item id="FSKTM" src="asset/FSKTMAnim3.glb"></a-asset-item>
+
+            <!-- Faculties -->
+            <a-asset-item id="locationPinMedicine" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinEngineering" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinLaw" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinScience" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinCS" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinBusiness" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinArts" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinBuiltEnvironment" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinDentistry" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinEducation" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinSport" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinLanguages" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinPharmacy" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinCreativeArts" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinAkademiMelayu" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinAkademiIslam" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinInstituteAdvancedStudies" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinPusatAsasi" src="asset/LocationPin.glb"></a-asset-item>
+
+            <!-- Residential Colleges -->
+            <a-asset-item id="locationPinKolej1" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKolej2" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKolej3" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKolej4" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKolej5" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKolej6" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKolej7" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKolej8" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKolej9" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKolej10" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKolej11" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKolej12" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKolej13" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinRumahUniversiti" src="asset/LocationPin.glb"></a-asset-item>
+
+            <!-- Facilities -->
+            <a-asset-item id="locationPinDTC" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinPanggung" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinKPS" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinBangunanCanseleri" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinExamHall" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinUMCentral" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinBankIslam" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinMasjid" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinAcademyIslam" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinTemple" src="asset/LocationPin.glb"></a-asset-item>
+
+            <!-- Libraries -->
+            <a-asset-item id="locationPinUMLibrary" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinMedicalLibrary" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinLawLibrary" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinZabaLibrary" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinDentalLibrary" src="asset/LocationPin.glb"></a-asset-item>
+            <a-asset-item id="locationPinIslamicLibrary" src="asset/LocationPin.glb"></a-asset-item;>
+
+                <!-- Sports and Recreation -->
+                <a-asset-item id="locationPinUMWallSquash" src="asset/LocationPin.glb"></a-asset-item>
+                <a-asset-item id="locationPinVarsityGreen" src="asset/LocationPin.glb"></a-asset-item>
+                <a-asset-item id="locationPinUMPark" src="asset/LocationPin.glb"></a-asset-item>
+                <a-asset-item id="locationPinPadangC" src="asset/LocationPin.glb"></a-asset-item>
+                <a-asset-item id="locationPinKayaks" src="asset/LocationPin.glb"></a-asset-item>
+                <a-asset-item id="locationPinSwimmingPool" src="asset/LocationPin.glb"></a-asset-item>
+                <a-asset-item id="locationPinUMSportsCentre" src="asset/LocationPin.glb"></a-asset-item>
+                <a-asset-item id="locationPinUMArenaStadium" src="asset/LocationPin.glb"></a-asset-item>
+                <a-asset-item id="locationPinRimbaIlmu" src="asset/LocationPin.glb"></a-asset-item>
+                <a-asset-item id="locationPinLadangMini" src="asset/LocationPin.glb"></a-asset-item>
+                <a-asset-item id="locationPinMustafaRiver" src="asset/LocationPin.glb"></a-asset-item>
         </a-assets>
-    
+
         <a-camera gps-camera rotation-reader fov="50"></a-camera>
-    
+
         <!-- <a-image
-            src="#FSKTMLogo"
-            scale="100 100 100" 
-            look-at="[gps-camera]"
-            gps-entity-place="latitude: 3.128011; longitude: 101.650516;" 
-        ></a-image> -->
+        src="#FSKTMLogo"
+        scale="100 100 100" 
+        look-at="[gps-camera]"
+        gps-entity-place="latitude: 3.128011; longitude: 101.650516;" 
+    ></a-image> -->
 
-        <a-plane
-            src="#FSKTMLogo" 
-            look-at="[gps-camera]"
-            scale="100 100 100"
-            gps-entity-place="latitude: 3.128011; longitude: 101.650516;"
-        ></a-plane>
+        <!-- Faculty Locations -->
+        <a-entity id="entityMedicine" look-at="#camera" gltf-model="#locationPinMedicine" scale="8 8 8"
+            gps-entity-place="latitude: 3.115828; longitude: 101.653418;"></a-entity>
+        <a-entity id="entityEngineering" look-at="#camera" gltf-model="#locationPinEngineering" scale="8 8 8"
+            gps-entity-place="latitude: 3.117802; longitude: 101.655650;"></a-entity>
+        <a-entity id="entityLaw" look-at="#camera" gltf-model="#locationPinLaw" scale="8 8 8"
+            gps-entity-place="latitude: 3.118005; longitude: 101.660850;"></a-entity>
+        <a-entity id="entityScience" look-at="#camera" gltf-model="#locationPinScience" scale="8 8 8"
+            gps-entity-place="latitude: 3.121827; longitude: 101.653875;"></a-entity>
+        <a-entity id="entityCS" look-at="#camera" gltf-model="#locationPinCS" scale="8 8 8"
+            gps-entity-place="latitude: 3.127979; longitude: 101.650565;"></a-entity>
+        <a-entity id="entityBusiness" look-at="#camera" gltf-model="#locationPinBusiness" scale="8 8 8"
+            gps-entity-place="latitude: 3.118396; longitude: 101.652676;"></a-entity>
+        <a-entity id="entityArts" look-at="#camera" gltf-model="#locationPinArts" scale="8 8 8"
+            gps-entity-place="latitude: 3.120916; longitude: 101.653107;"></a-entity>
+        <a-entity id="entityBuiltEnvironment" look-at="#camera" gltf-model="#locationPinBuiltEnvironment" scale="8 8 8"
+            gps-entity-place="latitude: 3.115871; longitude: 101.655339;"></a-entity>
+        <a-entity id="entityDentistry" look-at="#camera" gltf-model="#locationPinDentistry" scale="8 8 8"
+            gps-entity-place="latitude: 3.111392; longitude: 101.652523;"></a-entity>
+        <a-entity id="entityEducation" look-at="#camera" gltf-model="#locationPinEducation" scale="8 8 8"
+            gps-entity-place="latitude: 3.119958; longitude: 101.652903;"></a-entity>
+        <a-entity id="entitySport" look-at="#camera" gltf-model="#locationPinSport" scale="8 8 8"
+            gps-entity-place="latitude: 3.130788; longitude: 101.660023;"></a-entity>
+        <a-entity id="entityLanguages" look-at="#camera" gltf-model="#locationPinLanguages" scale="8 8 8"
+            gps-entity-place="latitude: 3.122513; longitude: 101.651525;"></a-entity>
+        <a-entity id="entityPharmacy" look-at="#camera" gltf-model="#locationPinPharmacy" scale="8 8 8"
+            gps-entity-place="latitude: 3.115517; longitude: 101.652362;"></a-entity>
+        <a-entity id="entityCreativeArts" look-at="#camera" gltf-model="#locationPinCreativeArts" scale="8 8 8"
+            gps-entity-place="latitude: 3.118616; longitude: 101.653299;"></a-entity>
+        <a-entity id="entityAkademiMelayu" look-at="#camera" gltf-model="#locationPinAkademiMelayu" scale="8 8 8"
+            gps-entity-place="latitude: 3.125078; longitude: 101.652265;"></a-entity>
+        <a-entity id="entityAkademiIslam" look-at="#camera" gltf-model="#locationPinAkademiIslam" scale="8 8 8"
+            gps-entity-place="latitude: 3.132609; longitude: 101.657780;"></a-entity>
+        <a-entity id="entityInstituteAdvancedStudies" look-at="#camera"
+            gltf-model="#locationPinInstituteAdvancedStudies" scale="8 8 8"
+            gps-entity-place="latitude: 3.124623; longitude: 101.659739;"></a-entity>
+        <a-entity id="entityPusatAsasi" look-at="#camera" gltf-model="#locationPinPusatAsasi" scale="8 8 8"
+            gps-entity-place="latitude: 3.123262; longitude: 101.659417;"></a-entity>
 
-        <a-entity
-            id="FSKTM"
-            look-at="[gps-camera]"
-            animation-mixer="loop: repeat"
-            gltf-model="#FSKTM"
-            scale="30 30 30"
-            gps-entity-place="latitude: 3.128011; longitude: 101.650516;"
-            loaded="true"
-        ></a-entity>
+        <!-- Residential Colleges -->
+        <a-entity id="entityKolej1" look-at="#camera" gltf-model="#locationPinKolej1" scale="8 8 8"
+            gps-entity-place="latitude: 3.117609; longitude: 101.659361;"></a-entity>
+        <a-entity id="entityKolej2" look-at="#camera" gltf-model="#locationPinKolej2" scale="8 8 8"
+            gps-entity-place="latitude: 3.118220; longitude: 101.657536;"></a-entity>
+        <a-entity id="entityKolej3" look-at="#camera" gltf-model="#locationPinKolej3" scale="8 8 8"
+            gps-entity-place="latitude: 3.124310; longitude: 101.650715;"></a-entity>
+        <a-entity id="entityKolej4" look-at="#camera" gltf-model="#locationPinKolej4" scale="8 8 8"
+            gps-entity-place="latitude: 3.124872; longitude: 101.649416;"></a-entity>
+        <a-entity id="entityKolej5" look-at="#camera" gltf-model="#locationPinKolej5" scale="8 8 8"
+            gps-entity-place="latitude: 3.127138; longitude: 101.658605;"></a-entity>
+        <a-entity id="entityKolej6" look-at="#camera" gltf-model="#locationPinKolej6" scale="8 8 8"
+            gps-entity-place="latitude: 3.115498; longitude: 101.654873;"></a-entity>
+        <a-entity id="entityKolej7" look-at="#camera" gltf-model="#locationPinKolej7" scale="8 8 8"
+            gps-entity-place="latitude: 3.126104; longitude: 101.650415;"></a-entity>
+        <a-entity id="entityKolej8" look-at="#camera" gltf-model="#locationPinKolej8" scale="8 8 8"
+            gps-entity-place="latitude: 3.129827; longitude: 101.649728;"></a-entity>
+        <a-entity id="entityKolej9" look-at="#camera" gltf-model="#locationPinKolej9" scale="8 8 8"
+            gps-entity-place="latitude: 3.120319; longitude: 101.646064;"></a-entity>
+        <a-entity id="entityKolej10" look-at="#camera" gltf-model="#locationPinKolej10" scale="8 8 8"
+            gps-entity-place="latitude: 3.130641; longitude: 101.650468;"></a-entity>
+        <a-entity id="entityKolej11" look-at="#camera" gltf-model="#locationPinKolej11" scale="8 8 8"
+            gps-entity-place="latitude: 3.129356; longitude: 101.660511;"></a-entity>
+        <a-entity id="entityKolej12" look-at="#camera" gltf-model="#locationPinKolej12" scale="8 8 8"
+            gps-entity-place="latitude: 3.125649; longitude: 101.660795;"></a-entity>
+        <a-entity id="entityKolej13" look-at="#camera" gltf-model="#locationPinKolej13" scale="8 8 8"
+            gps-entity-place="latitude: 3.120582; longitude: 101.639610;"></a-entity>
+        <a-entity id="entityRumahUniversiti" look-at="#camera" gltf-model="#locationPinRumahUniversiti" scale="8 8 8"
+            gps-entity-place="latitude: 3.122223; longitude: 101.657570;"></a-entity>
 
-        <a-entity
-            id="KK8"
-            look-at="#camera"
-            animation-mixer="loop: repeat"
-            gltf-model="#animated-asset"
-            scale="10 10 10"
-            gps-entity-place="latitude:  3.129827; longitude: 101.649728;"
-            loaded="true"
-        ></a-entity>
-        
-        <a-entity
-            id="UMCentral"
-            look-at="#camera"
-            animation-mixer="loop: repeat"
-            gltf-model="#animated-asset"
-            scale="10 10 10"
-            gps-entity-place="latitude: 3.121010; longitude: 101.653648;"
-            loaded="true"
-        ></a-entity>
-        <a-entity
-            id="kk12"
-            look-at="#camera"
-            animation-mixer="loop: repeat"
-            gltf-model="#animated-asset"
-            scale="10 10 10"
-            gps-entity-place="latitude: 3.125876; longitude: 101.661094;"
-            loaded="true"
-        ></a-entity>
+        <!-- Facilities Locations -->
+        <a-entity id="entityDTC" look-at="#camera" gltf-model="#locationPinDTC" scale="8 8 8"
+            gps-entity-place="latitude: 3.121436; longitude: 101.657060;"></a-entity>
+        <a-entity id="entityPanggung" look-at="#camera" gltf-model="#locationPinPanggung" scale="8 8 8"
+            gps-entity-place="latitude: 3.121522; longitude: 101.656079;"></a-entity>
+        <a-entity id="entityKPS" look-at="#camera" gltf-model="#locationPinKPS" scale="8 8 8"
+            gps-entity-place="latitude: 3.121125; longitude: 101.655145;"></a-entity>
+        <a-entity id="entityBangunanCanseleri" look-at="#camera" gltf-model="#locationPinBangunanCanseleri"
+            scale="8 8 8" gps-entity-place="latitude: 3.120445; longitude: 101.657636;"></a-entity>
+        <a-entity id="entityExamHall" look-at="#camera" gltf-model="#locationPinExamHall" scale="8 8 8"
+            gps-entity-place="latitude: 3.115147; longitude: 101.658086;"></a-entity>
+        <a-entity id="entityUMCentral" look-at="#camera" gltf-model="#locationPinUMCentral" scale="8 8 8"
+            gps-entity-place="latitude: 3.120975; longitude: 101.653585;"></a-entity>
+        <a-entity id="entityBankIslam" look-at="#camera" gltf-model="#locationPinBankIslam" scale="8 8 8"
+            gps-entity-place="latitude: 3.122143; longitude: 101.656503;"></a-entity>
+        <a-entity id="entityMasjid" look-at="#camera" gltf-model="#locationPinMasjid" scale="8 8 8"
+            gps-entity-place="latitude: 3.117938; longitude: 101.662769;"></a-entity>
+        <a-entity id="entityAcademyIslam" look-at="#camera" gltf-model="#locationPinMusollaAPI" scale="8 8 8"
+            gps-entity-place="latitude: 3.132754; longitude: 101.657415;"></a-entity>
+        <a-entity id="entityTemple" look-at="#camera" gltf-model="#locationPinTemple" scale="8 8 8"
+            gps-entity-place="latitude: 3.127944; longitude: 101.660709;"></a-entity>
+
+        <!-- Libraries Locations -->
+        <a-entity id="entityUMLibrary" look-at="#camera" gltf-model="#locationPinUMLibrary" scale="8 8 8"
+            gps-entity-place="latitude: 3.120274; longitude: 101.654513;"></a-entity>
+        <a-entity id="entityMedicalLibrary" look-at="#camera" gltf-model="#locationPinMedicalLibrary" scale="8 8 8"
+            gps-entity-place="latitude: 3.114301; longitude: 101.653429;"></a-entity>
+        <a-entity id="entityLawLibrary" look-at="#camera" gltf-model="#locationPinLawLibrary" scale="8 8 8"
+            gps-entity-place="latitude: 3.118624; longitude: 101.653478;"></a-entity>
+        <a-entity id="entityZabaLibrary" look-at="#camera" gltf-model="#locationPinZabaLibrary" scale="8 8 8"
+            gps-entity-place="latitude: 3.118624; longitude: 101.653478;"></a-entity>
+        <a-entity id="entityDentalLibrary" look-at="#camera" gltf-model="#locationPinDentalLibrary" scale="8 8 8"
+            gps-entity-place="latitude: 3.115774; longitude: 101.659985;"></a-entity>
+        <a-entity id="entityIslamicLibrary" look-at="#camera" gltf-model="#locationPinIslamicLibrary" scale="8 8 8"
+            gps-entity-place="latitude: 3.132277; longitude: 101.657421;"></a-entity>
+
+        <!-- Sports and Recreation Locations -->
+        <a-entity id="entityUMWallSquash" look-at="#camera" gltf-model="#locationPinUMWallSquash" scale="8 8 8"
+            gps-entity-place="latitude: 3.131988; longitude: 101.658011;" 
+            ></a-entity>
+        <a-entity id="entityVarsityGreen" look-at="#camera" gltf-model="#locationPinVarsityGreen" scale="8 8 8"
+            gps-entity-place="latitude: 3.120477; longitude: 101.659148;"
+            ></a-entity>
+        <a-entity id="entityUMPark" look-at="#camera" gltf-model="#locationPinUMPark" scale="8 8 8"
+            gps-entity-place="latitude: 3.119047; longitude: 101.660017;" 
+            ></a-entity>
+        <a-entity id="entityPadangC" look-at="#camera" gltf-model="#locationPinPadangC" scale="8 8 8"
+            gps-entity-place="latitude: 3.120177; longitude: 101.660135;" 
+            ></a-entity>
+        <a-entity id="entityKayaks" look-at="#camera" gltf-model="#locationPinKayaks" scale="8 8 8"
+            gps-entity-place="latitude: 3.119374; longitude: 101.658671;" 
+            ></a-entity>
+        <a-entity id="entitySwimmingPool" look-at="#camera" gltf-model="#locationPinSwimmingPool" scale="8 8 8"
+            gps-entity-place="latitude: 3.128806; longitude: 101.659803;"
+            ></a-entity>
+        <a-entity id="entityUMSportsCentre" look-at="#camera" gltf-model="#locationPinUMSportsCentre" scale="8 8 8"
+            gps-entity-place="latitude: 3.129872; longitude: 101.660018;"
+            ></a-entity>
+        <a-entity id="entityUMArenaStadium" look-at="#camera" gltf-model="#locationPinUMArenaStadium" scale="8 8 8"
+            gps-entity-place="latitude: 3.130895; longitude: 101.659690;" 
+            ></a-entity>
+        <a-entity id="entityRimbaIlmu" look-at="#camera" gltf-model="#locationPinRimbaIlmu" scale="8 8 8"
+            gps-entity-place="latitude: 3.130697; longitude: 101.658203;" 
+            ></a-entity>
+        <a-entity id="entityLadangMini" look-at="#camera" gltf-model="#locationPinLadangMini" scale="8 8 8"
+            gps-entity-place="latitude: 3.128190; longitude: 101.660865;" 
+            ></a-entity>
+        <a-entity id="entityMustafaRiver" look-at="#camera" gltf-model="#locationPinMustafaRiver" scale="8 8 8"
+            gps-entity-place="latitude: 3.125919; longitude: 101.658998;" 
+            ></a-entity>
+
     </a-scene>
-    
 
-<script>
-    document.getElementById("data-container").style.display = "block";
-    
-    // Function to update the latitude and longitude display
-    function updateLocationDisplay(latitude, longitude) {
-        document.getElementById('userLocation').innerText = 'Your Location: \n Latitude: '+ latitude.toFixed(6) + '\n'+ 'Longitude: ' + longitude.toFixed(6);
-        
-        // Get the latitude and longitude of the object
-        var entity = document.getElementById('entity');
-        if (entity) {
-            var objectLatLng = entity.getAttribute('gps-entity-place');
-            if (objectLatLng) {
-                var objectLatitude = parseFloat(objectLatLng.latitude);
-                var objectLongitude = parseFloat(objectLatLng.longitude);
-                document.getElementById('objectLocation').innerText = 'Object Location: \n Latitude: ' + objectLatitude.toFixed(6) + '\n'+ 'Longitude: ' + objectLongitude.toFixed(6);
+
+    <script>
+        document.getElementById("data-container").style.display = "block";
+
+        // Function to update the latitude and longitude display
+        function updateLocationDisplay(latitude, longitude) {
+            document.getElementById('userLocation').innerText = 'Your Location: \n Latitude: ' + latitude.toFixed(6) + '\n' + 'Longitude: ' + longitude.toFixed(6);
+
+            // Get the latitude and longitude of the object
+            var entity = document.getElementById('entity');
+            if (entity) {
+                var objectLatLng = entity.getAttribute('gps-entity-place');
+                if (objectLatLng) {
+                    var objectLatitude = parseFloat(objectLatLng.latitude);
+                    var objectLongitude = parseFloat(objectLatLng.longitude);
+                    document.getElementById('objectLocation').innerText = 'Object Location: \n Latitude: ' + objectLatitude.toFixed(6) + '\n' + 'Longitude: ' + objectLongitude.toFixed(6);
+                }
             }
         }
-    }
 
-    // Update the location continuously
-    function updateLocation() {
-        navigator.geolocation.watchPosition(function(position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
+        // Update the location continuously
+        function updateLocation() {
+            navigator.geolocation.watchPosition(function (position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
 
-            updateLocationDisplay(latitude, longitude);
+                updateLocationDisplay(latitude, longitude);
+            });
+        }
+
+        // Call the function to start updating the location
+        updateLocation();
+
+        document.querySelector('a-scene').addEventListener('loaded', function () {
+            document.getElementById("Loading").style.display = "none";
         });
-    }
-
-    // Call the function to start updating the location
-    updateLocation();
-
-    document.querySelector('a-scene').addEventListener('loaded', function () {
-        document.getElementById("Loading").style.display = "none";
-    });
-</script>
+    </script>
 </body>
+
 </html>
