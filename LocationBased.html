@@ -53,18 +53,12 @@
       
           <a-camera id="camera" gps-camera rotation-reader></a-camera>
       
-           <!-- Image positioned at specific GPS coordinates -->
-            <a-entity
-                id="FSKTMParent"
-                gps-entity-place="latitude: 3.128011; longitude: 101.650516;"
-                look-at="#camera" 
-            >
-                <a-image
-                    src="#FSKTMLogo"
-                    scale="100 100 100"
-                    rotation="0 180 0"
-                ></a-image>
-            </a-entity>
+          <a-image
+                src="#FSKTMLogo"
+                scale="100 100 100" 
+                look-at="[gps-camera]"
+                gps-entity-place="latitude: 3.128011; longitude: 101.650516;" 
+            ></a-image>
 
           <!-- <a-entity
               id="FSKTM"
