@@ -38,63 +38,57 @@
             </div>
           </div>
 
-    <a-scene
-        renderer="logarithmicDepthBuffer: true;"
-        embedded
-        loading-screen="enabled: false;"
-        arjs="sourceType: webcam; debugUIEnabled: false;"
-    >
-        <a-assets>
-            <a-asset-item
-                id="animated-asset"
-                src="asset/LocationPin.glb"
-            ></a-asset-item>
-            <a-asset-item
-                id="FSKTM"
-                src="asset/FSKTMAnim3.glb"
-            ></a-asset-item>
-        </a-assets>
-
-        <a-entity
-            id="entity"
-            look-at="[gps-camera]"
-            animation-mixer="loop: repeat"
-            gltf-model="#animated-asset"
-            scale="10 10 10"
-            gps-entity-place="latitude: 3.126843; longitude: 101.650017;"
-            loaded="true"
-        ></a-entity>
-        <a-entity
-            id="FSKTM"
-            look-at="[gps-camera]"
-            animation-mixer="loop: repeat"
-            gltf-model="#FSKTM"
-            scale="30 30 30"
-            gps-entity-place="latitude: 3.128011; longitude: 101.650516;"
-            loaded="true"
-        ></a-entity>
-        <a-entity
-            id="UMCentral"
-            look-at="[gps-camera]"
-            animation-mixer="loop: repeat"
-            gltf-model="#animated-asset"
-            scale="10 10 10"
-            gps-entity-place="latitude: 3.121010; longitude: 101.653648;"
-            loaded="true"
-        ></a-entity>
-
-        <a-entity
-            id="kk12"
-            look-at="[gps-camera]"
-            animation-mixer="loop: repeat"
-            gltf-model="#animated-asset"
-            scale="10 10 10"
-            gps-entity-place="latitude: 3.125876; longitude: 101.661094;"
-            loaded="true"
-        ></a-entity>
-
-        <a-camera gps-camera rotation-reader></a-camera>
-    </a-scene>
+          <a-scene
+          renderer="logarithmicDepthBuffer: true;"
+          embedded
+          loading-screen="enabled: false;"
+          arjs="sourceType: webcam; debugUIEnabled: false;"
+      >
+          <a-assets>
+              <a-asset-item id="animated-asset" src="asset/LocationPin.glb"></a-asset-item>
+              <a-asset-item id="FSKTM" src="asset/FSKTMAnim3.glb"></a-asset-item>
+          </a-assets>
+      
+          <a-camera id="camera" gps-camera rotation-reader></a-camera>
+      
+          <a-entity
+              id="entity"
+              look-at="#camera"
+              animation-mixer="loop: repeat"
+              gltf-model="#animated-asset"
+              scale="10 10 10"
+              gps-entity-place="latitude: 3.126843; longitude: 101.650017;"
+              loaded="true"
+          ></a-entity>
+          <a-entity
+              id="FSKTM"
+              look-at="#camera"
+              animation-mixer="loop: repeat"
+              gltf-model="#FSKTM"
+              scale="30 30 30"
+              gps-entity-place="latitude: 3.128011; longitude: 101.650516;"
+              loaded="true"
+          ></a-entity>
+          <a-entity
+              id="UMCentral"
+              look-at="#camera"
+              animation-mixer="loop: repeat"
+              gltf-model="#animated-asset"
+              scale="10 10 10"
+              gps-entity-place="latitude: 3.121010; longitude: 101.653648;"
+              loaded="true"
+          ></a-entity>
+          <a-entity
+              id="kk12"
+              look-at="#camera"
+              animation-mixer="loop: repeat"
+              gltf-model="#animated-asset"
+              scale="10 10 10"
+              gps-entity-place="latitude: 3.125876; longitude: 101.661094;"
+              loaded="true"
+          ></a-entity>
+      </a-scene>
+      
 
     <script>
         document.getElementById("data-container").style.display = "block";
