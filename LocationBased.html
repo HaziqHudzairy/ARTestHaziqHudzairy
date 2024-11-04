@@ -51,7 +51,7 @@
             <a-asset-item id="FSKTM" src="asset/FSKTMAnim3.glb"></a-asset-item>
         </a-assets>
     
-        <a-camera id="camera" gps-camera rotation-reader></a-camera>
+        <a-camera gps-camera rotation-reader></a-camera>
     
         <!-- <a-image
             src="#FSKTMLogo"
@@ -62,14 +62,14 @@
 
         <a-plane
             src="#FSKTMLogo" 
-            look-at="#camera" 
+            look-at="[gps-camera]"
             scale="100 100 100"
             gps-entity-place="latitude: 3.128011; longitude: 101.650516;"
         ></a-plane>
 
         <a-entity
             id="FSKTM"
-            look-at="#camera"
+            look-at="[gps-camera]"
             animation-mixer="loop: repeat"
             gltf-model="#FSKTM"
             scale="30 30 30"
