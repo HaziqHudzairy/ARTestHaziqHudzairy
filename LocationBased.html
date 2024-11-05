@@ -301,6 +301,7 @@
 
         // Object to store timers for each entity
         let timers = {};
+        let isPopupShown = {}; // Object to track if the popup has been shown
 
         // Function to calculate distance between two GPS coordinates
         function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -340,7 +341,9 @@
                 const isFacingEntity = isCameraFacingEntity(entity);
 
                 if (isWithinDistance && isFacingEntity) {
-                    startPopupTimer(entity);
+                    if (!isPopupShown[entity.id]) {
+                        startPopupTimer(entity);
+                    }
                 } else {
                     clearPopupTimer(entity);
                 }
@@ -351,8 +354,15 @@
         function startPopupTimer(entity) {
             if (!timers[entity.id]) {
                 timers[entity.id] = setTimeout(() => {
+                    // Show the popup notification
                     alert(`You have pointed your camera to ${entity.id}.`);
+
+                    // Reset the timer and allow the popup to be shown again
+                    clearPopupTimer(entity);
+                    isPopupShown[entity.id] = false; // Allow it to be shown repeatedly
                 }, 5000); // 5 seconds
+
+                isPopupShown[entity.id] = true; // Mark the popup as shown
             }
         }
 
