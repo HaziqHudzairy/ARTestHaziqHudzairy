@@ -306,6 +306,8 @@
         var entities = document.querySelectorAll('a-entity'); // Adjust this if your entities have a specific class
         var closestEntity = null;
         var maxDotProduct = -1; // Initialize with the lowest possible value
+        var cameraPosition = new THREE.Vector3();
+        camera.getWorldPosition(cameraPosition);
 
         entities.forEach(function (entity) {
             var entityObject = entity.object3D;
@@ -313,28 +315,29 @@
             entityObject.getWorldPosition(entityPosition);
 
             // Calculate the vector from the camera to the entity
-            var cameraPosition = new THREE.Vector3();
-            camera.getWorldPosition(cameraPosition);
-
             var vectorToEntity = new THREE.Vector3();
             vectorToEntity.subVectors(entityPosition, cameraPosition).normalize();
 
             // Calculate the dot product to see how closely the camera is aligned with the entity
             var dotProduct = cameraDirection.dot(vectorToEntity);
 
-            // Check if this entity is the closest one the camera is facing
-            if (dotProduct > maxDotProduct) {
+            // Calculate the distance between the camera and the entity
+            var distance = cameraPosition.distanceTo(entityPosition);
+
+            // Check if this entity is the closest one the camera is facing and within 150 meters
+            if (dotProduct > maxDotProduct && distance <= 150) {
                 maxDotProduct = dotProduct;
                 closestEntity = entity;
             }
         });
 
-        // Check if the camera is facing any entity closely enough
+        // Check if the camera is facing any entity closely enough and within the distance
         if (maxDotProduct > 0.95) { // Adjust the threshold as needed
-            alert(`You have pointed your camera to ${closestEntity.id}.`);
+            alert(`You have pointed your camera to ${closestEntity.id} within 150 meters.`);
         } else {
-            console.log('Camera is not facing any entity closely enough.');
+            console.log('Camera is not facing any entity closely enough or is too far away.');
         }
+
 
 
 
