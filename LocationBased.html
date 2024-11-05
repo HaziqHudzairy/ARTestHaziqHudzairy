@@ -184,8 +184,8 @@
             gps-entity-place="latitude: 3.115498; longitude: 101.654873;"></a-entity>
         <a-entity id="entityKolej7" look-at="#camera" gltf-model="#locationPinKolej7" scale="8 8 8"
             gps-entity-place="latitude: 3.126104; longitude: 101.650415;"></a-entity>
-        <!-- <a-entity id="entityKolej8" look-at="#camera" gltf-model="#locationPinKolej8" scale="8 8 8"
-            gps-entity-place="latitude: 3.129827; longitude: 101.649728;"></a-entity> -->
+        <a-entity id="entityKolej8" look-at="#camera" gltf-model="#locationPinKolej8" scale="8 8 8"
+            gps-entity-place="latitude: 3.129827; longitude: 101.649728;"></a-entity>
         <a-entity id="entityKolej9" look-at="#camera" gltf-model="#locationPinKolej9" scale="8 8 8"
             gps-entity-place="latitude: 3.120319; longitude: 101.646064;"></a-entity>
         <a-entity id="entityKolej10" look-at="#camera" gltf-model="#locationPinKolej10" scale="8 8 8"
@@ -318,11 +318,33 @@
             return R * c; // Distance in meters
         }
 
-        // Function to check if the user is facing the entity (custom logic)
+        // Function to check if the user is facing the entity
         function isCameraFacingEntity(entity) {
-            // For simplicity, this function returns true.
-            // You should implement a more accurate check based on the camera's orientation.
-            return true; // Placeholder
+            const camera = document.querySelector('a-camera');
+            if (!camera || !entity) return false; // Return false if camera or entity is not available
+
+            // Get the positions of the camera and the entity
+            const cameraPosition = camera.object3D.position;
+            const entityPosition = entity.object3D.position;
+
+            // Calculate the direction vector from the camera to the entity
+            const directionToEntity = new THREE.Vector3();
+            directionToEntity.subVectors(entityPosition, cameraPosition).normalize();
+
+            // Get the camera's forward direction
+            const cameraDirection = new THREE.Vector3();
+            camera.object3D.getWorldDirection(cameraDirection);
+
+            // Calculate the angle between the two direction vectors
+            const angle = cameraDirection.angleTo(directionToEntity);
+
+            // Check if the angle is within a reasonable range (e.g., 30 degrees)
+            if (angle < Math.PI / 6) { // 30 degrees in radians
+                // alert(`You have pointed your camera to ${entity.id}.`);
+                return true;
+            } else {
+                return false;
+            }
         }
 
         // Watch user's location
@@ -336,10 +358,10 @@
                 const entityLongitude = parseFloat(entity.getAttribute('gps-entity-place').longitude);
 
                 const distance = calculateDistance(userLatitude, userLongitude, entityLatitude, entityLongitude);
-                const isWithinDistance = distance <= 100; // Check if within 100 meters
+                const isWithinDistance = distance <= 100; // Check if within 100 meters - okay
                 const isFacingEntity = isCameraFacingEntity(entity);
 
-                if (isWithinDistance && isFacingEntity) {
+                if (isFacingEntity) {
                     startPopupTimer(entity);
                 } else {
                     clearPopupTimer(entity);
@@ -352,7 +374,7 @@
             if (!timers[entity.id]) {
                 timers[entity.id] = setTimeout(() => {
                     alert(`You have pointed your camera to ${entity.id}.`);
-                }, 5000); // 5 seconds
+                }, 100000); // 5 seconds
             }
         }
 
