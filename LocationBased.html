@@ -299,9 +299,70 @@
         });
 
 
-        document.querySelectorAll('a-entity').forEach(entity => {
-            entity.setAttribute('distance-limit', 'maxDistance: 150');
+        // Object to store timers for each entity
+        let timers = {};
+
+        // Function to calculate distance between two GPS coordinates
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; // Earth radius in meters
+            const φ1 = (lat1 * Math.PI) / 180;
+            const φ2 = (lat2 * Math.PI) / 180;
+            const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+            const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+            const a =
+                Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            return R * c; // Distance in meters
+        }
+
+        // Function to check if the user is facing the entity (custom logic)
+        function isCameraFacingEntity(entity) {
+            // For simplicity, this function returns true.
+            // You should implement a more accurate check based on the camera's orientation.
+            return true; // Placeholder
+        }
+
+        // Watch user's location
+        navigator.geolocation.watchPosition(function (position) {
+            const userLatitude = position.coords.latitude;
+            const userLongitude = position.coords.longitude;
+
+            // Loop through each entity and calculate distance
+            document.querySelectorAll('a-entity[gps-entity-place]').forEach(entity => {
+                const entityLatitude = parseFloat(entity.getAttribute('gps-entity-place').latitude);
+                const entityLongitude = parseFloat(entity.getAttribute('gps-entity-place').longitude);
+
+                const distance = calculateDistance(userLatitude, userLongitude, entityLatitude, entityLongitude);
+                const isWithinDistance = distance <= 100; // Check if within 100 meters
+                const isFacingEntity = isCameraFacingEntity(entity);
+
+                if (isWithinDistance && isFacingEntity) {
+                    startPopupTimer(entity);
+                } else {
+                    clearPopupTimer(entity);
+                }
+            });
         });
+
+        // Function to start a timer for a popup notification
+        function startPopupTimer(entity) {
+            if (!timers[entity.id]) {
+                timers[entity.id] = setTimeout(() => {
+                    alert(`You have pointed your camera to ${entity.id}.`);
+                }, 5000); // 5 seconds
+            }
+        }
+
+        // Function to clear the timer
+        function clearPopupTimer(entity) {
+            if (timers[entity.id]) {
+                clearTimeout(timers[entity.id]);
+                delete timers[entity.id];
+            }
+        }
 
 
     </script>
