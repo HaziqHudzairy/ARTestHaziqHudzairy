@@ -299,15 +299,20 @@
         });
 
 
+        // Get the camera's direction
         var camera = document.querySelector('[camera]').object3D;
         var cameraDirection = new THREE.Vector3();
         camera.getWorldDirection(cameraDirection);
 
-        var entities = document.querySelectorAll('a-entity'); // Adjust this if your entities have a specific class
-        var closestEntity = null;
-        var maxDotProduct = -1; // Initialize with the lowest possible value
+        // Get the camera's current position
         var cameraPosition = new THREE.Vector3();
         camera.getWorldPosition(cameraPosition);
+
+        // Query all entities in the AR scene
+        var entities = document.querySelectorAll('a-entity'); // Adjust this if your entities have a specific class or tag
+
+        var closestEntity = null;
+        var maxDotProduct = -1; // Initialize with the lowest possible value
 
         entities.forEach(function (entity) {
             var entityObject = entity.object3D;
@@ -325,7 +330,7 @@
             var distance = cameraPosition.distanceTo(entityPosition);
 
             // Check if this entity is the closest one the camera is facing and within 150 meters
-            if (dotProduct > maxDotProduct && distance <= 150) {
+            if (dotProduct > maxDotProduct && distance <= 500) {
                 maxDotProduct = dotProduct;
                 closestEntity = entity;
             }
