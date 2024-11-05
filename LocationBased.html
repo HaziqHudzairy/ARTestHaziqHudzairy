@@ -237,38 +237,27 @@
 
         <!-- Sports and Recreation Locations -->
         <a-entity id="entityUMWallSquash" look-at="#camera" gltf-model="#locationPinUMWallSquash" scale="8 8 8"
-            gps-entity-place="latitude: 3.131988; longitude: 101.658011;" 
-            ></a-entity>
+            gps-entity-place="latitude: 3.131988; longitude: 101.658011;"></a-entity>
         <a-entity id="entityVarsityGreen" look-at="#camera" gltf-model="#locationPinVarsityGreen" scale="8 8 8"
-            gps-entity-place="latitude: 3.120477; longitude: 101.659148;"
-            ></a-entity>
+            gps-entity-place="latitude: 3.120477; longitude: 101.659148;"></a-entity>
         <a-entity id="entityUMPark" look-at="#camera" gltf-model="#locationPinUMPark" scale="8 8 8"
-            gps-entity-place="latitude: 3.119047; longitude: 101.660017;" 
-            ></a-entity>
+            gps-entity-place="latitude: 3.119047; longitude: 101.660017;"></a-entity>
         <a-entity id="entityPadangC" look-at="#camera" gltf-model="#locationPinPadangC" scale="8 8 8"
-            gps-entity-place="latitude: 3.120177; longitude: 101.660135;" 
-            ></a-entity>
+            gps-entity-place="latitude: 3.120177; longitude: 101.660135;"></a-entity>
         <a-entity id="entityKayaks" look-at="#camera" gltf-model="#locationPinKayaks" scale="8 8 8"
-            gps-entity-place="latitude: 3.119374; longitude: 101.658671;" 
-            ></a-entity>
+            gps-entity-place="latitude: 3.119374; longitude: 101.658671;"></a-entity>
         <a-entity id="entitySwimmingPool" look-at="#camera" gltf-model="#locationPinSwimmingPool" scale="8 8 8"
-            gps-entity-place="latitude: 3.128806; longitude: 101.659803;"
-            ></a-entity>
+            gps-entity-place="latitude: 3.128806; longitude: 101.659803;"></a-entity>
         <a-entity id="entityUMSportsCentre" look-at="#camera" gltf-model="#locationPinUMSportsCentre" scale="8 8 8"
-            gps-entity-place="latitude: 3.129872; longitude: 101.660018;"
-            ></a-entity>
+            gps-entity-place="latitude: 3.129872; longitude: 101.660018;"></a-entity>
         <a-entity id="entityUMArenaStadium" look-at="#camera" gltf-model="#locationPinUMArenaStadium" scale="8 8 8"
-            gps-entity-place="latitude: 3.130895; longitude: 101.659690;" 
-            ></a-entity>
+            gps-entity-place="latitude: 3.130895; longitude: 101.659690;"></a-entity>
         <a-entity id="entityRimbaIlmu" look-at="#camera" gltf-model="#locationPinRimbaIlmu" scale="8 8 8"
-            gps-entity-place="latitude: 3.130697; longitude: 101.658203;" 
-            ></a-entity>
+            gps-entity-place="latitude: 3.130697; longitude: 101.658203;"></a-entity>
         <a-entity id="entityLadangMini" look-at="#camera" gltf-model="#locationPinLadangMini" scale="8 8 8"
-            gps-entity-place="latitude: 3.128190; longitude: 101.660865;" 
-            ></a-entity>
+            gps-entity-place="latitude: 3.128190; longitude: 101.660865;"></a-entity>
         <a-entity id="entityMustafaRiver" look-at="#camera" gltf-model="#locationPinMustafaRiver" scale="8 8 8"
-            gps-entity-place="latitude: 3.125919; longitude: 101.658998;" 
-            ></a-entity>
+            gps-entity-place="latitude: 3.125919; longitude: 101.658998;"></a-entity>
 
     </a-scene>
 
@@ -308,6 +297,13 @@
         document.querySelector('a-scene').addEventListener('loaded', function () {
             document.getElementById("Loading").style.display = "none";
         });
+
+
+        document.querySelectorAll('a-entity').forEach(entity => {
+            entity.setAttribute('distance-limit', 'maxDistance: 150');
+        });
+
+
     </script>
 </body>
 
