@@ -319,17 +319,31 @@
             return R * c; // Distance in meters
         }
 
-        // Function to check if the user is facing the entity (custom logic)
-        function isCameraFacingEntity(entity) {
-            // For simplicity, this function returns true.
-            // You should implement a more accurate check based on the camera's orientation.
-            return true; // Placeholder
+        // Function to check if the user is facing the entity
+        function isCameraFacingEntity(camera, entity) {
+            const cameraPosition = camera.object3D.position;
+            const entityPosition = entity.object3D.position;
+
+            // Calculate the direction vector from the camera to the entity
+            const direction = new THREE.Vector3();
+            direction.subVectors(entityPosition, cameraPosition).normalize();
+
+            // Get the camera's forward direction
+            const cameraDirection = new THREE.Vector3();
+            camera.object3D.getWorldDirection(cameraDirection);
+
+            // Calculate the angle between the two direction vectors
+            const angle = cameraDirection.angleTo(direction);
+
+            // Check if the angle is within a reasonable range (e.g., 30 degrees)
+            return angle < (Math.PI / 6); // 30 degrees in radians
         }
 
         // Watch user's location
         navigator.geolocation.watchPosition(function (position) {
             const userLatitude = position.coords.latitude;
             const userLongitude = position.coords.longitude;
+            const camera = document.querySelector('a-camera');
 
             // Loop through each entity and calculate distance
             document.querySelectorAll('a-entity[gps-entity-place]').forEach(entity => {
@@ -338,7 +352,7 @@
 
                 const distance = calculateDistance(userLatitude, userLongitude, entityLatitude, entityLongitude);
                 const isWithinDistance = distance <= 100; // Check if within 100 meters
-                const isFacingEntity = isCameraFacingEntity(entity);
+                const isFacingEntity = isCameraFacingEntity(camera, entity);
 
                 if (isWithinDistance && isFacingEntity) {
                     if (!isPopupShown[entity.id]) {
