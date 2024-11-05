@@ -139,8 +139,8 @@
             gps-entity-place="latitude: 3.118005; longitude: 101.660850;"></a-entity>
         <a-entity id="entityScience" look-at="#camera" gltf-model="#locationPinScience" scale="8 8 8"
             gps-entity-place="latitude: 3.121827; longitude: 101.653875;"></a-entity>
-        <a-entity id="entityCS" look-at="#camera" gltf-model="#locationPinCS" animation-mixer="clip: *" scale="800 800 800"
-            gps-entity-place="latitude: 3.127979; longitude: 101.650565;"></a-entity>
+        <a-entity id="entityCS" look-at="#camera" gltf-model="#locationPinCS" animation-mixer="clip: *"
+            scale="800 800 800" gps-entity-place="latitude: 3.127979; longitude: 101.650565;"></a-entity>
         <a-entity id="entityBusiness" look-at="#camera" gltf-model="#locationPinBusiness" scale="8 8 8"
             gps-entity-place="latitude: 3.118396; longitude: 101.652676;"></a-entity>
         <a-entity id="entityArts" look-at="#camera" gltf-model="#locationPinArts" scale="8 8 8"
@@ -299,6 +299,45 @@
         });
 
 
+        var camera = document.querySelector('[camera]').object3D;
+        var cameraDirection = new THREE.Vector3();
+        camera.getWorldDirection(cameraDirection);
+
+        var entities = document.querySelectorAll('a-entity'); // Adjust this if your entities have a specific class
+        var closestEntity = null;
+        var maxDotProduct = -1; // Initialize with the lowest possible value
+
+        entities.forEach(function (entity) {
+            var entityObject = entity.object3D;
+            var entityPosition = new THREE.Vector3();
+            entityObject.getWorldPosition(entityPosition);
+
+            // Calculate the vector from the camera to the entity
+            var cameraPosition = new THREE.Vector3();
+            camera.getWorldPosition(cameraPosition);
+
+            var vectorToEntity = new THREE.Vector3();
+            vectorToEntity.subVectors(entityPosition, cameraPosition).normalize();
+
+            // Calculate the dot product to see how closely the camera is aligned with the entity
+            var dotProduct = cameraDirection.dot(vectorToEntity);
+
+            // Check if this entity is the closest one the camera is facing
+            if (dotProduct > maxDotProduct) {
+                maxDotProduct = dotProduct;
+                closestEntity = entity;
+            }
+        });
+
+        // Check if the camera is facing any entity closely enough
+        if (maxDotProduct > 0.95) { // Adjust the threshold as needed
+            alert(`You have pointed your camera to ${closestEntity.id}.`);
+        } else {
+            console.log('Camera is not facing any entity closely enough.');
+        }
+
+
+
         // Object to store timers for each entity
         let timers = {};
 
@@ -320,31 +359,7 @@
 
         // Function to check if the user is facing the entity
         function isCameraFacingEntity(entity) {
-            const camera = document.querySelector('a-camera');
-            if (!camera || !entity) return false; // Return false if camera or entity is not available
-
-            // Get the positions of the camera and the entity
-            const cameraPosition = camera.object3D.position;
-            const entityPosition = entity.object3D.position;
-
-            // Calculate the direction vector from the camera to the entity
-            const directionToEntity = new THREE.Vector3();
-            directionToEntity.subVectors(entityPosition, cameraPosition).normalize();
-
-            // Get the camera's forward direction
-            const cameraDirection = new THREE.Vector3();
-            camera.object3D.getWorldDirection(cameraDirection);
-
-            // Calculate the angle between the two direction vectors
-            const angle = cameraDirection.angleTo(directionToEntity);
-
-            // Check if the angle is within a reasonable range (e.g., 30 degrees)
-            if (angle < Math.PI / 6) { // 30 degrees in radians
-                // alert(`You have pointed your camera to ${entity.id}.`);
-                return true;
-            } else {
-                return false;
-            }
+            return true;
         }
 
         // Watch user's location
