@@ -50,7 +50,7 @@
             <img id="FSKTMLogo" src="asset/logo/Logo FSKTM.png">
             <a-asset-item id="animated-asset" src="asset/LocationPin.glb"></a-asset-item>
             <a-asset-item id="FSKTM" src="asset/FSKTMAnim3.glb"></a-asset-item>
-
+            
             <!-- Faculties -->
             <a-asset-item id="locationPinMedicine" src="asset/gltf_file/Fac_Medicine_Checkpoint.glb"></a-asset-item>
             <a-asset-item id="locationPinEngineering" src="asset/gltf_file/Fac_Engineering_Checkpoint.glb"></a-asset-item>
@@ -130,6 +130,8 @@
         gps-entity-place="latitude: 3.128011; longitude: 101.650516;" 
     ></a-image> -->
 
+    <a-entity id="entityMedicine" look-at="#camera" gltf-model="#locationPinMedicine" animation-mixer="clip: *" scale="800 800 800"
+            gps-entity-place="latitude: 1.903036; longitude: 102.851962;"></a-entity>
         <!-- Faculty Locations -->
         <a-entity id="entityMedicine" look-at="#camera" gltf-model="#locationPinMedicine" animation-mixer="clip: *" scale="800 800 800"
             gps-entity-place="latitude: 3.115828; longitude: 101.653418;"></a-entity>
