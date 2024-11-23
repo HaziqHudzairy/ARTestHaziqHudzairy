@@ -400,8 +400,8 @@
                     // Update the user's location display
                     updateLocationDisplay(latitude, longitude);
 
-                    // Check if the user is near any entity (within a 5-meter radius)
-                    checkProximity(latitude, longitude, entities, 5);
+                    // Check if the user is near any entity (within a 25-meter radius)
+                    checkProximity(latitude, longitude, entities, 30);
                 },
                 function (error) {
                     // Handle different types of errors and show system alert popup
