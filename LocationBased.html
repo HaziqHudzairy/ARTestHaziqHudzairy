@@ -293,25 +293,53 @@
             }
         }
 
-        // Update the location continuously
+        // Update the location continuously with system popup for errors
         function updateLocation() {
-            navigator.geolocation.watchPosition(function (position) {
-                var latitude = position.coords.latitude;
-                var longitude = position.coords.longitude;
+            navigator.geolocation.watchPosition(
+                function (position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
 
-                updateLocationDisplay(latitude, longitude);
-            });
+                    updateLocationDisplay(latitude, longitude);
+                },
+                function (error) {
+                    // Handle different types of errors and show system alert popup
+                    let message = "";
+                    switch (error.code) {
+                        case 1:
+                            message = "Permission denied. Please enable location access in your browser settings.";
+                            break;
+                        case 2:
+                            message = "Position unavailable. Please check your GPS or internet connection.";
+                            break;
+                        case 3:
+                            message = "Request timed out. Please try again.";
+                            break;
+                        default:
+                            message = "An unknown error occurred. Please refresh and try again.";
+                            break;
+                    }
+                    // Display system alert popup
+                    alert(message);
+                },
+                {
+                    enableHighAccuracy: true,
+                    maximumAge: 0,
+                    timeout: 5000
+                }
+            );
         }
 
         // Call the function to start updating the location
         updateLocation();
+
 
         document.querySelector('a-scene').addEventListener('loaded', function () {
             document.getElementById("Loading").style.display = "none";
         });
 
 
-        
+
 
 
     </script>
