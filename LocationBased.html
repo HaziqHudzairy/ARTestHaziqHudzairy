@@ -12,11 +12,6 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="Styles.css">
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
 </head>
 
 <body style="margin: 0; overflow: hidden;">
@@ -83,8 +78,7 @@
     transition: opacity 0.5s ease-in-out;
     "></div>
 
-    <!-- newly added -->
-    <div id="map" style="width: 512px; height: 512px; display: none;"></div>
+
 
     <a-scene renderer="logarithmicDepthBuffer: true;" embedded loading-screen="enabled: false;"
         arjs="sourceType: webcam; debugUIEnabled: false;">
@@ -168,12 +162,6 @@
                 <a-asset-item id="locationPinLadangMini" src="asset/LocationPin.glb"></a-asset-item>
                 <a-asset-item id="locationPinMustafaRiver" src="asset/LocationPin.glb"></a-asset-item>
         </a-assets>
-
-
-        <!-- OpenStreetMap Layer -->
-        <a-plane id="osm-plane" gps-entity-place="latitude: 3.128011; longitude: 101.650516" height="20" width="20"
-            rotation="-90 0 0" material="shader: canvas; src: #map"></a-plane>
-
 
         <a-camera gps-camera rotation-reader fov="20" near="0.1" far="1000"></a-camera>
 
@@ -574,38 +562,57 @@
         startCameraFacingCheck();
 
 
+        // Your Mapbox Token
+        const MAPBOX_TOKEN = 'sk.eyJ1IjoiaGF6aXFodWR6YWlyeTAyIiwiYSI6ImNtM3VvYzduZDBqazgyanIzOTdibXM1c3IifQ.IRA9AZlLo-eF9uXsQkzdmg';
 
+        // Define start and end points
+        const start = [1.903036, 102.851962]; // Example start point
+        const end = [1.902846, 102.851071]; // Example end point
 
+        // Fetch route data from Mapbox Directions API
+        async function fetchRoute(start, end) {
+            const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${start[1]},${start[0]};${end[1]},${end[0]}?geometries=geojson&access_token=${MAPBOX_TOKEN}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.routes[0].geometry.coordinates; // Array of waypoints
+            } catch (error) {
+                console.error('Error fetching route:', error);
+            }
+        }
 
+        // Render AR markers for each waypoint
+        async function renderRoute() {
+            const route = await fetchRoute(start, end); // Get route waypoints
+            if (!route) return;
 
-        // Initialize Leaflet Map
-        const map = L.map('map').setView([3.128011, 101.650516], 18);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
+            // Iterate through waypoints and create markers
+            route.forEach(([lon, lat], index) => {
+                const marker = document.createElement('a-entity');
+                marker.setAttribute('gps-entity-place', `latitude: ${lat}; longitude: ${lon}`);
+                marker.setAttribute('geometry', 'primitive: sphere; radius: 0.3');
+                marker.setAttribute('material', 'color: blue');
+                marker.setAttribute('scale', '1 1 1');
+                marker.setAttribute('look-at', '[gps-camera]');
+                marker.setAttribute('animation', `property: scale; to: 1.5 1.5 1.5; loop: true; dur: 2000`);
+                document.querySelector('a-scene').appendChild(marker);
 
-        // Update the map view dynamically as the user moves
-        navigator.geolocation.watchPosition(function (position) {
-            const userLat = position.coords.latitude;
-            const userLon = position.coords.longitude;
-            map.setView([userLat, userLon], 18);
-        });
-
-        // Capture the Leaflet map as a texture and update the A-Frame plane
-        const osmPlane = document.querySelector('#osm-plane');
-        const updateTexture = () => {
-            html2canvas(map.getContainer()).then(canvas => {
-                const textureUrl = canvas.toDataURL();
-                osmPlane.setAttribute('material', 'src', textureUrl);
+                // Add labels or text for the first/last marker
+                if (index === 0 || index === route.length - 1) {
+                    const label = document.createElement('a-text');
+                    label.setAttribute('value', index === 0 ? 'Start' : 'End');
+                    label.setAttribute('gps-entity-place', `latitude: ${lat}; longitude: ${lon}`);
+                    label.setAttribute('color', 'white');
+                    label.setAttribute('scale', '10 10 10');
+                    document.querySelector('a-scene').appendChild(label);
+                }
             });
-        };
+        }
 
-        // Update the texture periodically
-        setInterval(updateTexture, 1000);
-
-        // Ensure the map initializes properly
-        map.on('load', updateTexture);
-
+        // Call the render function after the scene is loaded
+        document.querySelector('a-scene').addEventListener('loaded', function () {
+            renderRoute(); // Render route markers
+        });
 
 
     </script>
