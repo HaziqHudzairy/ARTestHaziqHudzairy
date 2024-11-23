@@ -61,6 +61,24 @@
     ">
     </div>
 
+    <div id="camera-facing-message" style="
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    display: none;
+    z-index: 1000;
+    transition: opacity 0.5s ease-in-out;
+    "></div>
+
+
 
     <a-scene renderer="logarithmicDepthBuffer: true;" embedded loading-screen="enabled: false;"
         arjs="sourceType: webcam; debugUIEnabled: false;">
@@ -155,7 +173,7 @@
     ></a-image> -->
         <a-entity id="home" look-at="#camera" gltf-model="#locationPinMedicine" animation-mixer="clip: *"
             scale="800 800 800" gps-entity-place="latitude: 1.903036; longitude: 102.851962;"></a-entity>
-            <a-entity id="jiran" look-at="#camera" gltf-model="#locationPinMedicine" animation-mixer="clip: *"
+        <a-entity id="jiran" look-at="#camera" gltf-model="#locationPinMedicine" animation-mixer="clip: *"
             scale="800 800 800" gps-entity-place="latitude: 1.902846; longitude: 102.851071;"></a-entity>
         <!-- Faculty Locations -->
         <a-entity id="entityMedicine" look-at="#camera" gltf-model="#locationPinMedicine" animation-mixer="clip: *"
@@ -486,37 +504,63 @@
         });
 
 
+        //----------------------------------------------------------------------------------------------------------//
+        function showCameraFacingMessage(message) {
+            const facingMessageDiv = document.getElementById("camera-facing-message");
+            facingMessageDiv.innerText = message;
+            facingMessageDiv.style.display = "block";
+            facingMessageDiv.style.opacity = "1"; // Fade-in effect
+        }
+
+        function hideCameraFacingMessage() {
+            const facingMessageDiv = document.getElementById("camera-facing-message");
+            facingMessageDiv.style.opacity = "0"; // Fade-out effect
+            setTimeout(() => {
+                facingMessageDiv.style.display = "none";
+            }, 500); // Match this timeout with the CSS transition duration
+        }
 
         function checkCameraFacing(camera, entities) {
             const cameraDirection = new THREE.Vector3();
             camera.object3D.getWorldDirection(cameraDirection);
 
+            const cameraPosition = new THREE.Vector3();
+            camera.object3D.getWorldPosition(cameraPosition);
+
+            let isFacingAnyEntity = false;
+
             entities.forEach(entity => {
                 const entityPosition = new THREE.Vector3(
-                    entity.longitude,
-                    entity.height,
-                    entity.latitude
+                    entity.longitude, // Placeholder for entity X position
+                    entity.height, // Placeholder for Y (height)
+                    entity.latitude // Placeholder for entity Z position
                 );
 
-                const toEntityDirection = new THREE.Vector3().subVectors(entityPosition, camera.object3D.position).normalize();
+                const toEntityDirection = new THREE.Vector3().subVectors(entityPosition, cameraPosition).normalize();
 
                 const dotProduct = cameraDirection.dot(toEntityDirection);
 
                 // Check if camera is pointing towards the entity
-                if (dotProduct > 0.99) { // Adjust threshold for accuracy
-                    alert(`You are facing ${entity.name}`);
+                if (dotProduct > 0.95) { // Adjust threshold for precision
+                    showCameraFacingMessage(`You are facing ${entity.name}`);
+                    isFacingAnyEntity = true;
                 }
             });
+
+            if (!isFacingAnyEntity) {
+                hideCameraFacingMessage();
+            }
         }
-        // Continuously check if the user is facing an entity
-        function startCheckingCameraFacing() {
-            const camera = document.querySelector("a-camera"); // Get the A-Frame camera
+
+        function startCameraFacingCheck() {
+            const camera = document.querySelector("a-camera");
             setInterval(() => {
                 checkCameraFacing(camera, entities);
             }, 500); // Check every 500ms
         }
 
-        startCheckingCameraFacing();
+        startCameraFacingCheck();
+
 
 
 
