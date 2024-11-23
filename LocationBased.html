@@ -153,9 +153,10 @@
         look-at="[gps-camera]"
         gps-entity-place="latitude: 3.128011; longitude: 101.650516;" 
     ></a-image> -->
-
         <a-entity id="home" look-at="#camera" gltf-model="#locationPinMedicine" animation-mixer="clip: *"
             scale="800 800 800" gps-entity-place="latitude: 1.903036; longitude: 102.851962;"></a-entity>
+            <a-entity id="jiran" look-at="#camera" gltf-model="#locationPinMedicine" animation-mixer="clip: *"
+            scale="800 800 800" gps-entity-place="latitude: 1.902846; longitude: 102.851071;"></a-entity>
         <!-- Faculty Locations -->
         <a-entity id="entityMedicine" look-at="#camera" gltf-model="#locationPinMedicine" animation-mixer="clip: *"
             scale="800 800 800" gps-entity-place="latitude: 3.115828; longitude: 101.653418;"></a-entity>
@@ -366,6 +367,7 @@
         // Define your entities with coordinates and names
         const entities = [
             { name: "Home", latitude: 1.903036, longitude: 102.851962, height: 20 },
+            { name: "Jiran", latitude: 1.902846, longitude: 102.851071, height: 20 },
             { name: "Medicine Faculty", latitude: 3.115828, longitude: 101.653418, height: 20 },
             { name: "Engineering Faculty", latitude: 3.117802, longitude: 101.655650, height: 20 },
             { name: "Law Faculty", latitude: 3.118005, longitude: 101.660850, height: 20 },
@@ -483,7 +485,7 @@
             document.getElementById("Loading").style.display = "none";
         });
 
-        
+
 
         function checkCameraFacing(camera, entities) {
             const cameraDirection = new THREE.Vector3();
