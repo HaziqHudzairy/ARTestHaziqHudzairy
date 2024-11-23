@@ -43,6 +43,25 @@
         </div>
     </div>
 
+    <div id="proximity-message" style="
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    display: none;
+    z-index: 1000;
+    transition: opacity 0.5s ease-in-out;
+    ">
+    </div>
+
+
     <a-scene renderer="logarithmicDepthBuffer: true;" embedded loading-screen="enabled: false;"
         arjs="sourceType: webcam; debugUIEnabled: false;">
         <a-assets>
@@ -309,15 +328,40 @@
             return R * c; // Distance in meters
         }
 
+        // Function to show the proximity message
+        function showProximityMessage(message) {
+            const proximityDiv = document.getElementById("proximity-message");
+            proximityDiv.innerText = message;
+            proximityDiv.style.display = "block";
+            proximityDiv.style.opacity = "1"; // Fade-in effect
+        }
+
+        // Function to hide the proximity message
+        function hideProximityMessage() {
+            const proximityDiv = document.getElementById("proximity-message");
+            proximityDiv.style.opacity = "0"; // Fade-out effect
+            setTimeout(() => {
+                proximityDiv.style.display = "none";
+            }, 500); // Match this timeout with the CSS transition duration
+        }
+
         // Check if user is near any entity
         function checkProximity(userLat, userLon, entities, radius) {
+            let isNearAnyEntity = false;
             entities.forEach(entity => {
                 const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
                 if (distance <= radius) {
-                    alert(`You are near ${entity.name}`);
+                    isNearAnyEntity = true;
+                    showProximityMessage(`You are near ${entity.name}`);
                 }
             });
+
+            // Hide the message if the user is not near any entity
+            if (!isNearAnyEntity) {
+                hideProximityMessage();
+            }
         }
+
 
         // Define your entities with coordinates and names
         const entities = [
