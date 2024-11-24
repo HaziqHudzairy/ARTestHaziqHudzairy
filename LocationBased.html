@@ -631,46 +631,6 @@
             });
         }
 
-        function calculateAngle(lat1, lon1, lat2, lon2, lat3, lon3) {
-            // Calculate direction vectors
-            const vector1 = [lat2 - lat1, lon2 - lon1];
-            const vector2 = [lat3 - lat2, lon3 - lon2];
-
-            // Calculate dot product and magnitude
-            const dotProduct = vector1[0] * vector2[0] + vector1[1] * vector2[1];
-            const mag1 = Math.sqrt(vector1[0] ** 2 + vector1[1] ** 2);
-            const mag2 = Math.sqrt(vector2[0] ** 2 + vector2[1] ** 2);
-
-            // Calculate angle in degrees
-            return Math.acos(dotProduct / (mag1 * mag2)) * (180 / Math.PI);
-        }
-
-        function findTurnPoints(route, angleThreshold = 45) {
-            const turnPoints = [];
-            for (let i = 1; i < route.length - 1; i++) {
-                const [lon1, lat1] = route[i - 1];
-                const [lon2, lat2] = route[i];
-                const [lon3, lat3] = route[i + 1];
-                const angle = calculateAngle(lat1, lon1, lat2, lon2, lat3, lon3);
-
-                if (angle <= angleThreshold) {
-                    turnPoints.push(route[i]);
-                }
-            }
-            return turnPoints;
-        }
-
-        function addTurnMarkers(turnPoints) {
-            turnPoints.forEach(([lon, lat]) => {
-                const arrow = document.createElement('a-entity');
-                arrow.setAttribute('gps-entity-place', `latitude: ${lat}; longitude: ${lon}`);
-                arrow.setAttribute('geometry', 'primitive: cone; radiusBottom: 0.5; height: 1');
-                arrow.setAttribute('material', 'color: red');
-                arrow.setAttribute('scale', '1 1 1');
-                arrow.setAttribute('look-at', '[gps-camera]');
-                document.querySelector('a-scene').appendChild(arrow);
-            });
-        }
 
         // Render AR markers for the densified route
         async function renderRoute() {
@@ -692,9 +652,6 @@
                 marker.classList.add('route-marker'); // Add a unique class
                 document.querySelector('a-scene').appendChild(marker);
             });
-
-            // Add arrows for turns
-            addTurnMarkers(turnPoints);
 
             // Add Start and End labels
             const [startLon, startLat] = route[0];
