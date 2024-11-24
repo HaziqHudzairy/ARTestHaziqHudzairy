@@ -594,14 +594,14 @@
             // Render line connecting waypoints
             const line = document.createElement('a-entity');
             line.setAttribute('gps-polyline', `line: ${route.map(([lon, lat]) => `${lat} ${lon}`).join(',')}`);
-            line.setAttribute('material', 'color: yellow; opacity: 0.8; lineWidth: 3;');
+            line.setAttribute('material', 'color: blue; opacity: 0.8; lineWidth: 10;');
             scene.appendChild(line);
 
             // Add markers for waypoints
             route.forEach(([lon, lat], index) => {
                 const marker = document.createElement('a-entity');
                 marker.setAttribute('gps-entity-place', `latitude: ${lat}; longitude: ${lon}`);
-                marker.setAttribute('geometry', 'primitive: sphere; radius: 0.5');
+                marker.setAttribute('geometry', 'primitive: sphere; radius: 2');
                 marker.setAttribute('material', 'color: red');
                 marker.setAttribute('animation', 'property: scale; to: 1.2 1.2 1.2; loop: true; dur: 1500;');
                 scene.appendChild(marker);
