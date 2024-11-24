@@ -575,39 +575,102 @@
             try {
                 const response = await fetch(url);
                 const data = await response.json();
-                return data.routes[0].geometry.coordinates; // Array of waypoints
+                if (data.routes && data.routes.length > 0) {
+                    return data.routes[0].geometry.coordinates; // Array of waypoints
+                } else {
+                    console.error("No route found.");
+                    return [];
+                }
             } catch (error) {
                 console.error('Error fetching route:', error);
+                return [];
             }
         }
 
-        // Render AR markers for each waypoint
-        async function renderRoute() {
-            const route = await fetchRoute(start, end); // Get route waypoints
-            if (!route) return;
+        // Function to interpolate points along the polyline
+        function densifyPolyline(polyline, interval) {
+            const points = [];
+            for (let i = 0; i < polyline.length - 1; i++) {
+                const [lon1, lat1] = polyline[i];
+                const [lon2, lat2] = polyline[i + 1];
+                const segmentPoints = interpolatePoints(lat1, lon1, lat2, lon2, interval); // 1 meter interval
+                points.push(...segmentPoints);
+            }
+            return points;
+        }
 
-            // Iterate through waypoints and create markers
-            route.forEach(([lon, lat], index) => {
-                const marker = document.createElement('a-entity');
-                marker.setAttribute('gps-entity-place', `latitude: ${lat}; longitude: ${lon}`);
-                marker.setAttribute('geometry', 'primitive: sphere; radius: 1');
-                marker.setAttribute('material', 'color: blue');
-                marker.setAttribute('scale', '1 1 1');
-                marker.setAttribute('look-at', '[gps-camera]');
-                marker.setAttribute('animation', `property: scale; to: 1.5 1.5 1.5; loop: true; dur: 2000`);
-                document.querySelector('a-scene').appendChild(marker);
+        // Helper function to interpolate points
+        function interpolatePoints(lat1, lon1, lat2, lon2, interval) {
+            const points = [];
+            const R = 6371e3; // Earth’s radius in meters
+            const φ1 = (lat1 * Math.PI) / 180;
+            const φ2 = (lat2 * Math.PI) / 180;
+            const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+            const Δλ = ((lon2 - lon1) * Math.PI) / 180;
 
-                // Add labels or text for the first/last marker
-                if (index === 0 || index === route.length - 1) {
-                    const label = document.createElement('a-text');
-                    label.setAttribute('value', index === 0 ? 'Start' : 'End');
-                    label.setAttribute('gps-entity-place', `latitude: ${lat}; longitude: ${lon}`);
-                    label.setAttribute('color', 'white');
-                    label.setAttribute('scale', '10 10 10');
-                    document.querySelector('a-scene').appendChild(label);
-                }
+            const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distance = R * c; // Distance in meters
+
+            const steps = Math.ceil(distance / interval); // Number of markers
+            for (let i = 0; i <= steps; i++) {
+                const fraction = i / steps;
+                const lat = lat1 + (lat2 - lat1) * fraction;
+                const lon = lon1 + (lon2 - lon1) * fraction;
+                points.push([lon, lat]);
+            }
+            return points;
+        }
+
+        // Clear existing markers
+        function clearMarkers() {
+            const scene = document.querySelector('a-scene');
+            scene.querySelectorAll('a-entity, a-text').forEach((entity) => {
+                entity.parentNode.removeChild(entity);
             });
         }
+
+        // Render AR markers for the densified route
+        async function renderRoute() {
+            clearMarkers(); // Remove any existing markers
+
+            const route = await fetchRoute(start, end); // Get route waypoints
+            if (!route || route.length === 0) return;
+
+            // Densify the polyline from Mapbox geometry
+            const densifiedPoints = densifyPolyline(route, 1); // 1 meter interval
+
+            // Place markers for each interpolated point
+            densifiedPoints.forEach(([lon, lat]) => {
+                const marker = document.createElement('a-entity');
+                marker.setAttribute('gps-entity-place', `latitude: ${lat}; longitude: ${lon}`);
+                marker.setAttribute('geometry', 'primitive: sphere; radius: 0.5');
+                marker.setAttribute('material', 'color: green');
+                marker.setAttribute('scale', '0.5 0.5 0.5');
+                marker.setAttribute('look-at', '[gps-camera]');
+                document.querySelector('a-scene').appendChild(marker);
+            });
+
+            // Add "Start" and "End" labels
+            const [startLon, startLat] = route[0];
+            const startLabel = document.createElement('a-text');
+            startLabel.setAttribute('value', 'Start');
+            startLabel.setAttribute('gps-entity-place', `latitude: ${startLat}; longitude: ${startLon}`);
+            startLabel.setAttribute('color', 'white');
+            startLabel.setAttribute('scale', '10 10 10');
+            document.querySelector('a-scene').appendChild(startLabel);
+
+            const [endLon, endLat] = route[route.length - 1];
+            const endLabel = document.createElement('a-text');
+            endLabel.setAttribute('value', 'End');
+            endLabel.setAttribute('gps-entity-place', `latitude: ${endLat}; longitude: ${endLon}`);
+            endLabel.setAttribute('color', 'white');
+            endLabel.setAttribute('scale', '10 10 10');
+            document.querySelector('a-scene').appendChild(endLabel);
+        }
+
+
 
         // Call the render function after the scene is loaded
         document.querySelector('a-scene').addEventListener('loaded', function () {
