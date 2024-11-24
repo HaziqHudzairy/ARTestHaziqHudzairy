@@ -626,22 +626,22 @@
         // Clear existing markers
         function clearMarkers() {
             const scene = document.querySelector('a-scene');
-            scene.querySelectorAll('a-entity, a-text').forEach((entity) => {
-                entity.parentNode.removeChild(entity);
+            scene.querySelectorAll('.route-marker').forEach((marker) => {
+                marker.parentNode.removeChild(marker);
             });
         }
 
+
         // Render AR markers for the densified route
         async function renderRoute() {
-            clearMarkers(); // Remove any existing markers
+            clearMarkers(); // Clear existing markers for the route
 
-            const route = await fetchRoute(start, end); // Get route waypoints
+            const route = await fetchRoute(start, end); // Fetch route
             if (!route || route.length === 0) return;
 
-            // Densify the polyline from Mapbox geometry
-            const densifiedPoints = densifyPolyline(route, 1); // 1 meter interval
+            const densifiedPoints = densifyPolyline(route, 3); // Densify polyline
 
-            // Place markers for each interpolated point
+            // Render markers
             densifiedPoints.forEach(([lon, lat]) => {
                 const marker = document.createElement('a-entity');
                 marker.setAttribute('gps-entity-place', `latitude: ${lat}; longitude: ${lon}`);
@@ -649,16 +649,18 @@
                 marker.setAttribute('material', 'color: green');
                 marker.setAttribute('scale', '0.5 0.5 0.5');
                 marker.setAttribute('look-at', '[gps-camera]');
+                marker.classList.add('route-marker'); // Add a unique class
                 document.querySelector('a-scene').appendChild(marker);
             });
 
-            // Add "Start" and "End" labels
+            // Add Start and End labels
             const [startLon, startLat] = route[0];
             const startLabel = document.createElement('a-text');
             startLabel.setAttribute('value', 'Start');
             startLabel.setAttribute('gps-entity-place', `latitude: ${startLat}; longitude: ${startLon}`);
             startLabel.setAttribute('color', 'white');
             startLabel.setAttribute('scale', '10 10 10');
+            startLabel.classList.add('route-marker'); // Add a unique class
             document.querySelector('a-scene').appendChild(startLabel);
 
             const [endLon, endLat] = route[route.length - 1];
@@ -667,8 +669,10 @@
             endLabel.setAttribute('gps-entity-place', `latitude: ${endLat}; longitude: ${endLon}`);
             endLabel.setAttribute('color', 'white');
             endLabel.setAttribute('scale', '10 10 10');
+            endLabel.classList.add('route-marker'); // Add a unique class
             document.querySelector('a-scene').appendChild(endLabel);
         }
+
 
 
 
