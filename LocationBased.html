@@ -596,7 +596,7 @@
                 marker.setAttribute('animation__scale', `
                     property: scale;
                     dir: alternate;
-                    dur: 1000;
+                    dur: 3000;
                     easing: easeInOutSine;
                     loop: true;
                     to: 0.5 1 0.5;
@@ -605,7 +605,7 @@
                 marker.setAttribute('animation__color', `
                     property: material.color;
                     dir: alternate;
-                    dur: 1000;
+                    dur: 3000;
                     easing: easeInOutSine;
                     loop: true;
                     to: yellow;
@@ -634,9 +634,6 @@
             endLabel.classList.add('route-marker'); // Add a unique class
             document.querySelector('a-scene').appendChild(endLabel);
         }
-
-
-
 
         // Call the render function after the scene is loaded
         document.querySelector('a-scene').addEventListener('loaded', function () {
