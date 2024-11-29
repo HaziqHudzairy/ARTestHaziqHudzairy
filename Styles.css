@@ -29,8 +29,8 @@ body {
   box-sizing: border-box;
   position: relative;
   outline: 10px solid red;
-  /* flex-direction: column; */
-  /* Stack items vertically */
+  pointer-events: none; /* Disables all pointer events */
+  touch-action: none;   /* Disables touch-specific actions */
 }
 
 .logo-container {
