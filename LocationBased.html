@@ -189,8 +189,8 @@
     <script>
 
         document.querySelector('a-scene').addEventListener('loaded', function () {
-                    document.getElementById("Loading").style.display = "none";
-                });
+            document.getElementById("Loading").style.display = "none";
+        });
 
         // Function to show debug messages in the div
         function showDebugMessage(message) {
@@ -351,39 +351,39 @@
             }
         }
 
-
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
         // Reference your Firebase database
-const db = getDatabase();
-const entitiesRef = ref(db, 'entities'); // Reference the 'entities' node in your database
+        const db = getDatabase();
+        const entitiesRef = ref(db, 'entities'); // Reference the 'entities' node in your database
 
-// Initialize entities as an empty array
-let entities = [];
+        // Initialize entities as an empty array
+        let entities = [];
 
-// Fetch and merge all entities from the database
-onValue(entitiesRef, (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
-        entities = []; // Reset entities array
+        // Fetch and merge all entities from the database
+        onValue(entitiesRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                entities = []; // Reset entities array
 
-        // Iterate over categories (e.g., 'facilities', 'libraries')
-        Object.values(data).forEach((category) => {
-            // Merge all child entities into the entities array
-            entities = entities.concat(
-                Object.values(category).map((entity) => ({
-                    name: entity.name,
-                    latitude: entity.latitude,
-                    longitude: entity.longitude
-                }))
-            );
+                // Iterate over categories (e.g., 'facilities', 'libraries')
+                Object.values(data).forEach((category) => {
+                    // Merge all child entities into the entities array
+                    entities = entities.concat(
+                        Object.values(category).map((entity) => ({
+                            name: entity.name,
+                            latitude: entity.latitude,
+                            longitude: entity.longitude
+                        }))
+                    );
+                });
+
+                console.log('Fetched entities:', entities);
+            } else {
+                console.warn('No data available in the database.');
+            }
+        }, (error) => {
+            console.error('Error fetching data from Firebase:', error);
         });
-
-        console.log('Fetched entities:', entities);
-    } else {
-        console.warn('No data available in the database.');
-    }
-}, (error) => {
-    console.error('Error fetching data from Firebase:', error);
-});
 
         // Update the location continuously with system popup for errors
         function updateLocation() {
