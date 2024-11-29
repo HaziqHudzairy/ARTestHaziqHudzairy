@@ -584,6 +584,18 @@
                 marker.setAttribute('scale', '0.5 0.5 0.5');
                 marker.setAttribute('look-at', '[gps-camera]');
                 marker.classList.add('route-marker'); // Add a unique class
+
+                // Add a wave-like animation with delay for each marker
+                marker.setAttribute('animation', `
+                    property: position; 
+                    dir: alternate; 
+                    dur: 1000; 
+                    easing: easeInOutSine; 
+                    loop: true; 
+                    to: 0 1.5 0;
+                    delay: ${index * 150}; // Offset each marker slightly to create the wave effect
+                `);
+
                 document.querySelector('a-scene').appendChild(marker);
             });
 
