@@ -98,15 +98,6 @@
     transition: opacity 0.5s ease-in-out;
     "></div>
 
-    <div class="search-container">
-        <div class="search-icon" id="searchIcon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.415l-3.85-3.85zm-5.442.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z" />
-        </svg>
-        </div>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search for places in UM..." />
-    </div>
-  
 
     <a-scene renderer="logarithmicDepthBuffer: true;" embedded loading-screen="enabled: false;"
         arjs="sourceType: webcam; debugUIEnabled: false;">
@@ -502,16 +493,6 @@
 
         // Call the function to start updating the location
         updateLocation();
-
-
-        const searchIcon = document.getElementById('searchIcon');
-        const searchContainer = document.querySelector('.search-container');
-        const searchInput = document.getElementById('searchInput');
-
-        searchIcon.addEventListener('click', () => {
-            searchContainer.classList.toggle('active');
-            searchInput.focus();
-        }); 
 
 
         // Your Mapbox Token Specifically for UM.AR domain
