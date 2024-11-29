@@ -21,7 +21,6 @@ body {
 }
 
 .container {
-  background-color: blue;
   overflow-x: hidden;
   display: block;
   max-width: 100%;
