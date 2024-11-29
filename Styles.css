@@ -387,18 +387,13 @@ form:hover {
 
 
 input {
-  right: 0;
-  width: 100%;
-  /* Prevent the input from growing too large */
+  width: calc(100% - 50px); /* Match form width minus padding */
   padding-left: 20px;
-  /* Placeholder/text left gap */
   line-height: 30px;
   border-radius: 20px;
   height: 42.5px;
   box-sizing: border-box;
-  /* Include padding in width */
-  display: none;
-  /* Initially hidden */
+  display: block; /* Ensure input expands without breaking layout */
 }
 
 form:hover input {
