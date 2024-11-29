@@ -25,12 +25,12 @@ body {
 .container {
   overflow-x: hidden;
   display: block;
+  outline: 1px solid red;
   /* flex-direction: column; */
   /* Stack items vertically */
 }
 
 .logo-container {
-  outline: 1px solid red;
   display: flex;
   justify-content: center;
   align-items: center;
