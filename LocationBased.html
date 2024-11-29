@@ -244,7 +244,7 @@
     <script type="module">
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js';
+        
 
 
         // Firebase Initialization
@@ -342,86 +342,6 @@
 
         // Call the Function
         fetchAndRenderEntities();
-
-
-        async function handleSearchSuggestions() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-
-            // Debug: Show the current query
-            showDebugMessage(`Current Query: ${query}`);
-
-            if (query === '') {
-                // Hide suggestions if the query is empty
-                document.getElementById('suggestionsContainer').style.display = 'none';
-                return;
-            }
-
-            const databaseRef = ref(database, 'entities');
-
-            try {
-                const snapshot = await get(databaseRef); // Fetch data from Firebase
-                const data = snapshot.val();
-
-                if (data) {
-                    const suggestions = [];
-                    let debugMessages = `Fetched Data: <br>`;
-
-                    // Iterate over the data to find matching results
-                    Object.keys(data).forEach(category => {
-                        Object.values(data[category]).forEach(entity => {
-                            debugMessages += `Category: ${category}, Entity Name: ${entity.name}<br>`;
-                            if (entity.name && entity.name.toLowerCase().includes(query)) {
-                                suggestions.push(entity.name);
-                                debugMessages += `Matched: ${entity.name}<br>`;
-                            }
-                        });
-                    });
-
-                    // Debug: Display all fetched data and matches
-                    debugMessages += `<br>Suggestions: ${suggestions.join(', ')}`;
-                    showDebugMessage(debugMessages);
-
-                    // Show suggestions
-                    showSuggestions(suggestions);
-                } else {
-                    // Debug: No data found
-                    showDebugMessage('No data found in the database.');
-                }
-            } catch (error) {
-                // Debug: Error fetching data
-                showDebugMessage(`Error fetching data for suggestions: ${error}`);
-            }
-        }
-
-
-        // Function to display suggestions
-        function showSuggestions(suggestions) {
-            const suggestionsContainer = document.getElementById('suggestionsContainer');
-            suggestionsContainer.innerHTML = ''; // Clear previous suggestions
-
-            if (suggestions.length === 0) {
-                suggestionsContainer.style.display = 'none'; // Hide if no suggestions
-                return;
-            }
-
-            // Populate suggestions
-            suggestions.forEach(suggestion => {
-                const suggestionElement = document.createElement('div');
-                suggestionElement.textContent = suggestion;
-                suggestionElement.style.padding = '5px';
-                suggestionElement.style.cursor = 'pointer';
-
-                // Handle suggestion click
-                suggestionElement.onclick = () => {
-                    document.getElementById('searchInput').value = suggestion; // Set input value
-                    suggestionsContainer.style.display = 'none'; // Hide suggestions
-                };
-
-                suggestionsContainer.appendChild(suggestionElement);
-            });
-
-            suggestionsContainer.style.display = 'block'; // Show suggestions
-        }
 
     </script>
 
@@ -774,6 +694,90 @@
         //     Camera FOV: ${fov}° <br>
         //     Camera Aspect Ratio: ${aspectRatio}
         // `);
+
+    </script>
+
+    <script>
+        import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js';
+        
+        async function handleSearchSuggestions() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            // Debug: Show the current query
+            showDebugMessage(`Current Query: ${query}`);
+
+            if (query === '') {
+                // Hide suggestions if the query is empty
+                document.getElementById('suggestionsContainer').style.display = 'none';
+                return;
+            }
+
+            const databaseRef = ref(database, 'entities');
+
+            try {
+                const snapshot = await get(databaseRef); // Fetch data from Firebase
+                const data = snapshot.val();
+
+                if (data) {
+                    const suggestions = [];
+                    let debugMessages = `Fetched Data: <br>`;
+
+                    // Iterate over the data to find matching results
+                    Object.keys(data).forEach(category => {
+                        Object.values(data[category]).forEach(entity => {
+                            debugMessages += `Category: ${category}, Entity Name: ${entity.name}<br>`;
+                            if (entity.name && entity.name.toLowerCase().includes(query)) {
+                                suggestions.push(entity.name);
+                                debugMessages += `Matched: ${entity.name}<br>`;
+                            }
+                        });
+                    });
+
+                    // Debug: Display all fetched data and matches
+                    debugMessages += `<br>Suggestions: ${suggestions.join(', ')}`;
+                    showDebugMessage(debugMessages);
+
+                    // Show suggestions
+                    showSuggestions(suggestions);
+                } else {
+                    // Debug: No data found
+                    showDebugMessage('No data found in the database.');
+                }
+            } catch (error) {
+                // Debug: Error fetching data
+                showDebugMessage(`Error fetching data for suggestions: ${error}`);
+            }
+        }
+
+
+        // Function to display suggestions
+        function showSuggestions(suggestions) {
+            const suggestionsContainer = document.getElementById('suggestionsContainer');
+            suggestionsContainer.innerHTML = ''; // Clear previous suggestions
+
+            if (suggestions.length === 0) {
+                suggestionsContainer.style.display = 'none'; // Hide if no suggestions
+                return;
+            }
+
+            // Populate suggestions
+            suggestions.forEach(suggestion => {
+                const suggestionElement = document.createElement('div');
+                suggestionElement.textContent = suggestion;
+                suggestionElement.style.padding = '5px';
+                suggestionElement.style.cursor = 'pointer';
+
+                // Handle suggestion click
+                suggestionElement.onclick = () => {
+                    document.getElementById('searchInput').value = suggestion; // Set input value
+                    suggestionsContainer.style.display = 'none'; // Hide suggestions
+                };
+
+                suggestionsContainer.appendChild(suggestionElement);
+            });
+
+            suggestionsContainer.style.display = 'block'; // Show suggestions
+        }
 
     </script>
 </body>
