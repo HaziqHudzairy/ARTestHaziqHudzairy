@@ -324,8 +324,13 @@ form:hover .fa {
   color: white;
 }
 
+#suggestionsContainer div:hover {
+  background: #f0f0f0;
+}
+
 .a-scene-container {
   position: fixed;
   width: 100vw;
   overflow: hidden;
 }
+
