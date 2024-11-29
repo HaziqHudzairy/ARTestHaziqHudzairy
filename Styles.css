@@ -19,7 +19,7 @@
 
 
 .backButton {
-    position: absolute;
+    position: fixed;
     top: 11%; /* Adjust as needed */
     left: 10px; /* Adjust as needed */
     z-index: 9999; /* Ensure the button appears on top of other elements */
@@ -318,7 +318,7 @@
   }
 
   form {
-    position: absolute;
+    position: fixed;
     top: 11%;
     right: 10px;
     /* transform: translate(-10%, 10%); */
