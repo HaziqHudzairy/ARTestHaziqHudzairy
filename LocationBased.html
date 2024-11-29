@@ -192,7 +192,16 @@
     </a-scene>
 
     <script>
+        const container = document.querySelector('.container');
 
+        // Disable touchmove events for the container
+        container.addEventListener(
+            'touchmove',
+            function (event) {
+                event.preventDefault();
+            },
+            { passive: false } // Ensure the listener can prevent the default behavior
+        );
         // document.querySelector('a-scene').addEventListener('loaded', function () {
         //     document.getElementById("Loading").style.display = "none";
         // });
