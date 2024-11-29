@@ -59,9 +59,9 @@ body {
 }
 
 .data-container {
+  position: fixed;
   background-color: rgba(0, 0, 0, 0.301);
   display: block;
-
   justify-content: center;
   align-items: center;
   padding: 5px;
@@ -71,16 +71,15 @@ body {
   top: 65px;
   right: 10px;
   z-index: 999;
-
   max-width: 100%; /* Ensure container doesn’t overflow */
   overflow: hidden;
 }
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
   .data-container {
     position: absolute;
   }
-}
+} */
 
 
 
