@@ -351,6 +351,7 @@ form:hover {
     max-width: 90vw; /* Prevent overflow */
 }
 input {
+  right: 0;
    /* Fit within the form */
   max-width: 280px; /* Prevent the input from growing too large */
   padding-left: 20px; /* Placeholder/text left gap */
