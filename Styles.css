@@ -330,22 +330,21 @@ form:hover .fa {
   top: 20%;
   left: 50%;
   transform: translateX(-50%); /* Center horizontally */
-  background: #ffffff86; /* White background for a cleaner look */
+  background: #ffffff86; /* Semi-transparent white background */
   width: 90%;
-  height: auto;
+  max-height: 400px; /* Limit height for long lists */
   border-radius: 10px; /* Rounded corners */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06); /* Subtle shadow */
-  padding: 10px; /* Add some padding for content spacing */
+  padding: 20px; /* Add padding for content spacing */
   display: flex;
-  align-items: center; /* Vertically center content */
-  justify-content: center; /* Horizontally center content */
+  flex-direction: column; /* Ensure vertical stacking of items */
+  gap: 15px; /* Space between list items */
 }
 
 .suggestions-list {
   background: #f9f9f9; /* Light gray for list background */
   width: 100%; /* Match container width */
   padding: 15px 10px; /* Add padding for spacing */
-  margin-bottom: 10px; /* Space between list items */
   border-radius: 8px; /* Slightly rounded corners */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for each item */
   transition: background-color 0.3s, transform 0.2s; /* Add hover effects */
