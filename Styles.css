@@ -385,7 +385,7 @@ form:hover {
 }
 
 input {
-    position: relative;
+    position: fixed;
     width: calc(100% - 50px); /* Adjust for padding */
     max-width: 100%; /* Prevent input overflow */
     padding-left: 20px;
