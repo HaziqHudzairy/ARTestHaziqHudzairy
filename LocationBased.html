@@ -37,15 +37,10 @@
 
         <!-- Search bar form placed below the container -->
         <form action="">
-            <input type="search" id="searchInput" placeholder="Search for places in UM..." autocomplete="off"
-                oninput="handleSearchSuggestions()" />
+            <input type="search" placeholder="Search here ..." autocomplete="off">
             <i class="fa fa-search"></i>
+            <div id="suggestions" style="position: absolute; background: white; border: 1px solid #ccc; z-index: 1000; width: 300px; display: none;"></div>
         </form>
-
-        <div id="suggestionsContainer"
-            style="border: 1px solid #ccc; display: none; position: absolute; background: white; z-index: 100;">
-            <!-- Suggestions will be dynamically populated here -->
-        </div>
     </div>
     <div id="data-container" class="data-container" style="display:none;">
         <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
@@ -112,7 +107,7 @@
     transition: opacity 0.5s ease-in-out;
     "></div>
 
-    <!--  -->
+<!--  -->
     <a-scene renderer="logarithmicDepthBuffer: true; debugUIEnabled: false;" embedded loading-screen="enabled: false;"
         arjs="sourceType: webcam; " id="ar-scene">
         <a-assets>
@@ -201,24 +196,24 @@
 
     <script>
 
-        //     // Wait for the DOM to load
-        //     document.addEventListener("DOMContentLoaded", function () {
-        //         // Select the <a-scene> element
-        //         const arScene = document.getElementById("ar-scene");
+    //     // Wait for the DOM to load
+    //     document.addEventListener("DOMContentLoaded", function () {
+    //         // Select the <a-scene> element
+    //         const arScene = document.getElementById("ar-scene");
 
-        //         // Get the screen's width and height
-        //         const screenWidth = window.innerWidth;
-        //         const screenHeight = window.innerHeight;
+    //         // Get the screen's width and height
+    //         const screenWidth = window.innerWidth;
+    //         const screenHeight = window.innerHeight;
 
-        //         // Update the arjs attribute with the calculated dimensions
-        //         const arjsAttributes = `
-        //   sourceType: webcam;
-        //   displayWidth: ${screenWidth};
-        //   displayHeight: ${screenHeight};
-        //   debugUIEnabled: false;
-        // `;
-        //         arScene.setAttribute("arjs", arjsAttributes);
-        //     });
+    //         // Update the arjs attribute with the calculated dimensions
+    //         const arjsAttributes = `
+    //   sourceType: webcam;
+    //   displayWidth: ${screenWidth};
+    //   displayHeight: ${screenHeight};
+    //   debugUIEnabled: false;
+    // `;
+    //         arScene.setAttribute("arjs", arjsAttributes);
+    //     });
 
 
         // Function to show debug messages in the div
@@ -242,10 +237,8 @@
 
     <!-- Firebase Script -->
     <script type="module">
-        import { getDatabase, ref, onValue, get } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        
-
 
         // Firebase Initialization
         const firebaseConfig = {
@@ -343,6 +336,22 @@
         // Call the Function
         fetchAndRenderEntities();
 
+        // Function to handle user input
+        searchInput.addEventListener("input", (event) => {
+            const query = event.target.value.trim();
+            if (query.length > 0) {
+                fetchSuggestions(query);
+            } else {
+                suggestionsDiv.style.display = "none";
+            }
+        });
+
+        // Function to handle selection of a suggestion
+        window.selectSuggestion = (name, latitude, longitude) => {
+            searchInput.value = name;
+            suggestionsDiv.style.display = "none";
+            console.log(`Selected: ${name} (Lat: ${latitude}, Lon: ${longitude})`);
+        };
     </script>
 
 
@@ -415,7 +424,7 @@
             }
         }
 
-        //showDebugMessage("Testing debug size");
+        showDebugMessage("Testing debug size");
         // // Define your entities with coordinates and names
         // const entities = [
         //     { name: "Medicine Faculty", latitude: 3.115828, longitude: 101.653418 },
@@ -676,107 +685,24 @@
         });
 
 
-        // const arScene = document.getElementById("ar-scene");
-        // const sceneRect = arScene.getBoundingClientRect();
+        const arScene = document.getElementById("ar-scene");
+        const sceneRect = arScene.getBoundingClientRect();
 
-        // const cameraComponent = document.querySelector('a-camera').components.camera;
-        // const fov = cameraComponent ? cameraComponent.camera.fov : 'Not Found';
-        // const aspectRatio = cameraComponent ? cameraComponent.camera.aspect : 'Not Found';
+        const cameraComponent = document.querySelector('a-camera').components.camera;
+        const fov = cameraComponent ? cameraComponent.camera.fov : 'Not Found';
+        const aspectRatio = cameraComponent ? cameraComponent.camera.aspect : 'Not Found';
 
-        // const viewportWidth = window.innerWidth;
-        // const viewportHeight = window.innerHeight;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
 
-        // showDebugMessage(`
-        //     Debug Info: <br>
-        //     Viewport Dimensions: ${viewportWidth}px x ${viewportHeight}px <br>
-        //     Scene Dimensions: ${sceneRect.width}px x ${sceneRect.height}px <br>
-        //     Scene Position: Top ${sceneRect.top}px, Left ${sceneRect.left}px <br>
-        //     Camera FOV: ${fov}° <br>
-        //     Camera Aspect Ratio: ${aspectRatio}
-        // `);
-
-    </script>
-
-    <script>
-        
-        async function handleSearchSuggestions() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-
-            // Debug: Show the current query
-            showDebugMessage(`Current Query: ${query}`);
-
-            if (query === '') {
-                // Hide suggestions if the query is empty
-                document.getElementById('suggestionsContainer').style.display = 'none';
-                return;
-            }
-
-            const databaseRef = ref(database, 'entities');
-
-            try {
-                const snapshot = await get(databaseRef); // Fetch data from Firebase
-                const data = snapshot.val();
-
-                if (data) {
-                    const suggestions = [];
-                    let debugMessages = `Fetched Data: <br>`;
-
-                    // Iterate over the data to find matching results
-                    Object.keys(data).forEach(category => {
-                        Object.values(data[category]).forEach(entity => {
-                            debugMessages += `Category: ${category}, Entity Name: ${entity.name}<br>`;
-                            if (entity.name && entity.name.toLowerCase().includes(query)) {
-                                suggestions.push(entity.name);
-                                debugMessages += `Matched: ${entity.name}<br>`;
-                            }
-                        });
-                    });
-
-                    // Debug: Display all fetched data and matches
-                    debugMessages += `<br>Suggestions: ${suggestions.join(', ')}`;
-                    showDebugMessage(debugMessages);
-
-                    // Show suggestions
-                    showSuggestions(suggestions);
-                } else {
-                    // Debug: No data found
-                    showDebugMessage('No data found in the database.');
-                }
-            } catch (error) {
-                // Debug: Error fetching data
-                showDebugMessage(`Error fetching data for suggestions: ${error}`);
-            }
-        }
-
-
-        // Function to display suggestions
-        function showSuggestions(suggestions) {
-            const suggestionsContainer = document.getElementById('suggestionsContainer');
-            suggestionsContainer.innerHTML = ''; // Clear previous suggestions
-
-            if (suggestions.length === 0) {
-                suggestionsContainer.style.display = 'none'; // Hide if no suggestions
-                return;
-            }
-
-            // Populate suggestions
-            suggestions.forEach(suggestion => {
-                const suggestionElement = document.createElement('div');
-                suggestionElement.textContent = suggestion;
-                suggestionElement.style.padding = '5px';
-                suggestionElement.style.cursor = 'pointer';
-
-                // Handle suggestion click
-                suggestionElement.onclick = () => {
-                    document.getElementById('searchInput').value = suggestion; // Set input value
-                    suggestionsContainer.style.display = 'none'; // Hide suggestions
-                };
-
-                suggestionsContainer.appendChild(suggestionElement);
-            });
-
-            suggestionsContainer.style.display = 'block'; // Show suggestions
-        }
+        showDebugMessage(`
+            Debug Info: <br>
+            Viewport Dimensions: ${viewportWidth}px x ${viewportHeight}px <br>
+            Scene Dimensions: ${sceneRect.width}px x ${sceneRect.height}px <br>
+            Scene Position: Top ${sceneRect.top}px, Left ${sceneRect.left}px <br>
+            Camera FOV: ${fov}° <br>
+            Camera Aspect Ratio: ${aspectRatio}
+        `);
 
     </script>
 </body>
