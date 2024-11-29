@@ -439,19 +439,19 @@
                 marker.setAttribute('look-at', '[gps-camera]');
                 marker.classList.add('route-marker'); // Add a unique class
 
-                // Add jumping animation with a delay for wave effect
-                marker.setAttribute(
-                    'animation',
-                    `
-                        property: position;
-                        to: 0 1 0;  // Jump height
-                        dur: 800;   // Duration of each jump
-                        easing: easeInOutQuad;
-                        loop: true;
-                        dir: alternate;
-                        delay: ${index * 200}; // Delayed start for wave effect
-                    `
-                );
+                // // Add jumping animation with a delay for wave effect
+                // marker.setAttribute(
+                //     'animation',
+                //     `
+                //         property: position;
+                //         to: 0 1 0;  // Jump height
+                //         dur: 800;   // Duration of each jump
+                //         easing: easeInOutQuad;
+                //         loop: true;
+                //         dir: alternate;
+                //         delay: ${index * 200}; // Delayed start for wave effect
+                //     `
+                // );
 
                 document.querySelector('a-scene').appendChild(marker);
             });
