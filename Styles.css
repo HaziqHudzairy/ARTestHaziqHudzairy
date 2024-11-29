@@ -27,6 +27,7 @@ body {
   display: block;
   max-width: 100%;
   box-sizing: border-box;
+  position: relative;
   /* flex-direction: column; */
   /* Stack items vertically */
 }
@@ -324,9 +325,8 @@ form:hover .fa {
 }
 
 a-scene {
-  outline: 10px solid red;
   width: 100%; /* Ensure it does not exceed the viewport width */
   height: 100vh; /* Ensure it uses the full height of the viewport */
-  overflow: hidden; /* Hide any overflowing content */
+  overflow-x: hidden; /* Hide any overflowing content */
   box-sizing: border-box; /* Include padding and border in the width */
 }
