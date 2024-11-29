@@ -276,31 +276,39 @@
         // Global array to store entities
         window.dynamicEntities = [];
 
-        // Function to fetch entities from Firebase
-        function fetchEntitiesNameCoordinate() {
+        function fetchEntitiesFromDatabase() {
             const entitiesRef = ref(database, "entities");
+
+            // Listen for changes to the database
             onValue(entitiesRef, (snapshot) => {
                 const data = snapshot.val();
-
-                alert("Fetched data from Firebase:", data);
-                
                 if (data) {
                     window.dynamicEntities = []; // Reset the array
-                    Object.keys(data).forEach((category) => {
-                        Object.values(data[category]).forEach((entity) => {
-                            window.dynamicEntities.push({
-                                name: entity.name,
-                                latitude: entity.latitude,
-                                longitude: entity.longitude,
-                            });
+
+                    // Traverse the 'facilities' node
+                    Object.keys(data.facilities).forEach((key) => {
+                        const entity = data.facilities[key]; // Access each entity
+
+                        // Add the entity to the global array
+                        window.dynamicEntities.push({
+                            name: entity.name,         // Example: "Academy of Islamic Studies Musolla"
+                            latitude: entity.latitude, // Example: 3.132754
+                            longitude: entity.longitude, // Example: 101.657415
+                            model: entity.model,       // Example: "#locationPinMusollaAPI"
+                            scale: entity.scale        // Example: "8 8 8"
                         });
                     });
-                    showDebugMessage("Entities fetched:", window.dynamicEntities);
+
+                    showDebugMessage("Fetched Entities:", window.dynamicEntities); // Debug log
+                    populateSuggestions(); // Update suggestions list
                 } else {
                     console.error("No data found in the database.");
                 }
+            }, (error) => {
+                console.error("Error fetching data:", error);
             });
         }
+
 
         // Call fetchEntities to populate global dynamicEntities
         fetchEntitiesNameCoordinate();
@@ -360,29 +368,23 @@
 
     <script>
 
-        // Function to populate the suggestions container from the array
-        function populateSuggestionsFromArray() {
+        function populateSuggestions() {
             const suggestionsContainer = document.querySelector('.suggestions-container');
-            suggestionsContainer.innerHTML = ''; // Clear existing suggestions
+            suggestionsContainer.innerHTML = ''; // Clear existing content
 
-            // Iterate over dynamicEntities to create suggestion items
+            // Loop through the global array to create suggestions
             window.dynamicEntities.forEach((entity) => {
                 const suggestionDiv = document.createElement('div');
                 suggestionDiv.classList.add('suggestions-list');
-                
+
                 const nameDiv = document.createElement('div');
                 nameDiv.classList.add('suggestions-list-name');
-                
-                const nameHeading = document.createElement('h2');
-                nameHeading.textContent = entity.name;
+                nameDiv.textContent = entity.name; // Display the name
 
-                // Append elements
-                nameDiv.appendChild(nameHeading);
                 suggestionDiv.appendChild(nameDiv);
                 suggestionsContainer.appendChild(suggestionDiv);
             });
         }
-
         populateSuggestionsFromArray();
 
 
