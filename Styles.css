@@ -10,6 +10,7 @@ body {
   overflow-x: hidden;
   /* Disable horizontal scrolling */
   width: 100%;
+  position: relative
   /* Ensure the body fits within the viewport */
 }
 
@@ -375,24 +376,16 @@ form {
   transition: all 0.3s ease-in-out;
   /* Smooth hover effect */
   overflow: hidden;
-  max-width: 90vw;
+  max-width: 80vw;
   /* Prevent the form from exceeding 90% of the viewport width */
 }
 
-form~.backButton {
-  display: block;
-  /* Ensure the back button is visible by default */
-}
 
 form:hover {
-  width: 100%;
+  width: 80%;
   /* Expanded width on hover */
 }
 
-form:hover~.backButton {
-  display: none;
-  /* Hide the backButton when the form is hovered */
-}
 
 input {
   right: 0;
