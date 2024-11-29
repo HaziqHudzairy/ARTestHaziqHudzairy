@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -104,9 +106,9 @@
     transition: opacity 0.5s ease-in-out;
     "></div>
 
-
+<!-- debugUIEnabled: false; -->
     <a-scene renderer="logarithmicDepthBuffer: true;" embedded loading-screen="enabled: false;"
-        arjs="sourceType: webcam; displayWidth: 600; displayHeight: 800; debugUIEnabled: false;" id="ar-scene">
+        arjs="sourceType: webcam; " id="ar-scene">
         <a-assets>
 
             <img id="FSKTMLogo" src="asset/logo/Logo FSKTM.png">
@@ -333,6 +335,8 @@
         // Call the Function
         fetchAndRenderEntities();
     </script>
+
+
     <script>
         document.getElementById("data-container").style.display = "block";
 
@@ -661,6 +665,27 @@
         document.querySelector('a-scene').addEventListener('loaded', function () {
             renderRoute(); // Render route markers
         });
+
+
+        const arScene = document.getElementById("ar-scene");
+        const sceneRect = arScene.getBoundingClientRect();
+
+        const cameraComponent = document.querySelector('a-camera').components.camera;
+        const fov = cameraComponent ? cameraComponent.camera.fov : 'Not Found';
+        const aspectRatio = cameraComponent ? cameraComponent.camera.aspect : 'Not Found';
+
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        showDebugMessage(`
+            Debug Info: <br>
+            Viewport Dimensions: ${viewportWidth}px x ${viewportHeight}px <br>
+            Scene Dimensions: ${sceneRect.width}px x ${sceneRect.height}px <br>
+            Scene Position: Top ${sceneRect.top}px, Left ${sceneRect.left}px <br>
+            Camera FOV: ${fov}° <br>
+            Camera Aspect Ratio: ${aspectRatio}
+        `);
+
 
 
     </script>
