@@ -344,13 +344,15 @@ form:hover {
 }
 
 input {
-  
-    padding-left: 20px;
-    line-height: 30px;
-    border-radius: 20px;
-    height: 42.5px;
-    display: none; /* Initially hidden */
+  width: 100%; /* Set the width to fit its container */
+  padding-left: 20px; /* Adds the left gap for the placeholder and text */
+  line-height: 30px;
+  border-radius: 20px;
+  height: 42.5px;
+  box-sizing: border-box; /* Include padding in the width calculation */
+  display: none; /* Initially hidden */
 }
+
 
 form:hover input {
     display: block; /* Show input when hovered */
