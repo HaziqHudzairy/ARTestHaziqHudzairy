@@ -104,7 +104,7 @@
     transition: opacity 0.5s ease-in-out;
     "></div>
 
-    
+
     <a-scene renderer="logarithmicDepthBuffer: true;" embedded loading-screen="enabled: false;"
         arjs="sourceType: webcam; debugUIEnabled: false;">
         <a-assets>
@@ -192,19 +192,46 @@
     </a-scene>
 
     <script>
-        const container = document.querySelector('.logo-container');
+        function disableScrolling() {
+            // Lock scrolling position
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${window.scrollY}px`;
+            document.body.style.width = '100%';
 
-        // Disable touchmove events for the container
-        container.addEventListener(
-            'touchmove',
-            function (event) {
-                event.preventDefault();
-            },
-            { passive: false } // Ensure the listener can prevent the default behavior
-        );
-        // document.querySelector('a-scene').addEventListener('loaded', function () {
-        //     document.getElementById("Loading").style.display = "none";
-        // });
+            // Prevent touchmove
+            document.addEventListener(
+                'touchmove',
+                function (event) {
+                    event.preventDefault();
+                },
+                { passive: false }
+            );
+        }
+
+        function enableScrolling() {
+            // Restore scrolling position
+            const scrollY = document.body.style.top;
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+
+            // Re-enable touchmove
+            document.removeEventListener(
+                'touchmove',
+                function (event) {
+                    event.preventDefault();
+                },
+                { passive: false }
+            );
+        }
+
+        // Example usage
+        disableScrolling();
+
+        // document.querySelector('.unlock-button').addEventListener('click', enableScrolling);
 
         // Function to show debug messages in the div
         function showDebugMessage(message) {
