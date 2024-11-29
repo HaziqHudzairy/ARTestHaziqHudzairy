@@ -105,7 +105,9 @@
     transition: opacity 0.5s ease-in-out;
     "></div>
 
-
+    <div class="a-scene-container">
+        
+    </div>
     <a-scene renderer="logarithmicDepthBuffer: true;" embedded loading-screen="enabled: false;"
         arjs="sourceType: webcam; debugUIEnabled: false;">
         <a-assets>
@@ -194,9 +196,9 @@
 
     <script>
 
-        // document.querySelector('a-scene').addEventListener('loaded', function () {
-        //     document.getElementById("Loading").style.display = "none";
-        // });
+        document.querySelector('a-scene').addEventListener('loaded', function () {
+            document.getElementById("Loading").style.display = "none";
+        });
 
         // Function to show debug messages in the div
         function showDebugMessage(message) {
