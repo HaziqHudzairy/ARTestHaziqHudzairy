@@ -16,7 +16,6 @@ html {
 }
 
 body {
-  position: fixed;
   display: block; /* Default block layout */
   margin: 0;
   padding: 0;
@@ -32,6 +31,7 @@ body {
 }
 
 .logo-container {
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
