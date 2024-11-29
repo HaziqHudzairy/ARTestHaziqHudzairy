@@ -500,6 +500,34 @@
         // Call the function to start updating the location
         updateLocation();
 
+        const searchIcon = document.getElementById('search-icon');
+        const searchBox = document.getElementById('search-box');
+        const searchInput = document.getElementById('search-input');
+
+        // Toggle the visibility of the search box when the search icon is clicked
+        searchIcon.addEventListener('click', () => {
+            if (searchBox.style.display === 'none' || searchBox.style.display === '') {
+                searchBox.style.display = 'block';
+                searchInput.focus(); // Focus the input field
+            } else {
+                searchBox.style.display = 'none';
+            }
+        });
+
+        // Hide the search box when clicking outside of it
+        document.addEventListener('click', (event) => {
+            if (!searchBox.contains(event.target) && !searchIcon.contains(event.target)) {
+                searchBox.style.display = 'none';
+            }
+        });
+
+        // Add a sample search functionality
+        searchInput.addEventListener('input', (event) => {
+            const query = event.target.value.toLowerCase();
+            console.log(`Searching for: ${query}`);
+            // Add your search logic here
+        });
+
 
         // Your Mapbox Token Specifically for UM.AR domain
         const MAPBOX_TOKEN = 'sk.eyJ1IjoiaGF6aXFodWR6YWlyeTAyIiwiYSI6ImNtM3VvYzduZDBqazgyanIzOTdibXM1c3IifQ.IRA9AZlLo-eF9uXsQkzdmg';
