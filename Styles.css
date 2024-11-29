@@ -1,6 +1,6 @@
-* {
+/*  {
   outline: 1px solid red;
-}
+} */
 
 html,
 body {
@@ -41,7 +41,7 @@ body {
   align-items: center;
   padding: 10px;
   gap: 12px;
-  background-color: rgb(248, 0, 0);
+  background-color: rgb(255, 255, 255);
   outline: 10px solid red;
   pointer-events: none; /* Disables all pointer events */
   touch-action: none;   /* Disables touch-specific actions */
@@ -327,6 +327,8 @@ form:hover .fa {
 .suggestions-container {
   overflow-y: auto;
   position: fixed;
+  margin-left: 15px;
+  margin-left: 15px;
   top: 20%;
   left: 50%;
   transform: translateX(-50%); /* Center horizontally */
@@ -338,12 +340,13 @@ form:hover .fa {
   padding: 20px; /* Add padding for content spacing */
   display: flex;
   flex-direction: column; /* Ensure vertical stacking of items */
+  align-items: center;
   gap: 15px; /* Space between list items */
 }
 
 .suggestions-list {
   background: #f9f9f9; /* Light gray for list background */
-  width: 100%; /* Match container width */
+  width: 90%; /* Match container width */
   padding: 15px 10px; /* Add padding for spacing */
   border-radius: 8px; /* Slightly rounded corners */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for each item */
