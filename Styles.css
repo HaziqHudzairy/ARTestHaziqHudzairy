@@ -19,6 +19,7 @@ html {
 }
 
 body {
+  position: fixed;
   left: 0;
   display: block; /* Default block layout */
   margin: 0;
