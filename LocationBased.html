@@ -42,21 +42,21 @@
         </form>
         <div class="suggestions-container">
             <div class="suggestions-list">
-                <div class="suggestions-list-name">
-                    <h2>KK1</h2>
-                </div>
+              <div class="suggestions-list-name">
+                <h2>KK1</h2>
+              </div>
             </div>
             <div class="suggestions-list">
-                <div class="suggestions-list-name">
-                    <h2>kk2</h2>
-                </div>
+              <div class="suggestions-list-name">
+                <h2>KK2</h2>
+              </div>
             </div>
             <div class="suggestions-list">
-                <div class="suggestions-list-name">
-                    <h2>SKK3</h2>
-                </div>
+              <div class="suggestions-list-name">
+                <h2>KK3</h2>
+              </div>
             </div>
-        </div>
+          </div>
     </div>
     <div id="data-container" class="data-container" style="display:none;">
         <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
@@ -276,39 +276,28 @@
         // Global array to store entities
         window.dynamicEntities = [];
 
-        function fetchEntitiesFromDatabase() {
+        // Function to fetch entities from Firebase
+        function fetchEntitiesNameCoordinate() {
             const entitiesRef = ref(database, "entities");
-
-            // Listen for changes to the database
             onValue(entitiesRef, (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
                     window.dynamicEntities = []; // Reset the array
-
-                    // Traverse the 'facilities' node
-                    Object.keys(data.facilities).forEach((key) => {
-                        const entity = data.facilities[key]; // Access each entity
-
-                        // Add the entity to the global array
-                        window.dynamicEntities.push({
-                            name: entity.name,         // Example: "Academy of Islamic Studies Musolla"
-                            latitude: entity.latitude, // Example: 3.132754
-                            longitude: entity.longitude, // Example: 101.657415
-                            model: entity.model,       // Example: "#locationPinMusollaAPI"
-                            scale: entity.scale        // Example: "8 8 8"
+                    Object.keys(data).forEach((category) => {
+                        Object.values(data[category]).forEach((entity) => {
+                            window.dynamicEntities.push({
+                                name: entity.name,
+                                latitude: entity.latitude,
+                                longitude: entity.longitude,
+                            });
                         });
                     });
-
-                    alert("Fetched Entities: " + JSON.stringify(window.dynamicEntities));
-                    populateSuggestions(); // Update suggestions list
+                    showDebugMessage("Entities fetched:", window.dynamicEntities);
                 } else {
-                    alert("No data found in the database.");
+                    console.error("No data found in the database.");
                 }
-            }, (error) => {
-                alert("Error fetching data:" + error.message);
             });
         }
-
 
         // Call fetchEntities to populate global dynamicEntities
         fetchEntitiesNameCoordinate();
@@ -367,28 +356,6 @@
 
 
     <script>
-
-        function populateSuggestions() {
-            const suggestionsContainer = document.querySelector('.suggestions-container');
-            suggestionsContainer.innerHTML = ''; // Clear existing content
-
-            // Loop through the global array to create suggestions
-            window.dynamicEntities.forEach((entity) => {
-                const suggestionDiv = document.createElement('div');
-                suggestionDiv.classList.add('suggestions-list');
-
-                const nameDiv = document.createElement('div');
-                nameDiv.classList.add('suggestions-list-name');
-                nameDiv.textContent = entity.name; // Display the name
-
-                suggestionDiv.appendChild(nameDiv);
-                suggestionsContainer.appendChild(suggestionDiv);
-            });
-        }
-        populateSuggestionsFromArray();
-
-
-
         document.getElementById("data-container").style.display = "block";
 
         // Function to update the latitude and longitude display
@@ -457,7 +424,7 @@
             }
         }
 
-        // showDebugMessage("Testing debug size");
+        showDebugMessage("Testing debug size");
         // // Define your entities with coordinates and names
         // const entities = [
         //     { name: "Medicine Faculty", latitude: 3.115828, longitude: 101.653418 },
