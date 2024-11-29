@@ -1,4 +1,7 @@
-
+* {
+  outline: 1px solid red;
+  /* Highlights all elements */
+}
 
 html,
 body {
@@ -18,7 +21,7 @@ html {
 body {
   display: block; /* Default block layout */
   margin: 100px;
-  padding: 0;
+  padding: 100px;
   overflow-x: hidden; /* Disable horizontal scrolling */
 }
 
