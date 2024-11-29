@@ -29,7 +29,7 @@ body {
 }
 
 .logo-container {
-
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -321,5 +321,11 @@ form:hover .fa {
 .a-scene-container {
   position: fixed;
   width: 100vw;
+  overflow: hidden;
+}
+
+a-scene{
+  width: 100vw;
+  height: auto;
   overflow: hidden;
 }
