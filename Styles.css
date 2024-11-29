@@ -7,7 +7,7 @@ body {
   margin: 0;
   padding: 0;
   overscroll-behavior: none;
-  overflow-x: hidden !important;
+  overflow-x: hidden !;
   /* Disable horizontal scrolling */
   width: 100%;
   /* Ensure the body fits within the viewport */
@@ -19,6 +19,7 @@ html {
 }
 
 body {
+  position: fixed;
   left: 0;
   display: block; /* Default block layout */
   margin: 0;
@@ -337,4 +338,3 @@ canvas.a-canvas {
   left: 0;
   z-index: 1; /* Adjust stacking order if necessary */
 }
-
