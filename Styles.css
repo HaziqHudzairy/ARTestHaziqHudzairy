@@ -327,9 +327,8 @@ form:hover .fa {
 }
 
 a-scene {
-  max-width: 200%; /* Ensure it does not exceed the viewport width */
-  height: 100vh; /* Ensure it uses the full height of the viewport */
-  overflow-x: hidden; /* Hide any overflowing content */
-  box-sizing: border-box; /* Include padding and border in the width */
-  left: -100%;
+  position: absolute; /* or relative */
+  top: 0; /* Ensure it starts at the top */
+  left: 0; /* Base position */
+  transform: translateX(50px); /* Move it 50px to the right */
 }
