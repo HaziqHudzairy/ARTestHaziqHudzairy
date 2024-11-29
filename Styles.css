@@ -329,6 +329,8 @@ form:hover .fa {
   position: relative;
   margin-left: 15px;
   top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
   background: #ffffff86; /* Semi-transparent white background */
   width: 80vw;
   max-height: 400px; /* Limit height for long lists */
