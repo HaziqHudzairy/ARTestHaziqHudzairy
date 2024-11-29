@@ -327,11 +327,19 @@ form:hover .fa {
 .suggestions-container {
   position: fixed;
   top: 15%;
-  right: 10px;
-  background: #f9f9f9;
-  width: 80%;
-  height: auto;
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
+  background: #ffffff; /* White background for a cleaner look */
+  width: 90%;
+  height: 50px;
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+  padding: 10px; /* Add some padding for content spacing */
+  display: flex;
+  align-items: center; /* Vertically center content */
+  justify-content: center; /* Horizontally center content */
 }
+
 
 .suggestions:hover {
   background: #e0e0e0;
