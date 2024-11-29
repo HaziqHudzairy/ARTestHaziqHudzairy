@@ -325,47 +325,45 @@
   }
 
   .search-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: rgba(0, 0, 0, 0.8); /* Same color as debug message */
-    border-radius: 50px; /* Rounded corners */
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-icon {
+    background-color: black;
+    border-radius: 50%;
     padding: 10px;
+    cursor: pointer;
+    opacity: 0.7;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000; /* Ensure it appears above other elements */
-}
-
-.search-icon {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    filter: invert(1); /* Makes the icon white */
-}
-
-.search-box {
-    display: none; /* Initially hidden */
-    position: fixed;
-    top: 60px;
-    right: 20px;
-    background-color: rgba(255, 255, 255, 0.9); /* Light background for input box */
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-.search-box input {
-    width: 200px;
-    padding: 5px;
-    border: none;
-    border-radius: 5px;
-    outline: none;
+    transition: all 0.3s ease;
+  }
+  
+  .search-input {
+    width: 0;
+    opacity: 0;
+    height: 40px;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    padding: 0 15px;
     font-size: 14px;
-}
-
-.search-box input::placeholder {
-    color: #aaa;
-}
-
+    transition: all 0.3s ease;
+    position: absolute;
+    right: 50px; /* Add margin */
+    visibility: hidden;
+  }
+  
+  .search-container.active .search-icon {
+    background-color: white;
+    opacity: 1;
+    margin-right: 10px;
+  }
+  
+  .search-container.active .search-input {
+    width: 300px;
+    opacity: 1;
+    visibility: visible;
+  }

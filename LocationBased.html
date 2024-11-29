@@ -98,12 +98,15 @@
     transition: opacity 0.5s ease-in-out;
     "></div>
 
-    <div class="search-container" id="search-container">
-        <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Search" class="search-icon" id="search-icon">
+    <div class="search-container">
+        <div class="search-icon" id="searchIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.415l-3.85-3.85zm-5.442.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z" />
+        </svg>
+        </div>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search for places in UM..." />
     </div>
-    <div class="search-box" id="search-box">
-        <input type="text" id="search-input" placeholder="Search...">
-    </div>
+  
 
     <a-scene renderer="logarithmicDepthBuffer: true;" embedded loading-screen="enabled: false;"
         arjs="sourceType: webcam; debugUIEnabled: false;">
@@ -500,33 +503,15 @@
         // Call the function to start updating the location
         updateLocation();
 
-        const searchIcon = document.getElementById('search-icon');
-        const searchBox = document.getElementById('search-box');
-        const searchInput = document.getElementById('search-input');
 
-        // Toggle the visibility of the search box when the search icon is clicked
+        const searchIcon = document.getElementById('searchIcon');
+        const searchContainer = document.querySelector('.search-container');
+        const searchInput = document.getElementById('searchInput');
+
         searchIcon.addEventListener('click', () => {
-            if (searchBox.style.display === 'none' || searchBox.style.display === '') {
-                searchBox.style.display = 'block';
-                searchInput.focus(); // Focus the input field
-            } else {
-                searchBox.style.display = 'none';
-            }
-        });
-
-        // Hide the search box when clicking outside of it
-        document.addEventListener('click', (event) => {
-            if (!searchBox.contains(event.target) && !searchIcon.contains(event.target)) {
-                searchBox.style.display = 'none';
-            }
-        });
-
-        // Add a sample search functionality
-        searchInput.addEventListener('input', (event) => {
-            const query = event.target.value.toLowerCase();
-            console.log(`Searching for: ${query}`);
-            // Add your search logic here
-        });
+            searchContainer.classList.toggle('active');
+            searchInput.focus();
+        }); 
 
 
         // Your Mapbox Token Specifically for UM.AR domain
