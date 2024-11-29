@@ -16,6 +16,7 @@ html {
 }
 
 body {
+  position: fixed;
   display: block; /* Default block layout */
   margin: 0;
   padding: 0;
