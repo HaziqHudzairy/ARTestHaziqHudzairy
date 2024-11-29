@@ -28,6 +28,7 @@ body {
 .container {
   overflow-x: hidden;
   display: block;
+  max-width: 100vw;
   /* flex-direction: column; */
   /* Stack items vertically */
 }
