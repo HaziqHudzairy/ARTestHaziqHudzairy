@@ -10,7 +10,7 @@ body {
   overscroll-behavior: none;
   overflow-x: hidden;
   /* Disable horizontal scrolling */
-  width: 100vh;
+  width: 100%;
   /* Ensure the body fits within the viewport */
 }
 
@@ -384,29 +384,6 @@ form:hover {
     width: 80%; /* Expanded width on hover */
 }
 
-input {
-    position: relative;
-    width: calc(100% - 50px); /* Adjust for padding */
-    max-width: 100vw; /* Prevent input overflow */
-    padding-left: 20px;
-    line-height: 30px;
-    border-radius: 20px;
-    height: 42.5px;
-    box-sizing: border-box;
-    display: none;
-    font-size: 16px; /* Prevent iOS zooming */
-}
-
-input:focus {
-    outline: none; /* Remove browser default outline */
-    border: 2px solid #007BFF; /* Custom focus style */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-form:hover input {
-  display: block;
-  /* Show input when hovered */
-}
 
 .fa {
   position: absolute;
