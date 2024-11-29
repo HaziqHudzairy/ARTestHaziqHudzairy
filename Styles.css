@@ -10,7 +10,7 @@ body {
   overscroll-behavior: none;
   overflow-x: hidden;
   /* Disable horizontal scrolling */
-  width: 100%;
+  width: 100vh;
   /* Ensure the body fits within the viewport */
 }
 
@@ -393,7 +393,7 @@ input {
     border-radius: 20px;
     height: 42.5px;
     box-sizing: border-box;
-    display: block;
+    display: none;
     font-size: 16px; /* Prevent iOS zooming */
 }
 
@@ -404,7 +404,7 @@ input:focus {
 }
 
 form:hover input {
-  display: none;
+  display: block;
   /* Show input when hovered */
 }
 
