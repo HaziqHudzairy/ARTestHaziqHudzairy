@@ -325,6 +325,7 @@
   }
 
   .search-container {
+    top: 70px;
     position: relative;
     display: flex;
     align-items: center;
