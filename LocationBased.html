@@ -585,20 +585,6 @@
                 marker.setAttribute('look-at', '[gps-camera]');
                 marker.classList.add('route-marker'); // Add a unique class
 
-                // Set an initial position relative to GPS location (e.g., 0 on Y-axis)
-                marker.setAttribute('position', '0 0 0');
-
-                // Add a wave-like animation for the Y-axis
-                marker.setAttribute('animation', `
-                    property: position.y; 
-                    dir: alternate; 
-                    dur: 1000; 
-                    easing: easeInOutSine; 
-                    loop: true; 
-                    to: 1.5; 
-                    delay: ${index * 150}; // Offset each marker slightly to create the wave effect
-                `);
-
                 document.querySelector('a-scene').appendChild(marker);
             });
 
