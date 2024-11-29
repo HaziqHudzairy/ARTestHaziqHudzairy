@@ -7,6 +7,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  overscroll-behavior: none;
   overflow-x: hidden;
   /* Disable horizontal scrolling */
   width: 100%;
@@ -387,14 +388,23 @@ form:hover {
 
 
 input {
-  width: calc(100% - 50px); /* Match form width minus padding */
+  position: relative;
+  width: calc(100% - 50px); /* Match the form's width minus padding */
+  max-width: 100%; /* Ensure input doesn't exceed the container width */
   padding-left: 20px;
   line-height: 30px;
   border-radius: 20px;
   height: 42.5px;
   box-sizing: border-box;
-  display: block; /* Ensure input expands without breaking layout */
+  display: block;
 }
+
+input:focus {
+  outline: none; /* Remove the default outline */
+  border: 2px solid #007BFF; /* Add a custom focus border */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional: Add shadow */
+}
+
 
 form:hover input {
   display: block;
