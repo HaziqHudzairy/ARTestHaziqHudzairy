@@ -75,14 +75,14 @@ body {
   overflow: hidden;
 }
 
-
-a-scene {
+video {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0; /* Ensure it is behind other elements */
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  object-fit: cover; /* Ensure the video stretches to fill the screen */
+  z-index: -100; /* Ensure it is behind the AR elements */
 }
 
 /* @media screen and (max-width: 768px) {
