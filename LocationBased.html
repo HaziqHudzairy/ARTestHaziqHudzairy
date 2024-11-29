@@ -12,6 +12,9 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="Styles.css">
+
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js"></script>
 </head>
 
 <body style="margin: 0; overflow: hidden;">
@@ -165,151 +168,76 @@
 
         <a-camera gps-camera rotation-reader fov="20" near="0.1" far="1000"></a-camera>
 
-        <!-- <a-image
-        src="#FSKTMLogo"
-        scale="100 100 100" 
-        look-at="[gps-camera]"
-        gps-entity-place="latitude: 3.128011; longitude: 101.650516;" 
-    ></a-image> -->
-        <a-entity id="home" look-at="#camera" gltf-model="#locationPinMedicine" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 1.903036; longitude: 102.851962;"></a-entity>
-        <a-entity id="jiran" look-at="#camera" gltf-model="#locationPinMedicine" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 1.902846; longitude: 102.851071;"></a-entity>
-        <!-- Faculty Locations -->
-        <a-entity id="entityMedicine" look-at="#camera" gltf-model="#locationPinMedicine" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 3.115828; longitude: 101.653418;"></a-entity>
-        <a-entity id="entityEngineering" look-at="#camera" gltf-model="#locationPinEngineering"
-            animation-mixer="clip: *" scale="800 800 800"
-            gps-entity-place="latitude: 3.117802; longitude: 101.655650;"></a-entity>
-        <a-entity id="entityLaw" look-at="#camera" gltf-model="#locationPinLaw" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 3.118005; longitude: 101.660850;"></a-entity>
-        <a-entity id="entityScience" look-at="#camera" gltf-model="#locationPinScience" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 3.121827; longitude: 101.653875;"></a-entity>
-        <a-entity id="entityCS" look-at="#camera" gltf-model="#locationPinCS" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 3.127979; longitude: 101.650565;"></a-entity>
-        <a-entity id="entityBusiness" look-at="#camera" gltf-model="#locationPinBusiness" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 3.118396; longitude: 101.652676;"></a-entity>
-        <a-entity id="entityArts" look-at="#camera" gltf-model="#locationPinArts" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 3.120916; longitude: 101.653107;"></a-entity>
-        <a-entity id="entityBuiltEnvironment" look-at="#camera" gltf-model="#locationPinBuiltEnvironment"
-            animation-mixer="clip: *" scale="800 800 800"
-            gps-entity-place="latitude: 3.115871; longitude: 101.655339;"></a-entity>
-        <a-entity id="entityDentistry" look-at="#camera" gltf-model="#locationPinDentistry" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 3.111392; longitude: 101.652523;"></a-entity>
-        <a-entity id="entityEducation" look-at="#camera" gltf-model="#locationPinEducation" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 3.119958; longitude: 101.652903;"></a-entity>
-        <a-entity id="entitySport" look-at="#camera" gltf-model="#locationPinSport" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 3.130788; longitude: 101.660023;"></a-entity>
-        <a-entity id="entityLanguages" look-at="#camera" gltf-model="#locationPinLanguages" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 3.122513; longitude: 101.651525;"></a-entity>
-        <a-entity id="entityPharmacy" look-at="#camera" gltf-model="#locationPinPharmacy" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 3.115517; longitude: 101.652362;"></a-entity>
-        <a-entity id="entityCreativeArts" look-at="#camera" gltf-model="#locationPinCreativeArts"
-            animation-mixer="clip: *" scale="800 800 800"
-            gps-entity-place="latitude: 3.118616; longitude: 101.653299;"></a-entity>
-        <a-entity id="entityAkademiMelayu" look-at="#camera" gltf-model="#locationPinAkademiMelayu"
-            animation-mixer="clip: *" scale="800 800 800"
-            gps-entity-place="latitude: 3.125078; longitude: 101.652265;"></a-entity>
-        <a-entity id="entityAkademiIslam" look-at="#camera" gltf-model="#locationPinAkademiIslam"
-            animation-mixer="clip: *" scale="800 800 800"
-            gps-entity-place="latitude: 3.132609; longitude: 101.657780;"></a-entity>
-        <a-entity id="entityInstituteAdvancedStudies" look-at="#camera"
-            gltf-model="#locationPinInstituteAdvancedStudies" animation-mixer="clip: *" scale="800 800 800"
-            gps-entity-place="latitude: 3.124623; longitude: 101.659739;"></a-entity>
-        <a-entity id="entityPusatAsasi" look-at="#camera" gltf-model="#locationPinPusatAsasi" animation-mixer="clip: *"
-            scale="800 800 800" gps-entity-place="latitude: 3.123262; longitude: 101.659417;"></a-entity>
-
-        <!-- Residential Colleges -->
-        <a-entity id="entityKolej1" look-at="#camera" gltf-model="#locationPinKolej1" scale="8 8 8"
-            gps-entity-place="latitude: 3.117609; longitude: 101.659361;"></a-entity>
-        <a-entity id="entityKolej2" look-at="#camera" gltf-model="#locationPinKolej2" scale="8 8 8"
-            gps-entity-place="latitude: 3.118220; longitude: 101.657536;"></a-entity>
-        <a-entity id="entityKolej3" look-at="#camera" gltf-model="#locationPinKolej3" scale="8 8 8"
-            gps-entity-place="latitude: 3.124310; longitude: 101.650715;"></a-entity>
-        <a-entity id="entityKolej4" look-at="#camera" gltf-model="#locationPinKolej4" scale="8 8 8"
-            gps-entity-place="latitude: 3.124872; longitude: 101.649416;"></a-entity>
-        <a-entity id="entityKolej5" look-at="#camera" gltf-model="#locationPinKolej5" scale="8 8 8"
-            gps-entity-place="latitude: 3.127138; longitude: 101.658605;"></a-entity>
-        <a-entity id="entityKolej6" look-at="#camera" gltf-model="#locationPinKolej6" scale="8 8 8"
-            gps-entity-place="latitude: 3.115498; longitude: 101.654873;"></a-entity>
-        <a-entity id="entityKolej7" look-at="#camera" gltf-model="#locationPinKolej7" scale="8 8 8"
-            gps-entity-place="latitude: 3.126104; longitude: 101.650415;"></a-entity>
-        <a-entity id="entityKolej8" look-at="#camera" gltf-model="#locationPinKolej8" scale="8 8 8"
-            gps-entity-place="latitude: 3.129827; longitude: 101.649728;"></a-entity>
-        <a-entity id="entityKolej9" look-at="#camera" gltf-model="#locationPinKolej9" scale="8 8 8"
-            gps-entity-place="latitude: 3.120319; longitude: 101.646064;"></a-entity>
-        <a-entity id="entityKolej10" look-at="#camera" gltf-model="#locationPinKolej10" scale="8 8 8"
-            gps-entity-place="latitude: 3.130641; longitude: 101.650468;"></a-entity>
-        <a-entity id="entityKolej11" look-at="#camera" gltf-model="#locationPinKolej11" scale="8 8 8"
-            gps-entity-place="latitude: 3.129356; longitude: 101.660511;"></a-entity>
-        <a-entity id="entityKolej12" look-at="#camera" gltf-model="#locationPinKolej12" scale="8 8 8"
-            gps-entity-place="latitude: 3.125649; longitude: 101.660795;"></a-entity>
-        <a-entity id="entityKolej13" look-at="#camera" gltf-model="#locationPinKolej13" scale="8 8 8"
-            gps-entity-place="latitude: 3.120582; longitude: 101.639610;"></a-entity>
-        <a-entity id="entityRumahUniversiti" look-at="#camera" gltf-model="#locationPinRumahUniversiti" scale="8 8 8"
-            gps-entity-place="latitude: 3.122223; longitude: 101.657570;"></a-entity>
-
-        <!-- Facilities Locations -->
-        <a-entity id="entityDTC" look-at="#camera" gltf-model="#locationPinDTC" scale="8 8 8"
-            gps-entity-place="latitude: 3.121436; longitude: 101.657060;"></a-entity>
-        <a-entity id="entityPanggung" look-at="#camera" gltf-model="#locationPinPanggung" scale="8 8 8"
-            gps-entity-place="latitude: 3.121522; longitude: 101.656079;"></a-entity>
-        <a-entity id="entityKPS" look-at="#camera" gltf-model="#locationPinKPS" scale="8 8 8"
-            gps-entity-place="latitude: 3.121125; longitude: 101.655145;"></a-entity>
-        <a-entity id="entityBangunanCanseleri" look-at="#camera" gltf-model="#locationPinBangunanCanseleri"
-            scale="8 8 8" gps-entity-place="latitude: 3.120445; longitude: 101.657636;"></a-entity>
-        <a-entity id="entityExamHall" look-at="#camera" gltf-model="#locationPinExamHall" scale="8 8 8"
-            gps-entity-place="latitude: 3.115147; longitude: 101.658086;"></a-entity>
-        <a-entity id="entityUMCentral" look-at="#camera" gltf-model="#locationPinUMCentral" scale="8 8 8"
-            gps-entity-place="latitude: 3.120975; longitude: 101.653585;"></a-entity>
-        <a-entity id="entityBankIslam" look-at="#camera" gltf-model="#locationPinBankIslam" scale="8 8 8"
-            gps-entity-place="latitude: 3.122143; longitude: 101.656503;"></a-entity>
-        <a-entity id="entityMasjid" look-at="#camera" gltf-model="#locationPinMasjid" scale="8 8 8"
-            gps-entity-place="latitude: 3.117938; longitude: 101.662769;"></a-entity>
-        <a-entity id="entityAcademyIslam" look-at="#camera" gltf-model="#locationPinMusollaAPI" scale="8 8 8"
-            gps-entity-place="latitude: 3.132754; longitude: 101.657415;"></a-entity>
-        <a-entity id="entityTemple" look-at="#camera" gltf-model="#locationPinTemple" scale="8 8 8"
-            gps-entity-place="latitude: 3.127944; longitude: 101.660709;"></a-entity>
-
-        <!-- Libraries Locations -->
-        <a-entity id="entityUMLibrary" look-at="#camera" gltf-model="#locationPinUMLibrary" scale="8 8 8"
-            gps-entity-place="latitude: 3.120274; longitude: 101.654513;"></a-entity>
-        <a-entity id="entityMedicalLibrary" look-at="#camera" gltf-model="#locationPinMedicalLibrary" scale="8 8 8"
-            gps-entity-place="latitude: 3.114301; longitude: 101.653429;"></a-entity>
-        <a-entity id="entityLawLibrary" look-at="#camera" gltf-model="#locationPinLawLibrary" scale="8 8 8"
-            gps-entity-place="latitude: 3.118624; longitude: 101.653478;"></a-entity>
-        <a-entity id="entityZabaLibrary" look-at="#camera" gltf-model="#locationPinZabaLibrary" scale="8 8 8"
-            gps-entity-place="latitude: 3.118624; longitude: 101.653478;"></a-entity>
-        <a-entity id="entityDentalLibrary" look-at="#camera" gltf-model="#locationPinDentalLibrary" scale="8 8 8"
-            gps-entity-place="latitude: 3.115774; longitude: 101.659985;"></a-entity>
-        <a-entity id="entityIslamicLibrary" look-at="#camera" gltf-model="#locationPinIslamicLibrary" scale="8 8 8"
-            gps-entity-place="latitude: 3.132277; longitude: 101.657421;"></a-entity>
-
-        <!-- Sports and Recreation Locations -->
-        <a-entity id="entityUMWallSquash" look-at="#camera" gltf-model="#locationPinUMWallSquash" scale="8 8 8"
-            gps-entity-place="latitude: 3.131988; longitude: 101.658011;"></a-entity>
-        <a-entity id="entityVarsityGreen" look-at="#camera" gltf-model="#locationPinVarsityGreen" scale="8 8 8"
-            gps-entity-place="latitude: 3.120477; longitude: 101.659148;"></a-entity>
-        <a-entity id="entityUMPark" look-at="#camera" gltf-model="#locationPinUMPark" scale="8 8 8"
-            gps-entity-place="latitude: 3.119047; longitude: 101.660017;"></a-entity>
-        <a-entity id="entityPadangC" look-at="#camera" gltf-model="#locationPinPadangC" scale="8 8 8"
-            gps-entity-place="latitude: 3.120177; longitude: 101.660135;"></a-entity>
-        <a-entity id="entityKayaks" look-at="#camera" gltf-model="#locationPinKayaks" scale="8 8 8"
-            gps-entity-place="latitude: 3.119374; longitude: 101.658671;"></a-entity>
-        <a-entity id="entitySwimmingPool" look-at="#camera" gltf-model="#locationPinSwimmingPool" scale="8 8 8"
-            gps-entity-place="latitude: 3.128806; longitude: 101.659803;"></a-entity>
-        <a-entity id="entityUMSportsCentre" look-at="#camera" gltf-model="#locationPinUMSportsCentre" scale="8 8 8"
-            gps-entity-place="latitude: 3.129872; longitude: 101.660018;"></a-entity>
-        <a-entity id="entityUMArenaStadium" look-at="#camera" gltf-model="#locationPinUMArenaStadium" scale="8 8 8"
-            gps-entity-place="latitude: 3.130895; longitude: 101.659690;"></a-entity>
-        <a-entity id="entityRimbaIlmu" look-at="#camera" gltf-model="#locationPinRimbaIlmu" scale="8 8 8"
-            gps-entity-place="latitude: 3.130697; longitude: 101.658203;"></a-entity>
-        <a-entity id="entityLadangMini" look-at="#camera" gltf-model="#locationPinLadangMini" scale="8 8 8"
-            gps-entity-place="latitude: 3.128190; longitude: 101.660865;"></a-entity>
-        <a-entity id="entityMustafaRiver" look-at="#camera" gltf-model="#locationPinMustafaRiver" scale="8 8 8"
-            gps-entity-place="latitude: 3.125919; longitude: 101.658998;"></a-entity>
 
     </a-scene>
+
+    <!-- Firebase Initialization -->
+    <script type="module">
+        // Firebase Initialization
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB1NEkxuhsfBrsTgfei80LWmF4o_IQwO8",
+            authDomain: "um-ar-d0418.firebaseapp.com",
+            databaseURL: "https://um-ar-d0418-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "um-ar-d0418",
+            storageBucket: "um-ar-d0418.appspot.com",
+            messagingSenderId: "624669072499",
+            appId: "1:624669072499:web:315e91c12fad88513c6d52",
+            measurementId: "G-XWM53Y6FBZ"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Fetch entities from Firebase
+        async function fetchEntitiesFromFirebase() {
+            const entitiesRef = ref(db, 'entities');
+            onValue(entitiesRef, (snapshot) => {
+                const entities = snapshot.val();
+                if (!entities) {
+                    console.error("No entities found in the database.");
+                    return;
+                }
+
+                // Loop through entities and create <a-entity> dynamically
+                Object.keys(entities).forEach((key) => {
+                    const entity = entities[key];
+                    if (!entity.latitude || !entity.longitude || !entity.model) {
+                        console.warn(`Entity ${key} is missing required properties.`);
+                        return;
+                    }
+
+                    // Create an <a-entity> element
+                    const entityElement = document.createElement('a-entity');
+                    entityElement.setAttribute('id', key);
+                    entityElement.setAttribute('look-at', '#camera');
+                    entityElement.setAttribute('gltf-model', entity.model);
+                    entityElement.setAttribute('animation-mixer', 'clip: *');
+                    entityElement.setAttribute('scale', entity.scale || '800 800 800');
+                    entityElement.setAttribute(
+                        'gps-entity-place',
+                        `latitude: ${entity.latitude}; longitude: ${entity.longitude}`
+                    );
+
+                    // Append to <a-scene>
+                    document.querySelector('a-scene').appendChild(entityElement);
+                });
+            }, (error) => {
+                console.error("Error fetching entities from Firebase:", error);
+            });
+        }
+
+        // Initialize entity fetching after the scene is loaded
+        document.querySelector('a-scene').addEventListener('loaded', () => {
+            fetchEntitiesFromFirebase();
+        });
+
+    </script>
+
 
 
     <script>
@@ -564,7 +492,7 @@
 
         // Your Mapbox Token
         const MAPBOX_TOKEN = 'sk.eyJ1IjoiaGF6aXFodWR6YWlyeTAyIiwiYSI6ImNtM3VvYzduZDBqazgyanIzOTdibXM1c3IifQ.IRA9AZlLo-eF9uXsQkzdmg';
-        
+
         // Define start and end points
         const start = [3.129827, 101.649728]; // Example start point
         const end = [3.127979, 101.650565]; // Example end point
