@@ -373,6 +373,8 @@
             console.error('Error fetching data:', error);
         });
 
+        showDebugMessage(entities)
+
         // Update the location continuously with system popup for errors
         function updateLocation() {
             navigator.geolocation.watchPosition(
