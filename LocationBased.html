@@ -106,7 +106,7 @@
 
 
     <a-scene renderer="logarithmicDepthBuffer: true;" embedded loading-screen="enabled: false;"
-        arjs="sourceType: webcam; debugUIEnabled: false;">
+        arjs="sourceType: webcam; displayWidth: 0; displayHeight: 0; debugUIEnabled: false;" id="ar-scene">
         <a-assets>
 
             <img id="FSKTMLogo" src="asset/logo/Logo FSKTM.png">
@@ -192,6 +192,26 @@
     </a-scene>
 
     <script>
+
+        // Wait for the DOM to load
+        document.addEventListener("DOMContentLoaded", function () {
+            // Select the <a-scene> element
+            const arScene = document.getElementById("ar-scene");
+
+            // Get the screen's width and height
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+
+            // Update the arjs attribute with the calculated dimensions
+            const arjsAttributes = `
+      sourceType: webcam;
+      displayWidth: ${screenWidth};
+      displayHeight: ${screenHeight};
+      debugUIEnabled: false;
+    `;
+            arScene.setAttribute("arjs", arjsAttributes);
+        });
+
         function disableScrolling() {
             // Lock scrolling position
             document.body.style.overflow = 'hidden';
