@@ -326,12 +326,11 @@ form:hover .fa {
 
 .suggestions-container {
   overflow-y: auto;
-  position: fixed;
-  margin-left: 15px;
+  position: relative;
   margin-left: 15px;
   top: 20%;
   background: #ffffff86; /* Semi-transparent white background */
-  width: 80vh;
+  width: 80vw;
   max-height: 400px; /* Limit height for long lists */
   border-radius: 10px; /* Rounded corners */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06); /* Subtle shadow */
