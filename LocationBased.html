@@ -189,8 +189,8 @@
     <script>
 
         document.querySelector('a-scene').addEventListener('loaded', function () {
-                    document.getElementById("Loading").style.display = "none";
-                });
+            document.getElementById("Loading").style.display = "none";
+        });
 
         // Function to show debug messages in the div
         function showDebugMessage(message) {
@@ -231,6 +231,35 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
+
+        // Global array to store entities
+        window.dynamicEntities = [];
+
+        // Function to fetch entities from Firebase
+        function fetchEntitiesNameCoordinate() {
+            const entitiesRef = ref(database, "entities");
+            onValue(entitiesRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    window.dynamicEntities = []; // Reset the array
+                    Object.keys(data).forEach((category) => {
+                        Object.values(data[category]).forEach((entity) => {
+                            window.dynamicEntities.push({
+                                name: entity.name,
+                                latitude: entity.latitude,
+                                longitude: entity.longitude,
+                            });
+                        });
+                    });
+                    console.log("Entities fetched:", window.dynamicEntities);
+                } else {
+                    console.error("No data found in the database.");
+                }
+            });
+        }
+
+        // Call fetchEntities to populate global dynamicEntities
+        fetchEntitiesNameCoordinate();
 
         // Recursive Function to Fetch and Render Entities
         function renderEntities(node, parent = null) {
@@ -352,75 +381,75 @@
         }
 
 
-        // Define your entities with coordinates and names
-        const entities = [
-            { name: "Medicine Faculty", latitude: 3.115828, longitude: 101.653418 },
-            { name: "Engineering Faculty", latitude: 3.117802, longitude: 101.655650},
-            { name: "Law Faculty", latitude: 3.118005, longitude: 101.660850},
-            { name: "Science Faculty", latitude: 3.121827, longitude: 101.653875},
-            { name: "Computer Science Faculty", latitude: 3.127979, longitude: 101.650565},
-            { name: "Business and Economics Faculty", latitude: 3.118396, longitude: 101.652676},
-            { name: "Arts and Social Sciences Faculty", latitude: 3.120916, longitude: 101.653107},
-            { name: "Built Environment Faculty", latitude: 3.115871, longitude: 101.655339},
-            { name: "Dentistry Faculty", latitude: 3.111392, longitude: 101.652523},
-            { name: "Education Faculty", latitude: 3.119958, longitude: 101.652903},
-            { name: "Sports Science Faculty", latitude: 3.130788, longitude: 101.660023},
-            { name: "Languages Faculty", latitude: 3.122513, longitude: 101.651525},
-            { name: "Pharmacy Faculty", latitude: 3.115517, longitude: 101.652362},
-            { name: "Creative Arts Faculty", latitude: 3.118616, longitude: 101.653299},
-            { name: "Malay Studies Academy", latitude: 3.125078, longitude: 101.652265},
-            { name: "Islamic Studies Academy", latitude: 3.132609, longitude: 101.657780},
-            { name: "Institute of Advanced Studies", latitude: 3.124623, longitude: 101.659739},
-            { name: "Foundation Centre", latitude: 3.123262, longitude: 101.659417},
+        // // Define your entities with coordinates and names
+        // const entities = [
+        //     { name: "Medicine Faculty", latitude: 3.115828, longitude: 101.653418 },
+        //     { name: "Engineering Faculty", latitude: 3.117802, longitude: 101.655650 },
+        //     { name: "Law Faculty", latitude: 3.118005, longitude: 101.660850 },
+        //     { name: "Science Faculty", latitude: 3.121827, longitude: 101.653875 },
+        //     { name: "Computer Science Faculty", latitude: 3.127979, longitude: 101.650565 },
+        //     { name: "Business and Economics Faculty", latitude: 3.118396, longitude: 101.652676 },
+        //     { name: "Arts and Social Sciences Faculty", latitude: 3.120916, longitude: 101.653107 },
+        //     { name: "Built Environment Faculty", latitude: 3.115871, longitude: 101.655339 },
+        //     { name: "Dentistry Faculty", latitude: 3.111392, longitude: 101.652523 },
+        //     { name: "Education Faculty", latitude: 3.119958, longitude: 101.652903 },
+        //     { name: "Sports Science Faculty", latitude: 3.130788, longitude: 101.660023 },
+        //     { name: "Languages Faculty", latitude: 3.122513, longitude: 101.651525 },
+        //     { name: "Pharmacy Faculty", latitude: 3.115517, longitude: 101.652362 },
+        //     { name: "Creative Arts Faculty", latitude: 3.118616, longitude: 101.653299 },
+        //     { name: "Malay Studies Academy", latitude: 3.125078, longitude: 101.652265 },
+        //     { name: "Islamic Studies Academy", latitude: 3.132609, longitude: 101.657780 },
+        //     { name: "Institute of Advanced Studies", latitude: 3.124623, longitude: 101.659739 },
+        //     { name: "Foundation Centre", latitude: 3.123262, longitude: 101.659417 },
 
-            // Residential Colleges
-            { name: "Kolej Kediaman 1", latitude: 3.117609, longitude: 101.659361},
-            { name: "Kolej Kediaman 2", latitude: 3.118220, longitude: 101.657536},
-            { name: "Kolej Kediaman 3", latitude: 3.124310, longitude: 101.650715},
-            { name: "Kolej Kediaman 4", latitude: 3.124872, longitude: 101.649416},
-            { name: "Kolej Kediaman 5", latitude: 3.127138, longitude: 101.658605},
-            { name: "Kolej Kediaman 6", latitude: 3.115498, longitude: 101.654873},
-            { name: "Kolej Kediaman 7", latitude: 3.126104, longitude: 101.650415},
-            { name: "Kolej Kediaman 8", latitude: 3.129827, longitude: 101.649728},
-            { name: "Kolej Kediaman 9", latitude: 3.120319, longitude: 101.646064},
-            { name: "Kolej Kediaman 10", latitude: 3.130641, longitude: 101.650468},
-            { name: "Kolej Kediaman 11", latitude: 3.129356, longitude: 101.660511},
-            { name: "Kolej Kediaman 12", latitude: 3.125649, longitude: 101.660795},
-            { name: "Kolej Kediaman 13", latitude: 3.120582, longitude: 101.639610},
-            { name: "Rumah Universiti", latitude: 3.122223, longitude: 101.657570},
+        //     // Residential Colleges
+        //     { name: "Kolej Kediaman 1", latitude: 3.117609, longitude: 101.659361 },
+        //     { name: "Kolej Kediaman 2", latitude: 3.118220, longitude: 101.657536 },
+        //     { name: "Kolej Kediaman 3", latitude: 3.124310, longitude: 101.650715 },
+        //     { name: "Kolej Kediaman 4", latitude: 3.124872, longitude: 101.649416 },
+        //     { name: "Kolej Kediaman 5", latitude: 3.127138, longitude: 101.658605 },
+        //     { name: "Kolej Kediaman 6", latitude: 3.115498, longitude: 101.654873 },
+        //     { name: "Kolej Kediaman 7", latitude: 3.126104, longitude: 101.650415 },
+        //     { name: "Kolej Kediaman 8", latitude: 3.129827, longitude: 101.649728 },
+        //     { name: "Kolej Kediaman 9", latitude: 3.120319, longitude: 101.646064 },
+        //     { name: "Kolej Kediaman 10", latitude: 3.130641, longitude: 101.650468 },
+        //     { name: "Kolej Kediaman 11", latitude: 3.129356, longitude: 101.660511 },
+        //     { name: "Kolej Kediaman 12", latitude: 3.125649, longitude: 101.660795 },
+        //     { name: "Kolej Kediaman 13", latitude: 3.120582, longitude: 101.639610 },
+        //     { name: "Rumah Universiti", latitude: 3.122223, longitude: 101.657570 },
 
-            // Facilities
-            { name: "Dewan Tunku Canselor (DTC)", latitude: 3.121436, longitude: 101.657060},
-            { name: "Panggung Seni", latitude: 3.121522, longitude: 101.656079},
-            { name: "KPS Complex", latitude: 3.121125, longitude: 101.655145},
-            { name: "Bangunan Canseleri", latitude: 3.120445, longitude: 101.657636},
-            { name: "Examination Hall", latitude: 3.115147, longitude: 101.658086},
-            { name: "UM Central", latitude: 3.120975, longitude: 101.653585},
-            { name: "Bank Islam", latitude: 3.122143, longitude: 101.656503},
-            { name: "Masjid Universiti", latitude: 3.117938, longitude: 101.662769},
-            { name: "Temple", latitude: 3.127944, longitude: 101.660709},
+        //     // Facilities
+        //     { name: "Dewan Tunku Canselor (DTC)", latitude: 3.121436, longitude: 101.657060 },
+        //     { name: "Panggung Seni", latitude: 3.121522, longitude: 101.656079 },
+        //     { name: "KPS Complex", latitude: 3.121125, longitude: 101.655145 },
+        //     { name: "Bangunan Canseleri", latitude: 3.120445, longitude: 101.657636 },
+        //     { name: "Examination Hall", latitude: 3.115147, longitude: 101.658086 },
+        //     { name: "UM Central", latitude: 3.120975, longitude: 101.653585 },
+        //     { name: "Bank Islam", latitude: 3.122143, longitude: 101.656503 },
+        //     { name: "Masjid Universiti", latitude: 3.117938, longitude: 101.662769 },
+        //     { name: "Temple", latitude: 3.127944, longitude: 101.660709 },
 
-            // Libraries
-            { name: "UM Main Library", latitude: 3.120274, longitude: 101.654513},
-            { name: "Medical Library", latitude: 3.114301, longitude: 101.653429},
-            { name: "Law Library", latitude: 3.118624, longitude: 101.653478},
-            { name: "Za'ba Library", latitude: 3.118624, longitude: 101.653478},
-            { name: "Dental Library", latitude: 3.115774, longitude: 101.659985},
-            { name: "Islamic Studies Library", latitude: 3.132277, longitude: 101.657421},
+        //     // Libraries
+        //     { name: "UM Main Library", latitude: 3.120274, longitude: 101.654513 },
+        //     { name: "Medical Library", latitude: 3.114301, longitude: 101.653429 },
+        //     { name: "Law Library", latitude: 3.118624, longitude: 101.653478 },
+        //     { name: "Za'ba Library", latitude: 3.118624, longitude: 101.653478 },
+        //     { name: "Dental Library", latitude: 3.115774, longitude: 101.659985 },
+        //     { name: "Islamic Studies Library", latitude: 3.132277, longitude: 101.657421 },
 
-            // Sports and Recreation
-            { name: "UM Wall Squash", latitude: 3.131988, longitude: 101.658011},
-            { name: "Varsity Green", latitude: 3.120477, longitude: 101.659148},
-            { name: "UM Park", latitude: 3.119047, longitude: 101.660017},
-            { name: "Padang C", latitude: 3.120177, longitude: 101.660135},
-            { name: "Kayak Centre", latitude: 3.119374, longitude: 101.658671},
-            { name: "Swimming Pool", latitude: 3.128806, longitude: 101.659803},
-            { name: "UM Sports Centre", latitude: 3.129872, longitude: 101.660018},
-            { name: "UM Arena Stadium", latitude: 3.130895, longitude: 101.659690},
-            { name: "Rimba Ilmu", latitude: 3.130697, longitude: 101.658203},
-            { name: "Ladang Mini", latitude: 3.128190, longitude: 101.660865},
-            { name: "Mustafa River", latitude: 3.125919, longitude: 101.658998},
-        ];
+        //     // Sports and Recreation
+        //     { name: "UM Wall Squash", latitude: 3.131988, longitude: 101.658011 },
+        //     { name: "Varsity Green", latitude: 3.120477, longitude: 101.659148 },
+        //     { name: "UM Park", latitude: 3.119047, longitude: 101.660017 },
+        //     { name: "Padang C", latitude: 3.120177, longitude: 101.660135 },
+        //     { name: "Kayak Centre", latitude: 3.119374, longitude: 101.658671 },
+        //     { name: "Swimming Pool", latitude: 3.128806, longitude: 101.659803 },
+        //     { name: "UM Sports Centre", latitude: 3.129872, longitude: 101.660018 },
+        //     { name: "UM Arena Stadium", latitude: 3.130895, longitude: 101.659690 },
+        //     { name: "Rimba Ilmu", latitude: 3.130697, longitude: 101.658203 },
+        //     { name: "Ladang Mini", latitude: 3.128190, longitude: 101.660865 },
+        //     { name: "Mustafa River", latitude: 3.125919, longitude: 101.658998 }
+        // ];
 
         // Update the location continuously with system popup for errors
         function updateLocation() {
@@ -433,7 +462,7 @@
                     updateLocationDisplay(latitude, longitude);
 
                     // Check if the user is near any entity (within a 25-meter radius)
-                    checkProximity(latitude, longitude, entities, 30);
+                    checkProximity(latitude, longitude, window.dynamicEntities, 30);
                 },
                 function (error) {
                     // Handle different types of errors and show system alert popup
