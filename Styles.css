@@ -25,6 +25,8 @@ body {
 .container {
   overflow-x: hidden;
   display: block;
+  max-width: 100%;
+  box-sizing: border-box;
   outline: 1px solid red;
   /* flex-direction: column; */
   /* Stack items vertically */
