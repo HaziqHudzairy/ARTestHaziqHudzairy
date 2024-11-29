@@ -327,9 +327,7 @@ form:hover .fa {
 .suggestions-container {
   overflow-y: auto;
   position: fixed;
-  margin-left: 15px;
-  top: 20%;
-  transform: translateX(-50%);
+  left:10px;
   background: #ffffff86; /* Semi-transparent white background */
   width: 80vw;
   max-height: 400px; /* Limit height for long lists */
