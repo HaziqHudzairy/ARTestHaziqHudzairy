@@ -19,7 +19,7 @@ html {
 }
 
 body {
-  position:relative;
+  position:absolute;
   display: block; /* Default block layout */
   margin: 0;
   padding: 0;
