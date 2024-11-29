@@ -329,3 +329,12 @@ form:hover .fa {
   overflow: hidden;
 }
 
+canvas.a-canvas {
+  width: 100vw !important; /* Full viewport width */
+  height: 100vh !important; /* Full viewport height */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Adjust stacking order if necessary */
+}
+
