@@ -344,7 +344,8 @@ form:hover {
 }
 
 input {
-    width: 300px;
+    width: 292.5px;
+    padding-left: 20px;
     line-height: 30px;
     border-radius: 20px;
     height: 42.5px;
