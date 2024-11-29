@@ -352,6 +352,7 @@ form:hover {
 }
 input {
   right: 0;
+  width: auto;
    /* Fit within the form */
   max-width: 280px; /* Prevent the input from growing too large */
   padding-left: 20px; /* Placeholder/text left gap */
