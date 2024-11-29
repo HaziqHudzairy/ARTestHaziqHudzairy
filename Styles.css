@@ -34,6 +34,7 @@ body {
 
 .logo-container {
   display: flex;
+  position: fixed;
   justify-content: center;
   align-items: center;
   padding: 10px;
@@ -318,11 +319,6 @@ form:hover .fa {
   color: white;
 }
 
-.a-scene-container {
-  position: fixed;
-  width: 100vw;
-  overflow: hidden;
-}
 
 a-scene {
   width: 100%; /* Ensure it does not exceed the viewport width */
