@@ -187,6 +187,11 @@
     </a-scene>
 
     <script>
+
+        document.querySelector('a-scene').addEventListener('loaded', function () {
+                    document.getElementById("Loading").style.display = "none";
+                });
+
         // Function to show debug messages in the div
         function showDebugMessage(message) {
             const debugDiv = document.getElementById("debug-message");
@@ -369,52 +374,52 @@
             { name: "Foundation Centre", latitude: 3.123262, longitude: 101.659417},
 
             // Residential Colleges
-            { name: "Kolej Kediaman 1", latitude: 3.117609, longitude: 101.659361, height: 20 },
-            { name: "Kolej Kediaman 2", latitude: 3.118220, longitude: 101.657536, height: 20 },
-            { name: "Kolej Kediaman 3", latitude: 3.124310, longitude: 101.650715, height: 20 },
-            { name: "Kolej Kediaman 4", latitude: 3.124872, longitude: 101.649416, height: 20 },
-            { name: "Kolej Kediaman 5", latitude: 3.127138, longitude: 101.658605, height: 20 },
-            { name: "Kolej Kediaman 6", latitude: 3.115498, longitude: 101.654873, height: 20 },
-            { name: "Kolej Kediaman 7", latitude: 3.126104, longitude: 101.650415, height: 20 },
-            { name: "Kolej Kediaman 8", latitude: 3.129827, longitude: 101.649728, height: 20 },
-            { name: "Kolej Kediaman 9", latitude: 3.120319, longitude: 101.646064, height: 20 },
-            { name: "Kolej Kediaman 10", latitude: 3.130641, longitude: 101.650468, height: 20 },
-            { name: "Kolej Kediaman 11", latitude: 3.129356, longitude: 101.660511, height: 20 },
-            { name: "Kolej Kediaman 12", latitude: 3.125649, longitude: 101.660795, height: 20 },
-            { name: "Kolej Kediaman 13", latitude: 3.120582, longitude: 101.639610, height: 20 },
-            { name: "Rumah Universiti", latitude: 3.122223, longitude: 101.657570, height: 20 },
+            { name: "Kolej Kediaman 1", latitude: 3.117609, longitude: 101.659361},
+            { name: "Kolej Kediaman 2", latitude: 3.118220, longitude: 101.657536},
+            { name: "Kolej Kediaman 3", latitude: 3.124310, longitude: 101.650715},
+            { name: "Kolej Kediaman 4", latitude: 3.124872, longitude: 101.649416},
+            { name: "Kolej Kediaman 5", latitude: 3.127138, longitude: 101.658605},
+            { name: "Kolej Kediaman 6", latitude: 3.115498, longitude: 101.654873},
+            { name: "Kolej Kediaman 7", latitude: 3.126104, longitude: 101.650415},
+            { name: "Kolej Kediaman 8", latitude: 3.129827, longitude: 101.649728},
+            { name: "Kolej Kediaman 9", latitude: 3.120319, longitude: 101.646064},
+            { name: "Kolej Kediaman 10", latitude: 3.130641, longitude: 101.650468},
+            { name: "Kolej Kediaman 11", latitude: 3.129356, longitude: 101.660511},
+            { name: "Kolej Kediaman 12", latitude: 3.125649, longitude: 101.660795},
+            { name: "Kolej Kediaman 13", latitude: 3.120582, longitude: 101.639610},
+            { name: "Rumah Universiti", latitude: 3.122223, longitude: 101.657570},
 
             // Facilities
-            { name: "Dewan Tunku Canselor (DTC)", latitude: 3.121436, longitude: 101.657060, height: 20 },
-            { name: "Panggung Seni", latitude: 3.121522, longitude: 101.656079, height: 20 },
-            { name: "KPS Complex", latitude: 3.121125, longitude: 101.655145, height: 20 },
-            { name: "Bangunan Canseleri", latitude: 3.120445, longitude: 101.657636, height: 20 },
-            { name: "Examination Hall", latitude: 3.115147, longitude: 101.658086, height: 20 },
-            { name: "UM Central", latitude: 3.120975, longitude: 101.653585, height: 20 },
-            { name: "Bank Islam", latitude: 3.122143, longitude: 101.656503, height: 20 },
-            { name: "Masjid Universiti", latitude: 3.117938, longitude: 101.662769, height: 20 },
-            { name: "Temple", latitude: 3.127944, longitude: 101.660709, height: 20 },
+            { name: "Dewan Tunku Canselor (DTC)", latitude: 3.121436, longitude: 101.657060},
+            { name: "Panggung Seni", latitude: 3.121522, longitude: 101.656079},
+            { name: "KPS Complex", latitude: 3.121125, longitude: 101.655145},
+            { name: "Bangunan Canseleri", latitude: 3.120445, longitude: 101.657636},
+            { name: "Examination Hall", latitude: 3.115147, longitude: 101.658086},
+            { name: "UM Central", latitude: 3.120975, longitude: 101.653585},
+            { name: "Bank Islam", latitude: 3.122143, longitude: 101.656503},
+            { name: "Masjid Universiti", latitude: 3.117938, longitude: 101.662769},
+            { name: "Temple", latitude: 3.127944, longitude: 101.660709},
 
             // Libraries
-            { name: "UM Main Library", latitude: 3.120274, longitude: 101.654513, height: 20 },
-            { name: "Medical Library", latitude: 3.114301, longitude: 101.653429, height: 20 },
-            { name: "Law Library", latitude: 3.118624, longitude: 101.653478, height: 20 },
-            { name: "Za'ba Library", latitude: 3.118624, longitude: 101.653478, height: 20 },
-            { name: "Dental Library", latitude: 3.115774, longitude: 101.659985, height: 20 },
-            { name: "Islamic Studies Library", latitude: 3.132277, longitude: 101.657421, height: 20 },
+            { name: "UM Main Library", latitude: 3.120274, longitude: 101.654513},
+            { name: "Medical Library", latitude: 3.114301, longitude: 101.653429},
+            { name: "Law Library", latitude: 3.118624, longitude: 101.653478},
+            { name: "Za'ba Library", latitude: 3.118624, longitude: 101.653478},
+            { name: "Dental Library", latitude: 3.115774, longitude: 101.659985},
+            { name: "Islamic Studies Library", latitude: 3.132277, longitude: 101.657421},
 
             // Sports and Recreation
-            { name: "UM Wall Squash", latitude: 3.131988, longitude: 101.658011, height: 20 },
-            { name: "Varsity Green", latitude: 3.120477, longitude: 101.659148, height: 20 },
-            { name: "UM Park", latitude: 3.119047, longitude: 101.660017, height: 20 },
-            { name: "Padang C", latitude: 3.120177, longitude: 101.660135, height: 20 },
-            { name: "Kayak Centre", latitude: 3.119374, longitude: 101.658671, height: 20 },
-            { name: "Swimming Pool", latitude: 3.128806, longitude: 101.659803, height: 20 },
-            { name: "UM Sports Centre", latitude: 3.129872, longitude: 101.660018, height: 20 },
-            { name: "UM Arena Stadium", latitude: 3.130895, longitude: 101.659690, height: 20 },
-            { name: "Rimba Ilmu", latitude: 3.130697, longitude: 101.658203, height: 20 },
-            { name: "Ladang Mini", latitude: 3.128190, longitude: 101.660865, height: 20 },
-            { name: "Mustafa River", latitude: 3.125919, longitude: 101.658998, height: 20 },
+            { name: "UM Wall Squash", latitude: 3.131988, longitude: 101.658011},
+            { name: "Varsity Green", latitude: 3.120477, longitude: 101.659148},
+            { name: "UM Park", latitude: 3.119047, longitude: 101.660017},
+            { name: "Padang C", latitude: 3.120177, longitude: 101.660135},
+            { name: "Kayak Centre", latitude: 3.119374, longitude: 101.658671},
+            { name: "Swimming Pool", latitude: 3.128806, longitude: 101.659803},
+            { name: "UM Sports Centre", latitude: 3.129872, longitude: 101.660018},
+            { name: "UM Arena Stadium", latitude: 3.130895, longitude: 101.659690},
+            { name: "Rimba Ilmu", latitude: 3.130697, longitude: 101.658203},
+            { name: "Ladang Mini", latitude: 3.128190, longitude: 101.660865},
+            { name: "Mustafa River", latitude: 3.125919, longitude: 101.658998},
         ];
 
         // Update the location continuously with system popup for errors
@@ -460,69 +465,6 @@
 
         // Call the function to start updating the location
         updateLocation();
-
-
-        document.querySelector('a-scene').addEventListener('loaded', function () {
-            document.getElementById("Loading").style.display = "none";
-        });
-
-
-        //----------------------------------------------------------------------------------------------------------//
-        function showCameraFacingMessage(message) {
-            const facingMessageDiv = document.getElementById("camera-facing-message");
-            facingMessageDiv.innerText = message;
-            facingMessageDiv.style.display = "block";
-            facingMessageDiv.style.opacity = "1"; // Fade-in effect
-        }
-
-        function hideCameraFacingMessage() {
-            const facingMessageDiv = document.getElementById("camera-facing-message");
-            facingMessageDiv.style.opacity = "0"; // Fade-out effect
-            setTimeout(() => {
-                facingMessageDiv.style.display = "none";
-            }, 500); // Match this timeout with the CSS transition duration
-        }
-
-        function checkCameraFacing(camera, entities) {
-            const cameraDirection = new THREE.Vector3();
-            camera.object3D.getWorldDirection(cameraDirection);
-
-            const cameraPosition = new THREE.Vector3();
-            camera.object3D.getWorldPosition(cameraPosition);
-
-            let isFacingAnyEntity = false;
-
-            entities.forEach(entity => {
-                const entityPosition = new THREE.Vector3(
-                    entity.longitude, // Placeholder for entity X position
-                    entity.height, // Placeholder for Y (height)
-                    entity.latitude // Placeholder for entity Z position
-                );
-
-                const toEntityDirection = new THREE.Vector3().subVectors(entityPosition, cameraPosition).normalize();
-
-                const dotProduct = cameraDirection.dot(toEntityDirection);
-
-                // Check if camera is pointing towards the entity
-                if (dotProduct > 0.95) { // Adjust threshold for precision
-                    showCameraFacingMessage(`You are facing ${entity.name}`);
-                    isFacingAnyEntity = true;
-                }
-            });
-
-            if (!isFacingAnyEntity) {
-                hideCameraFacingMessage();
-            }
-        }
-
-        function startCameraFacingCheck() {
-            const camera = document.querySelector("a-camera");
-            setInterval(() => {
-                checkCameraFacing(camera, entities);
-            }, 500); // Check every 500ms
-        }
-
-        startCameraFacingCheck();
 
 
         // Your Mapbox Token
@@ -608,8 +550,8 @@
             densifiedPoints.forEach(([lon, lat]) => {
                 const marker = document.createElement('a-entity');
                 marker.setAttribute('gps-entity-place', `latitude: ${lat}; longitude: ${lon}`);
-                marker.setAttribute('geometry', 'primitive: sphere; radius: 0.5');
-                marker.setAttribute('material', 'color: green');
+                marker.setAttribute('geometry', 'primitive: box; depth: 3; height: 1; width: 1');
+                marker.setAttribute('material', 'color: lightblue');
                 marker.setAttribute('scale', '0.5 0.5 0.5');
                 marker.setAttribute('look-at', '[gps-camera]');
                 marker.classList.add('route-marker'); // Add a unique class
