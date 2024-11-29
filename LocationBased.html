@@ -206,14 +206,13 @@
             }, 500); // Match this timeout with the CSS transition duration
         }
 
-        
     </script>
 
 
 
     <!-- Firebase Initialization -->
     <script type="module">
-    
+
         // Firebase Initialization
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
@@ -234,66 +233,26 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        async function fetchEntitiesFromFirebase() {
-    const entitiesRef = ref(db, 'entities');
-    onValue(entitiesRef, (snapshot) => {
-        const entities = snapshot.val();
-        if (!entities) {
-            console.error("No entities found in the database.");
-            return;
+        function testDatabaseConnection() {
+            const testRef = ref(db, '/'); // Root of your database
+            onValue(
+                testRef,
+                (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        showDebugMessage("Database connected successfully. Data fetched: " + JSON.stringify(data));
+                    } else {
+                        showDebugMessage("Database connected, but no data found.");
+                    }
+                },
+                (error) => {
+                    showDebugMessage("Error connecting to database: " + error.message);
+                }
+            );
         }
 
-        // Get all keys from the entities object
-        const keys = Object.keys(entities);
-
-        // Find the last entity by the last key
-        const lastKey = keys[keys.length - 1];
-        const lastEntity = entities[lastKey];
-
-        if (!lastEntity.latitude || !lastEntity.longitude || !lastEntity.model) {
-            console.warn(`Last entity ${lastKey} is missing required properties.`);
-            return;
-        }
-
-        // Create an <a-entity> element
-        const entityElement = document.createElement('a-entity');
-        entityElement.setAttribute('id', lastKey);
-        entityElement.setAttribute('look-at', '#camera');
-        entityElement.setAttribute('gltf-model', lastEntity.model);
-        entityElement.setAttribute('animation-mixer', 'clip: *');
-        entityElement.setAttribute('scale', lastEntity.scale || '800 800 800');
-        entityElement.setAttribute(
-            'gps-entity-place',
-            `latitude: ${lastEntity.latitude}; longitude: ${lastEntity.longitude}`
-        );
-
-        // Append the <a-entity> to the scene
-        document.querySelector('a-scene').appendChild(entityElement);
-
-        // Display the last entity's details in the debug message div
-        showDebugMessage(
-            `Last Entity Details:\n` +
-            `ID: ${entityElement.getAttribute('id')}\n` +
-            `Look At: ${entityElement.getAttribute('look-at')}\n` +
-            `GLTF Model: ${entityElement.getAttribute('gltf-model')}\n` +
-            `Animation Mixer: ${entityElement.getAttribute('animation-mixer')}\n` +
-            `Scale: ${entityElement.getAttribute('scale')}\n` +
-            `GPS Entity Place: ${entityElement.getAttribute('gps-entity-place')}`
-        );
-
-        // Automatically hide the debug message after 5 seconds (optional)
-        setTimeout(hideDebugMessage, 5000);
-    }, (error) => {
-        console.error("Error fetching entities from Firebase:", error);
-    });
-}
-
-
-        // Initialize entity fetching after the scene is loaded
-        document.querySelector('a-scene').addEventListener('loaded', () => {
-            fetchEntitiesFromFirebase();
-        });
-
+        // Call the function to test the database connection
+        testDatabaseConnection();
     </script>
 
 
