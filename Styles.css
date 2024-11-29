@@ -28,8 +28,8 @@ body {
 
 .container {
   overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  /* flex-direction: column; */
   /* Stack items vertically */
 }
 
