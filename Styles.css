@@ -31,12 +31,11 @@ body {
 .logo-container {
 
   display: flex;
-  width: 100vw;
   justify-content: center;
   align-items: center;
   padding: 10px;
   gap: 12px;
-  background-color: white;
+  background-color: rgb(248, 0, 0);
   outline: 10px solid red;
   pointer-events: none; /* Disables all pointer events */
   touch-action: none;   /* Disables touch-specific actions */
