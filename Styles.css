@@ -19,7 +19,8 @@ html {
 }
 
 body {
-  position:absolute;
+  position:sticky;
+  left: 0;
   display: block; /* Default block layout */
   margin: 0;
   padding: 0;
@@ -35,6 +36,9 @@ body {
 }
 
 .logo-container {
+  position: sticky;
+  left: 0;
+  top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
