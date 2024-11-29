@@ -6,8 +6,8 @@ body {
   margin: 0;
   padding: 0;
   overscroll-behavior: none;
-  overflow-x: hidden;
-  /* Disable horizontal scrolling */
+  /* overflow-x: hidden; */
+  
   width: 100%;
   /* Ensure the body fits within the viewport */
 }
@@ -20,7 +20,7 @@ body {
   display: block; /* Default block layout */
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Disable horizontal scrolling */
+  /* overflow-x: hidden;  */
 }
 
 .container {
