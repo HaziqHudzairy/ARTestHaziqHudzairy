@@ -72,6 +72,9 @@ body {
   top: 65px;
   right: 10px;
   z-index: 999;
+
+  max-width: 100%; /* Ensure container doesn’t overflow */
+  overflow: hidden;
 }
 
 @media screen and (max-width: 768px) {
@@ -362,49 +365,44 @@ body {
 }
 
 form {
-  position: fixed;
-  top: 11%;
-  right: 10px;
-  width: 50px;
-  /* Initial collapsed width */
-  height: 50px;
-  background: white;
-  box-sizing: border-box;
-  border-radius: 25px;
-  border: 4px solid white;
-  z-index: 1000;
-  transition: all 0.3s ease-in-out;
-  /* Smooth hover effect */
-  overflow: hidden;
-  max-width: 80vw;
-  /* Prevent the form from exceeding 90% of the viewport width */
+    position: fixed;
+    top: 11%;
+    right: 10px;
+    width: 50px; /* Initial collapsed width */
+    height: 50px;
+    background: white;
+    box-sizing: border-box;
+    border-radius: 25px;
+    border: 4px solid white;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    max-width: 80vw; /* Prevent exceeding the viewport width */
 }
-
 
 form:hover {
-  width: 80%;
-  /* Expanded width on hover */
+    width: 80%; /* Expanded width on hover */
 }
 
-
 input {
-  position: relative;
-  width: calc(100% - 50px); /* Match the form's width minus padding */
-  max-width: 100%; /* Ensure input doesn't exceed the container width */
-  padding-left: 20px;
-  line-height: 30px;
-  border-radius: 20px;
-  height: 42.5px;
-  box-sizing: border-box;
-  display: block;
+    position: relative;
+    width: calc(100% - 50px); /* Adjust for padding */
+    max-width: 100%; /* Prevent input overflow */
+    padding-left: 20px;
+    line-height: 30px;
+    border-radius: 20px;
+    height: 42.5px;
+    box-sizing: border-box;
+    display: block;
+
+    font-size: 16px; /* Prevent iOS zooming */
 }
 
 input:focus {
-  outline: none; /* Remove the default outline */
-  border: 2px solid #007BFF; /* Add a custom focus border */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional: Add shadow */
+    outline: none; /* Remove browser default outline */
+    border: 2px solid #007BFF; /* Custom focus style */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
-
 
 form:hover input {
   display: block;
