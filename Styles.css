@@ -324,3 +324,48 @@
     color: inherit;
   }
 
+  .search-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8); /* Same color as debug message */
+    border-radius: 50px; /* Rounded corners */
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    filter: invert(1); /* Makes the icon white */
+}
+
+.search-box {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.9); /* Light background for input box */
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.search-box input {
+    width: 200px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-box input::placeholder {
+    color: #aaa;
+}
+
