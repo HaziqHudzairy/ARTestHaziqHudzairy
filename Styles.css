@@ -327,6 +327,7 @@ form:hover .fa {
 .suggestions-container {
   overflow-y: auto;
   position: fixed;
+  top: 15%;
   left:15px;
   right: 15px;
   background: #ffffff86; /* Semi-transparent white background */
@@ -339,6 +340,7 @@ form:hover .fa {
   flex-direction: column; /* Ensure vertical stacking of items */
   align-items: center;
   gap: 15px; /* Space between list items */
+  z-index: 9999;
 }
 
 .suggestions-list {

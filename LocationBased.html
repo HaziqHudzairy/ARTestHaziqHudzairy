@@ -42,21 +42,21 @@
         </form>
         <div class="suggestions-container">
             <div class="suggestions-list">
-              <div class="suggestions-list-name">
-                <h2>KK1</h2>
-              </div>
+                <div class="suggestions-list-name">
+                    <h2>KK1</h2>
+                </div>
             </div>
             <div class="suggestions-list">
-              <div class="suggestions-list-name">
-                <h2>kk2</h2>
-              </div>
+                <div class="suggestions-list-name">
+                    <h2>kk2</h2>
+                </div>
             </div>
             <div class="suggestions-list">
-              <div class="suggestions-list-name">
-                <h2>SKK3</h2>
-              </div>
+                <div class="suggestions-list-name">
+                    <h2>SKK3</h2>
+                </div>
             </div>
-          </div>
+        </div>
     </div>
     <div id="data-container" class="data-container" style="display:none;">
         <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
@@ -356,6 +356,34 @@
 
 
     <script>
+
+        // Function to populate the suggestions container from the array
+        function populateSuggestionsFromArray() {
+            const suggestionsContainer = document.querySelector('.suggestions-container');
+            suggestionsContainer.innerHTML = ''; // Clear existing suggestions
+
+            // Iterate over dynamicEntities to create suggestion items
+            window.dynamicEntities.forEach((entity) => {
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.classList.add('suggestions-list');
+                
+                const nameDiv = document.createElement('div');
+                nameDiv.classList.add('suggestions-list-name');
+                
+                const nameHeading = document.createElement('h2');
+                nameHeading.textContent = entity.name;
+
+                // Append elements
+                nameDiv.appendChild(nameHeading);
+                suggestionDiv.appendChild(nameDiv);
+                suggestionsContainer.appendChild(suggestionDiv);
+            });
+        }
+
+        populateSuggestionsFromArray();
+
+
+
         document.getElementById("data-container").style.display = "block";
 
         // Function to update the latitude and longitude display
