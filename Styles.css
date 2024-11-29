@@ -19,7 +19,7 @@ html {
 }
 
 body {
-  position: fixed;
+  /* position: fixed; */
   left: 0;
   display: block; /* Default block layout */
   margin: 0;
@@ -324,15 +324,21 @@ form:hover .fa {
   color: white;
 }
 
-#suggestions div {
-  border-bottom: 1px solid #ccc;
-  padding: 10px;
+.suggestions-container {
+  position: fixed;
+  top: 15%;
+  right: 10px;
   background: #f9f9f9;
+  width: 80%;
+  height: auto;
 }
 
-#suggestions div:hover {
+.suggestions:hover {
   background: #e0e0e0;
 }
+
+
+
 .a-scene-container {
   position: fixed;
   width: 100vw;

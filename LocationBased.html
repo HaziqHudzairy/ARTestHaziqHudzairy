@@ -39,10 +39,10 @@
         <form action="">
             <input type="search" placeholder="Search here ..." autocomplete="off">
             <i class="fa fa-search"></i>
-            <div id="suggestions"
-                style="position: absolute; background: white; border: 1px solid #ccc; z-index: 1000; width: 300px; display: none;">
-            </div>
         </form>
+        <div id="suggestions">
+                
+        </div>
     </div>
     <div id="data-container" class="data-container" style="display:none;">
         <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
@@ -278,7 +278,7 @@
                             });
                         });
                     });
-                    console.log("Entities fetched:", window.dynamicEntities);
+                    showDebugMessage("Entities fetched:", window.dynamicEntities);
                 } else {
                     console.error("No data found in the database.");
                 }
@@ -338,78 +338,6 @@
         // Call the Function
         fetchAndRenderEntities();
 
-
-
-
-
-        // Reference to the Firebase database
-        const entitiesRef = ref(database, "entities");
-
-        // HTML Elements
-        const searchInput = document.getElementById("searchInput");
-        const suggestionsDiv = document.getElementById("suggestions");
-
-        // Function to fetch suggestions based on user input
-        function fetchSuggestions(query) {
-            onValue(entitiesRef, (snapshot) => {
-                const data = snapshot.val();
-                const suggestions = [];
-
-                if (data) {
-                    Object.keys(data).forEach((category) => {
-                        Object.values(data[category]).forEach((entity) => {
-                            if (entity.name.toLowerCase().includes(query.toLowerCase())) {
-                                suggestions.push({
-                                    name: entity.name,
-                                    latitude: entity.latitude,
-                                    longitude: entity.longitude
-                                });
-                            }
-                        });
-                    });
-
-                    // Render suggestions
-                    renderSuggestions(suggestions);
-                }
-            });
-        }
-
-        // Function to render suggestions
-        function renderSuggestions(suggestions) {
-            if (suggestions.length > 0) {
-                suggestionsDiv.innerHTML = suggestions
-                    .map(
-                        (suggestion) => `
-                    <div style="padding: 10px; cursor: pointer;" 
-                        onclick="selectSuggestion('${suggestion.name}', ${suggestion.latitude}, ${suggestion.longitude})">
-                        <strong>${suggestion.name}</strong><br>
-                        Lat: ${suggestion.latitude}, Lon: ${suggestion.longitude}
-                    </div>
-                `
-                    )
-                    .join("");
-                suggestionsDiv.style.display = "block";
-            } else {
-                suggestionsDiv.style.display = "none";
-            }
-        }
-
-        // Function to handle user input
-        searchInput.addEventListener("input", (event) => {
-            const query = event.target.value.trim();
-            if (query.length > 0) {
-                fetchSuggestions(query);
-            } else {
-                suggestionsDiv.style.display = "none";
-            }
-        });
-
-        // Function to handle selection of a suggestion
-        window.selectSuggestion = (name, latitude, longitude) => {
-            searchInput.value = name;
-            suggestionsDiv.style.display = "none";
-            console.log(`Selected: ${name} (Lat: ${latitude}, Lon: ${longitude})`);
-        };
     </script>
 
 
