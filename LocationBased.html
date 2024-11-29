@@ -560,7 +560,7 @@
         // Clear existing markers
         function clearMarkers() {
             const scene = document.querySelector('a-scene');
-            scene.querySelectorAll('.route-marker').forEach((marker) => {
+            scene.querySelectorAll('.route-marker-wrapper').forEach((marker) => {
                 marker.parentNode.removeChild(marker);
             });
         }
@@ -575,38 +575,38 @@
 
             const densifiedPoints = densifyPolyline(route, 3); // Densify polyline
 
-            // Render markers
-            densifiedPoints.forEach(([lon, lat]) => {
+            // Render markers with jumping animation using a wrapper entity
+            densifiedPoints.forEach(([lon, lat], index) => {
+                // Wrapper entity to animate
+                const wrapper = document.createElement('a-entity');
+                wrapper.setAttribute('gps-entity-place', `latitude: ${lat}; longitude: ${lon}`);
+                wrapper.classList.add('route-marker-wrapper'); // Add a unique class
+
+                // Create the actual marker as a child of the wrapper
                 const marker = document.createElement('a-entity');
-                marker.setAttribute('gps-entity-place', `latitude: ${lat}; longitude: ${lon}`);
                 marker.setAttribute('geometry', 'primitive: box; depth: 3; height: 1; width: 1');
                 marker.setAttribute('material', 'color: lightblue');
                 marker.setAttribute('scale', '0.5 0.5 0.5');
                 marker.setAttribute('look-at', '[gps-camera]');
                 marker.classList.add('route-marker'); // Add a unique class
-                
-                marker.setAttribute('animation__scale', `
-                    property: scale;
+
+                // Append the marker to the wrapper
+                wrapper.appendChild(marker);
+
+                // Add animation to the wrapper for a jumping effect
+                wrapper.setAttribute('animation', `
+                    property: position.y;
                     dir: alternate;
                     dur: 1000;
                     easing: easeInOutSine;
                     loop: true;
-                    to: 0.5 1 0.5;
-                    delay: ${index * 150};
-                `);
-                marker.setAttribute('animation__color', `
-                    property: material.color;
-                    dir: alternate;
-                    dur: 1000;
-                    easing: easeInOutSine;
-                    loop: true;
-                    to: blue;
+                    to: 1.5; 
                     delay: ${index * 150};
                 `);
 
-                document.querySelector('a-scene').appendChild(marker);
+                // Append the wrapper to the scene
+                document.querySelector('a-scene').appendChild(wrapper);
             });
-
             // Add Start and End labels
             const [startLon, startLat] = route[0];
             const startLabel = document.createElement('a-text');
