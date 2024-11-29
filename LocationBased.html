@@ -281,6 +281,9 @@
             const entitiesRef = ref(database, "entities");
             onValue(entitiesRef, (snapshot) => {
                 const data = snapshot.val();
+
+                alert("Fetched data from Firebase:", data);
+                
                 if (data) {
                     window.dynamicEntities = []; // Reset the array
                     Object.keys(data).forEach((category) => {

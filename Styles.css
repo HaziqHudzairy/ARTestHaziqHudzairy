@@ -327,7 +327,7 @@ form:hover .fa {
 .suggestions-container {
   overflow-y: auto;
   position: fixed;
-  top: 15%;
+  top: 20%;
   left:15px;
   right: 15px;
   background: #ffffff86; /* Semi-transparent white background */
