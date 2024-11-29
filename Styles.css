@@ -326,7 +326,7 @@ form:hover .fa {
 }
 
 a-scene {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: absolute; /* or relative */
+  top: 0; /* Ensure it starts at the top */
+  left: 0; /* Base position */
 }
