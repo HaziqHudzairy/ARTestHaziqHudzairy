@@ -5,6 +5,7 @@
 
 html,
 body {
+  position: fixed;
   margin: 0;
   padding: 0;
   overscroll-behavior: none;
@@ -390,7 +391,7 @@ input {
     border-radius: 20px;
     height: 42.5px;
     box-sizing: border-box;
-    display: block;
+    display: none;
     font-size: 16px; /* Prevent iOS zooming */
 }
 
@@ -401,7 +402,7 @@ input:focus {
 }
 
 form:hover input {
-  display: none;
+  display: block;
   /* Show input when hovered */
 }
 
