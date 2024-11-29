@@ -21,6 +21,8 @@ body {
 }
 
 .container {
+  width: 100vw;
+  position: fixed;
   overflow-x: hidden;
   display: block;
   max-width: 100%;
@@ -29,7 +31,6 @@ body {
 }
 
 .logo-container {
-  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
