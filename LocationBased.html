@@ -584,6 +584,25 @@
                 marker.setAttribute('scale', '0.5 0.5 0.5');
                 marker.setAttribute('look-at', '[gps-camera]');
                 marker.classList.add('route-marker'); // Add a unique class
+                
+                marker.setAttribute('animation__scale', `
+                    property: scale;
+                    dir: alternate;
+                    dur: 1000;
+                    easing: easeInOutSine;
+                    loop: true;
+                    to: 0.5 1 0.5;
+                    delay: ${index * 150};
+                `);
+                marker.setAttribute('animation__color', `
+                    property: material.color;
+                    dir: alternate;
+                    dur: 1000;
+                    easing: easeInOutSine;
+                    loop: true;
+                    to: blue;
+                    delay: ${index * 150};
+                `);
 
                 document.querySelector('a-scene').appendChild(marker);
             });
