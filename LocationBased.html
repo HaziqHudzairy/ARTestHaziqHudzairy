@@ -39,7 +39,9 @@
         <form action="">
             <input type="search" placeholder="Search here ..." autocomplete="off">
             <i class="fa fa-search"></i>
-            <div id="suggestions" style="position: absolute; background: white; border: 1px solid #ccc; z-index: 1000; width: 300px; display: none;"></div>
+            <div id="suggestions"
+                style="position: absolute; background: white; border: 1px solid #ccc; z-index: 1000; width: 300px; display: none;">
+            </div>
         </form>
     </div>
     <div id="data-container" class="data-container" style="display:none;">
@@ -107,7 +109,7 @@
     transition: opacity 0.5s ease-in-out;
     "></div>
 
-<!--  -->
+    <!--  -->
     <a-scene renderer="logarithmicDepthBuffer: true; debugUIEnabled: false;" embedded loading-screen="enabled: false;"
         arjs="sourceType: webcam; " id="ar-scene">
         <a-assets>
@@ -196,24 +198,24 @@
 
     <script>
 
-    //     // Wait for the DOM to load
-    //     document.addEventListener("DOMContentLoaded", function () {
-    //         // Select the <a-scene> element
-    //         const arScene = document.getElementById("ar-scene");
+        //     // Wait for the DOM to load
+        //     document.addEventListener("DOMContentLoaded", function () {
+        //         // Select the <a-scene> element
+        //         const arScene = document.getElementById("ar-scene");
 
-    //         // Get the screen's width and height
-    //         const screenWidth = window.innerWidth;
-    //         const screenHeight = window.innerHeight;
+        //         // Get the screen's width and height
+        //         const screenWidth = window.innerWidth;
+        //         const screenHeight = window.innerHeight;
 
-    //         // Update the arjs attribute with the calculated dimensions
-    //         const arjsAttributes = `
-    //   sourceType: webcam;
-    //   displayWidth: ${screenWidth};
-    //   displayHeight: ${screenHeight};
-    //   debugUIEnabled: false;
-    // `;
-    //         arScene.setAttribute("arjs", arjsAttributes);
-    //     });
+        //         // Update the arjs attribute with the calculated dimensions
+        //         const arjsAttributes = `
+        //   sourceType: webcam;
+        //   displayWidth: ${screenWidth};
+        //   displayHeight: ${screenHeight};
+        //   debugUIEnabled: false;
+        // `;
+        //         arScene.setAttribute("arjs", arjsAttributes);
+        //     });
 
 
         // Function to show debug messages in the div
@@ -335,6 +337,62 @@
 
         // Call the Function
         fetchAndRenderEntities();
+
+
+
+
+
+        // Reference to the Firebase database
+        const entitiesRef = ref(database, "entities");
+
+        // HTML Elements
+        const searchInput = document.getElementById("searchInput");
+        const suggestionsDiv = document.getElementById("suggestions");
+
+        // Function to fetch suggestions based on user input
+        function fetchSuggestions(query) {
+            onValue(entitiesRef, (snapshot) => {
+                const data = snapshot.val();
+                const suggestions = [];
+
+                if (data) {
+                    Object.keys(data).forEach((category) => {
+                        Object.values(data[category]).forEach((entity) => {
+                            if (entity.name.toLowerCase().includes(query.toLowerCase())) {
+                                suggestions.push({
+                                    name: entity.name,
+                                    latitude: entity.latitude,
+                                    longitude: entity.longitude
+                                });
+                            }
+                        });
+                    });
+
+                    // Render suggestions
+                    renderSuggestions(suggestions);
+                }
+            });
+        }
+
+        // Function to render suggestions
+        function renderSuggestions(suggestions) {
+            if (suggestions.length > 0) {
+                suggestionsDiv.innerHTML = suggestions
+                    .map(
+                        (suggestion) => `
+                    <div style="padding: 10px; cursor: pointer;" 
+                        onclick="selectSuggestion('${suggestion.name}', ${suggestion.latitude}, ${suggestion.longitude})">
+                        <strong>${suggestion.name}</strong><br>
+                        Lat: ${suggestion.latitude}, Lon: ${suggestion.longitude}
+                    </div>
+                `
+                    )
+                    .join("");
+                suggestionsDiv.style.display = "block";
+            } else {
+                suggestionsDiv.style.display = "none";
+            }
+        }
 
         // Function to handle user input
         searchInput.addEventListener("input", (event) => {
