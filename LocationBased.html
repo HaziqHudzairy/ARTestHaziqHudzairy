@@ -184,8 +184,6 @@
         </a-assets>
 
         <a-camera gps-camera rotation-reader fov="20" near="0.1" far="1000"></a-camera>
-
-
     </a-scene>
 
     <script>
@@ -210,14 +208,12 @@
 
 
 
-    <!-- Firebase Initialization -->
+    <!-- Firebase Script -->
     <script type="module">
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 
         // Firebase Initialization
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-
-        // Your Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyB1NEkxuhsfBrsTgfei80LWmF4o_IQwO8",
             authDomain: "um-ar-d0418.firebaseapp.com",
@@ -231,28 +227,57 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        const database = getDatabase(app);
 
-        function testDatabaseConnection() {
-            const testRef = ref(db, '/'); // Root of your database
-            onValue(
-                testRef,
-                (snapshot) => {
-                    const data = snapshot.val();
-                    if (data) {
-                        showDebugMessage("Database connected successfully. Data fetched: " + JSON.stringify(data));
-                    } else {
-                        showDebugMessage("Database connected, but no data found.");
-                    }
-                },
-                (error) => {
-                    showDebugMessage("Error connecting to database: " + error.message);
+        // Recursive Function to Fetch and Render Entities
+        function renderEntities(node, parent = null) {
+            Object.keys(node).forEach((key) => {
+                const child = node[key];
+
+                // If the child has `latitude` and `longitude`, it's an entity
+                if (child.latitude && child.longitude) {
+                    createAREntity(child, key, parent);
+                } else if (typeof child === "object") {
+                    // Recursively handle nested objects
+                    renderEntities(child, key);
                 }
-            );
+            });
         }
 
-        // Call the function to test the database connection
-        testDatabaseConnection();
+        // Function to Create AR Entity
+        function createAREntity(entity, id, parentCategory = null) {
+            const scene = document.querySelector("a-scene");
+            const entityElement = document.createElement("a-entity");
+
+            entityElement.setAttribute("id", id);
+            entityElement.setAttribute("gps-entity-place", `latitude: ${entity.latitude}; longitude: ${entity.longitude}`);
+            entityElement.setAttribute("gltf-model", entity.model); // Model from database
+            entityElement.setAttribute("scale", entity.scale || "1 1 1"); // Default scale if not provided
+            entityElement.setAttribute("look-at", "[gps-camera]");
+            entityElement.setAttribute("animation-mixer", "clip: *"); // Optional for animations
+
+            // Optional Debugging
+            console.log(`Added entity: ${id}, Parent Category: ${parentCategory}`);
+
+            // Append to Scene
+            scene.appendChild(entityElement);
+        }
+
+        // Fetch Data from Firebase
+        function fetchAndRenderEntities() {
+            const entitiesRef = ref(database, "entities");
+            onValue(entitiesRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    renderEntities(data);
+                } else {
+                    console.error("No data found in the database.");
+                }
+            });
+        }
+
+        // Call the Function
+        fetchAndRenderEntities();
     </script>
 
 
