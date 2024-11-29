@@ -331,4 +331,5 @@ a-scene {
   height: 100vh; /* Ensure it uses the full height of the viewport */
   overflow-x: hidden; /* Hide any overflowing content */
   box-sizing: border-box; /* Include padding and border in the width */
+  left: -100%;
 }
