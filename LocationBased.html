@@ -212,46 +212,6 @@
             arScene.setAttribute("arjs", arjsAttributes);
         });
 
-        function disableScrolling() {
-            // Lock scrolling position
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.top = `-${window.scrollY}px`;
-            document.body.style.width = '100%';
-
-            // Prevent touchmove
-            document.addEventListener(
-                'touchmove',
-                function (event) {
-                    event.preventDefault();
-                },
-                { passive: false }
-            );
-        }
-
-        function enableScrolling() {
-            // Restore scrolling position
-            const scrollY = document.body.style.top;
-            document.body.style.overflow = '';
-            document.body.style.position = '';
-            document.body.style.top = '';
-            document.body.style.width = '';
-            window.scrollTo(0, parseInt(scrollY || '0') * -1);
-
-            // Re-enable touchmove
-            document.removeEventListener(
-                'touchmove',
-                function (event) {
-                    event.preventDefault();
-                },
-                { passive: false }
-            );
-        }
-
-        // Example usage
-        disableScrolling();
-
-        // document.querySelector('.unlock-button').addEventListener('click', enableScrolling);
 
         // Function to show debug messages in the div
         function showDebugMessage(message) {
