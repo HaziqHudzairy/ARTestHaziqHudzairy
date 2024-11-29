@@ -325,10 +325,3 @@ form:hover .fa {
   width: 100vw;
   overflow: hidden;
 }
-
-a-scene {
-  position: absolute; /* or relative */
-  top: 0; /* Ensure it starts at the top */
-  left: 0; /* Base position */
-  transform: translateX(50px); /* Move it 50px to the right */
-}
