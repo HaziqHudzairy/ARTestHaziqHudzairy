@@ -593,14 +593,22 @@
                 // Append the marker to the wrapper
                 wrapper.appendChild(marker);
 
-                // Add animation to the wrapper for a jumping effect
-                wrapper.setAttribute('animation', `
-                    property: position.y;
+                marker.setAttribute('animation__scale', `
+                    property: scale;
                     dir: alternate;
                     dur: 1000;
                     easing: easeInOutSine;
                     loop: true;
-                    to: 1.5; 
+                    to: 0.5 1 0.5;
+                    delay: ${index * 150};
+                `);
+                marker.setAttribute('animation__color', `
+                    property: material.color;
+                    dir: alternate;
+                    dur: 1000;
+                    easing: easeInOutSine;
+                    loop: true;
+                    to: yellow;
                     delay: ${index * 150};
                 `);
 
