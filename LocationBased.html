@@ -188,9 +188,7 @@
 
     </a-scene>
 
-    <!-- Firebase Initialization -->
-    <script type="module">
-
+    <script>
         // Function to show debug messages in the div
         function showDebugMessage(message) {
             const debugDiv = document.getElementById("debug-message");
@@ -207,6 +205,23 @@
                 debugDiv.style.display = "none"; // Hide after fade-out
             }, 500); // Match this timeout with the CSS transition duration
         }
+
+        // Display the entity's details in the debug message div
+        showDebugMessage(
+                        'Test debug'
+                    );
+
+                    // Automatically hide the debug message after 5 seconds (optional)
+                    setTimeout(hideDebugMessage, 5000);
+
+    </script>
+
+
+
+    <!-- Firebase Initialization -->
+    <script type="module">
+
+        
 
         // Firebase Initialization
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
