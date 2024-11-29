@@ -342,8 +342,8 @@ html, body {
 
 input {
     -webkit-appearance: none;
-    position: fixed; /* Prevents repositioning when focused */
     width: 100%;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
