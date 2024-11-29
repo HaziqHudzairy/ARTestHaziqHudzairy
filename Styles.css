@@ -25,13 +25,6 @@
     z-index: 9999; /* Ensure the button appears on top of other elements */
 }
 
-@media screen and (max-width: 768px) {
-    .backButton {
-        position: absolute;
-        left: 5%; /* Adjust as needed */
-    }
-}
-
 .data-container{
   background-color: rgba(0, 0, 0, 0.301);
   display: flex;
