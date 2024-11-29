@@ -28,9 +28,6 @@ body {
   max-width: 100%;
   box-sizing: border-box;
   position: relative;
-  outline: 10px solid red;
-  pointer-events: none; /* Disables all pointer events */
-  touch-action: none;   /* Disables touch-specific actions */
 }
 
 .logo-container {
@@ -40,6 +37,9 @@ body {
   padding: 10px;
   gap: 12px;
   background-color: white;
+  outline: 10px solid red;
+  pointer-events: none; /* Disables all pointer events */
+  touch-action: none;   /* Disables touch-specific actions */
 }
 
 .logoTop {
