@@ -326,17 +326,16 @@ form:hover .fa {
 
 .suggestions-container {
   overflow-y: auto;
-  position: relative;
+  position: fixed;
   margin-left: 15px;
   top: 20%;
-  left: 50%;
   transform: translateX(-50%);
   background: #ffffff86; /* Semi-transparent white background */
   width: 80vw;
   max-height: 400px; /* Limit height for long lists */
   border-radius: 10px; /* Rounded corners */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06); /* Subtle shadow */
-  padding: 20px; /* Add padding for content spacing */
+  padding: 10px; /* Add padding for content spacing */
   display: flex;
   flex-direction: column; /* Ensure vertical stacking of items */
   align-items: center;
@@ -345,7 +344,7 @@ form:hover .fa {
 
 .suggestions-list {
   background: #f9f9f9; /* Light gray for list background */
-  width: 80%; /* Match container width */
+  width: 90%; /* Match container width */
   padding: 15px 10px; /* Add padding for spacing */
   border-radius: 8px; /* Slightly rounded corners */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for each item */
