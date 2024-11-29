@@ -325,13 +325,14 @@ form:hover .fa {
 }
 
 .suggestions-container {
+  overflow-y: auto;
   position: fixed;
-  top: 15%;
+  top: 20%;
   left: 50%;
   transform: translateX(-50%); /* Center horizontally */
-  background: #ffffff; /* White background for a cleaner look */
+  background: #ffffff86; /* White background for a cleaner look */
   width: 90%;
-  height: 50px;
+  height: auto;
   border-radius: 10px; /* Rounded corners */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06); /* Subtle shadow */
   padding: 10px; /* Add some padding for content spacing */
@@ -340,9 +341,32 @@ form:hover .fa {
   justify-content: center; /* Horizontally center content */
 }
 
+.suggestions-list {
+  background: #f9f9f9; /* Light gray for list background */
+  width: 100%; /* Match container width */
+  padding: 15px 10px; /* Add padding for spacing */
+  margin-bottom: 10px; /* Space between list items */
+  border-radius: 8px; /* Slightly rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for each item */
+  transition: background-color 0.3s, transform 0.2s; /* Add hover effects */
+}
 
-.suggestions:hover {
-  background: #e0e0e0;
+.suggestions-list:hover {
+  background-color: #e6f7ff; /* Highlight color on hover */
+  transform: translateY(-2px); /* Slight pop-up effect on hover */
+}
+
+.suggestions-list-name h2 {
+  font-size: 18px; /* Adjust font size */
+  font-weight: 600; /* Bold the text */
+  color: #333333; /* Darker text for better readability */
+  margin: 0; /* Remove default margins */
+  text-align: left;
+}
+
+.suggestions-list-name {
+  display: flex; /* Allow for alignment with icons or other elements */
+  align-items: center;
 }
 
 
