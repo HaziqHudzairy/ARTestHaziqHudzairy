@@ -334,6 +334,7 @@ html, body {
     position: fixed;
     top: 11%;
     right: 10px;
+    margin-left:10px;
     width: 50px; /* Initial collapsed width */
     height: 50px;
     background: white;
@@ -346,9 +347,16 @@ html, body {
     max-width: 90vw; /* Prevent the form from exceeding 90% of the viewport width */
 }
 
+form ~ .backButton { /* Hide the backButton when form is hovered */
+  display: block;
+}
+
 form:hover {
-    width: 70%; /* Expanded width on hover */
-    max-width: 90vw; /* Prevent overflow */
+    width: 100%; /* Expanded width on hover */
+}
+
+form:hover ~ .backButton { /* Hide the backButton when form is hovered */
+  display: none;
 }
 input {
   right: 0;
@@ -379,6 +387,7 @@ form:hover input {
     text-align: center;
     line-height: 42.5px;
     font-size: 1.2em;
+    transition: background 0.5s ease-in-out, opacity 0.5s ease-in-out, color 0.5s ease-in-out;
 }
 
 form:hover .fa {
