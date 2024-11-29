@@ -330,10 +330,9 @@ form:hover .fa {
   margin-left: 15px;
   margin-left: 15px;
   top: 20%;
-  left: 50%;
   transform: translateX(-50%); /* Center horizontally */
   background: #ffffff86; /* Semi-transparent white background */
-  width: 90%;
+  width: 80vh;
   max-height: 400px; /* Limit height for long lists */
   border-radius: 10px; /* Rounded corners */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06); /* Subtle shadow */
@@ -346,7 +345,7 @@ form:hover .fa {
 
 .suggestions-list {
   background: #f9f9f9; /* Light gray for list background */
-  width: 90%; /* Match container width */
+  width: auto; /* Match container width */
   padding: 15px 10px; /* Add padding for spacing */
   border-radius: 8px; /* Slightly rounded corners */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for each item */
