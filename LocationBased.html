@@ -496,7 +496,7 @@
         updateLocation();
 
 
-        // Your Mapbox Token
+        // Your Mapbox Token Specifically for UM.AR domain
         const MAPBOX_TOKEN = 'sk.eyJ1IjoiaGF6aXFodWR6YWlyeTAyIiwiYSI6ImNtM3VvYzduZDBqazgyanIzOTdibXM1c3IifQ.IRA9AZlLo-eF9uXsQkzdmg';
 
         // Define start and end points
@@ -596,20 +596,20 @@
                 marker.setAttribute('animation__scale', `
                     property: scale;
                     dir: alternate;
-                    dur: 3000;
+                    dur: 2500;
                     easing: easeInOutSine;
                     loop: true;
                     to: 0.5 1 0.5;
-                    delay: ${index * 150};
+                    delay: ${index * 200};
                 `);
                 marker.setAttribute('animation__color', `
                     property: material.color;
                     dir: alternate;
-                    dur: 3000;
+                    dur: 2500;
                     easing: easeInOutSine;
                     loop: true;
                     to: yellow;
-                    delay: ${index * 150};
+                    delay: ${index * 200};
                 `);
 
                 // Append the wrapper to the scene
