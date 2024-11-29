@@ -1,17 +1,9 @@
-* {
-  outline: 1px solid red;
-  /* Highlights all elements */
-}
-
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   overscroll-behavior: none;
-  overflow-x: hidden;
-  /* Disable horizontal scrolling */
-  width: 100%;
-  /* Ensure the body fits within the viewport */
+  overflow-x: hidden; /* Disable horizontal scrolling */
+  width: 100%; /* Ensure the body fits within the viewport */
 }
 
 html {
@@ -19,9 +11,9 @@ html {
 }
 
 body {
-  display: block; /* Default block layout */
-  margin: 100px;
-  padding: 100px;
+  display: block;
+  margin: 0;
+  padding: 0;
   overflow-x: hidden; /* Disable horizontal scrolling */
 }
 
@@ -40,127 +32,41 @@ body {
   padding: 10px;
   gap: 12px;
   background-color: white;
-  outline: 10px solid red;
-  pointer-events: none; /* Disables all pointer events */
-  touch-action: none;   /* Disables touch-specific actions */
+  outline: 2px solid red; /* Reduced thickness for better scaling */
+  pointer-events: none; /* Disable interactions */
+  touch-action: none; /* Disable touch-specific actions */
 }
 
 .logoTop {
   width: auto;
   height: 40px;
+  max-width: 100%; /* Ensure logo scales */
 }
-
 
 .backButton {
   position: fixed;
-  top: 11%;
-  /* Adjust as needed */
+  top: 5%;
   left: 10px;
-  /* Adjust as needed */
-  z-index: 9999;
-  /* Ensure the button appears on top of other elements */
+  z-index: 9999; /* Ensure visibility */
 }
 
 .data-container {
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.301);
+  background-color: rgba(0, 0, 0, 0.5); /* Slightly darker for better visibility */
   display: block;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-  width: 35%;
-  gap: 12px;
-  margin-top: 10px;
+  padding: 10px;
+  width: 90%; /* Fit within mobile screen */
+  max-width: 100%; /* Prevent overflow */
   bottom: 65px;
-  right: 10px;
+  right: 5%;
   z-index: 999;
-  max-width: 100%; /* Ensure container doesn’t overflow */
+  border-radius: 10px; /* Rounded corners */
   overflow: hidden;
 }
 
-
-/* @media screen and (max-width: 768px) {
-  .data-container {
-    position: absolute;
-  }
-} */
-
-
-
-
-
-.roboto-thin {
+.roboto-thin, .roboto-light, .roboto-regular, .roboto-medium, .roboto-bold, .roboto-black {
   font-family: "Roboto", sans-serif;
-  font-weight: 100;
-  font-style: normal;
 }
-
-.roboto-light {
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  font-style: normal;
-}
-
-.roboto-regular {
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.roboto-medium {
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-  font-style: normal;
-}
-
-.roboto-bold {
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  font-style: normal;
-}
-
-.roboto-black {
-  font-family: "Roboto", sans-serif;
-  font-weight: 900;
-  font-style: normal;
-}
-
-.roboto-thin-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 100;
-  font-style: italic;
-}
-
-.roboto-light-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  font-style: italic;
-}
-
-.roboto-regular-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  font-style: italic;
-}
-
-.roboto-medium-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-  font-style: italic;
-}
-
-.roboto-bold-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  font-style: italic;
-}
-
-.roboto-black-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 900;
-  font-style: italic;
-}
-
 
 .center {
   position: absolute;
@@ -171,10 +77,11 @@ body {
 
 .square {
   position: relative;
-  width: 350px;
-  height: 350px;
+  width: 80%; /* Adjust size for mobile */
+  height: 80%; /* Maintain aspect ratio */
   background: transparent;
-  border: 10px solid #000;
+  border: 5px solid #000;
+  margin: 0 auto;
 }
 
 .fa-qrcode {
@@ -182,15 +89,14 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 300px;
+  font-size: 150px; /* Reduced size for mobile */
   color: #000;
 }
 
 .scan {
   position: relative;
-  bottom: 0;
   width: 100%;
-  height: 40px;
+  height: 20px; /* Smaller size for mobile */
   background: linear-gradient(cyan, transparent);
   animation: scanning 1.5s linear alternate infinite;
 }
@@ -199,138 +105,68 @@ body {
   0% {
     transform: translateY(0px);
   }
-
   100% {
     transform: translateY(170px);
   }
 }
 
-#QR-animation {
-  width: 200px;
-  height: 200px;
-}
-
-#QR-animation .square {
-  width: 100%;
-  height: 100%;
-}
-
-#QR-animation .fa-qrcode {
-  font-size: 150px;
-}
-
-#QR-animation .scan {
-  height: 40px;
-}
-
-
 .intro {
   width: 90%;
-  max-width: 36rem;
-  padding-bottom: 1rem;
-  margin: 0 auto 1em;
-  padding-top: 0.5em;
+  margin: 0 auto;
+  padding: 1rem 0;
   font-size: calc(1rem + 2vmin);
-  text-transform: capitalize;
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.3);
   text-align: center;
-}
-
-.intro small {
-  display: block;
-  opacity: 0.5;
-  font-style: italic;
-  text-transform: none;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.3);
 }
 
 .info {
   margin: 0;
   padding: 1em;
   font-size: 0.9em;
-  font-style: italic;
-  font-family: serif;
   text-align: right;
   opacity: 0.5;
 }
 
-.info a {
-  color: inherit;
-}
-
 form {
-    position: fixed;
-    top: 11%;
-    right: 10px;
-    width: 50px; /* Initial collapsed width */
-    height: 50px;
-    background: white;
-    box-sizing: border-box;
-    border-radius: 25px;
-    border: 4px solid white;
-    z-index: 1000;
-    transition: all 0.3s ease-in-out;
-    overflow: hidden;
-    max-width: 80vw; /* Prevent exceeding the viewport width */
+  position: fixed;
+  top: 10%;
+  right: 5%;
+  width: 50px; /* Collapsed width */
+  height: 50px;
+  background: white;
+  border-radius: 25px;
+  z-index: 1000;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
 }
 
 form:hover {
-    width: 80%; /* Expanded width on hover */
+  width: 80%; /* Expanded width on hover */
 }
 
 input {
-    position: relative;
-    width: 100%;
-    max-width: 100vh; /* Prevent input overflow */
-    padding-left: 20px;
-    line-height: 30px;
-    border-radius: 20px;
-    height: 42.5px;
-    box-sizing: border-box;
-    display: none;
-    font-size: 16px; /* Prevent iOS zooming */
-}
-
-input:focus {
-    outline: none; /* Remove browser default outline */
-    border: 2px solid #007BFF; /* Custom focus style */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  width: 90%; /* Fit input within container */
+  padding: 10px;
+  line-height: 30px;
+  font-size: 1rem; /* Prevent zoom on mobile */
+  display: none;
 }
 
 form:hover input {
   display: block;
-  /* Show input when hovered */
-}
-
-.fa {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 42.5px;
-  height: 42.5px;
-  background: #ffffff;
-  color: rgb(0, 0, 0);
-  border-radius: 50%;
-  text-align: center;
-  line-height: 42.5px;
-  font-size: 1.2em;
-  transition: background 0.5s ease-in-out, opacity 0.5s ease-in-out, color 0.5s ease-in-out;
-}
-
-form:hover .fa {
-  background: #000000;
-  opacity: 0.7;
-  color: white;
 }
 
 .a-scene-container {
   position: fixed;
   width: 100vw;
+  height: 100vh; /* Ensure full-screen height */
   overflow: hidden;
 }
 
 a-scene {
-  position: absolute; /* or relative */
-  top: 0; /* Ensure it starts at the top */
-  left: 0; /* Base position */
-  transform: translateX(50px); /* Move it 50px to the right */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
