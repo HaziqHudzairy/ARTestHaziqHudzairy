@@ -42,21 +42,21 @@
         </form>
         <div class="suggestions-container">
             <div class="suggestions-list">
-                <div class="suggestions-list-name">
-                    <h2>KK1</h2>
-                </div>
+              <div class="suggestions-list-name">
+                <h2>KK1</h2>
+              </div>
             </div>
             <div class="suggestions-list">
-                <div class="suggestions-list-name">
-                    <h2>KK2</h2>
-                </div>
+              <div class="suggestions-list-name">
+                <h2>KK2</h2>
+              </div>
             </div>
             <div class="suggestions-list">
-                <div class="suggestions-list-name">
-                    <h2>KK3</h2>
-                </div>
+              <div class="suggestions-list-name">
+                <h2>KK3</h2>
+              </div>
             </div>
-        </div>
+          </div>
     </div>
     <div id="data-container" class="data-container" style="display:none;">
         <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
@@ -267,45 +267,47 @@
             appId: "1:624669072499:web:315e91c12fad88513c6d52",
             measurementId: "G-XWM53Y6FBZ"
         };
-
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-        // Exporting Firebase utilities (if needed elsewhere)
-        export { app, getDatabase, ref, onValue, getFirestore, collection, getDocs };
-
-        // Array to store data
-        const entitiesArray = [];
-
-        // Function to fetch data from Firebase
-        export async function fetchDataFromFirebase() {
-            const dataRef = ref(database, "entities");
-            return new Promise((resolve, reject) => {
-                onValue(
-                    dataRef,
-                    (snapshot) => {
-                        if (snapshot.exists()) {
-                            snapshot.forEach((childSnapshot) => {
-                                entitiesArray.push(childSnapshot.val());
-                            });
-                            resolve(entitiesArray); // Resolve the promise with the data array
-                        } else {
-                            resolve([]); // Resolve with an empty array if no data exists
-                        }
-                    },
-                    (error) => {
-                        reject(error); // Reject if an error occurs
-                    }
-                );
-            });
-        }
-
-        // Exporting the entities array for use in other modules
-        export { entitiesArray };
 
         // Global array to store entities
         window.dynamicEntities = [];
 
+        // Function to fetch entities from Firebase
+        function fetchEntitiesNameCoordinate() {
+            const entitiesRef = ref(database, "entities");
+            onValue(entitiesRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    window.dynamicEntities = []; // Reset the array
+                    Object.keys(data).forEach((category) => {
+                        Object.values(data[category]).forEach((entity) => {
+                            window.dynamicEntities.push({
+                                name: entity.name,
+                                latitude: entity.latitude,
+                                longitude: entity.longitude,
+                            });
+                        });
+                    });
+                    // Format the debug message
+                    const debugMessage = `
+                        Entities fetched: <br>
+                        ${window.dynamicEntities
+                        .map(
+                            (entity) =>
+                            `${entity.name} - Latitude: ${entity.latitude}, Longitude: ${entity.longitude}`
+                        )
+                        .join("<br>")}
+                    `;
+
+                    // Show the debug message
+                    showDebugMessage(debugMessage);
+                } else {
+                    console.error("No data found in the database.");
+                }
+            });
+        }
 
         // Call fetchEntities to populate global dynamicEntities
         fetchEntitiesNameCoordinate();
@@ -361,23 +363,9 @@
         fetchAndRenderEntities();
 
     </script>
-    <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <script>
-
-        import { fetchDataFromFirebase, entitiesArray } from "./firebase-config.js";
-        showDebugMessage("here is avail");
-        async function loadEntities() {
-        try {
-            await fetchDataFromFirebase();
-           showDebugMessage(JSON.stringify(entitiesArray, null, 2)); // Access the fetched data
-        } catch (error) {
-            showDebugMessage(`Error fetching data: ${error.message}`);
-        }
-        }
-
-        loadEntities();
-
-
+        //Show fata container for user position
         document.getElementById("data-container").style.display = "block";
 
         // Function to update the latitude and longitude display
