@@ -267,6 +267,7 @@
             appId: "1:624669072499:web:315e91c12fad88513c6d52",
             measurementId: "G-XWM53Y6FBZ"
         };
+
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
@@ -362,42 +363,28 @@
         // Call the Function
         fetchAndRenderEntities();
 
-        // Function to dynamically render place names
-        function renderPlaceNames() {
-            const suggestionsContainer = document.querySelector('.suggestions-container'); // Get the container
-
-            // Clear existing suggestions to avoid duplicates
-            suggestionsContainer.innerHTML = '';
-
-            // Iterate through the dynamicEntities array
-            window.dynamicEntities.forEach((entity) => {
-                // Create suggestion list item
-                const suggestionList = document.createElement('div');
-                suggestionList.className = 'suggestions-list';
-
-                // Create name container
-                const nameContainer = document.createElement('div');
-                nameContainer.className = 'suggestions-list-name';
-
-                // Add the place name
-                const placeName = document.createElement('h2');
-                placeName.textContent = entity.name;
-
-                // Append placeName to nameContainer, and nameContainer to suggestionList
-                nameContainer.appendChild(placeName);
-                suggestionList.appendChild(nameContainer);
-
-                // Append the suggestionList to suggestionsContainer
-                suggestionsContainer.appendChild(suggestionList);
-            });
-        }
-
-        renderPlaceNames();
-
 
     </script>
 <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <script>
+
+        // Function to dynamically render place names
+        function renderPlaceNames() {
+            const suggestionsContainer = document.querySelector('.suggestions-container');
+            suggestionsContainer.innerHTML = ''; // Clear existing suggestions
+
+            // Iterate through the global array
+            window.dynamicEntities.forEach((entity) => {
+                const placeName = document.createElement('h2');
+                placeName.textContent = entity.name;
+                suggestionsContainer.appendChild(placeName);
+            });
+        }
+
+        // Wait for some time to ensure entities are fetched (better to use events or promises)
+        setTimeout(renderPlaceNames, 2000); // Adjust timing as needed
+
+
         //Show fata container for user position
         document.getElementById("data-container").style.display = "block";
 
