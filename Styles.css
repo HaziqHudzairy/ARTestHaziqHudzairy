@@ -335,7 +335,7 @@ form:hover .fa {
   max-height: 400px; /* Limit height for long lists */
   border-radius: 10px; /* Rounded corners */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06); /* Subtle shadow */
-  padding: 10px; /* Add padding for content spacing */
+  padding: 20px 10px; /* Add padding for content spacing */
   display: flex;
   flex-direction: column; /* Ensure vertical stacking of items */
   align-items: center;

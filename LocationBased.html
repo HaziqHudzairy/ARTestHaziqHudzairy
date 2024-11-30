@@ -392,10 +392,17 @@
                 // Append the name container to the suggestions list
                 suggestionList.appendChild(nameContainer);
 
+                // Add click event to suggestionList
+                suggestionList.addEventListener('click', () => {
+                    // Call setNavigationCoordinates with entity's coordinates
+                    setNavigationCoordinates(entity.latitude, entity.longitude);
+                });
+
                 // Append the suggestions list to the suggestions container
                 suggestionsContainer.appendChild(suggestionList);
             });
         }
+
 
         // Wait for some time to ensure entities are fetched (better to use events or promises)
         setTimeout(renderPlaceNames, 2000); // Adjust timing as needed
@@ -589,9 +596,29 @@
         // Your Mapbox Token Specifically for UM.AR domain
         const MAPBOX_TOKEN = 'sk.eyJ1IjoiaGF6aXFodWR6YWlyeTAyIiwiYSI6ImNtM3VvYzduZDBqazgyanIzOTdibXM1c3IifQ.IRA9AZlLo-eF9uXsQkzdmg';
 
-        // Define start and end points
-        const start = [3.129827, 101.649728]; // Example start point
-        const end = [3.127979, 101.650565]; // Example end point
+        let start = []; // User's coordinates
+        let end = [];   // Destination coordinates
+
+        function setNavigationCoordinates(destinationLatitude, destinationLongitude) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const userLatitude = position.coords.latitude;
+                    const userLongitude = position.coords.longitude;
+                    start = [userLatitude, userLongitude];
+                    end = [destinationLatitude, destinationLongitude];
+
+                    console.log("Start Coordinates (User):", start);
+                    console.log("End Coordinates (Destination):", end);
+
+                    // Optionally perform additional actions, like fetching routes or updating UI
+                },
+                (error) => {
+                    console.error("Error getting user's location:", error);
+                }
+            );
+        }
+
+
 
         // Fetch route data from Mapbox Directions API
         async function fetchRoute(start, end) {
