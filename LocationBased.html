@@ -369,9 +369,9 @@
         async function loadEntities() {
         try {
             await fetchDataFromFirebase();
-           showDebugMessage(entitiesArray); // Access the fetched data
+           showDebugMessage(JSON.stringify(entitiesArray, null, 2)); // Access the fetched data
         } catch (error) {
-            showDebugMessage("Error fetching data:", error);
+            showDebugMessage(`Error fetching data: ${error.message}`);
         }
         }
 
