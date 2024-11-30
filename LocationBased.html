@@ -607,8 +607,13 @@
                     start = [userLatitude, userLongitude];
                     end = [destinationLatitude, destinationLongitude];
 
-                    console.log("Start Coordinates (User):", start);
-                    console.log("End Coordinates (Destination):", end);
+                    // Format debug message
+                    const debugMessage = `Start Coordinates (User): ${start.join(', ')}\nEnd Coordinates (Destination): ${end.join(', ')}`;
+
+                    // Call showDebugMessage with the formatted message
+                    showDebugMessage(debugMessage);
+
+                    renderRoute();
 
                     // Optionally perform additional actions, like fetching routes or updating UI
                 },
@@ -768,14 +773,14 @@
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
 
-        showDebugMessage(`
-            Debug Info: <br>
-            Viewport Dimensions: ${viewportWidth}px x ${viewportHeight}px <br>
-            Scene Dimensions: ${sceneRect.width}px x ${sceneRect.height}px <br>
-            Scene Position: Top ${sceneRect.top}px, Left ${sceneRect.left}px <br>
-            Camera FOV: ${fov}° <br>
-            Camera Aspect Ratio: ${aspectRatio}
-        `);
+        // showDebugMessage(`
+        //     Debug Info: <br>
+        //     Viewport Dimensions: ${viewportWidth}px x ${viewportHeight}px <br>
+        //     Scene Dimensions: ${sceneRect.width}px x ${sceneRect.height}px <br>
+        //     Scene Position: Top ${sceneRect.top}px, Left ${sceneRect.left}px <br>
+        //     Camera FOV: ${fov}° <br>
+        //     Camera Aspect Ratio: ${aspectRatio}
+        // `);
 
     </script>
 </body>
