@@ -368,12 +368,17 @@
 <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <script>
 
-        function renderPlaceNames() {
+        function renderPlaceNames(filterText = '') {
             const suggestionsContainer = document.querySelector('.suggestions-container');
             suggestionsContainer.innerHTML = ''; // Clear existing suggestions
 
-            // Iterate through the global array
-            window.dynamicEntities.forEach((entity) => {
+            // Filter dynamicEntities based on filterText (case-insensitive)
+            const filteredEntities = window.dynamicEntities.filter(entity =>
+                entity.name.toLowerCase().includes(filterText.toLowerCase())
+            );
+
+            // Iterate through the filtered array
+            filteredEntities.forEach((entity) => {
                 // Create the outermost div with class "suggestions-list"
                 const suggestionList = document.createElement('div');
                 suggestionList.className = 'suggestions-list';
@@ -403,9 +408,11 @@
             });
         }
 
-
-        // Wait for some time to ensure entities are fetched (better to use events or promises)
-        setTimeout(renderPlaceNames, 2000); // Adjust timing as needed
+        // Add event listener to the input field for filtering
+        document.querySelector('input[type="search"]').addEventListener('input', (event) => {
+            const searchText = event.target.value; // Get the input text
+            renderPlaceNames(searchText); // Call renderPlaceNames with the filter text
+        });
 
 
         //Show fata container for user position
@@ -679,14 +686,14 @@
             return points;
         }
 
-        // Clear existing markers
         function clearMarkers() {
             const scene = document.querySelector('a-scene');
-            scene.querySelectorAll('.route-marker-wrapper').forEach((marker) => {
+
+            // Select and remove all route markers and wrappers (including start/end labels)
+            scene.querySelectorAll('.route-marker-wrapper, .route-marker').forEach((marker) => {
                 marker.parentNode.removeChild(marker);
             });
         }
-
 
         // Render AR markers for the densified route
         async function renderRoute() {
