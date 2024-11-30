@@ -368,7 +368,46 @@
 <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <script>
 
-        function renderPlaceNames(filterText = '') {
+        function renderPlaceNames() {
+            const suggestionsContainer = document.querySelector('.suggestions-container');
+            suggestionsContainer.innerHTML = ''; // Clear existing suggestions
+
+            // Iterate through the global array
+            window.dynamicEntities.forEach((entity) => {
+                // Create the outermost div with class "suggestions-list"
+                const suggestionList = document.createElement('div');
+                suggestionList.className = 'suggestions-list';
+
+                // Create the inner div with class "suggestions-list-name"
+                const nameContainer = document.createElement('div');
+                nameContainer.className = 'suggestions-list-name';
+
+                // Create the <h2> element for the place name
+                const placeName = document.createElement('h2');
+                placeName.textContent = entity.name;
+
+                // Append the <h2> to the name container
+                nameContainer.appendChild(placeName);
+
+                // Append the name container to the suggestions list
+                suggestionList.appendChild(nameContainer);
+
+                // Add click event to suggestionList
+                suggestionList.addEventListener('click', () => {
+                    // Call setNavigationCoordinates with entity's coordinates
+                    setNavigationCoordinates(entity.latitude, entity.longitude);
+                });
+
+                // Append the suggestions list to the suggestions container
+                suggestionsContainer.appendChild(suggestionList);
+            });
+        }
+
+
+        // Wait for some time to ensure entities are fetched (better to use events or promises)
+        setTimeout(renderPlaceNames, 2000); // Adjust timing as needed
+
+        function renderPlaceFilter(filterText = '') {
             const suggestionsContainer = document.querySelector('.suggestions-container');
             suggestionsContainer.innerHTML = ''; // Clear existing suggestions
 
@@ -411,8 +450,9 @@
         // Add event listener to the input field for filtering
         document.querySelector('input[type="search"]').addEventListener('input', (event) => {
             const searchText = event.target.value; // Get the input text
-            renderPlaceNames(searchText); // Call renderPlaceNames with the filter text
+            renderPlaceFilter(searchText); // Call renderPlaceNames with the filter text
         });
+
 
 
         //Show fata container for user position
