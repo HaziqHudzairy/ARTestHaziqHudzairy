@@ -291,18 +291,18 @@
                         });
                     });
                     // Format the debug message
-                    const debugMessage = `
-                        Entities fetched: <br>
-                        ${window.dynamicEntities
-                        .map(
-                            (entity) =>
-                            `${entity.name} - Latitude: ${entity.latitude}, Longitude: ${entity.longitude}`
-                        )
-                        .join("<br>")}
-                    `;
+                    // const debugMessage = `
+                    //     Entities fetched: <br>
+                    //     ${window.dynamicEntities
+                    //     .map(
+                    //         (entity) =>
+                    //         `${entity.name} - Latitude: ${entity.latitude}, Longitude: ${entity.longitude}`
+                    //     )
+                    //     .join("<br>")}
+                    // `;
 
-                    // Show the debug message
-                    showDebugMessage(debugMessage);
+                    // // Show the debug message
+                    // showDebugMessage(debugMessage);
                 } else {
                     console.error("No data found in the database.");
                 }
@@ -361,6 +361,39 @@
 
         // Call the Function
         fetchAndRenderEntities();
+
+        // Function to dynamically render place names
+        function renderPlaceNames() {
+            const suggestionsContainer = document.querySelector('.suggestions-container'); // Get the container
+
+            // Clear existing suggestions to avoid duplicates
+            suggestionsContainer.innerHTML = '';
+
+            // Iterate through the dynamicEntities array
+            window.dynamicEntities.forEach((entity) => {
+                // Create suggestion list item
+                const suggestionList = document.createElement('div');
+                suggestionList.className = 'suggestions-list';
+
+                // Create name container
+                const nameContainer = document.createElement('div');
+                nameContainer.className = 'suggestions-list-name';
+
+                // Add the place name
+                const placeName = document.createElement('h2');
+                placeName.textContent = entity.name;
+
+                // Append placeName to nameContainer, and nameContainer to suggestionList
+                nameContainer.appendChild(placeName);
+                suggestionList.appendChild(nameContainer);
+
+                // Append the suggestionList to suggestionsContainer
+                suggestionsContainer.appendChild(suggestionList);
+            });
+        }
+
+        renderPlaceNames();
+
 
     </script>
 <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
