@@ -40,7 +40,7 @@
             <input type="search" placeholder="Search here ..." autocomplete="off">
             <i class="fa fa-search"></i>
         </form>
-        <div id="suggestions-container" class="suggestions-container">
+        <div class="suggestions-container">
             <div class="suggestions-list">
               <div class="suggestions-list-name">
                 <h2>KK1</h2>
@@ -212,32 +212,7 @@
 
     <script>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('search-form');
-            const suggestionsContainer = document.getElementById('suggestions-container');
-
-            form.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent click from propagating to other elements
-                form.classList.add('expanded'); // Expand the form
-                suggestionsContainer.classList.remove('hidden'); // Show suggestions
-            });
-
-            // Collapse the form and hide suggestions if the user clicks outside of it
-            document.addEventListener('click', () => {
-                form.classList.remove('expanded'); // Collapse the form
-                suggestionsContainer.classList.add('hidden'); // Hide suggestions
-            });
-
-            // Prevent collapsing if user clicks inside the form or suggestions
-            form.addEventListener('click', (event) => {
-                event.stopPropagation();
-            });
-
-            suggestionsContainer.addEventListener('click', (event) => {
-                event.stopPropagation();
-            });
-        });
-
+        
 
         //     // Wait for the DOM to load
         //     document.addEventListener("DOMContentLoaded", function () {
