@@ -343,7 +343,6 @@ form:hover .fa {
 }
 
 .suggestions-list {
-  display: none;
   background: #f9f9f9; /* Light gray for list background */
   width: 90%; /* Match container width */
   padding: 15px 10px; /* Add padding for spacing */
