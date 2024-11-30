@@ -56,7 +56,7 @@
                 <h2>KK3</h2>
               </div>
             </div>
-          </div>
+        </div>
     </div>
     <div id="data-container" class="data-container" style="display:none;">
         <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
@@ -368,16 +368,32 @@
 <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <script>
 
-        // Function to dynamically render place names
         function renderPlaceNames() {
             const suggestionsContainer = document.querySelector('.suggestions-container');
             suggestionsContainer.innerHTML = ''; // Clear existing suggestions
 
             // Iterate through the global array
             window.dynamicEntities.forEach((entity) => {
+                // Create the outermost div with class "suggestions-list"
+                const suggestionList = document.createElement('div');
+                suggestionList.className = 'suggestions-list';
+
+                // Create the inner div with class "suggestions-list-name"
+                const nameContainer = document.createElement('div');
+                nameContainer.className = 'suggestions-list-name';
+
+                // Create the <h2> element for the place name
                 const placeName = document.createElement('h2');
                 placeName.textContent = entity.name;
-                suggestionsContainer.appendChild(placeName);
+
+                // Append the <h2> to the name container
+                nameContainer.appendChild(placeName);
+
+                // Append the name container to the suggestions list
+                suggestionList.appendChild(nameContainer);
+
+                // Append the suggestions list to the suggestions container
+                suggestionsContainer.appendChild(suggestionList);
             });
         }
 
