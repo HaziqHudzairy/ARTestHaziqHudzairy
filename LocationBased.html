@@ -622,16 +622,14 @@ function checkProximity(userLat, userLon, entities, radius) {
     }
 }
 
-// Function to show the environment model at the user's coordinates
-function showEnvironmentModel(userLat, userLon, model) {
-
+function showEnvironmentModel(userLat, userLon, entity) {
     // Find the AR scene
     const scene = document.querySelector('a-scene');
 
     // Create a new entity for the environment model
     const environmentEntity = document.createElement('a-entity');
     environmentEntity.setAttribute('gps-entity-place', `latitude: ${userLat}; longitude: ${userLon}`);
-    environmentEntity.setAttribute('gltf-model', model); // Use the provided model
+    environmentEntity.setAttribute('gltf-model', entity.model); // Use the provided model
     environmentEntity.setAttribute('scale', '80 80 80'); // Default scale, can be adjusted as needed
     environmentEntity.setAttribute('look-at', '[gps-camera]'); // Always face the camera
 
@@ -641,8 +639,11 @@ function showEnvironmentModel(userLat, userLon, model) {
     // Append the environment entity to the scene
     scene.appendChild(environmentEntity);
 
-    showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${model}`);
+    // Log the correct model name for debugging
+    showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${entity.model}`);
 }
+
+
 
 
         
