@@ -369,6 +369,7 @@ form:hover .fa {
 }
 
 .suggestions-list-name h2 {
+  font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 600;
   color: #333333;
@@ -407,18 +408,60 @@ form:hover .fa {
   z-index: 0;
 }
 
-.center-menu::after {
-  content: '';
+.center-circle {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 80%;
-  height: 80%;
-  background-color: rgba(0, 0, 0, 0.6); /* Black color with 60% opacity */
+  width: 40vw; /* Adjust circle size as needed */
+  height: 40vw;
+  background-color: rgba(0, 0, 0, 0.6); /* Black with 60% opacity */
   border-radius: 50%; /* Makes it a circle */
-  z-index: 1; /* Places the circle above the image */
-  animation: boink 0.5s ease-in-out 0.5s forwards; /* Starts after 0.5s delay */
+  transform: translate(-50%, -50%) scale(0); /* Start with scale(0) for animation */
+  animation: boink 0.5s ease-in-out forwards; /* Apply the same animation */
+  animation-delay: 0.5s; /* Delay the animation by 0.5 seconds */
+  z-index: 1; /* Ensure it appears on top of the image */
+  display: flex; /* Enable flexbox */
+  flex-direction: column; /* Stack elements vertically */
+  justify-content: center; /* Center elements vertically */
+  align-items: center; /* Center elements horizontally */
 }
+
+.center-circle h3,
+.center-circle h6,
+.center-circle p {
+  margin: 0; /* Remove default margins */
+  line-height: 1.2; /* Adjust line height for reduced spacing */
+}
+
+.center-circle h3 {
+  width: 80%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900; /* Bold font weight */
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.center-circle h6 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500; /* Regular font weight */
+  color: white;
+  text-align: center;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.center-circle p {
+  width: 70%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500; /* Regular font weight */
+  color: white;
+  font-size: 10px; /* Smaller font size for `p` */
+  text-align: center;
+}
+
+
 
 /* Keyframes for scaling effect */
 @keyframes boink {
