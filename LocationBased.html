@@ -39,8 +39,8 @@
         <form id="search-form">
             <input type="search" placeholder="Search here ..." autocomplete="off">
             <i class="fa fa-search"></i>
-        </form>
-        <div id="suggestions-container" class="suggestions-container">
+          </form>
+          <div id="suggestions-container" class="suggestions-container hidden">
             <div class="suggestions-list">
               <div class="suggestions-list-name">
                 <h2>KK1</h2>
@@ -56,7 +56,7 @@
                 <h2>KK3</h2>
               </div>
             </div>
-        </div>
+          </div>
     </div>
     <div id="data-container" class="data-container" style="display:none;">
         <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
@@ -212,31 +212,36 @@
 
     <script>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('search-form');
-            const suggestionsContainer = document.getElementById('suggestions-container');
+        // Select form, input, suggestions container
+        const searchForm = document.getElementById("search-form");
+        const searchInput = searchForm.querySelector("input");
+        const suggestionsContainer = document.getElementById("suggestions-container");
 
-            form.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent click from propagating to other elements
-                form.classList.add('expanded'); // Expand the form
-                suggestionsContainer.classList.remove('hidden'); // Show suggestions
-            });
-
-            // Collapse the form and hide suggestions if the user clicks outside of it
-            document.addEventListener('click', () => {
-                form.classList.remove('expanded'); // Collapse the form
-                suggestionsContainer.classList.add('hidden'); // Hide suggestions
-            });
-
-            // Prevent collapsing if user clicks inside the form or suggestions
-            form.addEventListener('click', (event) => {
-                event.stopPropagation();
-            });
-
-            suggestionsContainer.addEventListener('click', (event) => {
-                event.stopPropagation();
-            });
+        // Toggle the expanded class and show suggestions
+        searchForm.addEventListener("click", (event) => {
+        event.stopPropagation(); // Prevent triggering the document click listener
+        searchForm.classList.add("expanded");
+        searchInput.focus(); // Automatically focus the input
+        suggestionsContainer.classList.remove("hidden"); // Show suggestions
         });
+
+        // Handle clicking outside of the form or suggestions container
+        document.addEventListener("click", (event) => {
+        const isClickInsideForm = searchForm.contains(event.target);
+        const isClickInsideSuggestions = suggestionsContainer.contains(event.target);
+
+        if (!isClickInsideForm && !isClickInsideSuggestions) {
+            // Reset form and hide suggestions
+            searchForm.classList.remove("expanded");
+            suggestionsContainer.classList.add("hidden");
+        }
+        });
+
+        // Prevent hiding when clicking inside suggestions container
+        suggestionsContainer.addEventListener("click", (event) => {
+        event.stopPropagation(); // Prevent triggering the document click listener
+        });
+
 
 
         //     // Wait for the DOM to load

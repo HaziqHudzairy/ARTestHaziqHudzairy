@@ -325,7 +325,7 @@ form:hover .fa {
 
 .suggestions-container {
   overflow-y: auto;
-  display: none;
+  display: block;
   position: fixed;
   top: 20%;
   left:15px;
@@ -370,8 +370,9 @@ form:hover .fa {
   align-items: center;
 }
 
-
-
+.hidden {
+  display: none;
+}
 .a-scene-container {
   position: fixed;
   width: 100vw;
