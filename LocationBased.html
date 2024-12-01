@@ -538,7 +538,7 @@
         }
 
         // Fetch Data from Firebase
-        function fetchAndRenderEntities() {
+        window.fetchAndRenderEntities = function() {
             const entitiesRef = ref(database, "entities");
             onValue(entitiesRef, (snapshot) => {
                 const data = snapshot.val();
@@ -625,6 +625,37 @@
             return R * c; // Distance in meters
         }
 
+        // Example function to show the cancel button with a fade effect
+        function showCancelButton() {
+            const cancelButton = document.getElementById('cancel-button');
+            cancelButton.style.display = 'flex'; // Ensure it's visible
+            setTimeout(() => {
+                cancelButton.style.opacity = '1'; // Start the fade-in effect
+            }, 10); // Small delay to allow the display change to take effect
+        }
+
+        // Example function to hide the cancel button with fade-out effect
+        function hideCancelButton() {
+            const cancelButton = document.getElementById('cancel-button');
+            cancelButton.style.opacity = '0'; // Fade out the button
+            setTimeout(() => {
+                cancelButton.style.display = 'none'; // Hide it after the fade-out
+            }, 500); // Match the duration of the fade-out (in this case, 0.5s)
+        }
+
+        const cancelButton = document.getElementById('cancel-button');
+        cancelButton.addEventListener('click', function() {
+            
+            // Example: Hide the cancel button and show the search form again
+            hideCancelButton();
+            virtualSpace.setAttribute('visible', false);
+            fetchAndRenderEntities();
+            updateLocation()
+
+            const searchForm = document.getElementById('search-form');
+            searchForm.style.display = 'block'; // Show the search form again (if needed)
+        });
+
         function clearSceneEntities() {
             const scene = document.querySelector('a-scene');
 
@@ -647,7 +678,6 @@
             const centerMenu = document.querySelector('.center-menu');
             const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
             const proximityDiv = document.getElementById("proximity-message");
-            const cancelButton = document.getElementById('cancel-button');
             const searchForm = document.getElementById("search-form");
             proximityDiv.innerText = message;
             proximityDiv.style.display = "block";
@@ -661,7 +691,7 @@
                 centerMenu.addEventListener('click', function (event) {
                     hideProximityMessage();
                     searchForm.style.display = "none";
-                    cancelButton.style.display = "block";
+                    showCancelButton();
                     virtualSpace.setAttribute('visible', true);
                     virtualSpace.setAttribute('follow-camera', '');
                     clearSceneEntities();

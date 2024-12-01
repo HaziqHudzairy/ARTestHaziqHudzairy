@@ -463,20 +463,22 @@ form:hover .fa {
 }
 
 .cancel-btn-container {
-  display: none;
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  opacity: 0; /* Start as invisible */
   position: fixed;
   top: 11%;
   right: 10px;
   width: 50px; /* Initial collapsed width */
-  height: 50px;
+  height: 50px; /* Initial collapsed height */
   background: #ffffff;
   color: rgb(0, 0, 0);
   border-radius: 50%;
-  text-align: center;
-  line-height: 50px; /* Center the "X" */
   font-size: 1.5em; /* Make the "X" bigger */
   cursor: pointer;
-  z-index: 2; /* Ensure the cancel button is above the form */
+  z-index: 2000; /* Ensure the cancel button is above the form */
+  transition: opacity 0.5s ease-in-out; /* Add fade effect */
 }
 
 .fa:hover, .cancel-btn-container:hover {
