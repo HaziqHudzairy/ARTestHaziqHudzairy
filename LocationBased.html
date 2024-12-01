@@ -622,21 +622,21 @@
                     // Make the center menu visible
                     centerMenu.style.display = 'block';
 
-                    // Attach a one-time click listener to the center menu
-                    // centerMenu.onclick = () => {
-                    //     // Play reverse boink animation
-                    //     centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
+                    //Attach a one-time click listener to the center menu
+                    centerMenu.onclick = () => {
+                        // Play reverse boink animation
+                        centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
 
-                    //     // Display the environment model at user's location
-                    //     //showEnvironmentModel(userLat, userLon, entity);
+                        // Display the environment model at user's location
+                        //showEnvironmentModel(userLat, userLon, entity);
 
-                    //     // Hide the menu after the reverse animation ends
-                    //     setTimeout(() => {
-                    //         centerMenu.style.display = 'none';
-                    //     }, 500); // Matches the animation duration (0.5s)
+                        // Hide the menu after the reverse animation ends
+                        setTimeout(() => {
+                            centerMenu.style.display = 'none';
+                        }, 500); // Matches the animation duration (0.5s)
 
-                    //     showImagePlane();
-                    // };
+                        showImagePlane();
+                    };
                 }
             });
 
@@ -654,7 +654,7 @@
         function showImagePlane() {
             const plane = document.getElementById("image-plane");
             const camera = document.getElementById("camera");
-            const currentEntity = window.dynamicEntities[0]; // For example, take the first entity
+            const currentEntity = window.dynamicEntities[10]; // For example, take the first entity
 
             if (currentEntity && currentEntity.eventImageLinks.length > 0) {
                 const images = currentEntity.eventImageLinks;
@@ -711,7 +711,7 @@
                     updateLocationDisplay(latitude, longitude);
 
                     // Check if the user is near any entity (within a 25-meter radius)
-                    checkProximity(latitude, longitude, window.dynamicEntities, 10);
+                    checkProximity(latitude, longitude, window.dynamicEntities, 30);
                 },
                 function (error) {
                     // Handle different types of errors and show system alert popup
