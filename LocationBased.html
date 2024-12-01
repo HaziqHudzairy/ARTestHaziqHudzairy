@@ -248,6 +248,23 @@
 
     <script>
 
+        document.addEventListener("DOMContentLoaded", () => {
+            const virtualSpace = document.querySelector("#virtual-space");
+
+            virtualSpace.addEventListener("componentchanged", (event) => {
+                if (event.detail.name === "visible") {
+                    const isVisible = virtualSpace.getAttribute("visible");
+                    toggleAREntitiesVisibility(!isVisible); // Hide AR entities when virtual-space is visible
+                }
+            });
+        });
+
+        function toggleAREntitiesVisibility(show) {
+            const entities = document.querySelectorAll(".ar-entity");
+            entities.forEach(entity => {
+                entity.setAttribute("visible", show); // true = show, false = hide
+            });
+        }
 
         // Select form, input, suggestions container, and suggestion lists
         const searchForm = document.getElementById("search-form");
@@ -521,7 +538,7 @@
             entityElement.setAttribute("scale", entity.scale || "1 1 1"); // Default scale if not provided
             entityElement.setAttribute("look-at", "[gps-camera]");
             entityElement.setAttribute("animation-mixer", "clip: *"); // Optional for animations
-
+            entityElement.classList.add("ar-entity");
             // Optional Debugging
             console.log(`Added entity: ${id}, Parent Category: ${parentCategory}`);
 
