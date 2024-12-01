@@ -604,15 +604,6 @@
                         setTimeout(() => {
                             centerMenu.style.display = 'none';
                         }, 500); // Matches the animation duration (0.5s)
-
-                        // Call showAREnvironment with dynamic parameters
-                        showAREnvironment(
-                            `${entity.name.toLowerCase()}-active`, // Generate dynamic ID
-                            userLat,
-                            userLon,
-                            `#${entity.name.toLowerCase()}-scene` // Model ID based on naming convention
-                        );
-
                     };
                 }
             });
