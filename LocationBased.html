@@ -200,10 +200,13 @@
                 <a-asset-item id="locationPinLadangMini" src="asset/LocationPin.glb"></a-asset-item>
                 <a-asset-item id="locationPinMustafaRiver" src="asset/LocationPin.glb"></a-asset-item>
 
-            <!-- Environment -->
-            <a-asset-item id="f315Scene" src="asset/AR_Environment_Info/F315.glb"></a-asset-item>
-                
+                <!-- Environment -->
+                <a-asset-item id="f315Scene" src="asset/AR_Environment_Info/F315.glb"></a-asset-item>
+
         </a-assets>
+
+        <a-plane id="image-plane" position="0 1.5 -3" rotation="0 0 0" width="4" height="3"></a-plane>
+        <a-box position="0 1 -5" color="#4CC3D9" onclick="nextImage()"></a-box>
 
         <!-- <a-entity id="dynamic-model"></a-entity> -->
 
@@ -450,19 +453,6 @@
                             });
                         });
                     });
-                    // Format the debug message
-                    // const debugMessage = `
-                    //     Entities fetched: <br>
-                    //     ${window.dynamicEntities
-                    //     .map(
-                    //         (entity) =>
-                    //         `${entity.name} - Latitude: ${entity.latitude}, Longitude: ${entity.longitude}`
-                    //     )
-                    //     .join("<br>")}
-                    // `;
-
-                    // // Show the debug message
-                    // showDebugMessage(debugMessage);
                 } else {
                     console.error("No data found in the database.");
                 }
@@ -488,7 +478,7 @@
         }
 
         // Function to Create AR Entity
-        window.createAREntity = function(entity, id, parentCategory = null) {
+        window.createAREntity = function (entity, id, parentCategory = null) {
             const scene = document.querySelector("a-scene");
             const entityElement = document.createElement("a-entity");
 
@@ -521,6 +511,42 @@
 
         // Call the Function
         fetchAndRenderEntities();
+
+
+        // Global array to store event image links
+        window.eventImageLinks = [];
+
+        // Function to fetch event image links from Firebase
+        function fetchEventImageLinks() {
+            const entitiesRef = ref(database, "entities"); // Reference to the entities node
+            onValue(entitiesRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    // Reset the image links array
+                    window.eventImageLinks = [];
+
+                    // Iterate through the entities data to find image links
+                    Object.keys(data).forEach((category) => {
+                        Object.values(data[category]).forEach((entity) => {
+                            if (entity['Event Image Link']) {
+                                // Push all image links into the array
+                                window.eventImageLinks.push(...entity['Event Image Link']);
+                            }
+                        });
+                    });
+
+                    // Log the event image links to check the fetched data
+                    console.log(window.eventImageLinks);  // Corrected here
+                } else {
+                    console.error("No data found in the database.");
+                }
+            });
+        }
+
+        // Fetch event image links
+        fetchEventImageLinks();
+
+
 
 
     </script>
@@ -578,72 +604,82 @@
 
 
         // Function to check proximity and retrieve the Environment Model
-function checkProximity(userLat, userLon, entities, radius) {
-    let isNearAnyEntity = false;
+        function checkProximity(userLat, userLon, entities, radius) {
+            let isNearAnyEntity = false;
 
-    const centerMenu = document.querySelector('.center-menu');
-    const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
-    let environmentModel = null; // To store the model for display
+            const centerMenu = document.querySelector('.center-menu');
+            const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
+            let environmentModel = null; // To store the model for display
 
-    entities.forEach(entity => {
-        const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
-        if (distance <= radius) {
-            isNearAnyEntity = true;
+            entities.forEach(entity => {
+                const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
+                if (distance <= radius) {
+                    isNearAnyEntity = true;
 
-            // Update h3 content with the entity name
-            centerCircleH3.textContent = entity.name;
+                    // Update h3 content with the entity name
+                    centerCircleH3.textContent = entity.name;
 
-            // Make the center menu visible
-            centerMenu.style.display = 'block';
+                    // Make the center menu visible
+                    centerMenu.style.display = 'block';
 
-            // Attach a one-time click listener to the center menu
-            centerMenu.onclick = () => {
-                // Play reverse boink animation
+                    // Attach a one-time click listener to the center menu
+                    centerMenu.onclick = () => {
+                        // Play reverse boink animation
+                        centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
+
+                        // Display the environment model at user's location
+                        showEnvironmentModel(userLat, userLon, entity);
+
+                        // Hide the menu after the reverse animation ends
+                        setTimeout(() => {
+                            centerMenu.style.display = 'none';
+                        }, 500); // Matches the animation duration (0.5s)
+                    };
+                }
+            });
+
+            // Hide the center menu if the user is not near any entity
+            if (!isNearAnyEntity) {
                 centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
-
-                // Display the environment model at user's location
-                showEnvironmentModel(userLat, userLon, entity);
-
-                // Hide the menu after the reverse animation ends
-                setTimeout(() => {
-                    centerMenu.style.display = 'none';
-                }, 500); // Matches the animation duration (0.5s)
-            };
+                centerMenu.style.display = 'none'; // Hide the menu
+            }
         }
-    });
 
-    // Hide the center menu if the user is not near any entity
-    if (!isNearAnyEntity) {
-        centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
-        centerMenu.style.display = 'none'; // Hide the menu
-    }
-}
+        let currentIndex = 0;
 
-function showEnvironmentModel(userLat, userLon, entity) {
-    // Find the AR scene
-    const scene = document.querySelector('a-scene');
+        // Function to change the image for the plane
+        function nextImage() {
+            if (window.eventImageLinks.length === 0) return; // If no images, do nothing
+            currentIndex = (currentIndex + 1) % window.eventImageLinks.length;
+            const plane = document.getElementById("image-plane");
+            plane.setAttribute("src", window.eventImageLinks[currentIndex]); // Set the new image directly
+        }
 
-    // Create a new entity for the environment model
-    const environmentEntity = document.createElement('a-entity');
-    environmentEntity.setAttribute('gps-entity-place', `latitude: ${userLat}; longitude: ${userLon}`);
-    environmentEntity.setAttribute('gltf-model', '#f315Scene'); // Use the provided model
-    environmentEntity.setAttribute('scale', '400 400 400'); // Default scale, can be adjusted as needed
-    environmentEntity.setAttribute('look-at', '[gps-camera]'); // Always face the camera
+        function showEnvironmentModel(userLat, userLon, entity) {
+            // Find the AR scene
+            const scene = document.querySelector('a-scene');
 
-    // Optionally, add animation or other attributes
-    environmentEntity.setAttribute('animation-mixer', 'clip: *'); // Optional animation
+            // Create a new entity for the environment model
+            const environmentEntity = document.createElement('a-entity');
+            environmentEntity.setAttribute('gps-entity-place', `latitude: ${userLat}; longitude: ${userLon}`);
+            environmentEntity.setAttribute('gltf-model', '#f315Scene'); // Use the provided model
+            environmentEntity.setAttribute('scale', '400 400 400'); // Default scale, can be adjusted as needed
+            environmentEntity.setAttribute('look-at', '[gps-camera]'); // Always face the camera
 
-    // Append the environment entity to the scene
-    scene.appendChild(environmentEntity);
+            // Optionally, add animation or other attributes
+            environmentEntity.setAttribute('animation-mixer', 'clip: *'); // Optional animation
 
-    // Log the correct model name for debugging
-    showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${entity.model}`);
-}
+            // Append the environment entity to the scene
+            scene.appendChild(environmentEntity);
+
+            // Log the correct model name for debugging
+            showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${entity.model}`);
+        }
 
 
 
 
-        
+
 
 
 
