@@ -397,6 +397,7 @@ form:hover .fa {
   transform: translateX(-50%);
   width: 55vw;
   height: auto;
+  z-index: 9999;
 }
 
 .center-menu img {
@@ -405,7 +406,7 @@ form:hover .fa {
   width: 100%;
   height: auto;
   position: absolute;
-  animation: boink 0.5s ease-in-out forwards;
+  animation: boink 0.5s ease-in-out forwards, rotate 2s linear infinite;
   z-index: 9998;
 }
 
@@ -474,6 +475,16 @@ form:hover .fa {
   }
   100% {
     transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Keyframes for continuous rotation */
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg); /* Start at 0 degrees */
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg); /* Complete a full rotation */
   }
 }
 
