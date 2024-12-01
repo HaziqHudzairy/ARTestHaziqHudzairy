@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Table Editor</title>
-    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js"></script>
+    <title>Editable Entity-Attribute Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,6 +13,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
         th, td {
             border: 1px solid #ddd;
@@ -24,131 +23,171 @@
         th {
             background-color: #f4f4f4;
         }
-        button {
+        .actions {
+            margin-top: 10px;
+        }
+        .actions input, .actions button {
+            margin-right: 10px;
             padding: 5px 10px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-        }
-        button.delete {
-            background-color: red;
-        }
-        input {
-            padding: 5px;
-            width: 100%;
-        }
-        .add-row {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Firebase Table Editor</h1>
-    <table id="data-table">
-        <thead>
-            <tr>
-                <th>Key</th>
-                <th>Value</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-
-    <div class="add-row">
-        <input type="text" id="new-key" placeholder="Enter key">
-        <input type="text" id="new-value" placeholder="Enter value">
-        <button onclick="addRow()">Add Row</button>
+    <h1>Editable Entity-Attribute Viewer</h1>
+    <input type="file" id="fileInput" accept=".json">
+    <div id="tables-container">
+        <!-- Dynamic tables for each entity -->
     </div>
+    <button id="saveChanges" style="margin-top: 20px;">Save Changes</button>
 
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyB1NEkxuhsfBrsTgfei80LWmF4o_IQwO8",
-            authDomain: "um-ar-d0418.firebaseapp.com",
-            databaseURL: "https://um-ar-d0418-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "um-ar-d0418",
-            storageBucket: "um-ar-d0418.appspot.com",
-            messagingSenderId: "624669072499",
-            appId: "1:624669072499:web:315e91c12fad88513c6d52",
-            measurementId: "G-XWM53Y6FBZ"
-        };
+        let jsonData = {};
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        // Handle file input
+        document.getElementById("fileInput").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-        // Reference to the data location in Firebase
-        const dbRef = database.ref("entities");
-
-        // Fetch and display data
-        dbRef.on("value", (snapshot) => {
-            const data = snapshot.val();
-            const tableBody = document.querySelector("#data-table tbody");
-            tableBody.innerHTML = ""; // Clear existing rows
-
-            for (const key in data) {
-                const row = document.createElement("tr");
-
-                // Key column
-                const keyCell = document.createElement("td");
-                keyCell.textContent = key;
-                row.appendChild(keyCell);
-
-                // Value column
-                const valueCell = document.createElement("td");
-                valueCell.innerHTML = `<input type="text" value="${JSON.stringify(data[key])}" onchange="updateRow('${key}', this.value)">`;
-                row.appendChild(valueCell);
-
-                // Actions column
-                const actionsCell = document.createElement("td");
-                actionsCell.innerHTML = `<button class="delete" onclick="deleteRow('${key}')">Delete</button>`;
-                row.appendChild(actionsCell);
-
-                tableBody.appendChild(row);
-            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                jsonData = JSON.parse(e.target.result);
+                displayEntities(jsonData);
+            };
+            reader.readAsText(file);
         });
 
-        // Add a new row
-        function addRow() {
-            const newKey = document.getElementById("new-key").value;
-            const newValue = document.getElementById("new-value").value;
+        // Display tables for entities
+        function displayEntities(data) {
+            const container = document.getElementById("tables-container");
+            container.innerHTML = ""; // Clear any previous content
 
-            if (newKey && newValue) {
-                const parsedValue = tryParseJSON(newValue) || newValue; // Parse JSON or use string
-                dbRef.child(newKey).set(parsedValue);
-                document.getElementById("new-key").value = "";
-                document.getElementById("new-value").value = "";
-            } else {
-                alert("Please enter both key and value.");
+            for (const [entityType, entities] of Object.entries(data.entities || {})) {
+                // Create a table for each entity type
+                const table = document.createElement("table");
+                const caption = document.createElement("caption");
+                caption.textContent = `Entity Type: ${entityType}`;
+                table.appendChild(caption);
+
+                // Extract all attribute keys from entities
+                const headers = Object.keys(Object.values(entities)[0] || {});
+                const thead = document.createElement("thead");
+                const headerRow = document.createElement("tr");
+                headerRow.innerHTML = `<th>Entity ID</th>${headers.map(attr => `<th>${attr}</th>`).join("")}<th>Actions</th>`;
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+
+                // Populate rows
+                const tbody = document.createElement("tbody");
+                for (const [entityId, attributes] of Object.entries(entities)) {
+                    const row = createRow(entityType, entityId, attributes, headers);
+                    tbody.appendChild(row);
+                }
+                table.appendChild(tbody);
+
+                // Add row button
+                const addRowDiv = document.createElement("div");
+                addRowDiv.classList.add("actions");
+                addRowDiv.innerHTML = `
+                    <button onclick="addRow('${entityType}')">Add Row</button>
+                    <button onclick="addColumn('${entityType}')">Add Column</button>
+                    <button onclick="removeColumn('${entityType}')">Remove Column</button>
+                `;
+
+                // Append table and actions to container
+                container.appendChild(table);
+                container.appendChild(addRowDiv);
             }
         }
 
-        // Update a row
-        function updateRow(key, value) {
-            const parsedValue = tryParseJSON(value) || value; // Parse JSON or use string
-            dbRef.child(key).set(parsedValue);
+        // Create a table row dynamically
+        function createRow(entityType, entityId, attributes, headers) {
+            const row = document.createElement("tr");
+
+            // Entity ID
+            const idCell = document.createElement("td");
+            idCell.textContent = entityId;
+            row.appendChild(idCell);
+
+            // Attribute cells
+            headers.forEach(attr => {
+                const cell = document.createElement("td");
+                cell.contentEditable = true;
+                cell.textContent = attributes[attr] || "";
+                cell.addEventListener("blur", () => updateCell(entityType, entityId, attr, cell.textContent));
+                row.appendChild(cell);
+            });
+
+            // Action buttons
+            const actionsCell = document.createElement("td");
+            actionsCell.innerHTML = `
+                <button onclick="deleteRow('${entityType}', '${entityId}')">Delete</button>
+            `;
+            row.appendChild(actionsCell);
+
+            return row;
+        }
+
+        // Add a new row
+        function addRow(entityType) {
+            const entityId = prompt("Enter new entity ID:");
+            if (!entityId) return;
+
+            const entityData = jsonData.entities[entityType];
+            const headers = Object.keys(Object.values(entityData)[0] || {});
+            const newRowData = {};
+            headers.forEach(header => (newRowData[header] = ""));
+
+            jsonData.entities[entityType][entityId] = newRowData;
+            displayEntities(jsonData);
+        }
+
+        // Add a new column
+        function addColumn(entityType) {
+            const columnName = prompt("Enter new column name:");
+            if (!columnName) return;
+
+            const entityData = jsonData.entities[entityType];
+            Object.keys(entityData).forEach(entityId => {
+                jsonData.entities[entityType][entityId][columnName] = "";
+            });
+
+            displayEntities(jsonData);
+        }
+
+        // Remove a column
+        function removeColumn(entityType) {
+            const columnName = prompt("Enter column name to remove:");
+            if (!columnName) return;
+
+            const entityData = jsonData.entities[entityType];
+            Object.keys(entityData).forEach(entityId => {
+                delete jsonData.entities[entityType][entityId][columnName];
+            });
+
+            displayEntities(jsonData);
+        }
+
+        // Update a cell
+        function updateCell(entityType, entityId, attr, value) {
+            jsonData.entities[entityType][entityId][attr] = value;
         }
 
         // Delete a row
-        function deleteRow(key) {
-            if (confirm(`Are you sure you want to delete the key "${key}"?`)) {
-                dbRef.child(key).remove();
-            }
+        function deleteRow(entityType, entityId) {
+            if (!confirm(`Are you sure you want to delete entity "${entityId}"?`)) return;
+            delete jsonData.entities[entityType][entityId];
+            displayEntities(jsonData);
         }
 
-        // Try parsing JSON (returns null if parsing fails)
-        function tryParseJSON(json) {
-            try {
-                return JSON.parse(json);
-            } catch {
-                return null;
-            }
-        }
+        // Save changes to file
+        document.getElementById("saveChanges").addEventListener("click", function() {
+            const jsonString = JSON.stringify(jsonData, null, 2);
+            const blob = new Blob([jsonString], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "updated_data.json";
+            a.click();
+        });
     </script>
 </body>
 </html>

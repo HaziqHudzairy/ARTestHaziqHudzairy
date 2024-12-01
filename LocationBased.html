@@ -577,43 +577,70 @@
         }
 
 
-        // Check if user is near any entity
-        function checkProximity(userLat, userLon, entities, radius) {
-            let isNearAnyEntity = false;
+        // Function to check proximity and retrieve the Environment Model
+function checkProximity(userLat, userLon, entities, radius) {
+    let isNearAnyEntity = false;
 
-            const centerMenu = document.querySelector('.center-menu');
-            const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
+    const centerMenu = document.querySelector('.center-menu');
+    const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
+    let environmentModel = null; // To store the model for display
 
-            entities.forEach(entity => {
-                const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
-                if (distance <= radius) {
-                    isNearAnyEntity = true;
+    entities.forEach(entity => {
+        const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
+        if (distance <= radius) {
+            isNearAnyEntity = true;
 
-                    // Update h3 content with the entity name
-                    centerCircleH3.textContent = entity.name;
+            // Update h3 content with the entity name
+            centerCircleH3.textContent = entity.name;
 
-                    // Make the center menu visible
-                    centerMenu.style.display = 'block'; 
+            // Get the Environment Model for the entity
+            environmentModel = entity['Environment Model'];
 
-                    // Attach a one-time click listener to the center menu
-                    centerMenu.onclick = () => {
-                        // Play reverse boink animation
-                        centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
+            // Make the center menu visible
+            centerMenu.style.display = 'block';
 
-                        // Hide the menu after the reverse animation ends
-                        setTimeout(() => {
-                            centerMenu.style.display = 'none';
-                        }, 500); // Matches the animation duration (0.5s)
-                    };
-                }
-            });
-
-            // Hide the center menu if the user is not near any entity
-            if (!isNearAnyEntity) {
+            // Attach a one-time click listener to the center menu
+            centerMenu.onclick = () => {
+                // Play reverse boink animation
                 centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
-                centerMenu.style.display = 'none'; // Hide the menu
-            }
+
+                // Display the environment model at user's location
+                showEnvironmentModel(userLat, userLon, environmentModel);
+
+                // Hide the menu after the reverse animation ends
+                setTimeout(() => {
+                    centerMenu.style.display = 'none';
+                }, 500); // Matches the animation duration (0.5s)
+            };
         }
+    });
+
+    // Hide the center menu if the user is not near any entity
+    if (!isNearAnyEntity) {
+        centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
+        centerMenu.style.display = 'none'; // Hide the menu
+    }
+}
+
+// Function to show the environment model at the user's coordinates
+function showEnvironmentModel(userLat, userLon, model) {
+    // Find the AR scene
+    const scene = document.querySelector('a-scene');
+
+    // Create a new entity for the environment model
+    const environmentEntity = document.createElement('a-entity');
+    environmentEntity.setAttribute('gps-entity-place', `latitude: ${userLat}; longitude: ${userLon}`);
+    environmentEntity.setAttribute('gltf-model', model); // Use the provided model
+    environmentEntity.setAttribute('scale', '8 8 8'); // Default scale, can be adjusted as needed
+    environmentEntity.setAttribute('look-at', '[gps-camera]'); // Always face the camera
+
+    // Optionally, add animation or other attributes
+    environmentEntity.setAttribute('animation-mixer', 'clip: *'); // Optional animation
+
+    // Append the environment entity to the scene
+    scene.appendChild(environmentEntity);
+}
+
 
         
 
