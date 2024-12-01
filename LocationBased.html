@@ -639,26 +639,32 @@
         // }
 
         function showARenvironment(entityName, latitude, longitude) {
-            const dynamicModel = document.querySelector('#dynamic-model');
+            const scene = document.querySelector('a-scene');
 
             // Debug message
             showDebugMessage(`Showing AR environment for: ${entityName}`);
 
-            // Reference the preloaded asset
+            // Create a new entity for the environment
+            const environmentEntity = document.createElement('a-entity');
+
+            // Set attributes dynamically
             const assetId = `${entityName.toLowerCase()}-model`; // Generate the asset id dynamically
-            dynamicModel.setAttribute('gltf-model', `#${assetId}`);
+            environmentEntity.setAttribute('gltf-model', `#${assetId}`); // Reference preloaded asset
+            environmentEntity.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude}`); // Set location
+            environmentEntity.setAttribute('scale', '10 10 10'); // Default scale
+            environmentEntity.setAttribute('look-at', '[gps-camera]'); // Optional: Ensure it faces the camera
 
-            // Set location-based attributes
-            dynamicModel.setAttribute('gps-entity-place', `latitude: position.coords.latitude; longitude: position.coords.latitude`);
+            // Add animations for visibility
+            environmentEntity.setAttribute('animation__show', 'property: scale; to: 1 1 1; dur: 500; easing: easeInOutQuad; startEvents: show');
+            environmentEntity.setAttribute('animation__hide', 'property: scale; to: 0 0 0; dur: 500; easing: easeInOutQuad; startEvents: hide');
 
-            // Set scale and animations
-            dynamicModel.setAttribute('scale', '0 0 0'); // Start hidden
-            dynamicModel.setAttribute('animation__show', 'property: scale; to: 1 1 1; dur: 500; easing: easeInOutQuad; startEvents: show');
-            dynamicModel.setAttribute('animation__hide', 'property: scale; to: 0 0 0; dur: 500; easing: easeInOutQuad; startEvents: hide');
+            // Append to the scene
+            scene.appendChild(environmentEntity);
 
-            // Show the model with the animation
-            dynamicModel.emit('show');
+            // Trigger the show animation
+            environmentEntity.emit('show');
         }
+
 
 
 
