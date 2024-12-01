@@ -319,6 +319,7 @@ form:hover .fa {
 
 .suggestions-container {
   overflow-y: auto;
+  display: block;
   position: fixed;
   top: 20%;
   left:15px;
@@ -367,35 +368,6 @@ form:hover .fa {
   display: none;
 }
 
-/* Suggestion Container */
-.suggestions-container {
-  max-height: 0; /* Start with zero height */
-  opacity: 0; /* Make it invisible */
-  overflow: hidden; /* Prevent content overflow during animation */
-  transform: scaleY(0); /* Collapse vertically */
-  transform-origin: top; /* Animate from top */
-  transition: max-height 0.3s ease-out, opacity 0.3s ease-out, transform 0.3s ease-out; /* Smooth dropdown */
-}
-
-/* Visible state for the suggestion container */
-.suggestions-container.visible {
-  max-height: 400px; /* Adjust height as needed */
-  opacity: 1;
-  transform: scaleY(1); /* Expand vertically */
-}
-
-/* Suggestion List */
-.suggestions-list {
-  opacity: 0; /* Hidden by default */
-  transform: translateX(-50px); /* Start from the left */
-  transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth entry animation */
-}
-
-/* Suggestion List - Visible State */
-.suggestions-container.visible .suggestions-list {
-  opacity: 1; /* Fully visible */
-  transform: translateX(0); /* No translation, fully aligned */
-}
 .a-scene-container {
   position: fixed;
   width: 100vw;
