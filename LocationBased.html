@@ -591,7 +591,7 @@
                     centerCircleH3.textContent = entity.name;
 
                     // Make the center menu visible
-                    centerMenu.style.display = 'flex'; // Use flex since it contains a flexbox layout
+                    centerMenu.style.display = 'block'; 
 
                     // Attach a one-time click listener to the center menu
                     centerMenu.onclick = () => {
@@ -604,7 +604,7 @@
                         }, 500); // Matches the animation duration (0.5s)
 
                         // Show the AR environment
-                        showARenvironment(entity.name);
+                        showARenvironment(entity.name,userLat,userLon);
                     };
                 }
             });
@@ -636,16 +636,20 @@
         //     dynamicModel.emit('show');
         // }
 
-        function showARenvironment(entityName) {
+        function showARenvironment(entityName, latitude, longitude) {
             const dynamicModel = document.querySelector('#dynamic-model');
 
-            showDebugMessage(`${entityName}`);
+            // Debug message
+            showDebugMessage(`Showing AR environment for: ${entityName}`);
+
             // Reference the preloaded asset
             const assetId = `${entityName.toLowerCase()}-model`; // Generate the asset id dynamically
             dynamicModel.setAttribute('gltf-model', `#${assetId}`);
 
-            // Set attributes to make it visible
-            dynamicModel.setAttribute('position', '0 1.6 -2'); // Adjust position as needed
+            // Set location-based attributes
+            dynamicModel.setAttribute('gps-entity-place', `latitude: position.coords.latitude; longitude: position.coords.latitude`);
+
+            // Set scale and animations
             dynamicModel.setAttribute('scale', '0 0 0'); // Start hidden
             dynamicModel.setAttribute('animation__show', 'property: scale; to: 1 1 1; dur: 500; easing: easeInOutQuad; startEvents: show');
             dynamicModel.setAttribute('animation__hide', 'property: scale; to: 0 0 0; dur: 500; easing: easeInOutQuad; startEvents: hide');
@@ -653,6 +657,7 @@
             // Show the model with the animation
             dynamicModel.emit('show');
         }
+
 
 
         //showDebugMessage("Testing debug size");
