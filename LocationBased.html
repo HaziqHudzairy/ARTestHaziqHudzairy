@@ -208,21 +208,14 @@
 
         </a-assets>
 
+        <a-entity id="virtual-space" visible="false">
+            <a-plane position="0 1 -10" width="4" height="3" material="src: asset/images/F315/image1.jpg;" look-at="[camera]"></a-plane>
 
-        <a-entity id="Scenescene" gltf-model="#Scenescene" scale="1 1 1" position="0 0 -10"></a-entity>
-        <a-plane 
-            id="locked-plane" 
-            width="4" 
-            height="3" 
-            material="src: asset/images/F315/image1.jpg;"
-            lock-plane-to-camera="cameraId: camera; offset: 0 1.6 -10; thresholdAngle: 1.57">
-        </a-plane>
-
-
-        <a-box position="0 1 -10" color=blue></a-box>
-        <a-box position="0 1 10" color=red></a-box>
-        <a-box position="10 1 0" color=yellow></a-box>
-        <a-box position="-10 1 0" color=green></a-box>
+            <a-box position="0 1 -10" color=blue></a-box>
+            <a-box position="0 1 10" color=red></a-box>
+            <a-box position="10 1 0" color=yellow></a-box>
+            <a-box position="-10 1 0" color=green></a-box>
+        </a-entity>
 
         <!-- <a-entity id="dynamic-model"></a-entity> -->
 
