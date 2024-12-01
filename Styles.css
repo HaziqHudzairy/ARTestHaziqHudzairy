@@ -406,7 +406,7 @@ form:hover .fa {
   width: 100%;
   height: auto;
   position: absolute;
-  animation: boink 0.5s ease-in-out forwards, rotate 15s linear infinite 1s;
+  animation: boink 0.5s ease-in-out forwards, rotate 15s linear infinite 0.7s;
   z-index: 9998;
 }
 

@@ -206,23 +206,6 @@
 
     <script>
 
-        // Add a click event listener to the center menu
-        document.addEventListener("DOMContentLoaded", () => {
-        const centerMenu = document.querySelector('.center-menu');
-
-        centerMenu.addEventListener('click', () => {
-            // Play reverse boink animation
-            centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
-
-            // Hide the menu after the reverse animation ends
-            setTimeout(() => {
-            centerMenu.style.display = 'none';
-            }, 500); // Matches the animation duration (0.5s)
-
-            alert("clicked");
-        });
-        });
-
 
         // Select form, input, suggestions container, and suggestion lists
         const searchForm = document.getElementById("search-form");
@@ -247,25 +230,25 @@
         });
 
         function animateSuggestions() {
-    const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
-    suggestionLists.forEach((list, index) => {
-        if (index < 10) {
-            // Animate only the first 10 items
-            requestAnimationFrame(() => {
-                setTimeout(() => {
-                    list.classList.add("animated");
-                }, index * 100); // Stagger animations for first 10 items
+            const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
+            suggestionLists.forEach((list, index) => {
+                if (index < 10) {
+                    // Animate only the first 10 items
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            list.classList.add("animated");
+                        }, index * 100); // Stagger animations for first 10 items
+                    });
+                } else {
+                    // Delay showing the rest by 3 seconds
+                    setTimeout(() => {
+                        list.classList.add("animated");
+                        list.style.opacity = '1';
+                        list.style.transform = 'translateX(0)'; // Reset any transform
+                    }, 1000);
+                }
             });
-        } else {
-            // Delay showing the rest by 3 seconds
-            setTimeout(() => {
-                list.classList.add("animated");
-                list.style.opacity = '1';
-                list.style.transform = 'translateX(0)'; // Reset any transform
-            }, 1000);
         }
-    });
-}
 
 
         // Function to reset form and hide suggestions
@@ -273,14 +256,14 @@
             searchForm.classList.remove('expanded');
             suggestionsContainer.classList.remove('show');
 
-            suggestionsContainer.innerHTML = ''; 
+            suggestionsContainer.innerHTML = '';
             setTimeout(() => {
                 suggestionsContainer.classList.add('hidden');
             }, 300); // Animation duration
 
 
         }
-        
+
 
         // Function to render place names dynamically
         function renderPlaceNames() {
@@ -587,32 +570,63 @@
             }, 500); // Match this timeout with the CSS transition duration
         }
 
+
         // Check if user is near any entity
         function checkProximity(userLat, userLon, entities, radius) {
             let isNearAnyEntity = false;
+
+            const centerMenu = document.querySelector('.center-menu');
+            const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
 
             entities.forEach(entity => {
                 const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
                 if (distance <= radius) {
                     isNearAnyEntity = true;
 
-                    // Show the center menu
-                    const centerMenu = document.querySelector('.center-menu');
-                    const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
-
                     // Update h3 content with the entity name
                     centerCircleH3.textContent = entity.name;
 
                     // Make the center menu visible
                     centerMenu.style.display = 'flex'; // Use flex since it contains a flexbox layout
+
+                    // Attach a one-time click listener to the center menu
+                    centerMenu.onclick = () => {
+                        // Play reverse boink animation
+                        centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
+
+                        // Hide the menu after the reverse animation ends
+                        setTimeout(() => {
+                            centerMenu.style.display = 'none';
+                        }, 500); // Matches the animation duration (0.5s)
+
+                        // Show the AR environment
+                        showARenvironment(entity.name);
+                    };
                 }
             });
 
             // Hide the center menu if the user is not near any entity
             if (!isNearAnyEntity) {
-                const centerMenu = document.querySelector('.center-menu');
                 centerMenu.style.display = 'none'; // Hide the menu
             }
+        }
+
+        // Function to display AR environment
+        function showARenvironment(entityName) {
+            const dynamicModel = document.querySelector('#dynamic-model');
+
+            // Enable and load the specified GLB model
+            const modelPath = `asset/AR_Environment_Info/${entityName}.glb`;
+            dynamicModel.setAttribute('gltf-model', modelPath);
+
+            // Set attributes to make it visible
+            dynamicModel.setAttribute('position', '0 1.6 -2'); // Adjust position as needed
+            dynamicModel.setAttribute('scale', '0 0 0'); // Start hidden
+            dynamicModel.setAttribute('animation__show', 'property: scale; to: 1 1 1; dur: 500; easing: easeInOutQuad; startEvents: show');
+            dynamicModel.setAttribute('animation__hide', 'property: scale; to: 0 0 0; dur: 500; easing: easeInOutQuad; startEvents: hide');
+
+            // Show the model with the animation
+            dynamicModel.emit('show');
         }
 
         //showDebugMessage("Testing debug size");
