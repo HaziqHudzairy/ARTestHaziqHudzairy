@@ -236,16 +236,14 @@ document.addEventListener("click", (event) => {
 
 // Function to reset form and hide suggestions
 function resetFormAndSuggestions() {
-  searchForm.classList.remove("expanded");
-  suggestionsContainer.classList.remove("show");
+  searchForm.classList.remove('expanded');
+  suggestionsContainer.classList.remove('show');
   setTimeout(() => {
-    suggestionsContainer.classList.add("hidden"); // Hide after animation completes
-  }, 300); // Match the duration of the container's animation
-
-  const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
-  suggestionLists.forEach((list) => list.classList.remove("animated")); // Reset animation classes
+    if (!searchInput.value.trim()) { // Only hide if input is empty
+      suggestionsContainer.classList.add('hidden');
+    }
+  }, 300); // Match animation duration
 }
-
 // Function to render place names dynamically
 function renderPlaceNames() {
   const suggestionsContainer = document.querySelector(".suggestions-container");
@@ -272,35 +270,61 @@ function renderPlaceNames() {
   });
 }
 
-// Render place filter based on input
-function renderPlaceFilter(filterText = "") {
-  const suggestionsContainer = document.querySelector(".suggestions-container");
-  suggestionsContainer.innerHTML = ""; // Clear existing suggestions
+function renderPlaceFilter(filterText = '') {
+  const suggestionsContainer = document.querySelector('.suggestions-container');
+  suggestionsContainer.innerHTML = ''; // Clear existing suggestions
 
-  const filteredEntities = window.dynamicEntities.filter((entity) =>
+  // Filter dynamicEntities based on filterText (case-insensitive)
+  const filteredEntities = window.dynamicEntities.filter(entity =>
     entity.name.toLowerCase().includes(filterText.toLowerCase())
   );
 
-  filteredEntities.forEach((entity) => {
-    const suggestionList = document.createElement("div");
-    suggestionList.className = "suggestions-list";
+  if (filteredEntities.length === 0) {
+    // If no results, optionally show a message or keep the container visible
+    const noResultsMessage = document.createElement('div');
+    noResultsMessage.className = 'suggestions-list';
+    noResultsMessage.textContent = 'No results found';
+    suggestionsContainer.appendChild(noResultsMessage);
+  } else {
+    // Iterate through the filtered array
+    filteredEntities.forEach((entity) => {
+      const suggestionList = document.createElement('div');
+      suggestionList.className = 'suggestions-list';
 
-    const nameContainer = document.createElement("div");
-    nameContainer.className = "suggestions-list-name";
+      const nameContainer = document.createElement('div');
+      nameContainer.className = 'suggestions-list-name';
 
-    const placeName = document.createElement("h2");
-    placeName.textContent = entity.name;
+      const placeName = document.createElement('h2');
+      placeName.textContent = entity.name;
 
-    nameContainer.appendChild(placeName);
-    suggestionList.appendChild(nameContainer);
+      nameContainer.appendChild(placeName);
+      suggestionList.appendChild(nameContainer);
 
-    suggestionList.addEventListener("click", () => {
-      setNavigationCoordinates(entity.latitude, entity.longitude);
+      suggestionList.addEventListener('click', () => {
+        setNavigationCoordinates(entity.latitude, entity.longitude);
+      });
+
+      suggestionsContainer.appendChild(suggestionList);
     });
+  }
 
-    suggestionsContainer.appendChild(suggestionList);
-  });
+  searchInput.addEventListener('input', (event) => {
+  const searchText = event.target.value;
+
+  // Render filtered suggestions
+  renderPlaceFilter(searchText);
+
+  // Show the container if it’s not empty
+  if (searchText.trim() !== '') {
+    suggestionsContainer.classList.remove('hidden');
+    suggestionsContainer.classList.add('show');
+  } else {
+    resetFormAndSuggestions(); // Hide container if input is empty
+  }
+});
+
 }
+
 
 // Add event listener for input field
 searchInput.addEventListener("input", (event) => {
