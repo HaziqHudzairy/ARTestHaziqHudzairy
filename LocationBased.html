@@ -626,7 +626,7 @@ function showEnvironmentModel(userLat, userLon, entity) {
     // Create a new entity for the environment model
     const environmentEntity = document.createElement('a-entity');
     environmentEntity.setAttribute('gps-entity-place', `latitude: ${userLat}; longitude: ${userLon}`);
-    environmentEntity.setAttribute('gltf-model', 'f315-scene'); // Use the provided model
+    environmentEntity.setAttribute('gltf-model', '#f315-scene'); // Use the provided model
     environmentEntity.setAttribute('scale', '80 80 80'); // Default scale, can be adjusted as needed
     environmentEntity.setAttribute('look-at', '[gps-camera]'); // Always face the camera
 
