@@ -537,8 +537,8 @@
             scene.appendChild(entityElement);
         }
 
-        // Fetch Data from Firebase
-        window.fetchAndRenderEntities = function() {
+        /// Fetch Data from Firebase
+        function fetchAndRenderEntities() {
             const entitiesRef = ref(database, "entities");
             onValue(entitiesRef, (snapshot) => {
                 const data = snapshot.val();
@@ -550,7 +550,10 @@
             });
         }
 
-        // Call the Function
+        // Make the function globally available by assigning it to the window object
+        window.fetchAndRenderEntities = fetchAndRenderEntities;
+
+        // Call the function after assigning it to window
         fetchAndRenderEntities();
 
 
@@ -625,6 +628,21 @@
             return R * c; // Distance in meters
         }
 
+        // Function to clear the virtual space and its entities
+        function clearVirtualSpace() {
+            const virtualSpace = document.querySelector('#virtual-space');
+            const scene = document.querySelector('a-scene');
+
+            // Hide virtual space
+            virtualSpace.setAttribute('visible', false);
+
+            // Clear all dynamic entities
+            const dynamicEntities = scene.querySelectorAll('.location-entity');
+            dynamicEntities.forEach((entity) => {
+                scene.removeChild(entity);
+            });
+        }
+
         // Example function to show the cancel button with a fade effect
         function showCancelButton() {
             const cancelButton = document.getElementById('cancel-button');
@@ -643,13 +661,29 @@
             }, 500); // Match the duration of the fade-out (in this case, 0.5s)
         }
 
+        // Hide virtual space and clear dynamic entities
+        function clearVirtualSpace() {
+            const virtualSpace = document.querySelector('#virtual-space');
+            const scene = document.querySelector('a-scene');
+            
+            // Hide virtual space
+            virtualSpace.setAttribute('visible', false);
+            
+            // Clear all dynamic entities from the scene
+            const dynamicEntities = scene.querySelectorAll('.location-entity');
+            dynamicEntities.forEach((entity) => {
+                scene.removeChild(entity);
+            });
+        }
+
+
         const cancelButton = document.getElementById('cancel-button');
         cancelButton.addEventListener('click', function() {
-            
+            const virtualSpace = document.querySelector('#virtual-space');
             // Example: Hide the cancel button and show the search form again
             hideCancelButton();
             virtualSpace.setAttribute('visible', false);
-            fetchAndRenderEntities();
+            window.fetchAndRenderEntities
             updateLocation()
 
             const searchForm = document.getElementById('search-form');
