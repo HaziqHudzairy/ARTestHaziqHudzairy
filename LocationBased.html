@@ -209,7 +209,8 @@
         </a-assets>
 
         <a-entity id="virtual-space" visible="false">
-            <a-plane position="0 1 -10" width="4" height="3" material="src: asset/images/F315/image1.jpg;" look-at="[camera]"></a-plane>
+            <a-plane position="0 1 -10" width="4" height="3" material="src: asset/images/F315/image1.jpg;"
+                look-at="[camera]"></a-plane>
 
             <a-box position="0 1 -10" color=blue></a-box>
             <a-box position="0 1 10" color=red></a-box>
@@ -220,7 +221,7 @@
         <!-- <a-entity id="dynamic-model"></a-entity> -->
 
         <a-camera gps-camera look-controls rotation-reader position="0 1.6 0"></a-camera>
-        
+
     </a-scene>
 
     <script>
@@ -661,6 +662,7 @@
             if (centerMenu) {
                 centerMenu.addEventListener('click', function (event) {
                     hideProximityMessage();
+                    initializeAREnvironment()
                     // Your logic here
                     showDebugMessage(`You are viewing ${message} AR environment`)
                 });
@@ -727,6 +729,42 @@
                 }, 3000); // Transition every 3 seconds
             }
         }
+
+
+        let originPosition = null;
+
+        // Function to initialize the AR environment
+        function initializeAREnvironment() {
+            const camera = document.querySelector("#camera");  // Select the camera entity
+            const virtualSpace = document.querySelector("#virtual-space");
+
+            // Get the camera's position in world space
+            const cameraPosition = new THREE.Vector3();
+            camera.object3D.getWorldPosition(cameraPosition);
+
+            if (!originPosition) {
+                originPosition = cameraPosition.clone();  // Set the initial origin as the camera's position
+            }
+
+            // Set the virtual space's position relative to the camera's position
+            virtualSpace.object3D.position.copy(cameraPosition);
+
+            // Optionally, make the virtual space slightly ahead of the camera
+            virtualSpace.object3D.position.z -= 5;  // Adjust this value as needed
+
+            // Show the virtual space
+            virtualSpace.setAttribute('visible', true);
+
+            // Check if the video element exists
+            const video = document.querySelector('video'); // Ensure you are selecting the correct video element
+            if (video) {
+                setTimeout(function () {
+                    // Autoplay the video
+                    video.play();
+                }, 2000); // 2000 milliseconds = 2 seconds
+            }
+        }
+
 
 
         function showEnvironmentModel(userLat, userLon, entity) {
