@@ -46,6 +46,7 @@
                 <h2>KK1</h2>
               </div>
             </div>
+
           </div>
     </div>
     <div id="data-container" class="data-container" style="display:none;">
@@ -203,46 +204,34 @@
     <script>
 
         // Select form, input, suggestions container, and suggestion lists
-const searchForm = document.getElementById("search-form");
-const searchInput = searchForm.querySelector("input");
-const suggestionsContainer = document.getElementById("suggestions-container");
-const suggestionLists = document.querySelectorAll(".suggestions-list");
+        const searchForm = document.getElementById("search-form");
+        const searchInput = searchForm.querySelector("input");
+        const suggestionsContainer = document.getElementById("suggestions-container");
+        const suggestionLists = document.querySelectorAll(".suggestions-list");
 
-// Toggle the expanded class and show suggestions with animation
-searchForm.addEventListener("click", (event) => {
-  event.stopPropagation(); // Prevent triggering the document click listener
-  searchForm.classList.add("expanded");
-  suggestionsContainer.classList.remove("hidden"); // Show suggestions container
+        // Toggle the expanded class and show suggestions
+        searchForm.addEventListener("click", (event) => {
+        event.stopPropagation(); // Prevent triggering the document click listener
+        searchForm.classList.add("expanded");
+        suggestionsContainer.classList.remove("hidden"); // Show suggestions
+        });
 
-  // Add animation to suggestion lists
-  suggestionLists.forEach((list, index) => {
-    setTimeout(() => {
-      list.classList.add("visible");
-    }, index * 100); // Stagger the animation for each list item
-  });
-});
+        // Handle clicking outside of the form or suggestions container
+        document.addEventListener("click", (event) => {
+        const isClickInsideForm = searchForm.contains(event.target);
+        const isClickInsideSuggestions = suggestionsContainer.contains(event.target);
 
-// Handle clicking outside of the form or suggestions container
-document.addEventListener("click", (event) => {
-  const isClickInsideForm = searchForm.contains(event.target);
-  const isClickInsideSuggestions = suggestionsContainer.contains(event.target);
+        if (!isClickInsideForm && !isClickInsideSuggestions) {
+            resetFormAndSuggestions();
+        }
+        });
 
-  if (!isClickInsideForm && !isClickInsideSuggestions) {
-    resetFormAndSuggestions();
-  }
-});
-
-// Function to reset form and hide suggestions
-function resetFormAndSuggestions() {
-  searchForm.classList.remove("expanded"); // Collapse the form
-  suggestionsContainer.classList.add("hidden"); // Hide the suggestions container
-  searchInput.value = ""; // Optionally clear the input field
-
-  // Remove animation class from suggestion lists
-  suggestionLists.forEach((list) => {
-    list.classList.remove("visible");
-  });
-}
+        // Function to reset form and hide suggestions
+        function resetFormAndSuggestions() {
+        searchForm.classList.remove("expanded"); // Collapse the form
+        suggestionsContainer.classList.add("hidden"); // Hide the suggestions container
+        searchInput.value = ""; // Optionally clear the input field
+        }
 
 
 

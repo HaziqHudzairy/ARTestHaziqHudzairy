@@ -317,13 +317,12 @@ form:hover .fa {
   color: white;
 }
 
-/* Base styles for the suggestions container */
 .suggestions-container {
   overflow-y: auto;
   display: block;
   position: fixed;
   top: 20%;
-  left: 15px;
+  left:15px;
   right: 15px;
   background: #ffffff86; /* Semi-transparent white background */
   width: auto;
@@ -336,42 +335,21 @@ form:hover .fa {
   align-items: center;
   gap: 15px; /* Space between list items */
   z-index: 9999;
-  opacity: 1; /* Default visibility */
-  transform: scaleY(1); /* Default scale (expanded) */
-  transform-origin: top; /* Animate from the top */
-  transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth animation */
 }
 
-/* Hidden state for the suggestions container (collapsed) */
-.suggestions-container.hidden {
-  opacity: 0;
-  transform: scaleY(0); /* Collapse vertically */
-}
-
-/* Base styles for suggestion list items */
 .suggestions-list {
   background: #f9f9f9; /* Light gray for list background */
   width: 90%; /* Match container width */
   padding: 15px 10px; /* Add padding for spacing */
   border-radius: 8px; /* Slightly rounded corners */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for each item */
-  transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth animation for appearance */
-  opacity: 0; /* Hidden by default */
-  transform: translateX(-20px); /* Slide in from the left */
+  transition: background-color 0.3s, transform 0.2s; /* Add hover effects */
 }
 
-/* Visible state for suggestion list items */
-.suggestions-list.visible {
-  opacity: 1; /* Fully visible */
-  transform: translateX(0); /* Move to the original position */
-}
-
-/* Hover effect for suggestion list items */
 .suggestions-list:hover {
   background-color: #e6f7ff; /* Highlight color on hover */
   transform: translateY(-2px); /* Slight pop-up effect on hover */
 }
-
 
 .suggestions-list-name h2 {
   font-size: 18px; /* Adjust font size */
@@ -386,9 +364,10 @@ form:hover .fa {
   align-items: center;
 }
 
-/* .hidden {
+.hidden {
   display: none;
-} */
+}
+
 
 .a-scene-container {
   position: fixed;
