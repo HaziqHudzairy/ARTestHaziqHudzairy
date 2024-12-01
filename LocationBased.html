@@ -594,25 +594,17 @@
             proximityDiv.style.opacity = "1"; // Fade-in effect
 
             // Update h3 content with the entity name
-            centerCircleH3.textContent = entity.name;
+            centerCircleH3.textContent = message;
             centerMenu.style.display = 'block';
 
-            //Attach a one-time click listener to the center menu
-            centerMenu.onclick = () => {
+            if (centerMenu) {
+                centerMenu.addEventListener('click', function(event) {
+                // Your logic here
                 showDebugMessage(`You are viewing ${message} AR environment`)
-                // Play reverse boink animation
-                // centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
-
-                // // Display the environment model at user's location
-                // //showEnvironmentModel(userLat, userLon, entity);
-
-                // // Hide the menu after the reverse animation ends
-                // setTimeout(() => {
-                //     centerMenu.style.display = 'none';
-                // }, 500); // Matches the animation duration (0.5s)
-
-                showImagePlane();
-            };
+            });
+            } else {
+                console.error('Element .center-menu not found!');
+            }
         }
 
         // Function to hide the proximity message
