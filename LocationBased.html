@@ -248,23 +248,6 @@
 
     <script>
 
-        // document.addEventListener("DOMContentLoaded", () => {
-        //     const virtualSpace = document.querySelector("#virtual-space");
-
-        //     virtualSpace.addEventListener("componentchanged", (event) => {
-        //         if (event.detail.name === "visible") {
-        //             const isVisible = virtualSpace.getAttribute("visible");
-        //             toggleAREntitiesVisibility(!isVisible); // Hide AR entities when virtual-space is visible
-        //         }
-        //     });
-        // });
-
-        function toggleAREntitiesVisibility(show) {
-            const entities = document.querySelectorAll(".ar-entity");
-            entities.forEach(entity => {
-                entity.setAttribute("visible", false); // true = show, false = hide
-            });
-        }
 
         // Select form, input, suggestions container, and suggestion lists
         const searchForm = document.getElementById("search-form");
@@ -538,7 +521,7 @@
             entityElement.setAttribute("scale", entity.scale || "1 1 1"); // Default scale if not provided
             entityElement.setAttribute("look-at", "[gps-camera]");
             entityElement.setAttribute("animation-mixer", "clip: *"); // Optional for animations
-            entityElement.classList.add("ar-entity");
+
             // Optional Debugging
             console.log(`Added entity: ${id}, Parent Category: ${parentCategory}`);
 
@@ -634,6 +617,18 @@
             return R * c; // Distance in meters
         }
 
+        // Function to clear all entities from the scene (including dynamic ones)
+        function clearSceneEntities() {
+            // Remove all child entities from the scene
+            const allEntities = scene.querySelectorAll('*');
+            allEntities.forEach((entity) => {
+                if (entity !== virtualSpace) {
+                    // Remove the entity from the scene, excluding the virtual space
+                    entity.parentNode.removeChild(entity);
+                }
+            });
+        }
+
         // Function to show the proximity message
         function showProximityMessage(message) {
             const virtualSpace = document.querySelector('#virtual-space');
@@ -653,8 +648,8 @@
                     hideProximityMessage();
                     virtualSpace.setAttribute('visible', true);
                     virtualSpace.setAttribute('follow-camera', '');
+                    clearSceneEntities();
                     showDebugMessage(`You are viewing ${message} AR environment`)
-                    toggleAREntitiesVisibility(!isVisible);
                 });
             } else {
                 console.error('Element .center-menu not found!');
