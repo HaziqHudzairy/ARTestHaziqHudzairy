@@ -393,13 +393,43 @@ form:hover .fa {
   bottom: -50px;
   left: 50%;
   transform: translateX(-50%);
-  width: 40vw;
+  width: 55vw;
   height: auto;
 }
 
 .center-menu img {
   width: 100%;
   height: auto;
+  position: relative;
+  animation: boink 0.5s ease-in-out forwards;
+  z-index: 0;
+}
+
+.center-menu::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 80%;
+  height: 80%;
+  background-color: rgba(0, 0, 0, 0.6); /* Black color with 60% opacity */
+  border-radius: 50%; /* Makes it a circle */
+  z-index: 1; /* Places the circle above the image */
+  animation: boink 0.5s ease-in-out 0.5s forwards; /* Starts after 0.5s delay */
+}
+
+/* Keyframes for scaling effect */
+@keyframes boink {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1); /* Slightly larger for bounce effect */
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 
