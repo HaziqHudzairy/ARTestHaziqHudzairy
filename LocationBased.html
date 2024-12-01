@@ -206,13 +206,12 @@
 
     <script>
 
-        // Add a click event listener to the center menu
         document.addEventListener("DOMContentLoaded", () => {
         const centerMenu = document.querySelector('.center-menu');
 
         centerMenu.addEventListener('click', () => {
             // Show the popup notification
-            alert("clicked"); // You can replace this with a custom popup later
+            alert("clicked"); // Replace this with a custom popup if needed
 
             // Play reverse boink animation
             centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
@@ -220,9 +219,16 @@
             // Hide the menu after the reverse animation ends
             setTimeout(() => {
             centerMenu.style.display = 'none';
+
+            // Make the menu reappear after the alert is dismissed
+            setTimeout(() => {
+                centerMenu.style.display = 'flex'; // Reset the display to make it visible
+                centerMenu.style.animation = 'boink 0.5s ease-in-out forwards'; // Play the original animation
+            }, 100); // A slight delay to ensure smooth transition
             }, 500); // Matches the animation duration (0.5s)
         });
         });
+
 
 
         // Select form, input, suggestions container, and suggestion lists
