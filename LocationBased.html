@@ -607,12 +607,15 @@
 
             // Hide the center menu if the user is not near any entity
             if (!isNearAnyEntity) {
+                centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
                 centerMenu.style.display = 'none'; // Hide the menu
             }
         }
 
         // Function to display AR environment
         function showARenvironment(entityName) {
+
+            showDebugMessage('${entityName}');
             const dynamicModel = document.querySelector('#dynamic-model');
 
             // Enable and load the specified GLB model
