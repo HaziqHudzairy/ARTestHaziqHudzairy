@@ -593,9 +593,6 @@ function checkProximity(userLat, userLon, entities, radius) {
             // Update h3 content with the entity name
             centerCircleH3.textContent = entity.name;
 
-            // Get the Environment Model for the entity
-            environmentModel = entity['Environment Model'];
-
             // Make the center menu visible
             centerMenu.style.display = 'block';
 
@@ -605,7 +602,7 @@ function checkProximity(userLat, userLon, entities, radius) {
                 centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
 
                 // Display the environment model at user's location
-                showEnvironmentModel(userLat, userLon, environmentModel);
+                showEnvironmentModel(userLat, userLon, entity);
 
                 // Hide the menu after the reverse animation ends
                 setTimeout(() => {
@@ -629,7 +626,7 @@ function showEnvironmentModel(userLat, userLon, entity) {
     // Create a new entity for the environment model
     const environmentEntity = document.createElement('a-entity');
     environmentEntity.setAttribute('gps-entity-place', `latitude: ${userLat}; longitude: ${userLon}`);
-    environmentEntity.setAttribute('gltf-model', entity.model); // Use the provided model
+    environmentEntity.setAttribute('gltf-model', entity['Environment Model']); // Use the provided model
     environmentEntity.setAttribute('scale', '80 80 80'); // Default scale, can be adjusted as needed
     environmentEntity.setAttribute('look-at', '[gps-camera]'); // Always face the camera
 
@@ -640,7 +637,7 @@ function showEnvironmentModel(userLat, userLon, entity) {
     scene.appendChild(environmentEntity);
 
     // Log the correct model name for debugging
-    showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${entity.model}`);
+    showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${entity['Environment Model']}`);
 }
 
 
