@@ -51,7 +51,7 @@
         <img src="asset/middle_button/we love the earth.png" alt="earth_img">
         <div class="center-circle">
             <h6>You are near</h6>
-            <h3>Kolej Kediaman Kinabalu</h3>
+            <h3></h3>
             <p>click here to view environment</p>
         </div>
     </div>
@@ -572,30 +572,28 @@
         // Check if user is near any entity
         function checkProximity(userLat, userLon, entities, radius) {
             let isNearAnyEntity = false;
+
             entities.forEach(entity => {
                 const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
                 if (distance <= radius) {
                     isNearAnyEntity = true;
-                    //showProximityMessage(`You are near ${entity.name}`);
 
-                    // Show the center circle and update the h3 content
-                    const centerCircle = document.querySelector('.center-circle');
-                    const centerCircleH3 = centerCircle.querySelector('h3');
+                    // Show the center menu
+                    const centerMenu = document.querySelector('.center-menu');
+                    const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
 
                     // Update h3 content with the entity name
                     centerCircleH3.textContent = entity.name;
 
-                    // Add animation class to show the circle
-                    centerCircle.style.transform = 'translate(-50%, -50%) scale(1)';
-                    centerCircle.style.animation = 'boink 0.5s ease-in-out forwards';
+                    // Make the center menu visible
+                    centerMenu.style.display = 'flex'; // Use flex since it contains a flexbox layout
                 }
             });
 
-            // Hide the message if the user is not near any entity
+            // Hide the center menu if the user is not near any entity
             if (!isNearAnyEntity) {
-                hideProximityMessage();
-                const centerCircle = document.querySelector('.center-circle');
-                centerCircle.style.transform = 'translate(-50%, -50%) scale(0)';
+                const centerMenu = document.querySelector('.center-menu');
+                centerMenu.style.display = 'none'; // Hide the menu
             }
         }
 
