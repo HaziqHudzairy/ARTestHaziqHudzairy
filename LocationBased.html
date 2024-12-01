@@ -209,8 +209,7 @@
         </a-assets>
 
         <a-entity id="virtual-space" visible="false">
-            <a-plane position="0 1 -10" width="4" height="3" material="src: asset/images/F315/image1.jpg;"
-                look-at="[camera]"></a-plane>
+            <a-plane position="0 1 -10" width="4" height="3" material="src: asset/images/F315/image1.jpg;"></a-plane>
 
             <a-box position="0 1 -10" color=blue></a-box>
             <a-box position="0 1 10" color=red></a-box>
@@ -222,60 +221,32 @@
 
         <a-camera gps-camera look-controls rotation-reader position="0 1.6 0"></a-camera>
 
+        <script>
+            AFRAME.registerComponent('follow-camera', {
+                init: function () {
+                    this.camera = document.querySelector('#camera');
+                    this.virtualSpace = document.querySelector('#virtual-space');
+                },
+
+                tick: function () {
+                    if (!this.camera || !this.virtualSpace) return;
+
+                    // Get the camera's position
+                    const cameraPosition = new THREE.Vector3();
+                    this.camera.object3D.getWorldPosition(cameraPosition);
+
+                    // Update the virtual space's position based on the camera's position
+                    this.virtualSpace.object3D.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+
+                    // Optionally, make the virtual space a bit ahead of the camera
+                    this.virtualSpace.object3D.position.z -= 5;  // Adjust this value as needed
+                }
+            });
+        </script>
+
     </a-scene>
 
     <script>
-
-        AFRAME.registerComponent('lock-plane-to-camera', {
-            schema: {
-                cameraId: { type: 'string', default: 'camera' }, // ID of the camera
-                offset: { type: 'vec3', default: { x: 0, y: 0, z: -10 } }, // Fixed offset
-                thresholdAngle: { type: 'number', default: Math.PI / 2 } // Visibility threshold (90°)
-            },
-            init: function () {
-                this.camera = document.querySelector(`#${this.data.cameraId}`);
-                if (!this.camera) {
-                    console.error(`Camera with id '${this.data.cameraId}' not found.`);
-                    return;
-                }
-                this.cameraObject = this.camera.object3D;
-                this.offsetVector = new THREE.Vector3(this.data.offset.x, this.data.offset.y, this.data.offset.z);
-            },
-            tick: function () {
-                if (!this.cameraObject) return;
-
-                const plane = this.el.object3D;
-
-                // Update plane position relative to the camera
-                const cameraWorldPosition = new THREE.Vector3();
-                this.cameraObject.getWorldPosition(cameraWorldPosition);
-
-                // Convert the offset to world space relative to the camera
-                const worldOffset = this.offsetVector.clone().applyMatrix4(this.cameraObject.matrixWorld);
-
-                plane.position.copy(worldOffset);
-
-                // Get the camera's direction and plane's direction
-                const cameraDirection = new THREE.Vector3();
-                this.cameraObject.getWorldDirection(cameraDirection);
-
-                const planeDirection = plane.position.clone().sub(cameraWorldPosition).normalize();
-
-                // Calculate angle and update visibility
-                const angle = cameraDirection.angleTo(planeDirection);
-                const isVisible = angle < this.data.thresholdAngle;
-
-                this.el.setAttribute('visible', isVisible);
-
-                // Ensure the plane faces the camera when visible
-                if (isVisible) {
-                    plane.lookAt(cameraWorldPosition);
-                }
-            }
-        });
-
-
-
 
 
         // Select form, input, suggestions container, and suggestion lists
@@ -648,6 +619,7 @@
 
         // Function to show the proximity message
         function showProximityMessage(message) {
+            const virtualSpace = document.querySelector('#virtual-space');
             const centerMenu = document.querySelector('.center-menu');
             const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
             const proximityDiv = document.getElementById("proximity-message");
@@ -662,8 +634,8 @@
             if (centerMenu) {
                 centerMenu.addEventListener('click', function (event) {
                     hideProximityMessage();
-                    initializeAREnvironment()
-                    // Your logic here
+                    virtualSpace.setAttribute('visible', true);
+                    virtualSpace.setAttribute('follow-camera', '');
                     showDebugMessage(`You are viewing ${message} AR environment`)
                 });
             } else {
@@ -727,41 +699,6 @@
                     currentIndex = (currentIndex + 1) % images.length;
                     plane.setAttribute("src", images[currentIndex]);
                 }, 3000); // Transition every 3 seconds
-            }
-        }
-
-
-        let originPosition = null;
-
-        // Function to initialize the AR environment
-        function initializeAREnvironment() {
-            const camera = document.querySelector("#camera");  // Select the camera entity
-            const virtualSpace = document.querySelector("#virtual-space");
-
-            // Get the camera's position in world space
-            const cameraPosition = new THREE.Vector3();
-            camera.object3D.getWorldPosition(cameraPosition);
-
-            if (!originPosition) {
-                originPosition = cameraPosition.clone();  // Set the initial origin as the camera's position
-            }
-
-            // Set the virtual space's position relative to the camera's position
-            virtualSpace.object3D.position.copy(cameraPosition);
-
-            // Optionally, make the virtual space slightly ahead of the camera
-            virtualSpace.object3D.position.z -= 5;  // Adjust this value as needed
-
-            // Show the virtual space
-            virtualSpace.setAttribute('visible', true);
-
-            // Check if the video element exists
-            const video = document.querySelector('video'); // Ensure you are selecting the correct video element
-            if (video) {
-                setTimeout(function () {
-                    // Autoplay the video
-                    video.play();
-                }, 2000); // 2000 milliseconds = 2 seconds
             }
         }
 
