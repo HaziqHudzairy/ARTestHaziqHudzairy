@@ -205,7 +205,7 @@
 
         </a-assets>
 
-        <a-plane id="image-plane" position="0 1.5 -3" rotation="0 0 0" width="4" height="3"></a-plane>
+        <a-plane id="image-plane" position="0 1.5 -3" rotation="0 0 0" width="4" height="3" visible="false"></a-plane>
         <a-box position="0 1 -5" color="#4CC3D9" onclick="nextImage()"></a-box>
 
         <!-- <a-entity id="dynamic-model"></a-entity> -->
@@ -516,35 +516,34 @@
         // Global array to store event image links
         window.eventImageLinks = [];
 
-        // Function to fetch event image links from Firebase
-        function fetchEventImageLinks() {
-            const entitiesRef = ref(database, "entities"); // Reference to the entities node
-            onValue(entitiesRef, (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    // Reset the image links array
-                    window.eventImageLinks = [];
+        // Function to fetch event image links based on a specific entity
+        window.fetchEventImageLinks = function(entityName) {
+        const entitiesRef = ref(database, "entities"); // Reference to the entities node
+        onValue(entitiesRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+            // Reset the image links array
+            window.eventImageLinks = [];
 
-                    // Iterate through the entities data to find image links
-                    Object.keys(data).forEach((category) => {
-                        Object.values(data[category]).forEach((entity) => {
-                            if (entity['Event Image Link']) {
-                                // Push all image links into the array
-                                window.eventImageLinks.push(...entity['Event Image Link']);
-                            }
-                        });
-                    });
-
-                    // Log the event image links to check the fetched data
-                    console.log(window.eventImageLinks);  // Corrected here
-                } else {
-                    console.error("No data found in the database.");
+            // Iterate through the entities data to find the specific entity
+            Object.keys(data).forEach((category) => {
+                Object.values(data[category]).forEach((entity) => {
+                if (entity.name === entityName && entity['Event Image Link']) {
+                    // Push all image links for the specified entity into the array
+                    window.eventImageLinks.push(...entity['Event Image Link']);
                 }
+                });
             });
+
+            // Log the event image links for the specified entity
+            console.log(window.eventImageLinks);  // Corrected here
+            } else {
+            console.error("No data found in the database.");
+            }
+        });
         }
 
-        // Fetch event image links
-        fetchEventImageLinks();
+
 
 
 
@@ -634,6 +633,10 @@
                         setTimeout(() => {
                             centerMenu.style.display = 'none';
                         }, 500); // Matches the animation duration (0.5s)
+
+                        // Example: Fetch image links for a specific entity (e.g., "entityUser")
+                        fetchEventImageLinks(entity.name);
+                        showImagePlane();
                     };
                 }
             });
@@ -654,6 +657,16 @@
             const plane = document.getElementById("image-plane");
             plane.setAttribute("src", window.eventImageLinks[currentIndex]); // Set the new image directly
         }
+
+        // Function to show the image plane when the center menu is clicked
+      function showImagePlane() {
+        const plane = document.getElementById("image-plane");
+        plane.setAttribute("visible", "true");  // Make the plane visible when the menu is clicked
+        plane.setAttribute("gps-entity-place", "latitude: 0; longitude: 0; altitude: 1"); // Lock it 1 meter away from the user
+
+        // Example: Fetch image links for a specific entity (e.g., "entityUser")
+        fetchEventImageLinks("entityUser");
+      }
 
         function showEnvironmentModel(userLat, userLon, entity) {
             // Find the AR scene
