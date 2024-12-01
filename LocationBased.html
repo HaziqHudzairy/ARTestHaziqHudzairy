@@ -208,35 +208,33 @@
         const searchInput = searchForm.querySelector("input");
         const suggestionsContainer = document.getElementById("suggestions-container");
 
-        // Toggle the expanded class and show suggestions with animation
+        // Ensure click handling for both search form and document works without conflicts
         searchForm.addEventListener("click", (event) => {
-            renderPlaceNames()
-            event.stopPropagation(); // Prevent triggering the document click listener
+            renderPlaceNames();
             searchForm.classList.add("expanded");
             suggestionsContainer.classList.remove("hidden");
-            suggestionsContainer.classList.add("show"); // Trigger dropdown animation
-
-            // Animate each suggestion list item
-            const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
-            // Animate each suggestion list item
-suggestionLists.forEach((list, index) => {
-    setTimeout(() => {
-        list.classList.add("animated"); // Add animation class
-        list.style.pointerEvents = "auto"; // Enable interaction
-    }, index * 100); // Stagger animations slightly
-});
-
+            suggestionsContainer.classList.add("show");
+            animateSuggestions();
+            event.stopPropagation(); // Stop bubbling but don't block other events
         });
 
-        // Handle clicking outside of the form or suggestions container
         document.addEventListener("click", (event) => {
-    const isClickInsideForm = searchForm.contains(event.target);
-    const isClickInsideSuggestions = suggestionsContainer.contains(event.target);
+            if (!searchForm.contains(event.target) && !suggestionsContainer.contains(event.target)) {
+                resetFormAndSuggestions();
+            }
+        });
 
-    if (!isClickInsideForm && !isClickInsideSuggestions) {
-        resetFormAndSuggestions();
-    }
-});
+        function animateSuggestions() {
+            const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
+            suggestionLists.forEach((list, index) => {
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        list.classList.add("animated");
+                    }, index * 100);
+                });
+            });
+        }
+
 
         // Function to reset form and hide suggestions
         function resetFormAndSuggestions() {
@@ -244,12 +242,9 @@ suggestionLists.forEach((list, index) => {
     suggestionsContainer.classList.remove('show');
     setTimeout(() => {
         suggestionsContainer.classList.add('hidden');
-        suggestionsContainer.querySelectorAll('.suggestions-list').forEach(list => {
-            list.classList.remove('animated'); // Reset animations
-            list.style.pointerEvents = "none"; // Disable interaction until next show
-        });
-    }, 300); // Match animation duration
+    }, 300); // Animation duration
 }
+
         // Function to render place names dynamically
         function renderPlaceNames() {
             const suggestionsContainer = document.querySelector(".suggestions-container");
@@ -328,15 +323,17 @@ suggestionLists.forEach((list, index) => {
 
         searchInput.addEventListener('input', (event) => {
             const searchText = event.target.value;
-            // Render filtered suggestions
-            renderPlaceFilter(searchText);
+            setTimeout(() => { // Small delay for better UX
+                renderPlaceFilter(searchText);
+            }, 0);
         });
 
-        // Add event listener to the input field for filtering
-        document.querySelector('input[type="search"]').addEventListener('input', (event) => {
-            const searchText = event.target.value; // Get the input text
-            renderPlaceFilter(searchText); // Call renderPlaceNames with the filter text
-        });
+
+        // // Add event listener to the input field for filtering
+        // document.querySelector('input[type="search"]').addEventListener('input', (event) => {
+        //     const searchText = event.target.value; // Get the input text
+        //     renderPlaceFilter(searchText); // Call renderPlaceNames with the filter text
+        // });
 
         //Show fata container for user position
         document.getElementById("data-container").style.display = "block";
