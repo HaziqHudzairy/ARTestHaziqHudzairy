@@ -599,7 +599,7 @@
 
             if (centerMenu) {
                 centerMenu.addEventListener('click', function(event) {
-                    hideDebugMessage();
+                    hideProximityMessage();
                     // Your logic here
                     showDebugMessage(`You are viewing ${message} AR environment`)
             });
@@ -619,8 +619,6 @@
                 centerMenu.style.display = 'none';
             }, 500); // Match this timeout with the CSS transition duration
 
-            // 
-            //  // Hide the menu
         }
 
 
