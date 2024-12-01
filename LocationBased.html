@@ -711,7 +711,7 @@
                     updateLocationDisplay(latitude, longitude);
 
                     // Check if the user is near any entity (within a 25-meter radius)
-                    checkProximity(latitude, longitude, window.dynamicEntities, 30);
+                    checkProximity(latitude, longitude, window.dynamicEntities, 10);
                 },
                 function (error) {
                     // Handle different types of errors and show system alert popup
