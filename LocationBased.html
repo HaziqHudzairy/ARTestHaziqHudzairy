@@ -220,7 +220,6 @@
 
         document.addEventListener("click", (event) => {
             if (!searchForm.contains(event.target) && !suggestionsContainer.contains(event.target)) {
-                finishAllAnimations()
                 resetFormAndSuggestions();
             }
         });
@@ -228,13 +227,22 @@
         function animateSuggestions() {
             const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
             suggestionLists.forEach((list, index) => {
-                requestAnimationFrame(() => {
-                    setTimeout(() => {
-                        list.classList.add("animated");
-                    }, index * 100);
-                });
+                if (index < 10) {
+                    // Animate only the first 10 items
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            list.classList.add("animated");
+                        }, index * 100); // Stagger animations for first 10 items
+                    });
+                } else {
+                    // Show the rest immediately without animation
+                    list.classList.add("animated");
+                    list.style.opacity = '1';
+                    list.style.transform = 'translateX(0)'; // Reset any transform
+                }
             });
         }
+
 
 
         // Function to reset form and hide suggestions
@@ -247,31 +255,7 @@
 
 
         }
-
-        function finishAllAnimations() {
-            const suggestionLists = document.querySelectorAll('.suggestions-list');
-
-suggestionLists.forEach((list) => {
-    const computedStyle = window.getComputedStyle(list);
-
-    // Check if the element has an ongoing animation
-    if (computedStyle.animationName !== 'none') {
-        list.style.animationDuration = '0s'; // Instantly finish animation
-        list.style.animationDelay = '0s';   // Remove any delay
-    }
-
-    // Check if the element has a transition
-    if (computedStyle.transitionProperty !== 'all 0s ease 0s') {
-        list.style.transitionDuration = '0s'; // Instantly finish transition
-    }
-
-    // Ensure the list is fully visible
-    list.classList.add('animated');
-    list.style.opacity = '1';
-    list.style.transform = 'translateX(0)'; // Reset to original position
-});
-}
-
+        
 
         // Function to render place names dynamically
         function renderPlaceNames() {
