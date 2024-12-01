@@ -390,7 +390,7 @@ form:hover .fa {
 }
 
 .center-menu {
-  display: block;
+  display: none;
   position: fixed;
   bottom: 70px;
   left: 50%;
