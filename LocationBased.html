@@ -249,31 +249,28 @@
         }
 
         function finishAllAnimations() {
-            const animatedElements = document.querySelectorAll('*');
+            const suggestionLists = document.querySelectorAll('.suggestions-list');
 
-            animatedElements.forEach((el) => {
-                // Get computed styles to determine animation and transition properties
-                const computedStyle = window.getComputedStyle(el);
+suggestionLists.forEach((list) => {
+    const computedStyle = window.getComputedStyle(list);
 
-                // Check if the element has an animation
-                if (computedStyle.animationName !== 'none') {
-                    // Force the animation to its end state
-                    el.style.animationDuration = '0s';
-                    el.style.animationDelay = '0s';
-                }
+    // Check if the element has an ongoing animation
+    if (computedStyle.animationName !== 'none') {
+        list.style.animationDuration = '0s'; // Instantly finish animation
+        list.style.animationDelay = '0s';   // Remove any delay
+    }
 
-                // Check if the element has a transition
-                if (computedStyle.transitionProperty !== 'all 0s ease 0s') {
-                    // Force the transition to its end state
-                    const transitionProperties = computedStyle.transitionProperty.split(', ');
-                    transitionProperties.forEach((property) => {
-                        const value = computedStyle.getPropertyValue(property);
-                        el.style[property] = value; // Apply final state of the transition
-                    });
-                    el.style.transitionDuration = '0s';
-                }
-            });
-        }
+    // Check if the element has a transition
+    if (computedStyle.transitionProperty !== 'all 0s ease 0s') {
+        list.style.transitionDuration = '0s'; // Instantly finish transition
+    }
+
+    // Ensure the list is fully visible
+    list.classList.add('animated');
+    list.style.opacity = '1';
+    list.style.transform = 'translateX(0)'; // Reset to original position
+});
+}
 
 
         // Function to render place names dynamically
@@ -351,9 +348,7 @@
             }
         }
 
-        searchInput.addEventListener('click', (event) => {
-            finishAllAnimations()
-        });
+
         searchInput.addEventListener('input', (event) => {
             const searchText = event.target.value;
             setTimeout(() => { // Small delay for better UX
