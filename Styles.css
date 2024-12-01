@@ -336,7 +336,7 @@ form:hover .fa {
   align-items: center;
   gap: 15px; /* Space between list items */
   z-index: 9999;
-
+  pointer-events: none;
   transform: scaleY(0);
   transform-origin: top;
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -344,12 +344,14 @@ form:hover .fa {
 }
 
 .suggestions-container.show {
+  pointer-events: auto;
   transform: scaleY(1);
   opacity: 1; /* Fully visible */
 }
 
 /* Suggestions list animation */
 .suggestions-list {
+  pointer-events: none;
   background: #f9f9f9; /* Light gray for list background */
   width: 90%; /* Match container width */
   padding: 15px 10px; /* Add padding for spacing */
@@ -361,6 +363,7 @@ form:hover .fa {
 }
 
 .suggestions-list.animated {
+  pointer-events: auto;
   opacity: 1;
   transform: translateX(0); /* Move to original position */
 }
