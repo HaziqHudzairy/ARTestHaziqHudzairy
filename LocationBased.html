@@ -748,6 +748,7 @@
             if (virtualSpace && virtualSpace.getAttribute('visible') === 'true') {
                 // If virtual space is visible, stop location updates
                 if (watchId !== null) {
+                    showDebugMessage("location is paused")
                     navigator.geolocation.clearWatch(watchId);
                     watchId = null; // Clear the watchId
                     console.log("Location updates paused.");
@@ -755,6 +756,8 @@
             } else {
                 // If virtual space is not visible, start location updates
                 if (watchId === null) {
+
+                    showDebugMessage("location is not paused")
                     watchId = navigator.geolocation.watchPosition(
                         function (position) {
                             const latitude = position.coords.latitude;
