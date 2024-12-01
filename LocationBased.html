@@ -235,7 +235,7 @@
                 list.classList.add("animated");
                 list.style.opacity = '1';
                 list.style.transform = 'translateX(0)'; // Reset any transform
-            }, 3000);
+            }, 2000);
         }
     });
 }
@@ -245,6 +245,8 @@
         function resetFormAndSuggestions() {
             searchForm.classList.remove('expanded');
             suggestionsContainer.classList.remove('show');
+
+            suggestionsContainer.innerHTML = ''; 
             setTimeout(() => {
                 suggestionsContainer.classList.add('hidden');
             }, 300); // Animation duration
