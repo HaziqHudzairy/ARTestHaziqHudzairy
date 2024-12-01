@@ -215,11 +215,7 @@
             suggestionsContainer.classList.remove("hidden"); // Show suggestions container
 
             // Add animation to suggestion lists
-            suggestionLists.forEach((list, index) => {
-                setTimeout(() => {
-                    list.classList.add("visible");
-                }, index * 100); // Stagger the animation for each list item
-            });
+            window.renderPlaceNames();
         });
 
         // Handle clicking outside of the form or suggestions container
@@ -405,7 +401,7 @@
 
 
 
-function renderPlaceNames() {
+window.renderPlaceNames = function () {
     const suggestionsContainer = document.querySelector('.suggestions-container');
     const searchForm = document.getElementById("search-form");
     const searchInput = searchForm.querySelector("input");
