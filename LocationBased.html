@@ -627,15 +627,13 @@
                         centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
 
                         // Display the environment model at user's location
-                        showEnvironmentModel(userLat, userLon, entity);
+                        //showEnvironmentModel(userLat, userLon, entity);
 
                         // Hide the menu after the reverse animation ends
                         setTimeout(() => {
                             centerMenu.style.display = 'none';
                         }, 500); // Matches the animation duration (0.5s)
 
-                        // Example: Fetch image links for a specific entity (e.g., "entityUser")
-                        fetchEventImageLinks(entity.name);
                         showImagePlane();
                     };
                 }
@@ -648,51 +646,30 @@
             }
         }
 
-         // Dynamically update the position of the plane as the camera moves
-         document.querySelector('a-scene').addEventListener('loaded', () => {
-            const camera = document.getElementById('camera');
-            const plane = document.getElementById('image-plane');
 
-            // Continuously update the plane position
-            camera.addEventListener('componentinitialized', () => {
-                setInterval(() => {
-                    const cameraPosition = camera.getAttribute('position');
-                    plane.setAttribute('position', {
-                        x: cameraPosition.x,
-                        y: cameraPosition.y + 1.5,  // 1.5 meters above the camera
-                        z: cameraPosition.z - 1    // 1 meter in front of the camera
-                    });
-                }, 100);
-            });
-        });
-
+        // Function to show the plane and change the images
         let currentIndex = 0;
-        function nextImage() {
-            if (window.eventImageLinks.length === 0) return;
-            currentIndex = (currentIndex + 1) % window.eventImageLinks.length;
+        function showImagePlane() {
             const plane = document.getElementById("image-plane");
-            plane.setAttribute("src", window.eventImageLinks[currentIndex]);
-        }
-
-      function showImagePlane() {
-            // Get the camera element
             const camera = document.getElementById("camera");
-            const plane = document.getElementById("image-plane");
+            const currentEntity = window.dynamicEntities[0]; // For example, take the first entity
 
-            // Set the plane to be 1 meter in front of the camera
-            const cameraPosition = camera.getAttribute("position");
+            if (currentEntity && currentEntity.eventImageLinks.length > 0) {
+                const images = currentEntity.eventImageLinks;
+                plane.setAttribute("visible", "true");
 
-            // Set the plane's position 1 meter ahead of the camera along the Z-axis
-            plane.setAttribute("position", {
-                x: cameraPosition.x,
-                y: cameraPosition.y + 1.5,  // Keep it 1.5 meters above the camera
-                z: cameraPosition.z - 1    // 1 meter in front of the camera
-            });
+                // Set the first image
+                plane.setAttribute("src", images[currentIndex]);
 
-            // Make the plane visible
-            plane.setAttribute("visible", "true");
+                // Loop through images
+                setInterval(() => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    plane.setAttribute("src", images[currentIndex]);
+                }, 3000); // Transition every 3 seconds
+            }
         }
 
+        
         function showEnvironmentModel(userLat, userLon, entity) {
             // Find the AR scene
             const scene = document.querySelector('a-scene');
