@@ -39,14 +39,14 @@
         <form id="search-form">
             <input type="search" tabindex="-1" placeholder="Search here ..." autocomplete="off">
             <i class="fa fa-search"></i>
-        </form>
-        <div id="suggestions-container" class="suggestions-container hidden">
+          </form>
+          <div id="suggestions-container" class="suggestions-container hidden">
             <div class="suggestions-list">
-                <div class="suggestions-list-name">
-                    <h2>KK1</h2>
-                </div>
+              <div class="suggestions-list-name">
+                <h2>KK1</h2>
+              </div>
             </div>
-        </div>
+          </div>
     </div>
     <div id="data-container" class="data-container" style="display:none;">
         <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
@@ -203,42 +203,46 @@
     <script>
 
         // Select form, input, suggestions container, and suggestion lists
-        const searchForm = document.getElementById("search-form");
-        const searchInput = searchForm.querySelector("input");
-        const suggestionsContainer = document.getElementById("suggestions-container");
-        const suggestionLists = document.querySelectorAll(".suggestions-list");
+const searchForm = document.getElementById("search-form");
+const searchInput = searchForm.querySelector("input");
+const suggestionsContainer = document.getElementById("suggestions-container");
+const suggestionLists = document.querySelectorAll(".suggestions-list");
 
-        // Toggle the expanded class and show suggestions with animation
-        searchForm.addEventListener("click", (event) => {
-            event.stopPropagation(); // Prevent triggering the document click listener
-            searchForm.classList.add("expanded");
-            suggestionsContainer.classList.remove("hidden"); // Show suggestions container
+// Toggle the expanded class and show suggestions with animation
+searchForm.addEventListener("click", (event) => {
+  event.stopPropagation(); // Prevent triggering the document click listener
+  searchForm.classList.add("expanded");
+  suggestionsContainer.classList.remove("hidden"); // Show suggestions container
 
-            // Add animation to suggestion lists
-            window.renderPlaceNames();
-        });
+  // Add animation to suggestion lists
+  suggestionLists.forEach((list, index) => {
+    setTimeout(() => {
+      list.classList.add("visible");
+    }, index * 100); // Stagger the animation for each list item
+  });
+});
 
-        // Handle clicking outside of the form or suggestions container
-        document.addEventListener("click", (event) => {
-            const isClickInsideForm = searchForm.contains(event.target);
-            const isClickInsideSuggestions = suggestionsContainer.contains(event.target);
+// Handle clicking outside of the form or suggestions container
+document.addEventListener("click", (event) => {
+  const isClickInsideForm = searchForm.contains(event.target);
+  const isClickInsideSuggestions = suggestionsContainer.contains(event.target);
 
-            if (!isClickInsideForm && !isClickInsideSuggestions) {
-                resetFormAndSuggestions();
-            }
-        });
+  if (!isClickInsideForm && !isClickInsideSuggestions) {
+    resetFormAndSuggestions();
+  }
+});
 
-        // Function to reset form and hide suggestions
-        function resetFormAndSuggestions() {
-            searchForm.classList.remove("expanded"); // Collapse the form
-            suggestionsContainer.classList.add("hidden"); // Hide the suggestions container
-            searchInput.value = ""; // Optionally clear the input field
+// Function to reset form and hide suggestions
+function resetFormAndSuggestions() {
+  searchForm.classList.remove("expanded"); // Collapse the form
+  suggestionsContainer.classList.add("hidden"); // Hide the suggestions container
+  searchInput.value = ""; // Optionally clear the input field
 
-            // Remove animation class from suggestion lists
-            suggestionLists.forEach((list) => {
-                list.classList.remove("visible");
-            });
-        }
+  // Remove animation class from suggestion lists
+  suggestionLists.forEach((list) => {
+    list.classList.remove("visible");
+  });
+}
 
 
 
@@ -396,62 +400,50 @@
 
 
     </script>
-    <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <script>
 
+        
 
+        function renderPlaceNames() {
+            const suggestionsContainer = document.querySelector('.suggestions-container');
+            const searchForm = document.getElementById("search-form");
+            const searchInput = searchForm.querySelector("input");
 
-window.renderPlaceNames = function () {
-    const suggestionsContainer = document.querySelector('.suggestions-container');
-    const searchForm = document.getElementById("search-form");
-    const searchInput = searchForm.querySelector("input");
+            // Iterate through the global array
+            window.dynamicEntities.forEach((entity) => {
+                // Create the outermost div with class "suggestions-list"
+                const suggestionList = document.createElement('div');
+                suggestionList.className = 'suggestions-list';
 
-    // Clear previous suggestions
-    suggestionsContainer.innerHTML = '';
+                // Create the inner div with class "suggestions-list-name"
+                const nameContainer = document.createElement('div');
+                nameContainer.className = 'suggestions-list-name';
 
-    // Iterate through the global array
-    window.dynamicEntities.forEach((entity, index) => {
-        // Create the outermost div with class "suggestions-list"
-        const suggestionList = document.createElement('div');
-        suggestionList.className = 'suggestions-list'; // Base class
+                // Create the <h2> element for the place name
+                const placeName = document.createElement('h2');
+                placeName.textContent = entity.name;
 
-        // Create the inner div with class "suggestions-list-name"
-        const nameContainer = document.createElement('div');
-        nameContainer.className = 'suggestions-list-name';
+                // Append the <h2> to the name container
+                nameContainer.appendChild(placeName);
 
-        // Create the <h2> element for the place name
-        const placeName = document.createElement('h2');
-        placeName.textContent = entity.name;
+                // Append the name container to the suggestions list
+                suggestionList.appendChild(nameContainer);
 
-        // Append the <h2> to the name container
-        nameContainer.appendChild(placeName);
+                // Add click event to suggestionList
+                suggestionList.addEventListener('click', () => {
 
-        // Append the name container to the suggestions list
-        suggestionList.appendChild(nameContainer);
+                    searchForm.classList.remove("expanded"); // Collapse the form
+                    suggestionsContainer.classList.add("hidden"); // Hide the suggestions container
+                    searchInput.value = ""; // Optionally clear the input field
+                    // Call setNavigationCoordinates with entity's coordinates
+                    setNavigationCoordinates(entity.latitude, entity.longitude);
+                });
 
-        // Add click event to suggestionList
-        suggestionList.addEventListener('click', () => {
-            searchForm.classList.remove("expanded"); // Collapse the form
-            suggestionsContainer.classList.add("hidden"); // Hide the suggestions container
-            searchInput.value = ""; // Optionally clear the input field
-
-            // Call setNavigationCoordinates with entity's coordinates
-            setNavigationCoordinates(entity.latitude, entity.longitude);
-        });
-
-        // Append the suggestions list to the suggestions container
-        suggestionsContainer.appendChild(suggestionList);
-
-        // Add animation with a delay for smooth entry
-        setTimeout(() => {
-            suggestionList.classList.add('visible'); // Add visible class for animation
-        }, index * 100); // Stagger the animations for each list item
-    });
-
-    // Show the suggestions container
-    suggestionsContainer.classList.remove('hidden');
-}
-
+                // Append the suggestions list to the suggestions container
+                suggestionsContainer.appendChild(suggestionList);
+            });
+        }
 
 
         // Wait for some time to ensure entities are fetched (better to use events or promises)
