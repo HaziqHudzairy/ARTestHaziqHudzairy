@@ -462,6 +462,28 @@ form:hover .fa {
   text-align: center;
 }
 
+.cancel-btn-container {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px; /* Same size as form */
+  height: 50px; /* Same size as form */
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 50px; /* Center the "X" */
+  font-size: 1.5em; /* Make the "X" bigger */
+  cursor: pointer;
+  z-index: 2; /* Ensure the cancel button is above the form */
+}
+
+.fa:hover, .cancel-btn-container:hover {
+  background: #f0f0f0;
+  color: rgb(0, 0, 0);
+}
+
 
 
 /* Keyframes for scaling effect */

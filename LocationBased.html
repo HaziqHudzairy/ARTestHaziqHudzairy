@@ -38,10 +38,16 @@
         </a>
 
         <!-- Search bar form placed below the container -->
+         
         <form id="search-form">
             <input type="search" tabindex="-1" placeholder="Search here ..." autocomplete="off">
             <i class="fa fa-search"></i>
         </form>
+
+        <div id="cancel-button" class="cancel-btn-container">
+            <i class="fa fa-times cancel-btn"></i>
+        </div>
+
         <div id="suggestions-container" class="suggestions-container hidden">
         </div>
     </div>
@@ -641,6 +647,8 @@
             const centerMenu = document.querySelector('.center-menu');
             const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
             const proximityDiv = document.getElementById("proximity-message");
+            const cancelButton = document.getElementById('cancel-button');
+            const searchForm = document.getElementById("search-form");
             proximityDiv.innerText = message;
             proximityDiv.style.display = "block";
             proximityDiv.style.opacity = "1"; // Fade-in effect
@@ -652,6 +660,8 @@
             if (centerMenu) {
                 centerMenu.addEventListener('click', function (event) {
                     hideProximityMessage();
+                    searchForm.style.display = "none";
+                    cancelButton.style.display = "block";
                     virtualSpace.setAttribute('visible', true);
                     virtualSpace.setAttribute('follow-camera', '');
                     clearSceneEntities();
