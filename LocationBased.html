@@ -78,7 +78,7 @@
     font-size: 14px;
     text-align: center;
     display: none;
-    z-index: 1000;
+    z-index: 99999;
     transition: opacity 0.5s ease-in-out;
     ">
     </div>
@@ -644,6 +644,7 @@
             if (!isNearAnyEntity) {
                 centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
                 centerMenu.style.display = 'none'; // Hide the menu
+                hideProximityMessage();
             }
         }
 
