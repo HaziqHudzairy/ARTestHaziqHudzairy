@@ -405,45 +405,57 @@
 
 
 
-        function renderPlaceNames() {
-            const suggestionsContainer = document.querySelector('.suggestions-container');
-            const searchForm = document.getElementById("search-form");
-            const searchInput = searchForm.querySelector("input");
+function renderPlaceNames() {
+    const suggestionsContainer = document.querySelector('.suggestions-container');
+    const searchForm = document.getElementById("search-form");
+    const searchInput = searchForm.querySelector("input");
 
-            // Iterate through the global array
-            window.dynamicEntities.forEach((entity) => {
-                // Create the outermost div with class "suggestions-list"
-                const suggestionList = document.createElement('div');
-                suggestionList.className = 'suggestions-list';
+    // Clear previous suggestions
+    suggestionsContainer.innerHTML = '';
 
-                // Create the inner div with class "suggestions-list-name"
-                const nameContainer = document.createElement('div');
-                nameContainer.className = 'suggestions-list-name';
+    // Iterate through the global array
+    window.dynamicEntities.forEach((entity, index) => {
+        // Create the outermost div with class "suggestions-list"
+        const suggestionList = document.createElement('div');
+        suggestionList.className = 'suggestions-list'; // Base class
 
-                // Create the <h2> element for the place name
-                const placeName = document.createElement('h2');
-                placeName.textContent = entity.name;
+        // Create the inner div with class "suggestions-list-name"
+        const nameContainer = document.createElement('div');
+        nameContainer.className = 'suggestions-list-name';
 
-                // Append the <h2> to the name container
-                nameContainer.appendChild(placeName);
+        // Create the <h2> element for the place name
+        const placeName = document.createElement('h2');
+        placeName.textContent = entity.name;
 
-                // Append the name container to the suggestions list
-                suggestionList.appendChild(nameContainer);
+        // Append the <h2> to the name container
+        nameContainer.appendChild(placeName);
 
-                // Add click event to suggestionList
-                suggestionList.addEventListener('click', () => {
+        // Append the name container to the suggestions list
+        suggestionList.appendChild(nameContainer);
 
-                    searchForm.classList.remove("expanded"); // Collapse the form
-                    suggestionsContainer.classList.add("hidden"); // Hide the suggestions container
-                    searchInput.value = ""; // Optionally clear the input field
-                    // Call setNavigationCoordinates with entity's coordinates
-                    setNavigationCoordinates(entity.latitude, entity.longitude);
-                });
+        // Add click event to suggestionList
+        suggestionList.addEventListener('click', () => {
+            searchForm.classList.remove("expanded"); // Collapse the form
+            suggestionsContainer.classList.add("hidden"); // Hide the suggestions container
+            searchInput.value = ""; // Optionally clear the input field
 
-                // Append the suggestions list to the suggestions container
-                suggestionsContainer.appendChild(suggestionList);
-            });
-        }
+            // Call setNavigationCoordinates with entity's coordinates
+            setNavigationCoordinates(entity.latitude, entity.longitude);
+        });
+
+        // Append the suggestions list to the suggestions container
+        suggestionsContainer.appendChild(suggestionList);
+
+        // Add animation with a delay for smooth entry
+        setTimeout(() => {
+            suggestionList.classList.add('visible'); // Add visible class for animation
+        }, index * 100); // Stagger the animations for each list item
+    });
+
+    // Show the suggestions container
+    suggestionsContainer.classList.remove('hidden');
+}
+
 
 
         // Wait for some time to ensure entities are fetched (better to use events or promises)
