@@ -740,24 +740,27 @@
 
 
         let watchId = null; // To store the watch position ID
+        let locationTrackingPaused = false; // Track if location updates are paused
 
         // Function to update the latitude and longitude display
         function updateLocation() {
             const virtualSpace = document.querySelector('#virtual-space');
 
+            // Check if the virtual space is visible
             if (virtualSpace && virtualSpace.getAttribute('visible') === 'true') {
-                // If virtual space is visible, stop location updates
-                if (watchId !== null) {
-                    showDebugMessage("location is paused")
-                    navigator.geolocation.clearWatch(watchId);
-                    watchId = null; // Clear the watchId
-                    console.log("Location updates paused.");
+                // If virtual space is visible and location updates are not paused
+                if (!locationTrackingPaused) {
+                    if (watchId !== null) {
+                        navigator.geolocation.clearWatch(watchId); // Stop location updates
+                        watchId = null; // Clear watchId
+                        locationTrackingPaused = true; // Set tracking as paused
+                        console.log("Location updates paused.");
+                    }
                 }
             } else {
-                // If virtual space is not visible, start location updates
-                if (watchId === null) {
-
-                    showDebugMessage("location is not paused")
+                // If virtual space is not visible and location updates are paused
+                if (locationTrackingPaused) {
+                    // Restart location updates
                     watchId = navigator.geolocation.watchPosition(
                         function (position) {
                             const latitude = position.coords.latitude;
@@ -766,27 +769,26 @@
                             // Update the user's location display
                             updateLocationDisplay(latitude, longitude);
 
-                            // Check if the user is near any entity (within a 25-meter radius)
+                            // Check proximity to entities (within a 30-meter radius)
                             checkProximity(latitude, longitude, window.dynamicEntities, 30);
                         },
                         function (error) {
-                            // Handle different types of errors and show system alert popup
+                            // Handle errors and display appropriate messages
                             let message = "";
                             switch (error.code) {
                                 case 1:
-                                    message = "Permission denied. Please enable location access in your browser settings.";
+                                    message = "Permission denied. Please enable location access.";
                                     break;
                                 case 2:
-                                    message = "Position unavailable. Please check your GPS or internet connection.";
+                                    message = "Position unavailable. Check GPS or connection.";
                                     break;
                                 case 3:
-                                    message = "Request timed out. Please try again.";
+                                    message = "Request timed out. Try again.";
                                     break;
                                 default:
-                                    message = "An unknown error occurred. Please refresh and try again.";
+                                    message = "Unknown error. Refresh and try again.";
                                     break;
                             }
-                            // Display system alert popup
                             alert(message);
                         },
                         {
@@ -795,13 +797,15 @@
                             timeout: 5000
                         }
                     );
+                    locationTrackingPaused = false; // Set tracking to active
                     console.log("Location updates started.");
                 }
             }
         }
 
-        // Call the function to start updating the location
+        // Initial call to start the location tracking
         updateLocation();
+
 
 
         // Your Mapbox Token Specifically for UM.AR domain
