@@ -621,11 +621,12 @@
             const proximityDiv = document.getElementById("proximity-message");
             proximityDiv.style.opacity = "0"; // Fade-out effect
             setTimeout(() => {
+                centerMenu.style.display = 'none';
                 proximityDiv.style.display = "none";
             }, 500); // Match this timeout with the CSS transition duration
 
             // centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
-            // centerMenu.style.display = 'none'; // Hide the menu
+            //  // Hide the menu
         }
 
 
