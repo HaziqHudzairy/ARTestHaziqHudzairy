@@ -39,15 +39,15 @@
         <form id="search-form">
             <input type="search" tabindex="-1" placeholder="Search here ..." autocomplete="off">
             <i class="fa fa-search"></i>
-          </form>
-          <div id="suggestions-container" class="suggestions-container hidden">
+        </form>
+        <div id="suggestions-container" class="suggestions-container hidden">
             <div class="suggestions-list">
-              <div class="suggestions-list-name">
-                <h2>KK1</h2>
-              </div>
+                <div class="suggestions-list-name">
+                    <h2>KK1</h2>
+                </div>
             </div>
 
-          </div>
+        </div>
     </div>
     <div id="data-container" class="data-container" style="display:none;">
         <p id="userLocation" style="font-size:10px; top: 5px;  color: white; padding: 5px;"></p>
@@ -204,154 +204,135 @@
     <script>
 
         // Select form, input, suggestions container, and suggestion lists
-const searchForm = document.getElementById("search-form");
-const searchInput = searchForm.querySelector("input");
-const suggestionsContainer = document.getElementById("suggestions-container");
+        const searchForm = document.getElementById("search-form");
+        const searchInput = searchForm.querySelector("input");
+        const suggestionsContainer = document.getElementById("suggestions-container");
 
-// Toggle the expanded class and show suggestions with animation
-searchForm.addEventListener("click", (event) => {
-  event.stopPropagation(); // Prevent triggering the document click listener
-  searchForm.classList.add("expanded");
-  suggestionsContainer.classList.remove("hidden");
-  suggestionsContainer.classList.add("show"); // Trigger dropdown animation
+        // Toggle the expanded class and show suggestions with animation
+        searchForm.addEventListener("click", (event) => {
+            event.stopPropagation(); // Prevent triggering the document click listener
+            searchForm.classList.add("expanded");
+            suggestionsContainer.classList.remove("hidden");
+            suggestionsContainer.classList.add("show"); // Trigger dropdown animation
 
-  // Animate each suggestion list item
-  const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
-  suggestionLists.forEach((list, index) => {
-    setTimeout(() => {
-      list.classList.add("animated");
-    }, index * 100); // Stagger animations slightly
-  });
-});
+            // Animate each suggestion list item
+            const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
+            suggestionLists.forEach((list, index) => {
+                setTimeout(() => {
+                    list.classList.add("animated");
+                }, index * 100); // Stagger animations slightly
+            });
+        });
 
-// Handle clicking outside of the form or suggestions container
-document.addEventListener("click", (event) => {
-  const isClickInsideForm = searchForm.contains(event.target);
-  const isClickInsideSuggestions = suggestionsContainer.contains(event.target);
+        // Handle clicking outside of the form or suggestions container
+        document.addEventListener("click", (event) => {
+            const isClickInsideForm = searchForm.contains(event.target);
+            const isClickInsideSuggestions = suggestionsContainer.contains(event.target);
 
-  if (!isClickInsideForm && !isClickInsideSuggestions) {
-    resetFormAndSuggestions();
-  }
-});
+            if (!isClickInsideForm && !isClickInsideSuggestions) {
+                resetFormAndSuggestions();
+            }
+        });
 
-// Function to reset form and hide suggestions
-function resetFormAndSuggestions() {
-  searchForm.classList.remove('expanded');
-  suggestionsContainer.classList.remove('show');
-  setTimeout(() => {
-      suggestionsContainer.classList.add('hidden');
-  }, 300); // Match animation duration
-}
-// Function to render place names dynamically
-function renderPlaceNames() {
-  const suggestionsContainer = document.querySelector(".suggestions-container");
+        // Function to reset form and hide suggestions
+        function resetFormAndSuggestions() {
+            searchForm.classList.remove('expanded');
+            suggestionsContainer.classList.remove('show');
+            setTimeout(() => {
+                suggestionsContainer.classList.add('hidden');
+            }, 300); // Match animation duration
+        }
+        // Function to render place names dynamically
+        function renderPlaceNames() {
+            const suggestionsContainer = document.querySelector(".suggestions-container");
 
-  // Iterate through the global array
-  window.dynamicEntities.forEach((entity) => {
-    const suggestionList = document.createElement("div");
-    suggestionList.className = "suggestions-list";
+            // Iterate through the global array
+            window.dynamicEntities.forEach((entity) => {
+                const suggestionList = document.createElement("div");
+                suggestionList.className = "suggestions-list";
 
-    const nameContainer = document.createElement("div");
-    nameContainer.className = "suggestions-list-name";
+                const nameContainer = document.createElement("div");
+                nameContainer.className = "suggestions-list-name";
 
-    const placeName = document.createElement("h2");
-    placeName.textContent = entity.name;
+                const placeName = document.createElement("h2");
+                placeName.textContent = entity.name;
 
-    nameContainer.appendChild(placeName);
-    suggestionList.appendChild(nameContainer);
+                nameContainer.appendChild(placeName);
+                suggestionList.appendChild(nameContainer);
 
-    suggestionList.addEventListener("click", () => {
-      setNavigationCoordinates(entity.latitude, entity.longitude);
-    });
+                suggestionList.addEventListener("click", () => {
+                    setNavigationCoordinates(entity.latitude, entity.longitude);
+                });
 
-    suggestionsContainer.appendChild(suggestionList);
-  });
-}
+                suggestionsContainer.appendChild(suggestionList);
+            });
+        }
 
-function renderPlaceFilter(filterText = '') {
-  const suggestionsContainer = document.querySelector('.suggestions-container');
-  suggestionsContainer.innerHTML = ''; // Clear existing suggestions
+        function renderPlaceFilter(filterText = '') {
+            const suggestionsContainer = document.querySelector('.suggestions-container');
+            suggestionsContainer.innerHTML = ''; // Clear existing suggestions
 
-  // Filter dynamicEntities based on filterText (case-insensitive)
-  const filteredEntities = window.dynamicEntities.filter(entity =>
-    entity.name.toLowerCase().includes(filterText.toLowerCase())
-  );
+            // Filter dynamicEntities based on filterText (case-insensitive)
+            const filteredEntities = window.dynamicEntities.filter(entity =>
+                entity.name.toLowerCase().includes(filterText.toLowerCase())
+            );
 
-  if (filteredEntities.length === 0) {
-    // If no results, show a "No results found" message
-    const noResultsMessage = document.createElement('div');
-    noResultsMessage.className = 'suggestions-list animated'; // Ensure animation applies
-    noResultsMessage.textContent = 'No results found';
-    suggestionsContainer.appendChild(noResultsMessage);
-  } else {
-    // Iterate through the filtered array
-    filteredEntities.forEach((entity, index) => {
-      const suggestionList = document.createElement('div');
-      suggestionList.className = 'suggestions-list'; // Initially without the animated class
+            if (filteredEntities.length === 0) {
+                // If no results, show a "No results found" message
+                const noResultsMessage = document.createElement('div');
+                noResultsMessage.className = 'suggestions-list animated'; // Ensure animation applies
+                noResultsMessage.textContent = 'No results found';
+                suggestionsContainer.appendChild(noResultsMessage);
+            } else {
+                // Iterate through the filtered array
+                filteredEntities.forEach((entity, index) => {
+                    const suggestionList = document.createElement('div');
+                    suggestionList.className = 'suggestions-list'; // Initially without the animated class
 
-      const nameContainer = document.createElement('div');
-      nameContainer.className = 'suggestions-list-name';
+                    const nameContainer = document.createElement('div');
+                    nameContainer.className = 'suggestions-list-name';
 
-      const placeName = document.createElement('h2');
-      placeName.textContent = entity.name;
+                    const placeName = document.createElement('h2');
+                    placeName.textContent = entity.name;
 
-      nameContainer.appendChild(placeName);
-      suggestionList.appendChild(nameContainer);
+                    nameContainer.appendChild(placeName);
+                    suggestionList.appendChild(nameContainer);
 
-      suggestionList.addEventListener('click', () => {
-        setNavigationCoordinates(entity.latitude, entity.longitude);
-      });
+                    suggestionList.addEventListener('click', () => {
+                        setNavigationCoordinates(entity.latitude, entity.longitude);
+                    });
 
-      suggestionsContainer.appendChild(suggestionList);
+                    suggestionsContainer.appendChild(suggestionList);
 
-      // Add animation class after a short delay for visibility
-      setTimeout(() => {
-        suggestionList.classList.add('animated');
-      }, index * 50); // Optional stagger effect
-    });
-  }
+                    // Add animation class after a short delay for visibility
+                    setTimeout(() => {
+                        suggestionList.classList.add('animated');
+                    }, index * 50); // Optional stagger effect
+                });
+            }
 
-  // Ensure the container is visible
-  if (!suggestionsContainer.classList.contains('show')) {
-    suggestionsContainer.classList.add('show');
-  }
-}
-
-
-  searchInput.addEventListener('input', (event) => {
-  const searchText = event.target.value;
-
-  // Render filtered suggestions
-  renderPlaceFilter(searchText);
-
-  // Show the container if it’s not empty
-  if (searchText.trim() !== '') {
-    suggestionsContainer.classList.remove('hidden');
-    suggestionsContainer.classList.add('show');
-  } else {
-    resetFormAndSuggestions(); // Hide container if input is empty
-  }
-});
+            // Ensure the container is visible
+            if (!suggestionsContainer.classList.contains('show')) {
+                suggestionsContainer.classList.add('show');
+            }
+        }
 
 
+        searchInput.addEventListener('input', (event) => {
+            const searchText = event.target.value;
 
+            // Render filtered suggestions
+            renderPlaceFilter(searchText);
+        });
 
-// Add event listener for input field
-searchInput.addEventListener("input", (event) => {
-  const searchText = event.target.value;
-  renderPlaceFilter(searchText);
-});
-
-// Initialize suggestions
-setTimeout(renderPlaceNames, 2000); // Adjust timing as needed
+        // Initialize suggestions
+        setTimeout(renderPlaceNames, 2000); // Adjust timing as needed
 
         // Add event listener to the input field for filtering
         document.querySelector('input[type="search"]').addEventListener('input', (event) => {
             const searchText = event.target.value; // Get the input text
             renderPlaceFilter(searchText); // Call renderPlaceNames with the filter text
         });
-
-
 
         //Show fata container for user position
         document.getElementById("data-container").style.display = "block";
@@ -512,7 +493,7 @@ setTimeout(renderPlaceNames, 2000); // Adjust timing as needed
 
 
     </script>
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+    <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <script>
 
         // Function to update the latitude and longitude display
