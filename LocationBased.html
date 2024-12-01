@@ -615,6 +615,8 @@
                 if (distance <= radius) {
                     isNearAnyEntity = true;
 
+                    showProximityMessage(`You are near ${entity.name}`);
+
                     // Update h3 content with the entity name
                     centerCircleH3.textContent = entity.name;
 
