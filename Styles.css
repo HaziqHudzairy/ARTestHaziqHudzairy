@@ -317,12 +317,13 @@ form:hover .fa {
   color: white;
 }
 
+/* Suggestions container dropdown animation */
 .suggestions-container {
   overflow-y: auto;
   display: block;
   position: fixed;
   top: 20%;
-  left:15px;
+  left: 15px;
   right: 15px;
   background: #ffffff86; /* Semi-transparent white background */
   width: auto;
@@ -335,15 +336,33 @@ form:hover .fa {
   align-items: center;
   gap: 15px; /* Space between list items */
   z-index: 9999;
+
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 0; /* Initially hidden */
 }
 
+.suggestions-container.show {
+  transform: scaleY(1);
+  opacity: 1; /* Fully visible */
+}
+
+/* Suggestions list animation */
 .suggestions-list {
   background: #f9f9f9; /* Light gray for list background */
   width: 90%; /* Match container width */
   padding: 15px 10px; /* Add padding for spacing */
   border-radius: 8px; /* Slightly rounded corners */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for each item */
-  transition: background-color 0.3s, transform 0.2s; /* Add hover effects */
+  transition: background-color 0.3s, transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  transform: translateX(-20px); /* Start slightly left */
+}
+
+.suggestions-list.animated {
+  opacity: 1;
+  transform: translateX(0); /* Move to original position */
 }
 
 .suggestions-list:hover {
@@ -367,6 +386,7 @@ form:hover .fa {
 .hidden {
   display: none;
 }
+
 
 
 .a-scene-container {

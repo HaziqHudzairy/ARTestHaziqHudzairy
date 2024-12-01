@@ -204,118 +204,112 @@
     <script>
 
         // Select form, input, suggestions container, and suggestion lists
-        const searchForm = document.getElementById("search-form");
-        const searchInput = searchForm.querySelector("input");
-        const suggestionsContainer = document.getElementById("suggestions-container");
-        const suggestionLists = document.querySelectorAll(".suggestions-list");
+const searchForm = document.getElementById("search-form");
+const searchInput = searchForm.querySelector("input");
+const suggestionsContainer = document.getElementById("suggestions-container");
 
-        // Toggle the expanded class and show suggestions
-        searchForm.addEventListener("click", (event) => {
-        event.stopPropagation(); // Prevent triggering the document click listener
-        searchForm.classList.add("expanded");
-        suggestionsContainer.classList.remove("hidden"); // Show suggestions
-        });
+// Toggle the expanded class and show suggestions with animation
+searchForm.addEventListener("click", (event) => {
+  event.stopPropagation(); // Prevent triggering the document click listener
+  searchForm.classList.add("expanded");
+  suggestionsContainer.classList.remove("hidden");
+  suggestionsContainer.classList.add("show"); // Trigger dropdown animation
 
-        // Handle clicking outside of the form or suggestions container
-        document.addEventListener("click", (event) => {
-        const isClickInsideForm = searchForm.contains(event.target);
-        const isClickInsideSuggestions = suggestionsContainer.contains(event.target);
+  // Animate each suggestion list item
+  const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
+  suggestionLists.forEach((list, index) => {
+    setTimeout(() => {
+      list.classList.add("animated");
+    }, index * 100); // Stagger animations slightly
+  });
+});
 
-        if (!isClickInsideForm && !isClickInsideSuggestions) {
-            resetFormAndSuggestions();
-        }
-        });
+// Handle clicking outside of the form or suggestions container
+document.addEventListener("click", (event) => {
+  const isClickInsideForm = searchForm.contains(event.target);
+  const isClickInsideSuggestions = suggestionsContainer.contains(event.target);
 
-        // Function to reset form and hide suggestions
-        function resetFormAndSuggestions() {
-        searchForm.classList.remove("expanded"); // Collapse the form
-        suggestionsContainer.classList.add("hidden"); // Hide the suggestions container
-        searchInput.value = ""; // Optionally clear the input field
-        }
+  if (!isClickInsideForm && !isClickInsideSuggestions) {
+    resetFormAndSuggestions();
+  }
+});
 
-        function renderPlaceNames() {
-            const suggestionsContainer = document.querySelector('.suggestions-container');
-            const searchForm = document.getElementById("search-form");
-            const searchInput = searchForm.querySelector("input");
+// Function to reset form and hide suggestions
+function resetFormAndSuggestions() {
+  searchForm.classList.remove("expanded");
+  suggestionsContainer.classList.remove("show");
+  setTimeout(() => {
+    suggestionsContainer.classList.add("hidden"); // Hide after animation completes
+  }, 300); // Match the duration of the container's animation
 
-            // Iterate through the global array
-            window.dynamicEntities.forEach((entity) => {
-                // Create the outermost div with class "suggestions-list"
-                const suggestionList = document.createElement('div');
-                suggestionList.className = 'suggestions-list';
+  const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
+  suggestionLists.forEach((list) => list.classList.remove("animated")); // Reset animation classes
+}
 
-                // Create the inner div with class "suggestions-list-name"
-                const nameContainer = document.createElement('div');
-                nameContainer.className = 'suggestions-list-name';
+// Function to render place names dynamically
+function renderPlaceNames() {
+  const suggestionsContainer = document.querySelector(".suggestions-container");
 
-                // Create the <h2> element for the place name
-                const placeName = document.createElement('h2');
-                placeName.textContent = entity.name;
+  // Iterate through the global array
+  window.dynamicEntities.forEach((entity) => {
+    const suggestionList = document.createElement("div");
+    suggestionList.className = "suggestions-list";
 
-                // Append the <h2> to the name container
-                nameContainer.appendChild(placeName);
+    const nameContainer = document.createElement("div");
+    nameContainer.className = "suggestions-list-name";
 
-                // Append the name container to the suggestions list
-                suggestionList.appendChild(nameContainer);
+    const placeName = document.createElement("h2");
+    placeName.textContent = entity.name;
 
-                // Add click event to suggestionList
-                suggestionList.addEventListener('click', () => {
+    nameContainer.appendChild(placeName);
+    suggestionList.appendChild(nameContainer);
 
-                    searchForm.classList.remove("expanded"); // Collapse the form
-                    suggestionsContainer.classList.add("hidden"); // Hide the suggestions container
-                    searchInput.value = ""; // Optionally clear the input field
-                    // Call setNavigationCoordinates with entity's coordinates
-                    setNavigationCoordinates(entity.latitude, entity.longitude);
-                });
+    suggestionList.addEventListener("click", () => {
+      setNavigationCoordinates(entity.latitude, entity.longitude);
+    });
 
-                // Append the suggestions list to the suggestions container
-                suggestionsContainer.appendChild(suggestionList);
-            });
-        }
+    suggestionsContainer.appendChild(suggestionList);
+  });
+}
 
+// Render place filter based on input
+function renderPlaceFilter(filterText = "") {
+  const suggestionsContainer = document.querySelector(".suggestions-container");
+  suggestionsContainer.innerHTML = ""; // Clear existing suggestions
 
-        // Wait for some time to ensure entities are fetched (better to use events or promises)
-        setTimeout(renderPlaceNames, 2000); // Adjust timing as needed
+  const filteredEntities = window.dynamicEntities.filter((entity) =>
+    entity.name.toLowerCase().includes(filterText.toLowerCase())
+  );
 
-        function renderPlaceFilter(filterText = '') {
-            const suggestionsContainer = document.querySelector('.suggestions-container');
-            suggestionsContainer.innerHTML = ''; // Clear existing suggestions
+  filteredEntities.forEach((entity) => {
+    const suggestionList = document.createElement("div");
+    suggestionList.className = "suggestions-list";
 
-            // Filter dynamicEntities based on filterText (case-insensitive)
-            const filteredEntities = window.dynamicEntities.filter(entity =>
-                entity.name.toLowerCase().includes(filterText.toLowerCase())
-            );
+    const nameContainer = document.createElement("div");
+    nameContainer.className = "suggestions-list-name";
 
-            // Iterate through the filtered array
-            filteredEntities.forEach((entity) => {
-                // Create the outermost div with class "suggestions-list"
-                const suggestionList = document.createElement('div');
-                suggestionList.className = 'suggestions-list';
+    const placeName = document.createElement("h2");
+    placeName.textContent = entity.name;
 
-                // Create the inner div with class "suggestions-list-name"
-                const nameContainer = document.createElement('div');
-                nameContainer.className = 'suggestions-list-name';
+    nameContainer.appendChild(placeName);
+    suggestionList.appendChild(nameContainer);
 
-                // Create the <h2> element for the place name
-                const placeName = document.createElement('h2');
-                placeName.textContent = entity.name;
+    suggestionList.addEventListener("click", () => {
+      setNavigationCoordinates(entity.latitude, entity.longitude);
+    });
 
-                // Append the <h2> to the name container
-                nameContainer.appendChild(placeName);
+    suggestionsContainer.appendChild(suggestionList);
+  });
+}
 
-                // Append the name container to the suggestions list
-                suggestionList.appendChild(nameContainer);
+// Add event listener for input field
+searchInput.addEventListener("input", (event) => {
+  const searchText = event.target.value;
+  renderPlaceFilter(searchText);
+});
 
-                // Add click event to suggestionList
-                suggestionList.addEventListener('click', () => {
-                    // Call setNavigationCoordinates with entity's coordinates
-                    setNavigationCoordinates(entity.latitude, entity.longitude);
-                });
-
-                // Append the suggestions list to the suggestions container
-                suggestionsContainer.appendChild(suggestionList);
-            });
-        }
+// Initialize suggestions
+setTimeout(renderPlaceNames, 2000); // Adjust timing as needed
 
         // Add event listener to the input field for filtering
         document.querySelector('input[type="search"]').addEventListener('input', (event) => {
