@@ -206,11 +206,12 @@
         </a-assets>
 
         <a-plane 
-            position="0 1 -3" 
+            id="locked-plane"
+            position="0 0 -2" 
             width="4" 
             height="3" 
             material="src: asset/images/F315/image1.jpg;"
-            ar-look-at-camera>
+            toggle-plane-visibility="cameraId: camera">
         </a-plane>
 
         <a-box position="0 1 -5" color="#4CC3D9" onclick="nextImage()"></a-box>
@@ -222,12 +223,38 @@
 
     <script>
 
-        AFRAME.registerComponent('ar-look-at-camera', {
+    AFRAME.registerComponent('toggle-plane-visibility', {
+        schema: {
+            cameraId: { type: 'string', default: 'camera' }
+        },
         tick: function () {
-            const camera = this.el.sceneEl.camera;
-            this.el.object3D.lookAt(camera.position);
+            const plane = this.el;
+            const camera = document.querySelector(`#${this.data.cameraId}`);
+
+            if (!camera) return;
+
+            // Get positions
+            const cameraPosition = new THREE.Vector3();
+            camera.object3D.getWorldPosition(cameraPosition);
+
+            const planePosition = new THREE.Vector3();
+            plane.object3D.getWorldPosition(planePosition);
+
+            // Calculate direction vectors
+            const cameraDirection = new THREE.Vector3();
+            camera.object3D.getWorldDirection(cameraDirection);
+
+            const planeDirection = planePosition.clone().sub(cameraPosition).normalize();
+
+            // Calculate the angle between the camera's view and the plane
+            const angle = cameraDirection.angleTo(planeDirection);
+
+            // Hide the plane if the angle exceeds 90 degrees (π/2 radians)
+            const visibilityThreshold = Math.PI / 2;
+            plane.setAttribute('visible', angle < visibilityThreshold);
         }
-        });
+    });
+
 
 
         // Select form, input, suggestions container, and suggestion lists
