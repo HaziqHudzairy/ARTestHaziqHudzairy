@@ -220,6 +220,7 @@
 
         document.addEventListener("click", (event) => {
             if (!searchForm.contains(event.target) && !suggestionsContainer.contains(event.target)) {
+                finishAllAnimations()
                 resetFormAndSuggestions();
             }
         });
@@ -238,12 +239,42 @@
 
         // Function to reset form and hide suggestions
         function resetFormAndSuggestions() {
-    searchForm.classList.remove('expanded');
-    suggestionsContainer.classList.remove('show');
-    setTimeout(() => {
-        suggestionsContainer.classList.add('hidden');
-    }, 300); // Animation duration
-}
+            searchForm.classList.remove('expanded');
+            suggestionsContainer.classList.remove('show');
+            setTimeout(() => {
+                suggestionsContainer.classList.add('hidden');
+            }, 300); // Animation duration
+
+
+        }
+
+        function finishAllAnimations() {
+            const animatedElements = document.querySelectorAll('*');
+
+            animatedElements.forEach((el) => {
+                // Get computed styles to determine animation and transition properties
+                const computedStyle = window.getComputedStyle(el);
+
+                // Check if the element has an animation
+                if (computedStyle.animationName !== 'none') {
+                    // Force the animation to its end state
+                    el.style.animationDuration = '0s';
+                    el.style.animationDelay = '0s';
+                }
+
+                // Check if the element has a transition
+                if (computedStyle.transitionProperty !== 'all 0s ease 0s') {
+                    // Force the transition to its end state
+                    const transitionProperties = computedStyle.transitionProperty.split(', ');
+                    transitionProperties.forEach((property) => {
+                        const value = computedStyle.getPropertyValue(property);
+                        el.style[property] = value; // Apply final state of the transition
+                    });
+                    el.style.transitionDuration = '0s';
+                }
+            });
+        }
+
 
         // Function to render place names dynamically
         function renderPlaceNames() {
@@ -320,7 +351,9 @@
             }
         }
 
-
+        searchInput.addEventListener('click', (event) => {
+            finishAllAnimations()
+        });
         searchInput.addEventListener('input', (event) => {
             const searchText = event.target.value;
             setTimeout(() => { // Small delay for better UX
