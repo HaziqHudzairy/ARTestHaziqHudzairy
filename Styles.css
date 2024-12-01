@@ -398,9 +398,11 @@ form:hover .fa {
 }
 
 .center-menu img {
+  top: 50%; 
+  left: 50%; 
   width: 100%;
   height: auto;
-  position: relative;
+  position: absolute;
   animation: boink 0.5s ease-in-out forwards;
   z-index: 0;
 }
