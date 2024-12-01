@@ -390,7 +390,7 @@ form:hover .fa {
 
 .center-menu {
   position: fixed;
-  bottom: -50px;
+  bottom: 70px;
   left: 50%;
   transform: translateX(-50%);
   width: 55vw;
@@ -398,7 +398,7 @@ form:hover .fa {
 }
 
 .center-menu img {
-  top: 50%; 
+  top: 0; 
   left: 50%; 
   width: 100%;
   height: auto;
@@ -412,7 +412,6 @@ form:hover .fa {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0);
   width: 80%;
   height: 80%;
   background-color: rgba(0, 0, 0, 0.6); /* Black color with 60% opacity */
