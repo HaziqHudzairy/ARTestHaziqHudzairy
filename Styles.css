@@ -406,7 +406,7 @@ form:hover .fa {
   width: 100%;
   height: auto;
   position: absolute;
-  animation: boink 0.5s ease-in-out forwards, rotate 10s linear infinite 0.5s;
+  animation: boink 0.5s ease-in-out forwards, rotate 15s linear infinite 1s;
   z-index: 9998;
 }
 
@@ -475,6 +475,18 @@ form:hover .fa {
   }
   100% {
     transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes boink-reverse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1); /* Slightly larger for reverse bounce effect */
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0);
   }
 }
 
