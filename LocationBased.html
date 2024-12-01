@@ -515,6 +515,7 @@
             const scene = document.querySelector("a-scene");
             const entityElement = document.createElement("a-entity");
 
+            entityElement.classList.add('location-entity');
             entityElement.setAttribute("id", id);
             entityElement.setAttribute("gps-entity-place", `latitude: ${entity.latitude}; longitude: ${entity.longitude}`);
             entityElement.setAttribute("gltf-model", entity.model); // Model from database
@@ -617,16 +618,17 @@
             return R * c; // Distance in meters
         }
 
-        // Function to clear all entities from the scene (including dynamic ones)
+        // Function to clear all dynamically created entities
         function clearSceneEntities() {
-            // Remove all child entities from the scene
-            const allEntities = scene.querySelectorAll('*');
-            allEntities.forEach((entity) => {
-                if (entity !== virtualSpace) {
-                    // Remove the entity from the scene, excluding the virtual space
-                    entity.parentNode.removeChild(entity);
-                }
+            const scene = document.querySelector('a-scene');
+
+            // Select all entities with the class 'dynamic-entity' and remove them
+            const dynamicEntities = scene.querySelectorAll('.dynamic-entity');
+            dynamicEntities.forEach((entity) => {
+                entity.parentNode.removeChild(entity); // Remove each dynamic entity
             });
+
+            console.log("Cleared all dynamic entities.");
         }
 
         // Function to show the proximity message
