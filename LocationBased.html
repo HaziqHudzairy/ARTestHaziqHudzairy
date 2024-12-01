@@ -209,9 +209,10 @@
             position="0 1 -3" 
             width="4" 
             height="3" 
-            material="src: asset/images/F315/image1.jpg;" 
-            look-at="#camera">
+            material="src: asset/images/F315/image1.jpg;"
+            ar-look-at-camera>
         </a-plane>
+
         <a-box position="0 1 -5" color="#4CC3D9" onclick="nextImage()"></a-box>
 
         <!-- <a-entity id="dynamic-model"></a-entity> -->
@@ -220,6 +221,13 @@
     </a-scene>
 
     <script>
+
+        AFRAME.registerComponent('ar-look-at-camera', {
+        tick: function () {
+            const camera = this.el.sceneEl.camera;
+            this.el.object3D.lookAt(camera.position);
+        }
+        });
 
 
         // Select form, input, suggestions container, and suggestion lists
@@ -619,9 +627,10 @@
             const centerMenu = document.querySelector('.center-menu');
             const proximityDiv = document.getElementById("proximity-message");
             proximityDiv.style.opacity = "0"; // Fade-out effect
+            centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
             setTimeout(() => {
                 proximityDiv.style.display = "none";
-                centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
+
                 centerMenu.style.display = 'none';
             }, 500); // Match this timeout with the CSS transition duration
 
