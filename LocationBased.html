@@ -220,29 +220,31 @@
 
         document.addEventListener("click", (event) => {
             if (!searchForm.contains(event.target) && !suggestionsContainer.contains(event.target)) {
+                searchInput.value = '';
                 resetFormAndSuggestions();
             }
         });
 
         function animateSuggestions() {
-            const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
-            suggestionLists.forEach((list, index) => {
-                if (index < 10) {
-                    // Animate only the first 10 items
-                    requestAnimationFrame(() => {
-                        setTimeout(() => {
-                            list.classList.add("animated");
-                        }, index * 100); // Stagger animations for first 10 items
-                    });
-                } else {
-                    // Show the rest immediately without animation
+    const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
+    suggestionLists.forEach((list, index) => {
+        if (index < 10) {
+            // Animate only the first 10 items
+            requestAnimationFrame(() => {
+                setTimeout(() => {
                     list.classList.add("animated");
-                    list.style.opacity = '1';
-                    list.style.transform = 'translateX(0)'; // Reset any transform
-                }
+                }, index * 100); // Stagger animations for first 10 items
             });
+        } else {
+            // Delay showing the rest by 3 seconds
+            setTimeout(() => {
+                list.classList.add("animated");
+                list.style.opacity = '1';
+                list.style.transform = 'translateX(0)'; // Reset any transform
+            }, 3000);
         }
-
+    });
+}
 
 
         // Function to reset form and hide suggestions
@@ -314,6 +316,7 @@
                     suggestionList.appendChild(nameContainer);
 
                     suggestionList.addEventListener('click', () => {
+                        resetFormAndSuggestions()
                         setNavigationCoordinates(entity.latitude, entity.longitude);
                     });
 
