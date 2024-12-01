@@ -406,7 +406,7 @@ form:hover .fa {
   height: auto;
   position: absolute;
   animation: boink 0.5s ease-in-out forwards;
-  z-index: 0;
+  z-index: 9998;
 }
 
 .center-circle {
@@ -420,7 +420,7 @@ form:hover .fa {
   transform: translate(-50%, -50%) scale(0); /* Start with scale(0) for animation */
   animation: boink 0.5s ease-in-out forwards; /* Apply the same animation */
   animation-delay: 0.5s; /* Delay the animation by 0.5 seconds */
-  z-index: 1; /* Ensure it appears on top of the image */
+  z-index: 9999; /* Ensure it appears on top of the image */
   display: flex; /* Enable flexbox */
   flex-direction: column; /* Stack elements vertically */
   justify-content: center; /* Center elements vertically */
@@ -440,7 +440,7 @@ form:hover .fa {
   font-weight: 900; /* Bold font weight */
   color: white;
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 10px;
 }
 
@@ -449,7 +449,7 @@ form:hover .fa {
   font-weight: 500; /* Regular font weight */
   color: white;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 
@@ -458,7 +458,7 @@ form:hover .fa {
   font-family: 'Roboto', sans-serif;
   font-weight: 500; /* Regular font weight */
   color: white;
-  font-size: 10px; /* Smaller font size for `p` */
+  font-size: 12px; /* Smaller font size for `p` */
   text-align: center;
 }
 
