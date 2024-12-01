@@ -3,6 +3,8 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
 
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -119,7 +121,7 @@
 
     <!--  -->
     <a-scene renderer="logarithmicDepthBuffer: true; debugUIEnabled: false;" embedded loading-screen="enabled: false;"
-        arjs="sourceType: webcam; " id="ar-scene">
+        arjs="sourceType: webcam; cameraParametersUrl: camera_para.dat;" id="ar-scene">
         <a-assets>
 
             <img id="FSKTMLogo" src="asset/logo/Logo FSKTM.png">
