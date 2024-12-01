@@ -37,7 +37,7 @@
 
         <!-- Search bar form placed below the container -->
         <form id="search-form">
-            <input type="search" placeholder="Search here ..." autocomplete="off">
+            <input type="search" tabindex="-1" placeholder="Search here ..." autocomplete="off">
             <i class="fa fa-search"></i>
           </form>
           <div id="suggestions-container" class="suggestions-container hidden">
@@ -212,16 +212,16 @@
 
     <script>
 
-        // Select form, input, suggestions container
+        // Select form, input, suggestions container, and suggestion lists
         const searchForm = document.getElementById("search-form");
         const searchInput = searchForm.querySelector("input");
         const suggestionsContainer = document.getElementById("suggestions-container");
+        const suggestionLists = document.querySelectorAll(".suggestions-list");
 
         // Toggle the expanded class and show suggestions
         searchForm.addEventListener("click", (event) => {
         event.stopPropagation(); // Prevent triggering the document click listener
         searchForm.classList.add("expanded");
-        searchInput.focus(); // Automatically focus the input
         suggestionsContainer.classList.remove("hidden"); // Show suggestions
         });
 
@@ -231,16 +231,24 @@
         const isClickInsideSuggestions = suggestionsContainer.contains(event.target);
 
         if (!isClickInsideForm && !isClickInsideSuggestions) {
-            // Reset form and hide suggestions
-            searchForm.classList.remove("expanded");
-            suggestionsContainer.classList.add("hidden");
+            resetFormAndSuggestions();
         }
         });
 
-        // Prevent hiding when clicking inside suggestions container
-        suggestionsContainer.addEventListener("click", (event) => {
-        event.stopPropagation(); // Prevent triggering the document click listener
+        // Handle clicks on suggestion list items
+        suggestionLists.forEach((suggestion) => {
+        suggestion.addEventListener("click", () => {
+            resetFormAndSuggestions();
         });
+        });
+
+        // Function to reset form and hide suggestions
+        function resetFormAndSuggestions() {
+        searchForm.classList.remove("expanded"); // Collapse the form
+        suggestionsContainer.classList.add("hidden"); // Hide the suggestions container
+        searchInput.value = ""; // Optionally clear the input field
+        }
+
 
 
 
