@@ -601,14 +601,6 @@
             }
         }
 
-        function hideVirtualSpace() {
-            const virtualSpace = document.querySelector('#virtual-space');
-            if (virtualSpace) {
-                virtualSpace.setAttribute('visible', false); // Hide the virtual space
-                updateLocation(); // Start location tracking again
-            }
-        }
-
         // Haversine formula to calculate distance between two coordinates
         function calculateDistance(lat1, lon1, lat2, lon2) {
             const R = 6371e3; // Earth's radius in meters
@@ -642,10 +634,9 @@
             if (centerMenu) {
                 centerMenu.addEventListener('click', function (event) {
                     hideProximityMessage();
-                    virtualSpace.setAttribute('visible', true); // Show the virtual space
+                    virtualSpace.setAttribute('visible', true);
                     virtualSpace.setAttribute('follow-camera', '');
-                    showDebugMessage(`You are viewing the AR environment`);
-                    updateLocation(); // Start location tracking
+                    showDebugMessage(`You are viewing ${message} AR environment`)
                 });
             } else {
                 console.error('Element .center-menu not found!');
@@ -739,73 +730,51 @@
 
 
 
-        let watchId = null; // To store the watch position ID
-        let locationTrackingPaused = false; // Track if location updates are paused
 
-        // Function to update the latitude and longitude display
+
+        // Update the location continuously with system popup for errors
         function updateLocation() {
-            const virtualSpace = document.querySelector('#virtual-space');
+            navigator.geolocation.watchPosition(
+                function (position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
 
-            // Check if the virtual space is visible
-            if (virtualSpace && virtualSpace.getAttribute('visible') === 'true') {
-                // If virtual space is visible and location updates are not paused
-                if (!locationTrackingPaused) {
-                    if (watchId !== null) {
-                        navigator.geolocation.clearWatch(watchId); // Stop location updates
-                        watchId = null; // Clear watchId
-                        locationTrackingPaused = true; // Set tracking as paused
-                        showDebugMessage("Location updates paused.");
+                    // Update the user's location display
+                    updateLocationDisplay(latitude, longitude);
+
+                    // Check if the user is near any entity (within a 25-meter radius)
+                    checkProximity(latitude, longitude, window.dynamicEntities, 30);
+                },
+                function (error) {
+                    // Handle different types of errors and show system alert popup
+                    let message = "";
+                    switch (error.code) {
+                        case 1:
+                            message = "Permission denied. Please enable location access in your browser settings.";
+                            break;
+                        case 2:
+                            message = "Position unavailable. Please check your GPS or internet connection.";
+                            break;
+                        case 3:
+                            message = "Request timed out. Please try again.";
+                            break;
+                        default:
+                            message = "An unknown error occurred. Please refresh and try again.";
+                            break;
                     }
+                    // Display system alert popup
+                    alert(message);
+                },
+                {
+                    enableHighAccuracy: true,
+                    maximumAge: 0,
+                    timeout: 5000
                 }
-            } else {
-                // If virtual space is not visible and location updates are paused
-                if (locationTrackingPaused) {
-                    // Restart location updates
-                    watchId = navigator.geolocation.watchPosition(
-                        function (position) {
-                            const latitude = position.coords.latitude;
-                            const longitude = position.coords.longitude;
-
-                            // Update the user's location display
-                            updateLocationDisplay(latitude, longitude);
-
-                            // Check proximity to entities (within a 30-meter radius)
-                            checkProximity(latitude, longitude, window.dynamicEntities, 30);
-                        },
-                        function (error) {
-                            // Handle errors and display appropriate messages
-                            let message = "";
-                            switch (error.code) {
-                                case 1:
-                                    message = "Permission denied. Please enable location access.";
-                                    break;
-                                case 2:
-                                    message = "Position unavailable. Check GPS or connection.";
-                                    break;
-                                case 3:
-                                    message = "Request timed out. Try again.";
-                                    break;
-                                default:
-                                    message = "Unknown error. Refresh and try again.";
-                                    break;
-                            }
-                            alert(message);
-                        },
-                        {
-                            enableHighAccuracy: true,
-                            maximumAge: 0,
-                            timeout: 5000
-                        }
-                    );
-                    locationTrackingPaused = false; // Set tracking to active
-                    showDebugMessage("Location updates not paused.");
-                }
-            }
+            );
         }
 
-        // Initial call to start the location tracking
+        // Call the function to start updating the location
         updateLocation();
-
 
 
         // Your Mapbox Token Specifically for UM.AR domain
