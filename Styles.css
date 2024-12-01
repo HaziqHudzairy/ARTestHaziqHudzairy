@@ -296,12 +296,6 @@ form.expanded input {
   display: block; /* Show input when form is expanded */
 }
 
-input:focus {
-  outline: none; /* Remove browser default outline */
-  border: 2px solid #007BFF; /* Custom focus style */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
 .fa {
   position: absolute;
   top: 0;

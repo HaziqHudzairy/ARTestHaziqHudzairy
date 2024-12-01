@@ -235,13 +235,6 @@
         }
         });
 
-        // Handle clicks on suggestion list items
-        suggestionLists.forEach((suggestion) => {
-        suggestion.addEventListener("click", () => {
-            resetFormAndSuggestions();
-        });
-        });
-
         // Function to reset form and hide suggestions
         function resetFormAndSuggestions() {
         searchForm.classList.remove("expanded"); // Collapse the form
@@ -408,9 +401,12 @@
 <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <script>
 
+        
+
         function renderPlaceNames() {
             const suggestionsContainer = document.querySelector('.suggestions-container');
-            suggestionsContainer.innerHTML = ''; // Clear existing suggestions
+            const searchForm = document.getElementById("search-form");
+            const searchInput = searchForm.querySelector("input");
 
             // Iterate through the global array
             window.dynamicEntities.forEach((entity) => {
@@ -434,6 +430,10 @@
 
                 // Add click event to suggestionList
                 suggestionList.addEventListener('click', () => {
+
+                    searchForm.classList.remove("expanded"); // Collapse the form
+                    suggestionsContainer.classList.add("hidden"); // Hide the suggestions container
+                    searchInput.value = ""; // Optionally clear the input field
                     // Call setNavigationCoordinates with entity's coordinates
                     setNavigationCoordinates(entity.latitude, entity.longitude);
                 });
