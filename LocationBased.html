@@ -537,13 +537,13 @@
             scene.appendChild(entityElement);
         }
 
-        /// Fetch Data from Firebase
-        function fetchAndRenderEntities() {
+        // Re-fetch and render entities from the database
+        window.fetchAndRenderEntities = function() {
             const entitiesRef = ref(database, "entities");
             onValue(entitiesRef, (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    renderEntities(data);
+                    renderEntities(data);  // Render all the entities after fetching the data
                 } else {
                     console.error("No data found in the database.");
                 }
@@ -661,6 +661,57 @@
             }, 500); // Match the duration of the fade-out (in this case, 0.5s)
         }
 
+        // Function to Re-fetch and Render Entities
+function RefetchAndRenderEntities() {
+    const entitiesRef = ref(database, "entities");
+    onValue(entitiesRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            window.dynamicEntities = [];  // Clear existing dynamic entities array
+            Object.keys(data).forEach((category) => {
+                Object.values(data[category]).forEach((entity) => {
+                    window.dynamicEntities.push({
+                        name: entity.name,
+                        latitude: entity.latitude,
+                        longitude: entity.longitude,
+                        model: entity.model,  // Assuming the model is part of the entity data
+                        scale: entity.scale || "1 1 1"
+                    });
+                });
+            });
+            renderEntitiesFromDynamicData();  // Call rendering function after updating dynamicEntities
+        } else {
+            console.error("No data found in the database.");
+        }
+    });
+}
+
+// Function to Render Entities from window.dynamicEntities[]
+function renderEntitiesFromDynamicData() {
+    const scene = document.querySelector("a-scene");
+    
+    // Clear existing entities
+    const existingEntities = scene.querySelectorAll('.location-entity');
+    existingEntities.forEach(entity => entity.remove());
+
+    // Render new entities from dynamicEntities array
+    window.dynamicEntities.forEach(entity => {
+        const entityElement = document.createElement("a-entity");
+        entityElement.setAttribute('data-entity-id', entity.name); // Unique ID, or use any identifier you prefer
+
+        entityElement.classList.add('location-entity');
+        entityElement.setAttribute("gps-entity-place", `latitude: ${entity.latitude}; longitude: ${entity.longitude}`);
+        entityElement.setAttribute("gltf-model", entity.model);
+        entityElement.setAttribute("scale", entity.scale);
+        entityElement.setAttribute("look-at", "[gps-camera]");
+        entityElement.setAttribute("animation-mixer", "clip: *");
+
+        console.log(`Added entity: ${entity.name}`);  // Debugging log
+
+        scene.appendChild(entityElement);
+    });
+}
+
         // Hide virtual space and clear dynamic entities
         function clearVirtualSpace() {
             const virtualSpace = document.querySelector('#virtual-space');
@@ -680,15 +731,24 @@
         const cancelButton = document.getElementById('cancel-button');
         cancelButton.addEventListener('click', function() {
             const virtualSpace = document.querySelector('#virtual-space');
-            // Example: Hide the cancel button and show the search form again
+            
+            // Hide the cancel button
             hideCancelButton();
-            virtualSpace.setAttribute('visible', false);
-            window.fetchAndRenderEntities
-            updateLocation()
 
+            // Hide virtual space
+            virtualSpace.setAttribute('visible', false);
+            
+            clearVirtualSpace()
+
+            // Re-fetch and render the entities again
+            RefetchAndRenderEntities();  // Re-fetch and render entities
+
+            // Show the search form again
             const searchForm = document.getElementById('search-form');
-            searchForm.style.display = 'block'; // Show the search form again (if needed)
+            searchForm.style.display = 'block'; // Ensure the form is visible
+
         });
+
 
         function clearSceneEntities() {
             const scene = document.querySelector('a-scene');
