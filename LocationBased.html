@@ -586,19 +586,46 @@
 
         // Function to show the proximity message
         function showProximityMessage(message) {
+            const centerMenu = document.querySelector('.center-menu');
+            const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
             const proximityDiv = document.getElementById("proximity-message");
             proximityDiv.innerText = message;
             proximityDiv.style.display = "block";
             proximityDiv.style.opacity = "1"; // Fade-in effect
+
+            // Update h3 content with the entity name
+            centerCircleH3.textContent = entity.name;
+            centerMenu.style.display = 'block';
+
+            //Attach a one-time click listener to the center menu
+            centerMenu.onclick = () => {
+                showDebugMessage(`You are viewing ${entity.name} AR environment`)
+                // Play reverse boink animation
+                // centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
+
+                // // Display the environment model at user's location
+                // //showEnvironmentModel(userLat, userLon, entity);
+
+                // // Hide the menu after the reverse animation ends
+                // setTimeout(() => {
+                //     centerMenu.style.display = 'none';
+                // }, 500); // Matches the animation duration (0.5s)
+
+                showImagePlane();
+            };
         }
 
         // Function to hide the proximity message
         function hideProximityMessage() {
+            const centerMenu = document.querySelector('.center-menu');
             const proximityDiv = document.getElementById("proximity-message");
             proximityDiv.style.opacity = "0"; // Fade-out effect
             setTimeout(() => {
                 proximityDiv.style.display = "none";
             }, 500); // Match this timeout with the CSS transition duration
+
+            centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
+            centerMenu.style.display = 'none'; // Hide the menu
         }
 
 
@@ -606,8 +633,6 @@
         function checkProximity(userLat, userLon, entities, radius) {
             let isNearAnyEntity = false;
 
-            const centerMenu = document.querySelector('.center-menu');
-            const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
             let environmentModel = null; // To store the model for display
 
             entities.forEach(entity => {
@@ -615,36 +640,13 @@
                 if (distance <= radius) {
                     isNearAnyEntity = true;
 
-                    showProximityMessage(`You are near ${entity.name}`);
+                    showProximityMessage(`${entity.name}`);
 
-                    // Update h3 content with the entity name
-                    centerCircleH3.textContent = entity.name;
-                    // Make the center menu visible
-                    centerMenu.style.display = 'block';
-
-                    //Attach a one-time click listener to the center menu
-                    centerMenu.onclick = () => {
-                        showDebugMessage(`You are viewing ${entity.name} AR environment`)
-                        // Play reverse boink animation
-                        centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
-
-                        // Display the environment model at user's location
-                        //showEnvironmentModel(userLat, userLon, entity);
-
-                        // Hide the menu after the reverse animation ends
-                        setTimeout(() => {
-                            centerMenu.style.display = 'none';
-                        }, 500); // Matches the animation duration (0.5s)
-
-                        showImagePlane();
-                    };
                 }
             });
 
             // Hide the center menu if the user is not near any entity
             if (!isNearAnyEntity) {
-                centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
-                centerMenu.style.display = 'none'; // Hide the menu
                 hideProximityMessage();
             }
         }
