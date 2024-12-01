@@ -205,7 +205,13 @@
 
         </a-assets>
 
-        <a-plane id="image-plane" position="0 1.5 -3" rotation="0 0 0" width="4" height="3" visible="true"></a-plane>
+        <a-plane 
+            position="0 1 -3" 
+            width="4" 
+            height="3" 
+            material="src: asset/images/F315/image1.jpg;" 
+            look-at="#camera">
+        </a-plane>
         <a-box position="0 1 -5" color="#4CC3D9" onclick="nextImage()"></a-box>
 
         <!-- <a-entity id="dynamic-model"></a-entity> -->
@@ -620,7 +626,6 @@
             }, 500); // Match this timeout with the CSS transition duration
 
         }
-
 
         // Function to check proximity and retrieve the Environment Model
         function checkProximity(userLat, userLon, entities, radius) {
