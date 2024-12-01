@@ -319,7 +319,6 @@ form:hover .fa {
 
 .suggestions-container {
   overflow-y: auto;
-  display: block;
   position: fixed;
   top: 20%;
   left:15px;
