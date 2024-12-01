@@ -624,6 +624,8 @@ function checkProximity(userLat, userLon, entities, radius) {
 
 // Function to show the environment model at the user's coordinates
 function showEnvironmentModel(userLat, userLon, model) {
+
+    showDebugMessage('It runs the show EnvironmentModel');
     // Find the AR scene
     const scene = document.querySelector('a-scene');
 
