@@ -215,7 +215,7 @@
             width="4" 
             height="3" 
             material="src: asset/images/F315/image1.jpg;"
-            lock-plane-to-camera="cameraId: camera; offset: 0 0 -10; thresholdAngle: 1.57">
+            lock-plane-to-camera="cameraId: camera; offset: 0 1.6 -10; thresholdAngle: 1.57">
         </a-plane>
 
 
@@ -223,25 +223,11 @@
 
         <!-- <a-entity id="dynamic-model"></a-entity> -->
 
-        <a-camera id="gpsCamera" gps-camera rotation-reader fov="20" near="0.1" far="1000" active="true"></a-camera>
-        <a-entity id="VRCamera" camera look-controls position="0 1.6 0" active="false"></a-entity>
+        <a-camera gps-camera look-controls rotation-reader fov="20" near="0.1" far="1000" position="0 1.6 0"></a-camera>
+        
     </a-scene>
 
     <script>
-
-        function switchCamera() {
-            var camera1 = document.querySelector('#gpsCamera');
-            var camera2 = document.querySelector('#VRCamera');
-            
-            // Toggle the 'active' attribute to switch cameras
-            if (camera1.getAttribute('active') === "true") {
-            camera1.setAttribute('active', 'false');
-            camera2.setAttribute('active', 'true');
-            } else {
-            camera2.setAttribute('active', 'false');
-            camera1.setAttribute('active', 'true');
-            }
-        }
 
         AFRAME.registerComponent('lock-plane-to-camera', {
             schema: {
@@ -678,7 +664,6 @@
 
             if (centerMenu) {
                 centerMenu.addEventListener('click', function (event) {
-                    switchCamera();
                     hideProximityMessage();
                     // Your logic here
                     showDebugMessage(`You are viewing ${message} AR environment`)
