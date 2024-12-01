@@ -576,13 +576,26 @@
                 const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
                 if (distance <= radius) {
                     isNearAnyEntity = true;
-                    showProximityMessage(`You are near ${entity.name}`);
+                    //showProximityMessage(`You are near ${entity.name}`);
+
+                    // Show the center circle and update the h3 content
+                    const centerCircle = document.querySelector('.center-circle');
+                    const centerCircleH3 = centerCircle.querySelector('h3');
+
+                    // Update h3 content with the entity name
+                    centerCircleH3.textContent = entity.name;
+
+                    // Add animation class to show the circle
+                    centerCircle.style.transform = 'translate(-50%, -50%) scale(1)';
+                    centerCircle.style.animation = 'boink 0.5s ease-in-out forwards';
                 }
             });
 
             // Hide the message if the user is not near any entity
             if (!isNearAnyEntity) {
                 hideProximityMessage();
+                const centerCircle = document.querySelector('.center-circle');
+                centerCircle.style.transform = 'translate(-50%, -50%) scale(0)';
             }
         }
 
