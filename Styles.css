@@ -388,3 +388,18 @@ form:hover .fa {
   overflow: hidden;
 }
 
+.center-menu {
+  position: fixed;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40vw;
+  height: auto;
+}
+
+.center-menu img {
+  width: 100%;
+  height: auto;
+}
+
+
