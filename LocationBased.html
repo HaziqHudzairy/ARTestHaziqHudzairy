@@ -41,12 +41,6 @@
             <i class="fa fa-search"></i>
         </form>
         <div id="suggestions-container" class="suggestions-container hidden">
-            <div class="suggestions-list">
-                <div class="suggestions-list-name">
-                    <h2>KK1</h2>
-                </div>
-            </div>
-
         </div>
     </div>
     <div id="data-container" class="data-container" style="display:none;">
@@ -278,6 +272,7 @@
                 suggestionList.appendChild(nameContainer);
 
                 suggestionList.addEventListener("click", () => {
+                    resetFormAndSuggestions()
                     setNavigationCoordinates(entity.latitude, entity.longitude);
                 });
 
@@ -316,7 +311,7 @@
                     suggestionList.appendChild(nameContainer);
 
                     suggestionList.addEventListener('click', () => {
-                        resetFormAndSuggestions()
+                        resetFormAndSuggestions();
                         setNavigationCoordinates(entity.latitude, entity.longitude);
                     });
 
