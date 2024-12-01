@@ -272,6 +272,7 @@
                 suggestionList.appendChild(nameContainer);
 
                 suggestionList.addEventListener("click", () => {
+                    searchInput.value = '';
                     resetFormAndSuggestions()
                     setNavigationCoordinates(entity.latitude, entity.longitude);
                 });
@@ -311,6 +312,7 @@
                     suggestionList.appendChild(nameContainer);
 
                     suggestionList.addEventListener('click', () => {
+                        searchInput.value = '';
                         resetFormAndSuggestions();
                         setNavigationCoordinates(entity.latitude, entity.longitude);
                     });
