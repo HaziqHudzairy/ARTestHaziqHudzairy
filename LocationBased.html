@@ -615,25 +615,7 @@
             }
         }
 
-        function showAREnvironment(id, userLatitude, userLongitude, model) {
-            const scene = document.querySelector("a-scene");
-            const entityElement = document.createElement("a-entity");
-
-            // Set attributes for the dynamic entity
-            entityElement.setAttribute("id", id);
-            entityElement.setAttribute("gps-entity-place", `latitude: ${userLatitude}; longitude: ${userLongitude}`);
-            entityElement.setAttribute("gltf-model", model); // Reference the model
-            entityElement.setAttribute("scale", "10 10 10"); // Default scale
-            entityElement.setAttribute("look-at", "[gps-camera]");
-            entityElement.setAttribute("animation-mixer", "clip: *"); // Optional for animations
-
-            // Debugging
-            console.log(`Added entity: ${id}, Model: ${model}, Location: (${userLatitude}, ${userLongitude})`);
-
-            // Append to the Scene
-            scene.appendChild(entityElement);
-        }
-
+        
 
 
 

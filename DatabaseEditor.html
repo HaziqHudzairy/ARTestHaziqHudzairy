@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Table Editor</title>
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button.delete {
+            background-color: red;
+        }
+        input {
+            padding: 5px;
+            width: 100%;
+        }
+        .add-row {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Firebase Table Editor</h1>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Value</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div class="add-row">
+        <input type="text" id="new-key" placeholder="Enter key">
+        <input type="text" id="new-value" placeholder="Enter value">
+        <button onclick="addRow()">Add Row</button>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB1NEkxuhsfBrsTgfei80LWmF4o_IQwO8",
+            authDomain: "um-ar-d0418.firebaseapp.com",
+            databaseURL: "https://um-ar-d0418-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "um-ar-d0418",
+            storageBucket: "um-ar-d0418.appspot.com",
+            messagingSenderId: "624669072499",
+            appId: "1:624669072499:web:315e91c12fad88513c6d52",
+            measurementId: "G-XWM53Y6FBZ"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Reference to the data location in Firebase
+        const dbRef = database.ref("entities");
+
+        // Fetch and display data
+        dbRef.on("value", (snapshot) => {
+            const data = snapshot.val();
+            const tableBody = document.querySelector("#data-table tbody");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            for (const key in data) {
+                const row = document.createElement("tr");
+
+                // Key column
+                const keyCell = document.createElement("td");
+                keyCell.textContent = key;
+                row.appendChild(keyCell);
+
+                // Value column
+                const valueCell = document.createElement("td");
+                valueCell.innerHTML = `<input type="text" value="${JSON.stringify(data[key])}" onchange="updateRow('${key}', this.value)">`;
+                row.appendChild(valueCell);
+
+                // Actions column
+                const actionsCell = document.createElement("td");
+                actionsCell.innerHTML = `<button class="delete" onclick="deleteRow('${key}')">Delete</button>`;
+                row.appendChild(actionsCell);
+
+                tableBody.appendChild(row);
+            }
+        });
+
+        // Add a new row
+        function addRow() {
+            const newKey = document.getElementById("new-key").value;
+            const newValue = document.getElementById("new-value").value;
+
+            if (newKey && newValue) {
+                const parsedValue = tryParseJSON(newValue) || newValue; // Parse JSON or use string
+                dbRef.child(newKey).set(parsedValue);
+                document.getElementById("new-key").value = "";
+                document.getElementById("new-value").value = "";
+            } else {
+                alert("Please enter both key and value.");
+            }
+        }
+
+        // Update a row
+        function updateRow(key, value) {
+            const parsedValue = tryParseJSON(value) || value; // Parse JSON or use string
+            dbRef.child(key).set(parsedValue);
+        }
+
+        // Delete a row
+        function deleteRow(key) {
+            if (confirm(`Are you sure you want to delete the key "${key}"?`)) {
+                dbRef.child(key).remove();
+            }
+        }
+
+        // Try parsing JSON (returns null if parsing fails)
+        function tryParseJSON(json) {
+            try {
+                return JSON.parse(json);
+            } catch {
+                return null;
+            }
+        }
+    </script>
+</body>
+</html>
