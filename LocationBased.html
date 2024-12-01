@@ -648,25 +648,53 @@
             }
         }
 
-        let currentIndex = 0;
+         // Dynamically update the position of the plane as the camera moves
+         document.querySelector('a-scene').addEventListener('loaded', () => {
+            const camera = document.getElementById('camera');
+            const plane = document.getElementById('image-plane');
 
-        // Function to change the image for the plane
+            // Continuously update the plane position
+            camera.addEventListener('componentinitialized', () => {
+                setInterval(() => {
+                    const cameraPosition = camera.getAttribute('position');
+                    plane.setAttribute('position', {
+                        x: cameraPosition.x,
+                        y: cameraPosition.y + 1.5,  // 1.5 meters above the camera
+                        z: cameraPosition.z - 1    // 1 meter in front of the camera
+                    });
+                }, 100);
+            });
+        });
+
+        let currentIndex = 0;
         function nextImage() {
-            if (window.eventImageLinks.length === 0) return; // If no images, do nothing
+            if (window.eventImageLinks.length === 0) return;
             currentIndex = (currentIndex + 1) % window.eventImageLinks.length;
             const plane = document.getElementById("image-plane");
-            plane.setAttribute("src", window.eventImageLinks[currentIndex]); // Set the new image directly
+            plane.setAttribute("src", window.eventImageLinks[currentIndex]);
         }
 
-        // Function to show the image plane when the center menu is clicked
       function showImagePlane() {
-        const plane = document.getElementById("image-plane");
-        plane.setAttribute("visible", "true");  // Make the plane visible when the menu is clicked
-        plane.setAttribute("gps-entity-place", "latitude: 0; longitude: 0; altitude: 1"); // Lock it 1 meter away from the user
+            // Get the camera element
+            const camera = document.getElementById("camera");
+            const plane = document.getElementById("image-plane");
 
-        // Example: Fetch image links for a specific entity (e.g., "entityUser")
-        fetchEventImageLinks("entityUser");
-      }
+            // Set the plane to be 1 meter in front of the camera
+            const cameraPosition = camera.getAttribute("position");
+
+            // Set the plane's position 1 meter ahead of the camera along the Z-axis
+            plane.setAttribute("position", {
+                x: cameraPosition.x,
+                y: cameraPosition.y + 1.5,  // Keep it 1.5 meters above the camera
+                z: cameraPosition.z - 1    // 1 meter in front of the camera
+            });
+
+            // Make the plane visible
+            plane.setAttribute("visible", "true");
+
+            // Fetch event image links based on an entity name (e.g., "entityUser")
+            fetchEventImageLinks("entityUser");
+        }
 
         function showEnvironmentModel(userLat, userLon, entity) {
             // Find the AR scene
