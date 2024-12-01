@@ -248,16 +248,16 @@
 
     <script>
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const virtualSpace = document.querySelector("#virtual-space");
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     const virtualSpace = document.querySelector("#virtual-space");
 
-            virtualSpace.addEventListener("componentchanged", (event) => {
-                if (event.detail.name === "visible") {
-                    const isVisible = virtualSpace.getAttribute("visible");
-                    toggleAREntitiesVisibility(!isVisible); // Hide AR entities when virtual-space is visible
-                }
-            });
-        });
+        //     virtualSpace.addEventListener("componentchanged", (event) => {
+        //         if (event.detail.name === "visible") {
+        //             const isVisible = virtualSpace.getAttribute("visible");
+        //             toggleAREntitiesVisibility(!isVisible); // Hide AR entities when virtual-space is visible
+        //         }
+        //     });
+        // });
 
         function toggleAREntitiesVisibility(show) {
             const entities = document.querySelectorAll(".ar-entity");
@@ -654,6 +654,7 @@
                     virtualSpace.setAttribute('visible', true);
                     virtualSpace.setAttribute('follow-camera', '');
                     showDebugMessage(`You are viewing ${message} AR environment`)
+                    toggleAREntitiesVisibility(!isVisible);
                 });
             } else {
                 console.error('Element .center-menu not found!');
