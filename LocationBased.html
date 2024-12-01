@@ -206,13 +206,13 @@
         </a-assets>
 
         <a-plane 
-            id="locked-plane"
-            position="0 0 -10" 
+            id="locked-plane" 
             width="4" 
             height="3" 
             material="src: asset/images/F315/image1.jpg;"
             lock-plane-to-camera="cameraId: camera; offset: 0 0 -10; thresholdAngle: 1.57">
         </a-plane>
+
 
         <a-box position="0 1 -5" color="#4CC3D9" onclick="nextImage()"></a-box>
 
@@ -226,47 +226,54 @@
 
     <script>
 
-    AFRAME.registerComponent('lock-plane-to-camera', {
-        schema: {
-            cameraId: { type: 'string', default: 'camera' }, // ID of the camera
-            offset: { type: 'vec3', default: { x: 0, y: 0, z: -10 } }, // Fixed offset
-            thresholdAngle: { type: 'number', default: Math.PI / 2 } // Visibility threshold (90°)
-        },
-        tick: function () {
-            const plane = this.el;
-            const camera = document.querySelector(`#${this.data.cameraId}`);
+        AFRAME.registerComponent('lock-plane-to-camera', {
+            schema: {
+                cameraId: { type: 'string', default: 'camera' }, // ID of the camera
+                offset: { type: 'vec3', default: { x: 0, y: 0, z: -10 } }, // Fixed offset
+                thresholdAngle: { type: 'number', default: Math.PI / 2 } // Visibility threshold (90°)
+            },
+            init: function () {
+                this.camera = document.querySelector(`#${this.data.cameraId}`);
+                if (!this.camera) {
+                    console.error(`Camera with id '${this.data.cameraId}' not found.`);
+                    return;
+                }
+                this.cameraObject = this.camera.object3D;
+                this.offsetVector = new THREE.Vector3(this.data.offset.x, this.data.offset.y, this.data.offset.z);
+            },
+            tick: function () {
+                if (!this.cameraObject) return;
 
-            if (!camera) return;
+                const plane = this.el.object3D;
 
-            // Get camera's world position
-            const cameraWorldPosition = new THREE.Vector3();
-            camera.object3D.getWorldPosition(cameraWorldPosition);
+                // Update plane position relative to the camera
+                const cameraWorldPosition = new THREE.Vector3();
+                this.cameraObject.getWorldPosition(cameraWorldPosition);
 
-            // Calculate the plane's position relative to the camera
-            const offset = new THREE.Vector3(this.data.offset.x, this.data.offset.y, this.data.offset.z);
-            const planePosition = cameraWorldPosition.clone().add(camera.object3D.localToWorld(offset));
+                // Convert the offset to world space relative to the camera
+                const worldOffset = this.offsetVector.clone().applyMatrix4(this.cameraObject.matrixWorld);
 
-            // Update the plane's position
-            plane.object3D.position.copy(planePosition);
+                plane.position.copy(worldOffset);
 
-            // Calculate direction vectors
-            const cameraDirection = new THREE.Vector3();
-            camera.object3D.getWorldDirection(cameraDirection);
+                // Get the camera's direction and plane's direction
+                const cameraDirection = new THREE.Vector3();
+                this.cameraObject.getWorldDirection(cameraDirection);
 
-            const planeDirection = planePosition.clone().sub(cameraWorldPosition).normalize();
+                const planeDirection = plane.position.clone().sub(cameraWorldPosition).normalize();
 
-            // Calculate the angle between the camera's forward direction and the plane
-            const angle = cameraDirection.angleTo(planeDirection);
+                // Calculate angle and update visibility
+                const angle = cameraDirection.angleTo(planeDirection);
+                const isVisible = angle < this.data.thresholdAngle;
 
-            // Toggle visibility based on the threshold angle
-            plane.setAttribute('visible', angle < this.data.thresholdAngle);
+                this.el.setAttribute('visible', isVisible);
 
-            // Ensure the plane always faces the camera
-            if (angle < this.data.thresholdAngle) {
-                plane.object3D.lookAt(cameraWorldPosition);
+                // Ensure the plane faces the camera when visible
+                if (isVisible) {
+                    plane.lookAt(cameraWorldPosition);
+                }
             }
-        }
-    });
+        });
+
 
 
 
@@ -572,30 +579,30 @@
         window.eventImageLinks = [];
 
         // Function to fetch event image links based on a specific entity
-        window.fetchEventImageLinks = function(entityName) {
-        const entitiesRef = ref(database, "entities"); // Reference to the entities node
-        onValue(entitiesRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-            // Reset the image links array
-            window.eventImageLinks = [];
+        window.fetchEventImageLinks = function (entityName) {
+            const entitiesRef = ref(database, "entities"); // Reference to the entities node
+            onValue(entitiesRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    // Reset the image links array
+                    window.eventImageLinks = [];
 
-            // Iterate through the entities data to find the specific entity
-            Object.keys(data).forEach((category) => {
-                Object.values(data[category]).forEach((entity) => {
-                if (entity.name === entityName && entity['Event Image Link']) {
-                    // Push all image links for the specified entity into the array
-                    window.eventImageLinks.push(...entity['Event Image Link']);
+                    // Iterate through the entities data to find the specific entity
+                    Object.keys(data).forEach((category) => {
+                        Object.values(data[category]).forEach((entity) => {
+                            if (entity.name === entityName && entity['Event Image Link']) {
+                                // Push all image links for the specified entity into the array
+                                window.eventImageLinks.push(...entity['Event Image Link']);
+                            }
+                        });
+                    });
+
+                    // Log the event image links for the specified entity
+                    console.log(window.eventImageLinks);  // Corrected here
+                } else {
+                    console.error("No data found in the database.");
                 }
-                });
             });
-
-            // Log the event image links for the specified entity
-            console.log(window.eventImageLinks);  // Corrected here
-            } else {
-            console.error("No data found in the database.");
-            }
-        });
         }
 
 
@@ -653,11 +660,11 @@
             centerMenu.style.display = 'block';
 
             if (centerMenu) {
-                centerMenu.addEventListener('click', function(event) {
+                centerMenu.addEventListener('click', function (event) {
                     hideProximityMessage();
                     // Your logic here
                     showDebugMessage(`You are viewing ${message} AR environment`)
-            });
+                });
             } else {
                 console.error('Element .center-menu not found!');
             }
@@ -722,7 +729,7 @@
             }
         }
 
-        
+
         function showEnvironmentModel(userLat, userLon, entity) {
             // Find the AR scene
             const scene = document.querySelector('a-scene');
