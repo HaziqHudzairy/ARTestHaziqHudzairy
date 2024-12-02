@@ -550,9 +550,6 @@
             });
         }
 
-        // Make the function globally available by assigning it to the window object
-        window.fetchAndRenderEntities = fetchAndRenderEntities;
-
         // Call the function after assigning it to window
         fetchAndRenderEntities();
 
@@ -689,14 +686,20 @@
             
             clearVirtualSpace()
 
-            // Re-fetch and render the entities again
-            RefetchAndRenderEntities();  // Re-fetch and render entities
+            refreshEntities();
 
             // Show the search form again
             const searchForm = document.getElementById('search-form');
             searchForm.style.display = 'block'; // Ensure the form is visible
 
         });
+
+        // Clear entities and re-fetch/render them
+        function refreshEntities() {
+            clearSceneEntities(); // Clear all existing entities
+            fetchAndRenderEntities(); // Fetch and re-render entities from the database
+        }
+
 
 
         function clearSceneEntities() {
