@@ -782,6 +782,7 @@
                     virtualSpace.setAttribute('visible', true);
                     virtualSpace.setAttribute('follow-camera', '');
                     clearSceneEntities();
+                    stopLocationUpdates()
                     showDebugMessage(`You are viewing ${message} AR environment`);
                 });
             } else {
@@ -871,8 +872,15 @@
             showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${entity.model}`);
         }
 
+        let watchId = null;
+
         // Update the location continuously with system popup for errors
         function updateLocation() {
+
+            if (watchId !== null) {
+                navigator.geolocation.clearWatch(watchId);
+            }
+
             navigator.geolocation.watchPosition(
                 function (position) {
                     const latitude = position.coords.latitude;
@@ -905,15 +913,30 @@
                     alert(message);
                 },
                 {
-                    enableHighAccuracy: true,
+                    enableHighAccuracy: false,
                     maximumAge: 0,
-                    timeout: 5000
+                    timeout: 10000
                 }
             );
         }
 
         // Call the function to start updating the location
         updateLocation();
+
+        function stopLocationUpdates() {
+            if (watchId !== null) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+                console.log("Location updates stopped.");
+            } else {
+                console.log("No active location updates to stop.");
+            }
+        }
+
+        function restartLocationUpdates() {
+            stopLocationUpdates();  // First stop the current updates
+            updateLocation();        // Then start new location updates
+        }
 
 
         // Your Mapbox Token Specifically for UM.AR domain
