@@ -489,6 +489,7 @@
                                 name: entity.name,
                                 latitude: entity.latitude,
                                 longitude: entity.longitude,
+                                model: entity.model,
                             });
                         });
                     });
@@ -531,7 +532,7 @@
             entityElement.setAttribute("animation-mixer", "clip: *"); // Optional for animations
 
             // Optional Debugging
-            console.log(`Added entity: ${id}, Parent Category: ${parentCategory}`);
+            showDebugMessage(`Added entity: ${id}, Parent Category: ${parentCategory}`);
 
             // Append to Scene
             scene.appendChild(entityElement);
