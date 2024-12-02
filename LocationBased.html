@@ -48,6 +48,10 @@
             <i class="fa fa-times cancel-btn"></i>
         </div>
 
+        <div id="cancel-button2" class="cancel-btn-container2">
+            <i class="fa fa-times cancel-btn"></i>
+        </div>
+
         <div id="suggestions-container" class="suggestions-container hidden">
         </div>
     </div>
@@ -328,6 +332,24 @@
 
         }
 
+        function removeSearchAddCancel(){
+            const searchForm = document.querySelector(".search-form");
+            searchForm.style.display = 'none';
+            
+            const cancelBtn = document.querySelector(".cancel-button2");
+            cancelBtn.style.display = 'fixed';
+            
+        }
+
+        function exitNavigation()
+        {
+            const cancelBtn = document.querySelector(".cancel-button2");
+            cancelBtn.style.display = 'none';
+
+            const searchForm = document.querySelector(".search-form");
+            searchForm.style.display = 'fixed';
+        }
+
 
         // Function to render place names dynamically
         function renderPlaceNames() {
@@ -348,6 +370,7 @@
                 suggestionList.appendChild(nameContainer);
 
                 suggestionList.addEventListener("click", () => {
+                    removeSearchAddCancel()
                     searchInput.value = '';
                     resetFormAndSuggestions()
                     const centerMenu = document.querySelector('.center-menu2');
@@ -393,6 +416,7 @@
                     suggestionList.appendChild(nameContainer);
 
                     suggestionList.addEventListener('click', () => {
+                        removeSearchAddCancel()
                         searchInput.value = '';
                         resetFormAndSuggestions();
                         const centerMenu = document.querySelector('.center-menu2');
@@ -855,12 +879,6 @@
             // Log the correct model name for debugging
             showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${entity.model}`);
         }
-
-
-
-
-
-
 
 
         // Update the location continuously with system popup for errors

@@ -579,6 +579,31 @@ form:hover .fa {
   margin: 5px 0;
 } */
 
+.cancel-btn-container2 {
+  position: fixed;
+  top: 11%;
+  right: 10px;
+  width: 42.5px; /* Same width as the button */
+  height: 42.5px; /* Same height as the button */
+  background: #c04545;
+  color: rgb(255, 255, 255);
+  border-radius: 50%; /* Makes it circular */
+  cursor: pointer;
+  z-index: 2000; /* Ensure the cancel button is above other elements */
+  text-align: center; /* Aligns the icon horizontally */
+  line-height: 42.5px; /* Aligns the icon vertically */
+  transition: background 0.5s ease-in-out, opacity 0.5s ease-in-out, color 0.5s ease-in-out;
+  opacity: 0; /* Initially invisible */
+}
+
+.cancel-btn-container2 i {
+  font-size: 1.2em; /* Adjust font size to match the button size */
+}
+
+.fa:hover, .cancel-btn-container:hover {
+  background: #f0f0f0; /* Change background on hover */
+  color: rgb(0, 0, 0); /* Change icon color on hover */
+}
 
 
 
