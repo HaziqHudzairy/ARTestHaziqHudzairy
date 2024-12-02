@@ -755,6 +755,8 @@
                 entity.parentNode.removeChild(entity); // Remove each dynamic entity
             });
 
+            stopLocationUpdates();
+
             console.log("Cleared all dynamic entities.");
         }
 
@@ -765,6 +767,8 @@
             const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
             const proximityDiv = document.getElementById("proximity-message");
             const searchForm = document.getElementById("search-form");
+
+            // Update the proximity message and make it visible
             proximityDiv.innerText = message;
             proximityDiv.style.display = "block";
             proximityDiv.style.opacity = "1"; // Fade-in effect
@@ -774,21 +778,36 @@
             centerMenu.style.display = 'flex';
 
             if (centerMenu) {
-                centerMenu.addEventListener('click', function (event) {
-                    hideDebugMessage();
-                    hideProximityMessage();
-                    searchForm.style.display = "none";
-                    showCancelButton();
-                    virtualSpace.setAttribute('visible', true);
-                    virtualSpace.setAttribute('follow-camera', '');
-                    clearSceneEntities();
-                    stopLocationUpdates()
-                    showDebugMessage(`You are viewing ${message} AR environment`);
-                });
+                // Add the event listener using a separate function
+                centerMenu.addEventListener('click', handleCenterMenuClick(message));
             } else {
                 console.error('Element .center-menu not found!');
             }
         }
+
+        // Function to handle the click event
+        function handleCenterMenuClick(message) {
+            return function (event) {
+                const centerMenu = document.querySelector('.center-menu');
+                centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
+                setTimeout(() => {
+                    centerMenu.style.display = 'none';
+                }, 500);
+
+                hideDebugMessage();
+                const searchForm = document.getElementById("search-form");
+                searchForm.style.display = "none";
+                showCancelButton();
+                
+                const virtualSpace = document.querySelector('#virtual-space');
+                virtualSpace.setAttribute('visible', true);
+                virtualSpace.setAttribute('follow-camera', '');
+
+                clearSceneEntities();
+                showDebugMessage(`You are viewing ${message} AR environment`);
+            };
+        }
+
 
         // Function to hide the proximity message
         function hideProximityMessage() {
@@ -798,7 +817,6 @@
             centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
             setTimeout(() => {
                 proximityDiv.style.display = "none";
-
                 centerMenu.style.display = 'none';
             }, 500); // Match this timeout with the CSS transition duration
 
@@ -877,10 +895,6 @@
         // Update the location continuously with system popup for errors
         function updateLocation() {
 
-            if (watchId !== null) {
-                navigator.geolocation.clearWatch(watchId);
-            }
-
             navigator.geolocation.watchPosition(
                 function (position) {
                     const latitude = position.coords.latitude;
@@ -924,13 +938,7 @@
         updateLocation();
 
         function stopLocationUpdates() {
-            if (watchId !== null) {
-                navigator.geolocation.clearWatch(watchId);
-                watchId = null;
-                console.log("Location updates stopped.");
-            } else {
-                console.log("No active location updates to stop.");
-            }
+            navigator.geolocation.clearWatch(watchId);
         }
 
         function restartLocationUpdates() {
