@@ -835,13 +835,6 @@ Firebase<!doctype html>
             showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${entity.model}`);
         }
 
-
-
-
-
-
-
-
         // Update the location continuously with system popup for errors
         function updateLocation() {
             navigator.geolocation.watchPosition(
@@ -852,7 +845,7 @@ Firebase<!doctype html>
                     // Update the user's location display
                     updateLocationDisplay(latitude, longitude);
 
-                    showDebugMessage("updatedlocation");
+                    alert("updatedlocation");
 
                     // Check if the user is near any entity (within a 25-meter radius)
                     checkProximity(latitude, longitude, window.dynamicEntities, 30);
