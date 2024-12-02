@@ -605,6 +605,10 @@ form:hover .fa {
   color: rgb(0, 0, 0); /* Change icon color on hover */
 }
 
+.cancel-btn-container2 {
+  opacity: 0;
+  display: none;
+}
 
 
 /* Keyframes for scaling effect */

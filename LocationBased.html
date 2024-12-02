@@ -332,13 +332,13 @@
 
         }
 
-        function removeSearchAddCancel(){
+        function removeSearchAddCancel() {
             const searchForm = document.querySelector(".search-form");
-            searchForm.style.display = 'none';
+            searchForm.style.display = 'none'; // Hide the search form
             
-            const cancelBtn = document.querySelector(".cancel-button2");
-            cancelBtn.style.display = 'fixed';
-            
+            const cancelBtn = document.querySelector(".cancel-btn-container2");
+            cancelBtn.style.display = 'block'; // Make the cancel button visible (use 'block' or 'flex')
+            cancelBtn.style.opacity = 1; // Ensure opacity is set to 1 for visibility
         }
 
         function exitNavigation()
