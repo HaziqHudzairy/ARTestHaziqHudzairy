@@ -214,8 +214,8 @@
 
         </a-assets>
 
-        <a-entity id="virtual-space" visible="true" follow-camera>
-            <a-plane id="imagePlane" position="0 1 -10" width="4" height="3" material="src: asset/images/F315/image1.jpg;"></a-plane>
+        <a-entity id="virtual-space" visible="false" follow-camera>
+            <a-plane position="0 1 -10" width="4" height="3" material="src: asset/images/F315/image1.jpg;"></a-plane>
 
             <a-box position="0 1 -10" color=blue></a-box>
             <a-box position="0 1 10" color=red></a-box>
@@ -254,36 +254,7 @@
 
     <script>
 
-        var imagePlane = document.querySelector('#imagePlane');
-        var images = [
-            'asset/images/F315/image1.jpg',
-            'asset/images/F315/image2.jpg',
-            'asset/images/F315/image3.jpg'
-        ];
-        var currentIndex = 0;
 
-        // Function to change the image dynamically
-        function changeImage() {
-            currentIndex = (currentIndex + 1) % images.length; // Cycle through the images
-            var nextImage = images[currentIndex];
-
-            // Apply the fade-out effect by changing opacity to 0
-            imagePlane.setAttribute('material', 'opacity', 0);
-
-            // Wait for the fade-out to finish before changing the image
-            setTimeout(function() {
-                // Change the image
-                imagePlane.setAttribute('material', 'src', nextImage);
-
-                // Apply the fade-in effect by changing opacity back to 1
-                imagePlane.setAttribute('material', 'opacity', 1);
-            }, 500); // Wait for 0.5 seconds for fade-out
-        }
-
-        // Set the interval to change images every 3 seconds
-        setInterval(changeImage, 3000);
-
-        
         // Select form, input, suggestions container, and suggestion lists
         const searchForm = document.getElementById("search-form");
         const searchInput = searchForm.querySelector("input");
@@ -878,7 +849,7 @@
                     updateLocationDisplay(latitude, longitude);
 
                     // Check if the user is near any entity (within a 25-meter radius)
-                    checkProximity(latitude, longitude, window.dynamicEntities, 100);
+                    checkProximity(latitude, longitude, window.dynamicEntities, 30);
                 },
                 function (error) {
                     // Handle different types of errors and show system alert popup
