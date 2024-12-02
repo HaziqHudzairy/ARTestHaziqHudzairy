@@ -254,26 +254,6 @@
 
     <script>
 
-        var imagePlane = document.querySelector('#imagePlane');
-        var images = [
-            'asset/images/F315/image1.jpg',
-            'asset/images/F315/image2.jpg',
-            'asset/images/F315/image3.jpg'
-        ];
-        var currentIndex = 0;
-
-        // Function to change the image
-        function changeImage() {
-            currentIndex = (currentIndex + 1) % images.length; // Cycle through the images
-            var nextImage = images[currentIndex];
-
-            // Directly change the image source without any animation
-            imagePlane.setAttribute('material', 'src', nextImage);
-
-            // Set the timeout to change the image again after 3 seconds
-            setTimeout(changeImage, 3000);
-        }
-
 
         // Select form, input, suggestions container, and suggestion lists
         const searchForm = document.getElementById("search-form");
