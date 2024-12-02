@@ -1,4 +1,4 @@
-<!doctype html>
+Firebase<!doctype html>
 <html>
 
 <head>
@@ -532,7 +532,7 @@
             entityElement.setAttribute("animation-mixer", "clip: *"); // Optional for animations
 
             // Optional Debugging
-            showDebugMessage(`Added entity: ${id}, Parent Category: ${parentCategory}`);
+            //showDebugMessage(`Added entity: ${id}, Parent Category: ${parentCategory}`);
 
             // Append to Scene
             scene.appendChild(entityElement);
@@ -692,6 +692,10 @@
             // Show the search form again
             const searchForm = document.getElementById('search-form');
             searchForm.style.display = 'block'; // Ensure the form is visible
+
+            hideDebugMessage();
+
+            updateLocation()
 
         });
 
