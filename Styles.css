@@ -489,6 +489,80 @@ form:hover .fa {
   color: rgb(0, 0, 0); /* Change icon color on hover */
 }
 
+.center-menu2 {
+  position: fixed;
+  display: none;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55vw;
+  height: auto;
+  z-index: 9999;
+}
+
+.center-menu2 img {
+  top: 0; 
+  left: 50%; 
+  width: 100%;
+  height: auto;
+  position: absolute;
+  animation: boink 0.5s ease-in-out forwards, rotate 15s linear infinite 0.7s;
+  z-index: 9998;
+}
+
+.center-circle2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40vw; /* Adjust circle size as needed */
+  height: 40vw;
+  background-color: rgba(0, 0, 0, 0.6); /* Black with 60% opacity */
+  border-radius: 50%; /* Makes it a circle */
+  transform: translate(-50%, -50%) scale(0); /* Start with scale(0) for animation */
+  animation: boink 0.5s ease-in-out forwards; /* Apply the same animation */
+  animation-delay: 0.5s; /* Delay the animation by 0.5 seconds */
+  z-index: 9999; /* Ensure it appears on top of the image */
+  display: flex; /* Enable flexbox */
+  flex-direction: column; /* Stack elements vertically */
+  justify-content: center; /* Center elements vertically */
+  align-items: center; /* Center elements horizontally */
+}
+
+.center-circle2 h3,
+.center-circle2 h6,
+.center-circle2 p {
+  margin: 0; /* Remove default margins */
+  line-height: 1.2; /* Adjust line height for reduced spacing */
+}
+
+.center-circle2 h3 {
+  width: 80%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900; /* Bold font weight */
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.center-circle2 h6 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500; /* Regular font weight */
+  color: white;
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.center-circle2 p {
+  width: 70%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500; /* Regular font weight */
+  color: white;
+  font-size: 12px; /* Smaller font size for `p` */
+  text-align: center;
+}
+
 
 
 
