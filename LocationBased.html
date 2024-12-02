@@ -269,7 +269,7 @@
 
             // Apply the fade-out effect by changing opacity to 0
             imagePlane.setAttribute('material', 'opacity', 0);
-            
+
             // Wait for the fade-out to finish before changing the image
             setTimeout(function() {
                 // Change the image
@@ -277,11 +277,12 @@
 
                 // Apply the fade-in effect by changing opacity back to 1
                 imagePlane.setAttribute('material', 'opacity', 1);
-            }, 1000); // Wait for 1 second for fade-out
+            }, 500); // Wait for 0.5 seconds for fade-out
         }
 
         // Set the interval to change images every 3 seconds
         setInterval(changeImage, 3000);
+
         
         // Select form, input, suggestions container, and suggestion lists
         const searchForm = document.getElementById("search-form");
