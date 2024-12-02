@@ -222,7 +222,7 @@
                 position="0 -40 0"
                 rotation="0 0 0">
             </a-entity>
-            <a-plane position="0 1 -10" width="4" height="3" material="src: asset/images/F315/image1.jpg;"></a-plane>
+            <a-plane id="imagePlane" position="0 1 -10" width="4" height="3" material="src: asset/images/F315/image1.jpg"></a-plane>
 
             <a-box position="0 1 -10" color=blue></a-box>
             <a-box position="0 1 10" color=red></a-box>
@@ -261,6 +261,34 @@
 
     <script>
 
+        var imagePlane = document.querySelector('#imagePlane');
+        var images = [
+            'asset/images/F315/image1.jpg',
+            'asset/images/F315/image2.jpg',
+            'asset/images/F315/image3.jpg'
+        ];
+        var currentIndex = 0;
+
+        // Function to change the image dynamically
+        function changeImage() {
+            currentIndex = (currentIndex + 1) % images.length; // Cycle through the images
+            var nextImage = images[currentIndex];
+
+            // Apply the fade-out effect by changing opacity to 0
+            imagePlane.setAttribute('material', 'opacity', 0);
+            
+            // Wait for the fade-out to finish before changing the image
+            setTimeout(function() {
+            // Change the image
+            imagePlane.setAttribute('material', 'src', nextImage);
+
+            // Apply the fade-in effect by changing opacity back to 1
+            imagePlane.setAttribute('material', 'opacity', 1);
+            }, 1000); // Wait for 1 second for fade-out
+        }
+
+        // Set the interval to change images every 3 seconds
+        setInterval(changeImage, 3000);
 
         // Select form, input, suggestions container, and suggestion lists
         const searchForm = document.getElementById("search-form");
