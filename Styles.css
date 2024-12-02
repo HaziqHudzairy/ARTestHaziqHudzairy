@@ -400,6 +400,7 @@ form:hover .fa {
 }
 
 .center-menu img {
+  display: none;
   top: 0; 
   left: 50%; 
   width: 100%;
