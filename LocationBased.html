@@ -370,7 +370,6 @@
                 suggestionList.appendChild(nameContainer);
 
                 suggestionList.addEventListener("click", () => {
-                    removeSearchAddCancel()
                     searchInput.value = '';
                     resetFormAndSuggestions()
                     const centerMenu = document.querySelector('.center-menu2');
@@ -378,6 +377,7 @@
                     centerCircleH3.textContent = entity.name;
                     centerMenu.style.display = 'flex';
                     setNavigationCoordinates(entity.latitude, entity.longitude);
+                    setTimeout(removeSearchAddCancel, 2000);
                 });
 
                 suggestionsContainer.appendChild(suggestionList);
@@ -416,7 +416,6 @@
                     suggestionList.appendChild(nameContainer);
 
                     suggestionList.addEventListener('click', () => {
-                        removeSearchAddCancel()
                         searchInput.value = '';
                         resetFormAndSuggestions();
                         const centerMenu = document.querySelector('.center-menu2');
@@ -424,6 +423,7 @@
                         centerCircleH3.textContent = entity.name;
                         centerMenu.style.display = 'flex';
                         setNavigationCoordinates(entity.latitude, entity.longitude);
+                        setTimeout(removeSearchAddCancel, 2000);
                     });
 
                     suggestionsContainer.appendChild(suggestionList);
