@@ -215,14 +215,13 @@
         </a-assets>
 
         <a-entity id="virtual-space" visible="true" follow-camera>
-            <!-- <a-plane id="imagePlane" position="0 1 -10" width="4" height="3" material="src: asset/images/F315/image1.jpg;"></a-plane> -->
+            <a-plane id="imagePlane" position="0 1 -10" width="4" height="3" material="src: asset/images/F315/image1.jpg;"></a-plane>
             <!-- <video id="videoPlane" width="640" height="360" autoplay loop muted>
                 <source src="asset/videos/F315/video1.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video> -->
 
-            <a-plane id="imagePlane" position="0 1 -10" width="4" height="3" material="src: asset/images/background1.png;"></a-plane>
-            <a-text id="textContent" position="0 1 -9.5" value="" color="white" font="https://cdn.aframe.io/fonts/Roboto-msdf.json" width="4" align="center"></a-text>
+            <a-box position="0 1 -10" color=blue></a-box>
             <a-box position="0 1 10" color=red></a-box>
             <a-box position="10 1 0" color=yellow></a-box>
             <a-box position="-10 1 0" color=green></a-box>
@@ -591,70 +590,13 @@
         }
 
 
-        // Initialize window.envEntities to hold all the entities
-        window.envEntities = [];
 
-        // Function to search and display the entity info based on name
-        function renderEntityByName(entityName) {
-            // Reference to the database
-            const entitiesRef = ref(database, "faculties"); // Adjust this reference as needed (faculties, residential, etc.)
-
-            // Search for the entity with the given name
-            onValue(entitiesRef, (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    // Loop through all entities to find the matching name
-                    for (const key in data) {
-                        const entity = data[key];
-                        if (entity.name && entity.name.toLowerCase() === entityName.toLowerCase()) {
-                            // Push the entity data into the envEntities array
-                            window.envEntities.push(entity);  // Add the entity to the array
-                            
-                            // Call renderEntityInfo to display the data
-                            renderEntityInfo(entity);
-                            return; // Stop the loop once the entity is found
-                        }
-                    }
-                    console.log("Entity not found");
-                } else {
-                    console.error("No data found in the database.");
-                }
-            });
-        }
-
-        // Function to render the entity info dynamically in the virtual space
-        window.renderEntityInfo = function (entity) {
-            const textContent = document.getElementById('textContent');
-
-            // Clear existing text on the plane
-            textContent.setAttribute('value', ''); 
-
-            // Wait for a small delay to clear the text
-            setTimeout(() => {
-                // Set text to be displayed on the plane
-                const content = `
-                    <b>${entity.name}</b>\n\n
-                    <i>${entity.Description}</i>\n\n
-                    <u>Contact:</u>\n${entity["Contact Information"]}\n\n
-                `;
-
-                // Add courses info if it's from a faculty
-                if (entity["Courses Provided and Description"]) {
-                    content += `<u>Courses Provided:</u>\n${entity["Courses Provided and Description"]}\n\n`;
-                }
-
-                // Update the text content
-                textContent.setAttribute('value', content);
-            }, 300); // Adjust this delay based on how quickly you want the text to be cleared before being updated
-        }
 
 
 
     </script>
     <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <script>
-
-        renderEntityByName("Islamic Studies Academy");
 
         // Function to update the latitude and longitude display
         function updateLocationDisplay(latitude, longitude) {
