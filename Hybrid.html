@@ -126,7 +126,7 @@
     "></div>
 
     <!--  -->
-    <a-scene renderer="logarithmicDepthBuffer: true; debugUIEnabled: false;" embedded loading-screen="enabled: false;"
+    <a-scene id="location-scene" renderer="logarithmicDepthBuffer: true; debugUIEnabled: false;" embedded loading-screen="enabled: false;"
         arjs="sourceType: webcam; cameraParametersUrl: camera_para.dat;" id="ar-scene">
         <a-assets>
 
@@ -228,9 +228,7 @@
             <a-box position="0 1 10" color=red></a-box>
             <a-box position="10 1 0" color=yellow></a-box>
             <a-box position="-10 1 0" color=green></a-box>
-        </a-entity>
-
-        <!-- <a-entity id="dynamic-model"></a-entity> -->
+        </a-entity>     
 
         <a-camera gps-camera look-controls rotation-reader position="0 1.6 0"></a-camera>
 
@@ -259,36 +257,129 @@
 
     </a-scene>
 
+    <!-- Marker-based AR Scene -->
+    <a-scene id="marker-scene" embedded arjs style="display: none;">
+        <a-marker preset="hiro">
+            <a-box position="0 0.5 0" color="blue"></a-box>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <a-scene
+        style="display: none;"
+        id="marker-scene"
+        vr-mode-ui="enabled: false;"
+        loading-screen="enabled: false;"
+        renderer="logarithmicDepthBuffer: true;"
+        embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+        id="scene"
+        
+    >
+        <a-assets>
+            <a-asset-item id="Dog" src="asset/asset.gltf"></a-asset-item>
+            <a-asset-item id="Environment" src="asset/CloudScene.glb"></a-asset-item>
+            <a-asset-item id="Gundam" src="asset/Gundam.glb"></a-asset-item>
+            <a-asset-item id="InfoContainer1" src="asset/console.glb"></a-asset-item>
+            <a-asset-item id="FSKTMLogo" src="asset/FSKTMAnim3.glb"></a-asset-item>
+            <a-asset-item id="TV" src="asset/tv.glb"></a-asset-item>
+            <a-asset-item id="Pin" src="asset/LocationPin.glb"></a-asset-item>
+            <video muted id="FSKTMVideo" src="Videos/Welcome to Faculty of Computer Science and Information Technology, University of Malaya.mp4" autoplay loop="true"></video>
+            <img id="WelcomePhoto" src="asset/WelcomToFSKTM.png"></img>
+        </a-assets>
+
+        <!-- Origin marker -->
+        <a-marker
+            id="origin-marker"
+            type="pattern"
+            url="asset/marker.patt"
+            emitevents="true"
+        >
+        <a-image id="origin-model" src="#WelcomePhoto" scale="3 3 3" class="clickable" gesture-handler rotation="-90 0 0"></a-image>
+        </a-marker>
+
+        <!-- Virtual 3D space (initially hidden) -->
+        <a-entity id="virtual-space" visible="false">
+            <a-entity 
+                id="Pin Location"
+                scale="0.2 0.2 0.2"
+                gltf-model="#Pin"
+                position="0 4 -5"
+            ></a-entity>
+            <a-entity
+                id="Fsktm"
+                scale="2 2 2"
+                gltf-model="#FSKTMLogo"
+                position="0 0 -5"
+            ></a-entity>
+            <a-entity
+                id="Env"
+                scale="10 10 10"
+                gltf-model="#Environment"
+                position="0 -50 0"
+                rotation="0 0 0"
+            ></a-entity>
+            <a-entity
+                id="Env"
+                scale="10 10 10"
+                gltf-model="#Gundam"
+                position="0 -60 0"
+                rotation="0 0 0"
+            ></a-entity>
+
+            <a-entity
+                id="ConsoleGame"
+                scale="6 6 6"
+                gltf-model="#InfoContainer1"
+                position="12 -1 8"
+                rotation="10 260 0"
+            ></a-entity>
+
+            <a-entity
+                id="TVPlayer"
+                scale="5.2 4 5 "
+                gltf-model="#TV"
+                position="18 -2.4 -5.37"
+                rotation="0 -60 0"
+            ></a-entity>
+            
+            <a-video src="#FSKTMVideo" width="8" height="4.5" position="14 2 -3.3" rotation="0 -60 0"></a-video>
+             
+        </a-entity>
+
+        <!-- Camera -->
+        <a-entity camera look-controls></a-entity>
+    </a-scene>
+
     <script>
 
-    var imagePlane = document.querySelector('#imagePlane');
-    var images = [
-        'asset/images/F315/image1.jpg',
-        'asset/images/F315/image2.jpg',
-        'asset/images/F315/image3.jpg'
-    ];
-    var currentIndex = 0;
+        var imagePlane = document.querySelector('#imagePlane');
+        var images = [
+            'asset/images/F315/image1.jpg',
+            'asset/images/F315/image2.jpg',
+            'asset/images/F315/image3.jpg'
+        ];
+        var currentIndex = 0;
 
-    // Function to change the image dynamically
-    function changeImage() {
-        currentIndex = (currentIndex + 1) % images.length; // Cycle through the images
-        var nextImage = images[currentIndex];
+        // Function to change the image dynamically
+        function changeImage() {
+            currentIndex = (currentIndex + 1) % images.length; // Cycle through the images
+            var nextImage = images[currentIndex];
 
-        // Apply the fade-out effect by changing opacity to 0
-        imagePlane.setAttribute('material', 'opacity', 0);
-        
-        // Wait for the fade-out to finish before changing the image
-        setTimeout(function() {
-        // Change the image
-        imagePlane.setAttribute('material', 'src', nextImage);
+            // Apply the fade-out effect by changing opacity to 0
+            imagePlane.setAttribute('material', 'opacity', 0);
+            
+            // Wait for the fade-out to finish before changing the image
+            setTimeout(function() {
+            // Change the image
+            imagePlane.setAttribute('material', 'src', nextImage);
 
-        // Apply the fade-in effect by changing opacity back to 1
-        imagePlane.setAttribute('material', 'opacity', 1);
-        }, 1000); // Wait for 1 second for fade-out
-    }
+            // Apply the fade-in effect by changing opacity back to 1
+            imagePlane.setAttribute('material', 'opacity', 1);
+            }, 1000); // Wait for 1 second for fade-out
+        }
 
-    // Set the interval to change images every 3 seconds
-    setInterval(changeImage, 3000);
+        // Set the interval to change images every 3 seconds
+        setInterval(changeImage, 3000);
 
         // Select form, input, suggestions container, and suggestion lists
         const searchForm = document.getElementById("search-form");
@@ -755,6 +846,8 @@
                 entity.parentNode.removeChild(entity); // Remove each dynamic entity
             });
 
+            //stopLocationUpdates();
+
             console.log("Cleared all dynamic entities.");
         }
 
@@ -765,6 +858,8 @@
             const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
             const proximityDiv = document.getElementById("proximity-message");
             const searchForm = document.getElementById("search-form");
+
+            // Update the proximity message and make it visible
             proximityDiv.innerText = message;
             proximityDiv.style.display = "block";
             proximityDiv.style.opacity = "1"; // Fade-in effect
@@ -774,20 +869,36 @@
             centerMenu.style.display = 'flex';
 
             if (centerMenu) {
-                centerMenu.addEventListener('click', function (event) {
-                    hideDebugMessage();
-                    hideProximityMessage();
-                    searchForm.style.display = "none";
-                    showCancelButton();
-                    virtualSpace.setAttribute('visible', true);
-                    virtualSpace.setAttribute('follow-camera', '');
-                    clearSceneEntities();
-                    showDebugMessage(`You are viewing ${message} AR environment`);
-                });
+                // Add the event listener using a separate function
+                centerMenu.addEventListener('click', handleCenterMenuClick(message));
             } else {
                 console.error('Element .center-menu not found!');
             }
         }
+
+        // Function to handle the click event
+        function handleCenterMenuClick(message) {
+            return function (event) {
+                const centerMenu = document.querySelector('.center-menu');
+                centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
+                setTimeout(() => {
+                    centerMenu.style.display = 'none';
+                }, 500);
+
+                hideDebugMessage();
+                const searchForm = document.getElementById("search-form");
+                searchForm.style.display = "none";
+                showCancelButton();
+                
+                const virtualSpace = document.querySelector('#virtual-space');
+                virtualSpace.setAttribute('visible', true);
+                virtualSpace.setAttribute('follow-camera', '');
+
+                clearSceneEntities();
+                showDebugMessage(`You are viewing ${message} AR environment`);
+            };
+        }
+
 
         // Function to hide the proximity message
         function hideProximityMessage() {
@@ -797,7 +908,6 @@
             centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
             setTimeout(() => {
                 proximityDiv.style.display = "none";
-
                 centerMenu.style.display = 'none';
             }, 500); // Match this timeout with the CSS transition duration
 
@@ -873,6 +983,7 @@
 
         // Update the location continuously with system popup for errors
         function updateLocation() {
+
             navigator.geolocation.watchPosition(
                 function (position) {
                     const latitude = position.coords.latitude;
@@ -905,15 +1016,24 @@
                     alert(message);
                 },
                 {
-                    enableHighAccuracy: true,
+                    enableHighAccuracy: false,
                     maximumAge: 0,
-                    timeout: 5000
+                    timeout: 10000
                 }
             );
         }
 
         // Call the function to start updating the location
         updateLocation();
+
+        function stopLocationUpdates() {
+            navigator.geolocation.clearWatch(watchId);
+        }
+
+        function restartLocationUpdates() {
+            stopLocationUpdates();  // First stop the current updates
+            updateLocation();        // Then start new location updates
+        }
 
 
         // Your Mapbox Token Specifically for UM.AR domain
