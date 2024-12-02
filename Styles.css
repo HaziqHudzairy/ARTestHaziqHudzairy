@@ -391,6 +391,7 @@ form:hover .fa {
 
 .center-menu {
   position: fixed;
+  display: none;
   bottom: 70px;
   left: 50%;
   transform: translateX(-50%);
@@ -400,7 +401,6 @@ form:hover .fa {
 }
 
 .center-menu img {
-  display: none;
   top: 0; 
   left: 50%; 
   width: 100%;
