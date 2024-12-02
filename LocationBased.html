@@ -755,7 +755,7 @@
                 entity.parentNode.removeChild(entity); // Remove each dynamic entity
             });
 
-            stopLocationUpdates();
+            //stopLocationUpdates();
 
             console.log("Cleared all dynamic entities.");
         }
@@ -889,8 +889,6 @@
             // Log the correct model name for debugging
             showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${entity.model}`);
         }
-
-        let watchId = null;
 
         // Update the location continuously with system popup for errors
         function updateLocation() {
