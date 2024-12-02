@@ -1,4 +1,4 @@
-Firebase<!doctype html>
+<!doctype html>
 <html>
 
 <head>
@@ -740,13 +740,14 @@ Firebase<!doctype html>
 
             if (centerMenu) {
                 centerMenu.addEventListener('click', function (event) {
+                    hideDebugMessage();
                     hideProximityMessage();
                     searchForm.style.display = "none";
                     showCancelButton();
                     virtualSpace.setAttribute('visible', true);
                     virtualSpace.setAttribute('follow-camera', '');
                     clearSceneEntities();
-                    showDebugMessage(`You are viewing ${message} AR environment`)
+                    showDebugMessage(`You are viewing ${message} AR environment`);
                 });
             } else {
                 console.error('Element .center-menu not found!');
