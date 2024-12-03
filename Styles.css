@@ -536,13 +536,19 @@ form:hover .fa {
 
 .center-menu2 {
   position: fixed;
-  display: none;
+  visibility: visible;
+  opacity: 1;
   bottom: 70px;
   left: 50%;
   transform: translateX(-50%);
   width: 55vw;
   height: auto;
   z-index: 9999;
+}
+
+.center-menu2.hidden {
+  visibility: hidden;
+  opacity: 0;
 }
 
 .center-menu2 img {
