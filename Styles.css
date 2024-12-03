@@ -684,6 +684,7 @@ form:hover .fa {
 }
 
 .btn-content {
+  z-index: 9999;
   position: fixed;
   top: 8%;
   right: 6px;
@@ -731,7 +732,7 @@ form:hover .fa {
   justify-content: center;
   background-color: #ba181b;
   /* Darker green for the pointy section */
-  padding: 15px 25px;
+  padding: 16px 25px;
   border-radius: 10px;
   clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
 }

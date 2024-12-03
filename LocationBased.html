@@ -44,7 +44,7 @@
             <i class="fa fa-search"></i>
         </form>
 
-        <div class="btn-content">
+        <div class="btn-content hidden">
             <a href="#" class="btn-custom">
                 <span class="left title">Exit Navigation</span>
                 <span class="right icon-container">
@@ -378,6 +378,31 @@
     </script>
     <script>
 
+        function clearClickEvent(btnContent) {
+            btnContent.removeEventListener("click", handleExitClick);
+        }
+
+        function handleExitClick() {
+            clearMarkers();
+            hideExitNav();
+        }
+
+        function unhideExitNav() {
+            const btnContent = document.querySelector('.btn-content');
+            btnContent.classList.remove('hidden');
+
+            // Add the event listener
+            btnContent.addEventListener("click", handleExitClick);
+        }
+
+        function hideExitNav() {
+            const btnContent = document.querySelector('.btn-content');
+            btnContent.classList.add('hidden');
+
+            // Remove the event listener
+            clearClickEvent(btnContent);
+        }
+
         //Show fata container for user position
         document.getElementById("data-container").style.display = "block";
         // Select form, input, suggestions container, and suggestion lists
@@ -524,6 +549,7 @@
             centerCircleH3.textContent = entity.name;
             centerMenu.style.display = 'flex';
             setNavigationCoordinates(entity.latitude, entity.longitude);
+            unhideExitNav();
         }
 
         searchInput.addEventListener('input', (event) => {
@@ -549,11 +575,6 @@
                 debugDiv.style.display = "none"; // Hide after fade-out
             }, 500); // Match this timeout with the CSS transition duration
         }
-
-    </script>
-
-    <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-    <script>
 
         // Function to update the latitude and longitude display
         function updateLocationDisplay(latitude, longitude) {
