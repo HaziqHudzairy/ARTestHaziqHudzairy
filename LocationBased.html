@@ -552,22 +552,15 @@
             }
         }
 
-        function showNavDetails(entityName)
-        {
-            const centerMenu = document.querySelector('.center-menu2');
-            const centerCircleH3 = centerMenu.querySelector('.center-circle2 h3');
-
-            centerCircleH3.textContent = entity.name;
-            centerMenu.style.display = 'block';
-        }
-
         function clickSuggestion(entity) {
             resetFormAndSuggestions();
             const searchForm = document.getElementById("search-form");
-            searchForm.style.display = 'none';
+            const centerMenu = document.querySelector('.center-menu2');
+            const centerCircleH3 = centerMenu.querySelector('.center-circle2 h3');
 
-            showNavDetails(entity.name);
-            
+            searchForm.style.display = 'none';
+            centerCircleH3.textContent = entity.name;
+            centerMenu.style.display = 'block';
             setNavigationCoordinates(entity.latitude, entity.longitude);
             unhideExitNav();
         }
