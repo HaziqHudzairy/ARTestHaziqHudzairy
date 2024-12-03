@@ -39,6 +39,15 @@
 
         <!-- Search bar form placed below the container -->
 
+        <div class="notification-container">
+            <img src="asset/middle_button/LocationNotification.png" alt="Location Icon" class="location-icon">
+            <div class="notification-box">
+                <h4>You are near</h4>
+                <h1>Faculty of Computer Science & Information Technology</h1>
+                <p>Click here to view AR environment</p>
+            </div>
+        </div>
+        
         <form id="search-form">
             <input type="search" tabindex="-1" placeholder="Search here ..." autocomplete="off">
             <i class="fa fa-search"></i>
@@ -585,7 +594,7 @@
 
             fallBackCenterMenu();
             resetFormAndSuggestions();
-            
+
             const searchForm = document.getElementById("search-form");
             const centerMenu = document.querySelector('.center-menu2');
             const centerCircleH3 = centerMenu.querySelector('.center-circle2 h3');
@@ -729,8 +738,6 @@
 
         function showProximityMessage(message) {
             const virtualSpace = document.querySelector('#virtual-space');
-            const centerMenu = document.querySelector('.center-menu');
-            const centerCircleH3 = centerMenu.querySelector('.center-circle h3');
             const proximityDiv = document.getElementById("proximity-message");
             const searchForm = document.getElementById("search-form");
 
@@ -738,10 +745,6 @@
             proximityDiv.innerText = message;
             proximityDiv.style.display = "block";
             proximityDiv.style.opacity = "1"; // Fade-in effect
-
-            // Update the center menu content
-            centerCircleH3.textContent = message;
-            centerMenu.style.display = 'flex';
 
             // Add event listener if not already added
             if (!centerMenu.dataset.listener) {
@@ -760,17 +763,12 @@
             }
         }
 
-
         // Function to hide the proximity message
         function hideProximityMessage() {
-            const centerMenu = document.querySelector('.center-menu');
             const proximityDiv = document.getElementById("proximity-message");
             proximityDiv.style.opacity = "0"; // Fade-out effect
-            centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
             setTimeout(() => {
                 proximityDiv.style.display = "none";
-
-                centerMenu.style.display = 'none';
             }, 500); // Match this timeout with the CSS transition duration
 
         }
