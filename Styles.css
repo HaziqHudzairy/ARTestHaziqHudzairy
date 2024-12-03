@@ -756,6 +756,15 @@ form:hover .fa {
   z-index: 5000;
 }
 
+/* Animation classes */
+.show-notification {
+  animation: fadeSlideIn 1s ease-out;
+}
+
+.hide-notification {
+  animation: fadeSlideOut 1s ease-out;
+}
+
 /* Notification Box */
 .notification-box {
   background-color: #ffffff; /* Gray background */
@@ -844,5 +853,29 @@ form:hover .fa {
   100% {
     transform: translate(-50%, -50%) rotate(360deg);
     /* Complete a full rotation */
+  }
+}
+
+/* Keyframes for fade and slide in from left */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0; /* Fully transparent */
+    transform: translateX(-100%); /* Start from off-screen to the left */
+  }
+  100% {
+    opacity: 1; /* Fully visible */
+    transform: translateX(0); /* End at the original position */
+  }
+}
+
+/* Keyframes for fade and slide out to the left */
+@keyframes fadeSlideOut {
+  0% {
+    opacity: 1; /* Fully visible */
+    transform: translateX(0); /* Start at the original position */
+  }
+  100% {
+    opacity: 0; /* Fully transparent */
+    transform: translateX(-100%); /* Move off-screen to the left */
   }
 }

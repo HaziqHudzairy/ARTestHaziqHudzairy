@@ -695,6 +695,25 @@
             }, 500); // Match the duration of the fade-out (in this case, 0.5s)
         }
 
+        function showNotification() {
+        const notification = document.querySelector('.notification-container');
+        notification.classList.remove('hide-notification'); // Remove fade-out class
+        notification.classList.add('show-notification'); // Add fade-in class
+        notification.style.display = 'flex'; // Ensure it's visible
+        }
+
+        function hideNotification() {
+        const notification = document.querySelector('.notification-container');
+        notification.classList.remove('show-notification'); // Remove fade-in class
+        notification.classList.add('hide-notification'); // Add fade-out class
+
+        // Ensure the element is hidden after the animation ends
+        notification.addEventListener('animationend', () => {
+            notification.style.display = 'none'; // Hide after animation ends
+        }, { once: true });
+        }
+
+
         const cancelButton = document.getElementById('cancel-button');
         cancelButton.addEventListener('click', function () {
             const virtualSpace = document.querySelector('#virtual-space');
@@ -745,6 +764,8 @@
             proximityDiv.innerText = message;
             proximityDiv.style.display = "block";
             proximityDiv.style.opacity = "1"; // Fade-in effect
+
+            showNotification()
 
             // Add event listener if not already added
             if (!centerMenu.dataset.listener) {
