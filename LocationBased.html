@@ -401,15 +401,22 @@
             
         }
 
-        function fallBackCenterMenu()
-        {
+        function fallBackCenterMenu() {
             const centerMenu = document.querySelector('.center-menu2');
-            centerMenu.style.animation = 'boink-reverse 0.01s ease-in-out forwards';
-            centerMenu.style.transform = 'translateX(-50%) translateY(0)';
-            centerMenu.classList.add('hidden');
-            centerMenu.style.transform = 'translate(-50%, -50%)';
-            centerMenu.classList.remove('hidden');
+
+            // Temporarily hide and reset the transform
+            centerMenu.style.animation = 'none'; // Reset animation
+            centerMenu.style.transform = 'translateX(-50%) translateY(0)'; // Reset to fallback position
+            centerMenu.classList.add('hidden'); // Hide the menu
+
+            // Trigger reflow to ensure browser applies the changes
+            void centerMenu.offsetWidth;
+
+            // Restore to the intended state
+            centerMenu.style.transform = 'translate(-50%, -50%)'; // Restore to centered position
+            centerMenu.classList.remove('hidden'); // Show the menu
         }
+
 
         function unhideExitNav() {
             const btnContent = document.querySelector('.btn-content');
@@ -563,7 +570,15 @@
             }
         }
 
+        let tryCount = 0;
+
         function clickSuggestion(entity) {
+
+            tryCount++;
+            if (tryCount % 2 === 0) {
+                fallBackCenterMenu(); // Apply fallback for even tries
+            }
+
             resetFormAndSuggestions();
             const searchForm = document.getElementById("search-form");
             const centerMenu = document.querySelector('.center-menu2');
@@ -573,7 +588,6 @@
             centerCircleH3.textContent = entity.name;
 
             centerMenu.style.transform = 'translate(-50%, -50%)';
-            void centerMenu.offsetWidth;
             centerMenu.classList.remove('hidden');
             setNavigationCoordinates(entity.latitude, entity.longitude);
             unhideExitNav();
