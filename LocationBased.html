@@ -313,10 +313,7 @@
                     console.error("No data found in the database.");
                 }
             });
-        }
-
-        // Call fetchEntities to populate global dynamicEntities
-        fetchEntitiesNameCoordinate();
+        }    
 
         // Recursive Function to Fetch and Render Entities
         function renderEntities(node, parent = null) {
@@ -356,6 +353,7 @@
 
         // Re-fetch and render entities from the database
         window.fetchAndRenderEntities = function() {
+            fetchEntitiesNameCoordinate();
             const entitiesRef = ref(database, "entities");
             onValue(entitiesRef, (snapshot) => {
                 const data = snapshot.val();
@@ -633,11 +631,8 @@
 
         // Clear entities and re-fetch/render them
         function refreshEntities() {
-            clearSceneEntities(); // Clear all existing entities
             fetchAndRenderEntities(); // Fetch and re-render entities from the database
         }
-
-
 
         function clearSceneEntities() {
             const scene = document.querySelector('a-scene');
