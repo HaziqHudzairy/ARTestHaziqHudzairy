@@ -394,7 +394,6 @@
             centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
             setTimeout(() => {
                 centerMenu.style.animation = 'none';
-                centerMenu.style.transform = 'scale(1)';
                 centerMenu.style.display = 'none';
             }, 500);
             
@@ -559,6 +558,7 @@
             const centerCircleH3 = centerMenu.querySelector('.center-circle2 h3');
 
             searchForm.style.display = 'none';
+            centerMenu.style.animation = 'boink 0.3s ease-in-out forwards';
             centerCircleH3.textContent = entity.name;
             centerMenu.style.display = 'block';
             setNavigationCoordinates(entity.latitude, entity.longitude);
