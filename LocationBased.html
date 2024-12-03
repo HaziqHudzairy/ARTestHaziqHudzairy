@@ -558,7 +558,8 @@
 
             searchForm.style.display = 'none';
             centerCircleH3.textContent = entity.name;
-            centerMenu.style.display = 'flex';
+            centerMenu.style.animation = 'none';
+            centerMenu.style.display = 'block';
             setNavigationCoordinates(entity.latitude, entity.longitude);
             unhideExitNav();
         }
