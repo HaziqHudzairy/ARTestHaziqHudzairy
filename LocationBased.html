@@ -383,6 +383,8 @@
         }
 
         function handleExitClick() {
+            const searchForm = document.getElementById("search-form");
+            searchForm.style.display = 'block';
             clearMarkers();
             hideExitNav();
         }
