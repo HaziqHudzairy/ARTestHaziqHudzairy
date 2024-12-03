@@ -611,22 +611,6 @@
             }, 500); // Match the duration of the fade-out (in this case, 0.5s)
         }
 
-        // Hide virtual space and clear dynamic entities
-        function clearVirtualSpace() {
-            const virtualSpace = document.querySelector('#virtual-space');
-            const scene = document.querySelector('a-scene');
-            
-            // Hide virtual space
-            virtualSpace.setAttribute('visible', false);
-            
-            // Clear all dynamic entities from the scene
-            const dynamicEntities = scene.querySelectorAll('.location-entity');
-            dynamicEntities.forEach((entity) => {
-                scene.removeChild(entity);
-            });
-        }
-
-
         const cancelButton = document.getElementById('cancel-button');
         cancelButton.addEventListener('click', function() {
             const virtualSpace = document.querySelector('#virtual-space');
