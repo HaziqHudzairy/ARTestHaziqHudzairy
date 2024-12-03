@@ -696,24 +696,24 @@
         }
 
         function showNotification(entityname) {
-        const notification = document.querySelector('.notification-container');
-        const locationName = document.querySelector('.notification-box h1');
+            const notification = document.querySelector('.notification-container');
+            const locationName = document.querySelector('.notification-box h1');
 
-        locationName.textContent = entityname;
-        notification.classList.remove('hide-notification'); // Remove fade-out class
-        notification.classList.add('show-notification'); // Add fade-in class
-        notification.style.display = 'flex'; // Ensure it's visible
+            locationName.textContent = entityname;
+            notification.classList.remove('hide-notification'); // Remove fade-out class
+            notification.classList.add('show-notification'); // Add fade-in class
+            notification.style.display = 'flex'; // Ensure it's visible
         }
 
         function hideNotification() {
-        const notification = document.querySelector('.notification-container');
-        notification.classList.remove('show-notification'); // Remove fade-in class
-        notification.classList.add('hide-notification'); // Add fade-out class
+            const notification = document.querySelector('.notification-container');
+            notification.classList.remove('show-notification'); // Remove fade-in class
+            notification.classList.add('hide-notification'); // Add fade-out class
 
-        // Ensure the element is hidden after the animation ends
-        notification.addEventListener('animationend', () => {
-            notification.style.display = 'none'; // Hide after animation ends
-        }, { once: true });
+            // Ensure the element is hidden after the animation ends
+            notification.addEventListener('animationend', () => {
+                notification.style.display = 'none'; // Hide after animation ends
+            }, { once: true });
         }
 
 
@@ -790,7 +790,8 @@
         // Function to hide the proximity message
         function hideProximityMessage() {
             const proximityDiv = document.getElementById("proximity-message");
-            proximityDiv.style.opacity = "0"; // Fade-out effect
+            proximityDiv.style.opacity = "0"; // Fade-out effect\
+            hideNotification();
             setTimeout(() => {
                 proximityDiv.style.display = "none";
             }, 500); // Match this timeout with the CSS transition duration
@@ -808,14 +809,16 @@
                 if (distance <= radius) {
                     isNearAnyEntity = true;
 
-                    showProximityMessage(`${entity.name}`);
+                    showNotification(`${entity.name}`);
+                    // showProximityMessage(`${entity.name}`);
 
                 }
             });
 
             // Hide the center menu if the user is not near any entity
             if (!isNearAnyEntity) {
-                hideProximityMessage();
+                hideNotification();
+                // hideProximityMessage();
             }
         }
 
