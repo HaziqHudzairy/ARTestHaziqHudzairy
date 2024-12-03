@@ -48,10 +48,6 @@
             <i class="fa fa-times cancel-btn"></i>
         </div>
 
-        <div id="cancel-button2" class="cancel-btn-container2">
-            <i class="fa fa-times cancel-btn"></i>
-        </div>
-
         <div id="suggestions-container" class="suggestions-container hidden">
         </div>
     </div>
@@ -330,24 +326,6 @@
             }, 300); // Animation duration
 
 
-        }
-
-        function removeSearchAddCancel() {
-            const searchForm = document.querySelector("search-form");
-            searchForm.style.display = 'none'; // Hide the search form
-            
-            const cancelBtn = document.querySelector("cancel-button2");
-            cancelBtn.style.display = 'block'; // Make the cancel button visible (use 'block' or 'flex')
-            cancelBtn.style.opacity = 1; // Ensure opacity is set to 1 for visibility
-        }
-
-        function exitNavigation()
-        {
-            const cancelBtn = document.querySelector("cancel-button2");
-            cancelBtn.style.display = 'none';
-
-            const searchForm = document.querySelector("search-form");
-            searchForm.style.display = 'fixed';
         }
 
 
@@ -877,6 +855,12 @@
             // Log the correct model name for debugging
             showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${entity.model}`);
         }
+
+
+
+
+
+
 
 
         // Update the location continuously with system popup for errors
