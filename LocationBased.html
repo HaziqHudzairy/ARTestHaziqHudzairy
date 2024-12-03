@@ -268,215 +268,6 @@
 
     </a-scene>
 
-    <script>
-
-
-        // Select form, input, suggestions container, and suggestion lists
-        const searchForm = document.getElementById("search-form");
-        const searchInput = searchForm.querySelector("input");
-        const suggestionsContainer = document.getElementById("suggestions-container");
-
-        // Ensure click handling for both search form and document works without conflicts
-        searchForm.addEventListener("click", (event) => {
-            renderPlaceNames();
-            searchForm.classList.add("expanded");
-            suggestionsContainer.classList.remove("hidden");
-            suggestionsContainer.classList.add("show");
-            animateSuggestions();
-            event.stopPropagation(); // Stop bubbling but don't block other events
-        });
-
-        document.addEventListener("click", (event) => {
-            if (!searchForm.contains(event.target) && !suggestionsContainer.contains(event.target)) {
-                searchInput.value = '';
-                resetFormAndSuggestions();
-            }
-        });
-
-        function animateSuggestions() {
-            const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
-            suggestionLists.forEach((list, index) => {
-                if (index < 10) {
-                    // Animate only the first 10 items
-                    requestAnimationFrame(() => {
-                        setTimeout(() => {
-                            list.classList.add("animated");
-                        }, index * 100); // Stagger animations for first 10 items
-                    });
-                } else {
-                    // Delay showing the rest by 3 seconds
-                    setTimeout(() => {
-                        list.classList.add("animated");
-                        list.style.opacity = '1';
-                        list.style.transform = 'translateX(0)'; // Reset any transform
-                    }, 1000);
-                }
-            });
-        }
-
-
-        // Function to reset form and hide suggestions
-        function resetFormAndSuggestions() {
-            searchForm.classList.remove('expanded');
-            suggestionsContainer.classList.remove('show');
-
-            suggestionsContainer.innerHTML = '';
-            setTimeout(() => {
-                suggestionsContainer.classList.add('hidden');
-            }, 300); // Animation duration
-
-
-        }
-
-
-        // Function to render place names dynamically
-        function renderPlaceNames() {
-            const suggestionsContainer = document.querySelector(".suggestions-container");
-
-            // Iterate through the global array
-            window.dynamicEntities.forEach((entity) => {
-                const suggestionList = document.createElement("div");
-                suggestionList.className = "suggestions-list";
-
-                const nameContainer = document.createElement("div");
-                nameContainer.className = "suggestions-list-name";
-
-                const placeName = document.createElement("h2");
-                placeName.textContent = entity.name;
-
-                nameContainer.appendChild(placeName);
-                suggestionList.appendChild(nameContainer);
-
-                suggestionList.addEventListener("click", () => {
-                    searchInput.value = '';
-                    resetFormAndSuggestions()
-                    const centerMenu = document.querySelector('.center-menu2');
-                    const centerCircleH3 = centerMenu.querySelector('.center-circle2 h3');
-                    centerCircleH3.textContent = entity.name;
-                    centerMenu.style.display = 'flex';
-                    setNavigationCoordinates(entity.latitude, entity.longitude);
-                });
-
-                suggestionsContainer.appendChild(suggestionList);
-            });
-        }
-
-
-        function renderPlaceFilter(filterText = '') {
-            const suggestionsContainer = document.querySelector('.suggestions-container');
-            suggestionsContainer.innerHTML = ''; // Clear existing suggestions
-
-            // Filter dynamicEntities based on filterText (case-insensitive)
-            const filteredEntities = window.dynamicEntities.filter(entity =>
-                entity.name.toLowerCase().includes(filterText.toLowerCase())
-            );
-
-            if (filteredEntities.length === 0) {
-                // If no results, show a "No results found" message
-                const noResultsMessage = document.createElement('div');
-                noResultsMessage.className = 'suggestions-list animated'; // Ensure animation applies
-                noResultsMessage.textContent = 'No results found';
-                suggestionsContainer.appendChild(noResultsMessage);
-            } else {
-                // Iterate through the filtered array
-                filteredEntities.forEach((entity, index) => {
-                    const suggestionList = document.createElement('div');
-                    suggestionList.className = 'suggestions-list'; // Initially without the animated class
-
-                    const nameContainer = document.createElement('div');
-                    nameContainer.className = 'suggestions-list-name';
-
-                    const placeName = document.createElement('h2');
-                    placeName.textContent = entity.name;
-
-                    nameContainer.appendChild(placeName);
-                    suggestionList.appendChild(nameContainer);
-
-                    suggestionList.addEventListener('click', () => {
-                        searchInput.value = '';
-                        resetFormAndSuggestions();
-                        const centerMenu = document.querySelector('.center-menu2');
-                        const centerCircleH3 = centerMenu.querySelector('.center-circle2 h3');
-                        centerCircleH3.textContent = entity.name;
-                        centerMenu.style.display = 'flex';
-                        setNavigationCoordinates(entity.latitude, entity.longitude);
-                    });
-
-                    suggestionsContainer.appendChild(suggestionList);
-
-                    // Add animation class after a short delay for visibility
-                    setTimeout(() => {
-                        suggestionList.classList.add('animated');
-                    }, index * 50); // Optional stagger effect
-                });
-            }
-
-            // Ensure the container is visible
-            if (!suggestionsContainer.classList.contains('show')) {
-                suggestionsContainer.classList.add('show');
-            }
-        }
-
-
-        searchInput.addEventListener('input', (event) => {
-            const searchText = event.target.value;
-            setTimeout(() => { // Small delay for better UX
-                renderPlaceFilter(searchText);
-            }, 0);
-        });
-
-
-        // // Add event listener to the input field for filtering
-        // document.querySelector('input[type="search"]').addEventListener('input', (event) => {
-        //     const searchText = event.target.value; // Get the input text
-        //     renderPlaceFilter(searchText); // Call renderPlaceNames with the filter text
-        // });
-
-        //Show fata container for user position
-        document.getElementById("data-container").style.display = "block";
-
-
-
-
-        //     // Wait for the DOM to load
-        //     document.addEventListener("DOMContentLoaded", function () {
-        //         // Select the <a-scene> element
-        //         const arScene = document.getElementById("ar-scene");
-
-        //         // Get the screen's width and height
-        //         const screenWidth = window.innerWidth;
-        //         const screenHeight = window.innerHeight;
-
-        //         // Update the arjs attribute with the calculated dimensions
-        //         const arjsAttributes = `
-        //   sourceType: webcam;
-        //   displayWidth: ${screenWidth};
-        //   displayHeight: ${screenHeight};
-        //   debugUIEnabled: false;
-        // `;
-        //         arScene.setAttribute("arjs", arjsAttributes);
-        //     });
-
-
-        // Function to show debug messages in the div
-        function showDebugMessage(message) {
-            const debugDiv = document.getElementById("debug-message");
-            debugDiv.innerText = message; // Set the message text
-            debugDiv.style.display = "block"; // Make the div visible
-            debugDiv.style.opacity = "1"; // Fade-in effect
-        }
-
-        // Function to hide the debug message
-        function hideDebugMessage() {
-            const debugDiv = document.getElementById("debug-message");
-            debugDiv.style.opacity = "0"; // Fade-out effect
-            setTimeout(() => {
-                debugDiv.style.display = "none"; // Hide after fade-out
-            }, 500); // Match this timeout with the CSS transition duration
-        }
-
-    </script>
-
     <!-- Firebase Script -->
     <script type="module">
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
@@ -578,44 +369,180 @@
 
         // Call the function after assigning it to window
         fetchAndRenderEntities();
+    </script>
+    <script>
 
+        //Show fata container for user position
+        document.getElementById("data-container").style.display = "block";
+        // Select form, input, suggestions container, and suggestion lists
+        const searchForm = document.getElementById("search-form");
+        const searchInput = searchForm.querySelector("input");
+        const suggestionsContainer = document.getElementById("suggestions-container");
 
-        // Global array to store event image links
-        window.eventImageLinks = [];
+        // Ensure click handling for both search form and document works without conflicts
+        searchForm.addEventListener("click", (event) => {
+            renderPlaceNames();
+            searchForm.classList.add("expanded");
+            suggestionsContainer.classList.remove("hidden");
+            suggestionsContainer.classList.add("show");
+            animateSuggestions();
+            event.stopPropagation(); 
+        });
 
-        // Function to fetch event image links based on a specific entity
-        window.fetchEventImageLinks = function (entityName) {
-            const entitiesRef = ref(database, "entities"); // Reference to the entities node
-            onValue(entitiesRef, (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    // Reset the image links array
-                    window.eventImageLinks = [];
+        document.addEventListener("click", (event) => {
+            if (!searchForm.contains(event.target) && !suggestionsContainer.contains(event.target)) {
+                searchInput.value = '';
+                resetFormAndSuggestions();
+            }
+        });
 
-                    // Iterate through the entities data to find the specific entity
-                    Object.keys(data).forEach((category) => {
-                        Object.values(data[category]).forEach((entity) => {
-                            if (entity.name === entityName && entity['Event Image Link']) {
-                                // Push all image links for the specified entity into the array
-                                window.eventImageLinks.push(...entity['Event Image Link']);
-                            }
-                        });
+        function animateSuggestions() {
+            const suggestionLists = suggestionsContainer.querySelectorAll(".suggestions-list");
+            suggestionLists.forEach((list, index) => {
+                if (index < 10) {
+                    // Animate only the first 10 items
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            list.classList.add("animated");
+                        }, index * 100); // Stagger animations for first 10 items
                     });
-
-                    // Log the event image links for the specified entity
-                    console.log(window.eventImageLinks);  // Corrected here
                 } else {
-                    console.error("No data found in the database.");
+                    // Delay showing the rest by 3 seconds
+                    setTimeout(() => {
+                        list.classList.add("animated");
+                        list.style.opacity = '1';
+                        list.style.transform = 'translateX(0)'; // Reset any transform
+                    }, 1000);
                 }
             });
         }
 
 
+        // Function to reset form and hide suggestions
+        function resetFormAndSuggestions() {
+            searchForm.classList.remove('expanded');
+            suggestionsContainer.classList.remove('show');
+
+            suggestionsContainer.innerHTML = '';
+            setTimeout(() => {
+                suggestionsContainer.classList.add('hidden');
+            }, 300); // Animation duration
 
 
+        }
 
+        // Function to render place names dynamically
+        function renderPlaceNames() {
+            const suggestionsContainer = document.querySelector(".suggestions-container");
+
+            // Iterate through the global array
+            window.dynamicEntities.forEach((entity) => {
+                const suggestionList = document.createElement("div");
+                suggestionList.className = "suggestions-list";
+
+                const nameContainer = document.createElement("div");
+                nameContainer.className = "suggestions-list-name";
+
+                const placeName = document.createElement("h2");
+                placeName.textContent = entity.name;
+
+                nameContainer.appendChild(placeName);
+                suggestionList.appendChild(nameContainer);
+
+                suggestionList.addEventListener("click", () => {
+                    searchInput.value = '';
+                    clickSuggestion(entity);
+                });
+
+                suggestionsContainer.appendChild(suggestionList);
+            });
+        }
+
+        function renderPlaceFilter(filterText = '') {
+            const suggestionsContainer = document.querySelector('.suggestions-container');
+            suggestionsContainer.innerHTML = ''; // Clear existing suggestions
+
+            // Filter dynamicEntities based on filterText (case-insensitive)
+            const filteredEntities = window.dynamicEntities.filter(entity =>
+                entity.name.toLowerCase().includes(filterText.toLowerCase())
+            );
+
+            if (filteredEntities.length === 0) {
+                // If no results, show a "No results found" message
+                const noResultsMessage = document.createElement('div');
+                noResultsMessage.className = 'suggestions-list animated'; // Ensure animation applies
+                noResultsMessage.textContent = 'No results found';
+                suggestionsContainer.appendChild(noResultsMessage);
+            } else {
+                // Iterate through the filtered array
+                filteredEntities.forEach((entity, index) => {
+                    const suggestionList = document.createElement('div');
+                    suggestionList.className = 'suggestions-list'; // Initially without the animated class
+
+                    const nameContainer = document.createElement('div');
+                    nameContainer.className = 'suggestions-list-name';
+
+                    const placeName = document.createElement('h2');
+                    placeName.textContent = entity.name;
+
+                    nameContainer.appendChild(placeName);
+                    suggestionList.appendChild(nameContainer);
+
+                    suggestionList.addEventListener('click', () => {
+                        searchInput.value = '';
+                        clickSuggestion(entity);
+                    });
+
+                    suggestionsContainer.appendChild(suggestionList);
+
+                    // Add animation class after a short delay for visibility
+                    setTimeout(() => {
+                        suggestionList.classList.add('animated');
+                    }, index * 50); // Optional stagger effect
+                });
+            }
+
+            // Ensure the container is visible
+            if (!suggestionsContainer.classList.contains('show')) {
+                suggestionsContainer.classList.add('show');
+            }
+        }
+
+        function clickSuggestion(entity){
+            resetFormAndSuggestions()
+            const centerMenu = document.querySelector('.center-menu2');
+            const centerCircleH3 = centerMenu.querySelector('.center-circle2 h3');
+            centerCircleH3.textContent = entity.name;
+            centerMenu.style.display = 'flex';
+            setNavigationCoordinates(entity.latitude, entity.longitude);
+        }
+
+        searchInput.addEventListener('input', (event) => {
+            const searchText = event.target.value;
+            setTimeout(() => { // Small delay for better UX
+                renderPlaceFilter(searchText);
+            }, 0);
+        });
+
+        // Function to show debug messages in the div
+        function showDebugMessage(message) {
+            const debugDiv = document.getElementById("debug-message");
+            debugDiv.innerText = message; // Set the message text
+            debugDiv.style.display = "block"; // Make the div visible
+            debugDiv.style.opacity = "1"; // Fade-in effect
+        }
+
+        // Function to hide the debug message
+        function hideDebugMessage() {
+            const debugDiv = document.getElementById("debug-message");
+            debugDiv.style.opacity = "0"; // Fade-out effect
+            setTimeout(() => {
+                debugDiv.style.display = "none"; // Hide after fade-out
+            }, 500); // Match this timeout with the CSS transition duration
+        }
 
     </script>
+
     <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <script>
 
