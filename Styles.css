@@ -11,7 +11,7 @@ body {
   /* Disable horizontal scrolling */
   width: 100%;
   /* Ensure the body fits within the viewport */
-  
+
 }
 
 html {
@@ -21,10 +21,12 @@ html {
 body {
   /* position: fixed; */
   left: 0;
-  display: block; /* Default block layout */
+  display: block;
+  /* Default block layout */
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Disable horizontal scrolling */
+  overflow-x: hidden;
+  /* Disable horizontal scrolling */
 }
 
 .container {
@@ -43,8 +45,10 @@ body {
   gap: 12px;
   background-color: rgb(255, 255, 255);
   outline: 10px solid red;
-  pointer-events: none; /* Disables all pointer events */
-  touch-action: none;   /* Disables touch-specific actions */
+  pointer-events: none;
+  /* Disables all pointer events */
+  touch-action: none;
+  /* Disables touch-specific actions */
 }
 
 .logoTop {
@@ -76,7 +80,8 @@ body {
   bottom: 65px;
   right: 10px;
   z-index: 999;
-  max-width: 100%; /* Ensure container doesn’t overflow */
+  max-width: 100%;
+  /* Ensure container doesn’t overflow */
   overflow: hidden;
 }
 
@@ -264,7 +269,8 @@ form {
   position: fixed;
   top: 11%;
   right: 10px;
-  width: 50px; /* Initial collapsed width */
+  width: 50px;
+  /* Initial collapsed width */
   height: 50px;
   background: white;
   box-sizing: border-box;
@@ -273,28 +279,34 @@ form {
   z-index: 1000;
   transition: all 0.3s ease-in-out;
   overflow: hidden;
-  max-width: 80vw; /* Prevent exceeding the viewport width */
+  max-width: 80vw;
+  /* Prevent exceeding the viewport width */
 }
 
 form.expanded {
-  width: 80%; /* Expanded width when clicked */
+  width: 80%;
+  /* Expanded width when clicked */
 }
 
 input {
   position: relative;
   width: 100%;
-  max-width: 100vh; /* Prevent input overflow */
+  max-width: 100vh;
+  /* Prevent input overflow */
   padding-left: 20px;
   line-height: 30px;
   border-radius: 20px;
   height: 42.5px;
   box-sizing: border-box;
-  display: none; /* Initially hidden */
-  font-size: 16px; /* Prevent iOS zooming */
+  display: none;
+  /* Initially hidden */
+  font-size: 16px;
+  /* Prevent iOS zooming */
 }
 
 form.expanded input {
-  display: block; /* Show input when form is expanded */
+  display: block;
+  /* Show input when form is expanded */
 }
 
 .fa {
@@ -327,7 +339,8 @@ form:hover .fa {
   left: 15px;
   right: 15px;
   background: #ffffff86;
-  max-height: 400px; /* Limit height for long lists */
+  max-height: 400px;
+  /* Limit height for long lists */
   border-radius: 10px;
   padding: 20px 10px;
   display: flex;
@@ -338,12 +351,14 @@ form:hover .fa {
   transform: scaleY(0);
   transform-origin: top;
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  opacity: 0; /* Initially hidden */
+  opacity: 0;
+  /* Initially hidden */
 }
 
 .suggestions-container.show {
   transform: scaleY(1);
-  opacity: 1; /* Fully visible */
+  opacity: 1;
+  /* Fully visible */
 }
 
 /* Suggestions list animation */
@@ -355,12 +370,14 @@ form:hover .fa {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, transform 0.3s ease, opacity 0.3s ease;
   opacity: 0;
-  transform: translateX(-20px); /* Start slightly left */
+  transform: translateX(-20px);
+  /* Start slightly left */
 }
 
 .suggestions-list.animated {
   opacity: 1;
-  transform: translateX(0); /* Move to original position */
+  transform: translateX(0);
+  /* Move to original position */
 }
 
 .suggestions-list:hover {
@@ -401,8 +418,8 @@ form:hover .fa {
 }
 
 .center-menu img {
-  top: 0; 
-  left: 50%; 
+  top: 0;
+  left: 50%;
   width: 100%;
   height: auto;
   position: absolute;
@@ -414,31 +431,45 @@ form:hover .fa {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 40vw; /* Adjust circle size as needed */
+  width: 40vw;
+  /* Adjust circle size as needed */
   height: 40vw;
-  background-color: rgba(0, 0, 0, 0.6); /* Black with 60% opacity */
-  border-radius: 50%; /* Makes it a circle */
-  transform: translate(-50%, -50%) scale(0); /* Start with scale(0) for animation */
-  animation: boink 0.5s ease-in-out forwards; /* Apply the same animation */
-  animation-delay: 0.5s; /* Delay the animation by 0.5 seconds */
-  z-index: 9999; /* Ensure it appears on top of the image */
-  display: flex; /* Enable flexbox */
-  flex-direction: column; /* Stack elements vertically */
-  justify-content: center; /* Center elements vertically */
-  align-items: center; /* Center elements horizontally */
+  background-color: rgba(0, 0, 0, 0.6);
+  /* Black with 60% opacity */
+  border-radius: 50%;
+  /* Makes it a circle */
+  transform: translate(-50%, -50%) scale(0);
+  /* Start with scale(0) for animation */
+  animation: boink 0.5s ease-in-out forwards;
+  /* Apply the same animation */
+  animation-delay: 0.5s;
+  /* Delay the animation by 0.5 seconds */
+  z-index: 9999;
+  /* Ensure it appears on top of the image */
+  display: flex;
+  /* Enable flexbox */
+  flex-direction: column;
+  /* Stack elements vertically */
+  justify-content: center;
+  /* Center elements vertically */
+  align-items: center;
+  /* Center elements horizontally */
 }
 
 .center-circle h3,
 .center-circle h6,
 .center-circle p {
-  margin: 0; /* Remove default margins */
-  line-height: 1.2; /* Adjust line height for reduced spacing */
+  margin: 0;
+  /* Remove default margins */
+  line-height: 1.2;
+  /* Adjust line height for reduced spacing */
 }
 
 .center-circle h3 {
   width: 80%;
   font-family: 'Roboto', sans-serif;
-  font-weight: 900; /* Bold font weight */
+  font-weight: 900;
+  /* Bold font weight */
   color: white;
   text-align: center;
   font-size: 18px;
@@ -447,7 +478,8 @@ form:hover .fa {
 
 .center-circle h6 {
   font-family: 'Roboto', sans-serif;
-  font-weight: 500; /* Regular font weight */
+  font-weight: 500;
+  /* Regular font weight */
   color: white;
   text-align: center;
   font-size: 14px;
@@ -457,9 +489,11 @@ form:hover .fa {
 .center-circle p {
   width: 70%;
   font-family: 'Roboto', sans-serif;
-  font-weight: 500; /* Regular font weight */
+  font-weight: 500;
+  /* Regular font weight */
   color: white;
-  font-size: 12px; /* Smaller font size for `p` */
+  font-size: 12px;
+  /* Smaller font size for `p` */
   text-align: center;
 }
 
@@ -467,26 +501,37 @@ form:hover .fa {
   position: fixed;
   bottom: 11%;
   right: 10px;
-  width: 42.5px; /* Same width as the button */
-  height: 42.5px; /* Same height as the button */
+  width: 42.5px;
+  /* Same width as the button */
+  height: 42.5px;
+  /* Same height as the button */
   background: #b14242;
   color: rgb(255, 255, 255);
-  border-radius: 50%; /* Makes it circular */
+  border-radius: 50%;
+  /* Makes it circular */
   cursor: pointer;
-  z-index: 2000; /* Ensure the cancel button is above other elements */
-  text-align: center; /* Aligns the icon horizontally */
-  line-height: 42.5px; /* Aligns the icon vertically */
+  z-index: 2000;
+  /* Ensure the cancel button is above other elements */
+  text-align: center;
+  /* Aligns the icon horizontally */
+  line-height: 42.5px;
+  /* Aligns the icon vertically */
   transition: background 0.5s ease-in-out, opacity 0.5s ease-in-out, color 0.5s ease-in-out;
-  opacity: 0; /* Initially invisible */
+  opacity: 0;
+  /* Initially invisible */
 }
 
 .cancel-btn-container i {
-  font-size: 1.2em; /* Adjust font size to match the button size */
+  font-size: 1.2em;
+  /* Adjust font size to match the button size */
 }
 
-.fa:hover, .cancel-btn-container:hover {
-  background: #f0f0f0; /* Change background on hover */
-  color: rgb(0, 0, 0); /* Change icon color on hover */
+.fa:hover,
+.cancel-btn-container:hover {
+  background: #b14242;
+  /* Change background on hover */
+  color: rgb(255, 255, 255);
+  /* Change icon color on hover */
 }
 
 .center-menu2 {
@@ -501,8 +546,8 @@ form:hover .fa {
 }
 
 .center-menu2 img {
-  top: 0; 
-  left: 50%; 
+  top: 0;
+  left: 50%;
   width: 100%;
   height: auto;
   position: absolute;
@@ -514,31 +559,45 @@ form:hover .fa {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 40vw; /* Adjust circle size as needed */
+  width: 40vw;
+  /* Adjust circle size as needed */
   height: 40vw;
-  background-color: rgba(0, 0, 0, 0.6); /* Black with 60% opacity */
-  border-radius: 50%; /* Makes it a circle */
-  transform: translate(-50%, -50%) scale(0); /* Start with scale(0) for animation */
-  animation: boink 0.5s ease-in-out forwards; /* Apply the same animation */
-  animation-delay: 0.5s; /* Delay the animation by 0.5 seconds */
-  z-index: 9999; /* Ensure it appears on top of the image */
-  display: flex; /* Enable flexbox */
-  flex-direction: column; /* Stack elements vertically */
-  justify-content: center; /* Center elements vertically */
-  align-items: center; /* Center elements horizontally */
+  background-color: rgba(0, 0, 0, 0.6);
+  /* Black with 60% opacity */
+  border-radius: 50%;
+  /* Makes it a circle */
+  transform: translate(-50%, -50%) scale(0);
+  /* Start with scale(0) for animation */
+  animation: boink 0.5s ease-in-out forwards;
+  /* Apply the same animation */
+  animation-delay: 0.5s;
+  /* Delay the animation by 0.5 seconds */
+  z-index: 9999;
+  /* Ensure it appears on top of the image */
+  display: flex;
+  /* Enable flexbox */
+  flex-direction: column;
+  /* Stack elements vertically */
+  justify-content: center;
+  /* Center elements vertically */
+  align-items: center;
+  /* Center elements horizontally */
 }
 
 .center-circle2 h3,
 .center-circle2 h6,
 .center-circle2 p {
-  margin: 0; /* Remove default margins */
-  line-height: 1.2; /* Adjust line height for reduced spacing */
+  margin: 0;
+  /* Remove default margins */
+  line-height: 1.2;
+  /* Adjust line height for reduced spacing */
 }
 
 .center-circle2 h3 {
   width: 80%;
   font-family: 'Roboto', sans-serif;
-  font-weight: 900; /* Bold font weight */
+  font-weight: 900;
+  /* Bold font weight */
   color: white;
   text-align: center;
   font-size: 18px;
@@ -547,7 +606,8 @@ form:hover .fa {
 
 .center-circle2 h6 {
   font-family: 'Roboto', sans-serif;
-  font-weight: 500; /* Regular font weight */
+  font-weight: 500;
+  /* Regular font weight */
   color: white;
   text-align: center;
   font-size: 14px;
@@ -557,9 +617,11 @@ form:hover .fa {
 .center-circle2 p {
   width: 70%;
   font-family: 'Roboto', sans-serif;
-  font-weight: 500; /* Regular font weight */
+  font-weight: 500;
+  /* Regular font weight */
   color: white;
-  font-size: 12px; /* Smaller font size for `p` */
+  font-size: 12px;
+  /* Smaller font size for `p` */
   text-align: center;
 }
 
@@ -583,31 +645,95 @@ form:hover .fa {
   position: fixed;
   top: 11%;
   right: 10px;
-  width: 42.5px; /* Same width as the button */
-  height: 42.5px; /* Same height as the button */
+  width: 42.5px;
+  /* Same width as the button */
+  height: 42.5px;
+  /* Same height as the button */
   background: #c04545;
   color: rgb(255, 255, 255);
-  border-radius: 50%; /* Makes it circular */
+  border-radius: 50%;
+  /* Makes it circular */
   cursor: pointer;
-  z-index: 2000; /* Ensure the cancel button is above other elements */
-  text-align: center; /* Aligns the icon horizontally */
-  line-height: 42.5px; /* Aligns the icon vertically */
+  z-index: 2000;
+  /* Ensure the cancel button is above other elements */
+  text-align: center;
+  /* Aligns the icon horizontally */
+  line-height: 42.5px;
+  /* Aligns the icon vertically */
   transition: background 0.5s ease-in-out, opacity 0.5s ease-in-out, color 0.5s ease-in-out;
-  opacity: 0; /* Initially invisible */
+  opacity: 0;
+  /* Initially invisible */
 }
 
 .cancel-btn-container2 i {
-  font-size: 1.2em; /* Adjust font size to match the button size */
+  font-size: 1.2em;
+  /* Adjust font size to match the button size */
 }
 
-.fa:hover, .cancel-btn-container:hover {
-  background: #f0f0f0; /* Change background on hover */
-  color: rgb(0, 0, 0); /* Change icon color on hover */
+.fa:hover,
+.cancel-btn-container:hover {
+  background: #f0f0f0;
+  /* Change background on hover */
+  color: rgb(0, 0, 0);
+  /* Change icon color on hover */
 }
 
 .cancel-btn-container2 {
   opacity: 0;
   display: none;
+}
+
+.btn-content {
+  position: fixed;
+  bottom: 11%;
+  right: 10px;
+  text-align: center;
+  margin: 20px;
+}
+
+/* Button Styling */
+.btn-custom {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #ff686b, #ba181b);
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 10px;
+  padding: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover Effect */
+.btn-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Left Text */
+.btn-custom .title {
+  margin: 20px;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.btn-custom .icon-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ba181b;
+  /* Darker green for the pointy section */
+  padding: 20px 25px;
+  border-radius: 10px;
+  clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
 }
 
 
@@ -616,9 +742,12 @@ form:hover .fa {
   0% {
     transform: translate(-50%, -50%) scale(0);
   }
+
   50% {
-    transform: translate(-50%, -50%) scale(1.1); /* Slightly larger for bounce effect */
+    transform: translate(-50%, -50%) scale(1.1);
+    /* Slightly larger for bounce effect */
   }
+
   100% {
     transform: translate(-50%, -50%) scale(1);
   }
@@ -628,9 +757,12 @@ form:hover .fa {
   0% {
     transform: translate(-50%, -50%) scale(1);
   }
+
   50% {
-    transform: translate(-50%, -50%) scale(1.1); /* Slightly larger for reverse bounce effect */
+    transform: translate(-50%, -50%) scale(1.1);
+    /* Slightly larger for reverse bounce effect */
   }
+
   100% {
     transform: translate(-50%, -50%) scale(0);
   }
@@ -639,11 +771,12 @@ form:hover .fa {
 /* Keyframes for continuous rotation */
 @keyframes rotate {
   0% {
-    transform: translate(-50%, -50%) rotate(0deg); /* Start at 0 degrees */
+    transform: translate(-50%, -50%) rotate(0deg);
+    /* Start at 0 degrees */
   }
+
   100% {
-    transform: translate(-50%, -50%) rotate(360deg); /* Complete a full rotation */
+    transform: translate(-50%, -50%) rotate(360deg);
+    /* Complete a full rotation */
   }
 }
-
-

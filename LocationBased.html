@@ -44,6 +44,15 @@
             <i class="fa fa-search"></i>
         </form>
 
+        <div class="btn-content">
+            <a href="#" class="btn-custom">
+                <span class="left title">Exit Navigation</span>
+                <span class="right icon-container">
+                    <i class="fas fa-sign-out-alt" style="transform: rotate(180deg);"></i>
+                </span>
+              </a>
+          </div>
+
         <div id="cancel-button" class="cancel-btn-container">
             <i class="fa fa-times cancel-btn"></i>
         </div>
@@ -364,7 +373,6 @@
                 }
             });
         }
-
         // Call the function after assigning it to window
         fetchAndRenderEntities();
     </script>
@@ -507,9 +515,12 @@
         }
 
         function clickSuggestion(entity){
-            resetFormAndSuggestions()
+            resetFormAndSuggestions();
+            const searchForm = document.getElementById("search-form");
             const centerMenu = document.querySelector('.center-menu2');
             const centerCircleH3 = centerMenu.querySelector('.center-circle2 h3');
+
+            searchForm.style.display = 'none';
             centerCircleH3.textContent = entity.name;
             centerMenu.style.display = 'flex';
             setNavigationCoordinates(entity.latitude, entity.longitude);
