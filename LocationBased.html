@@ -393,6 +393,7 @@
 
             centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
             setTimeout(() => {
+                centerMenu.style.animation = 'none';
                 centerMenu.style.display = 'none';
             }, 500);
             
@@ -558,7 +559,6 @@
 
             searchForm.style.display = 'none';
             centerCircleH3.textContent = entity.name;
-            centerMenu.style.animation = 'none';
             centerMenu.style.display = 'block';
             setNavigationCoordinates(entity.latitude, entity.longitude);
             unhideExitNav();
