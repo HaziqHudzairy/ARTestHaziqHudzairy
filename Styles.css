@@ -465,12 +465,12 @@ form:hover .fa {
 
 .cancel-btn-container {
   position: fixed;
-  top: 11%;
+  bottom: 11%;
   right: 10px;
   width: 42.5px; /* Same width as the button */
   height: 42.5px; /* Same height as the button */
-  background: #ffffff;
-  color: rgb(0, 0, 0);
+  background: #b14242;
+  color: rgb(255, 255, 255);
   border-radius: 50%; /* Makes it circular */
   cursor: pointer;
   z-index: 2000; /* Ensure the cancel button is above other elements */
