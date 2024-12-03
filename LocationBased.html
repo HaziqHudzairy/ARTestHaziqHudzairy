@@ -394,6 +394,7 @@
             centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
             setTimeout(() => {
                 centerMenu.style.animation = 'none';
+                centerMenu.style.transform = 'none';
                 centerMenu.style.display = 'none';
             }, 500);
             
@@ -551,15 +552,22 @@
             }
         }
 
-        function clickSuggestion(entity) {
-            resetFormAndSuggestions();
-            const searchForm = document.getElementById("search-form");
+        function showNavDetails(entityName)
+        {
             const centerMenu = document.querySelector('.center-menu2');
             const centerCircleH3 = centerMenu.querySelector('.center-circle2 h3');
 
-            searchForm.style.display = 'none';
             centerCircleH3.textContent = entity.name;
             centerMenu.style.display = 'block';
+        }
+
+        function clickSuggestion(entity) {
+            resetFormAndSuggestions();
+            const searchForm = document.getElementById("search-form");
+            searchForm.style.display = 'none';
+
+            showNavDetails(entity.name);
+            
             setNavigationCoordinates(entity.latitude, entity.longitude);
             unhideExitNav();
         }
