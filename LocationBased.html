@@ -395,26 +395,37 @@
 
             setTimeout(() => {
                 centerMenu.style.animation = 'none';
-                centerMenu.style.transform = 'translateX(-50%) translateY(0)'; // Reset translate to avoid weird offsets
-                centerMenu.classList.add('hidden');
+                fallBackCenterMenu();
             }, 500);
             
         }
 
+        function recreateCenterMenu() {
+            const oldMenu = document.querySelector('.center-menu2');
+            const parent = oldMenu.parentElement;
+
+            // Remove the old menu
+            parent.removeChild(oldMenu);
+
+            // Create a new menu element
+            const newMenu = document.createElement('div');
+            newMenu.className = 'center-menu2 hidden';
+            newMenu.innerHTML = `
+                <img src="asset/middle_button/we love the earth.png" alt="earth_img">
+                <div class="center-circle2">
+                    <h6>You are going to</h6>
+                    <h3></h3>
+                    <p>Click here to view full route</p>
+                </div>
+            `;
+
+            // Append the new menu
+            parent.appendChild(newMenu);
+            return newMenu;
+        }
+
         function fallBackCenterMenu() {
-            const centerMenu = document.querySelector('.center-menu2');
-
-            // Temporarily hide and reset the transform
-            centerMenu.style.animation = 'none'; // Reset animation
-            centerMenu.style.transform = 'translateX(-50%) translateY(0)'; // Reset to fallback position
-            centerMenu.classList.add('hidden'); // Hide the menu
-
-            // Trigger reflow to ensure browser applies the changes
-            void centerMenu.offsetWidth;
-
-            // Restore to the intended state
-            centerMenu.style.transform = 'translate(-50%, -50%)'; // Restore to centered position
-            centerMenu.classList.remove('hidden'); // Show the menu
+            recreateCenterMenu(); // Completely reset the element
         }
 
 
@@ -570,24 +581,17 @@
             }
         }
 
-        let tryCount = 0;
-
         function clickSuggestion(entity) {
 
-            tryCount++;
-            if (tryCount % 2 === 0) {
-                fallBackCenterMenu(); // Apply fallback for even tries
-            }
-
+            fallBackCenterMenu();
             resetFormAndSuggestions();
+            
             const searchForm = document.getElementById("search-form");
             const centerMenu = document.querySelector('.center-menu2');
             const centerCircleH3 = centerMenu.querySelector('.center-circle2 h3');
 
             searchForm.style.display = 'none';
             centerCircleH3.textContent = entity.name;
-
-            centerMenu.style.transform = 'translate(-50%, -50%)';
             centerMenu.classList.remove('hidden');
             setNavigationCoordinates(entity.latitude, entity.longitude);
             unhideExitNav();
