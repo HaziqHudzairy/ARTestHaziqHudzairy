@@ -392,8 +392,10 @@
             hideExitNav();
 
             centerMenu.style.animation = 'boink-reverse 0.5s ease-in-out forwards';
+            
             setTimeout(() => {
                 centerMenu.style.animation = 'none';
+                centerMenu.style.transform = 'translateX(-50%) translateY(0)'; // Reset translate to avoid weird offsets
                 centerMenu.classList.add('hidden');
             }, 500);
             
@@ -559,6 +561,8 @@
 
             searchForm.style.display = 'none';
             centerCircleH3.textContent = entity.name;
+
+            centerMenu.style.transform = 'translate(-50%, -50%)';
             centerMenu.classList.remove('hidden');
             setNavigationCoordinates(entity.latitude, entity.longitude);
             unhideExitNav();
