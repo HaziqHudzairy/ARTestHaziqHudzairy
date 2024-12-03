@@ -796,7 +796,7 @@ form:hover .fa {
   position:absolute;
   width: auto;
   height: 80%;
-  transform: translate(-120%, 40%); /* Adjust image position */
+  transform: translate(-115%, 40%); /* Adjust image position */
   z-index: 9999;
 }
 
