@@ -806,7 +806,7 @@ form:hover .fa {
   width: 40%;
   height: 12%; /* Full viewport height */
   left: 10px;
-  top:11%;
+  top:10%;
   position: fixed;
   z-index: 5000;
 }
