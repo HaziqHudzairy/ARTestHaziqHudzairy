@@ -729,20 +729,28 @@
             btnContent.addEventListener("click", handleExitEnv);
         }
 
-        function slideOutNotification()
-        {
+        function slideOutNotification() {
             const notification = document.querySelector('.notification-container');
+
+            // Reset animation classes
+            notification.classList.remove('slide-in-left');
             resetAnimation(notification);
+
+            // Add slide-out animation
             notification.classList.add('slide-out-left');
         }
 
-        function slideInNotification()
-        {
-            
+        function slideInNotification(entityname) {
             const notification = document.querySelector('.notification-container');
+
+            // Reset animation classes
+            notification.classList.remove('slide-out-left');
             resetAnimation(notification);
+
+            // Add slide-in animation
             notification.classList.add('slide-in-left');
         }
+
 
         function hideExitEnv() {
             const btnContent = document.querySelector('.btn-content2');
