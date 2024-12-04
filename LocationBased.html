@@ -714,6 +714,7 @@
 
         function handleExitEnv() {
             
+            slideInNotification();
             clearVirtualSpace();
             hideExitEnv();
 
@@ -729,12 +730,25 @@
             btnContent.addEventListener("click", handleExitEnv);
         }
 
+        function slideOutNotification()
+        {
+            const notification = document.querySelector('.notification-container');
+            resetAnimation(notification);
+            notification.classList.add('slide-out-left');
+        }
+
+        function slideInNotification()
+        {
+            const notification = document.querySelector('.notification-container');
+            resetAnimation(notification);
+            notification.classList.add('slide-in-left');
+        }
+
         function hideExitEnv() {
             const btnContent = document.querySelector('.btn-content2');
             btnContent.classList.add('slide-out-left');
             btnContent.classList.add('hidden');
-            const notification = document.querySelector('.notification-container');
-            notification.classList.add('slide-in-left');
+            
             clearEnvEvent(btnContent)
         }
 
@@ -752,9 +766,7 @@
 
         function handleNotificationClick() {
             const virtualSpace = document.querySelector('#virtual-space');
-            const notification = document.querySelector('.notification-container');
-            resetAnimation(notification);
-            notification.classList.add('slide-out-left');
+            slideOutNotification();
 
             virtualSpace.setAttribute('visible', true);
             virtualSpace.setAttribute('follow-camera', '');
