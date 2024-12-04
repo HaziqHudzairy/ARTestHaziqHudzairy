@@ -696,6 +696,18 @@
             }, 500); // Match the duration of the fade-out (in this case, 0.5s)
         }
 
+
+        function resetAnimation(notification) {
+            // Remove the current animation
+            notification.style.animation = 'none';
+
+            // Force reflow to reset the animation state
+            void notification.offsetWidth;
+
+            // Reapply the animation
+            notification.style.animation = '';
+        }
+
         function clearEnvEvent(btnContent) {
             btnContent.removeEventListener("click", handleExitEnv);
         }
@@ -704,6 +716,7 @@
             
             const notification = document.querySelector('.notification-container');
             notification.classList.add('slide-in-left');
+            resetAnimation(notification);
             clearVirtualSpace();
             hideExitEnv();
 
