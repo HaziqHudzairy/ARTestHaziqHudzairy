@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Editable Entity-Attribute Viewer</title>
     <style>
         body {
@@ -31,64 +32,8 @@
             padding: 5px 10px;
         }
 
-        .notification-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  width: 40%;
-  height: 12%; /* Full viewport height */
-  left: 10px;
-  top:20%;
-  position: fixed;
-  z-index: 8888;
-}
 
-/* Notification Box */
-.notification-box {
-  background-color: #ffffff; /* Gray background */
-  border-radius: 15px; /* Rounded corners */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-  text-align: left;
-  padding-left: 15px;
-  padding-right: 20%;
-  height: auto;
-  width: 100%;
-  color: rgb(0, 0, 0);
-  font-family: 'Roboto', sans-serif;
-  position: relative; /* For stacking the image */
-  z-index: 9998; /* Ensure text is above the image */
-}
 
-/* Notification Heading */
-.notification-box h4 {
-  font-size: 10px;
-  font-weight: normal;
-  margin-top: 10px;
-  margin-bottom: 0;
-}
-
-.notification-box h1 {
-  font-size: 12px;
-  font-weight: bold;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-.notification-box p {
-  font-size: 8px;
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-/* Location Icon */
-.location-icon {
-  position:absolute;
-  width: auto;
-  height: 80%;
-  transform: translate(120%, 0); /* Adjust image position */
-  z-index: 9999;
-}
     </style>
 </head>
 <body>
@@ -99,15 +44,7 @@
     </div>
     <button id="saveChanges" style="margin-top: 20px;">Save Changes</button>
 
-    <div class="notification-container">
-        <div class="notification-box">
-            <h4>You are near</h4>
-            <h1>Faculty of Computer Science & Information Technology</h1>
-            <p>Click here to view AR environment</p>
-        </div>
-        <img src="asset/middle_button/LocationNotification.png" alt="Location Icon" class="location-icon">
-    </div>
-
+    
     <script>
         let jsonData = {};
 

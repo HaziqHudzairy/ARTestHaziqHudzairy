@@ -59,7 +59,7 @@ body {
 
 .backButton {
   position: fixed;
-  top: 11%;
+  bottom: 11%;
   /* Adjust as needed */
   left: 10px;
   /* Adjust as needed */
@@ -693,7 +693,7 @@ form:hover .fa {
   z-index: 9999;
   position: fixed;
   top: 9%;
-  right: 4px;
+  left: 4px;
   text-align: center;
   margin: 20px;
 }
@@ -743,6 +743,61 @@ form:hover .fa {
   clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
 }
 
+.btn-content2 {
+  z-index: 9999;
+  position: fixed;
+  top: 9%;
+  right: 4px;
+  text-align: center;
+  margin: 20px;
+}
+
+/* Button Styling */
+.btn-custom2 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #ba181b, #ff686b);
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 10px;
+  padding: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover Effect */
+.btn-custom2:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Left Text */
+.btn-custom2 .title {
+  margin: 15px;
+  margin-left: 5px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.btn-custom2 .icon-container2 {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ff686b;
+  /* Darker green for the pointy section */
+  padding-left: 20px;
+  border-radius: 10px;
+  clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 15% 100%, 0% 50%);
+}
+
 .notification-container {
   display: none;
   align-items: center;
@@ -751,7 +806,7 @@ form:hover .fa {
   width: 40%;
   height: 12%; /* Full viewport height */
   left: 10px;
-  top:20%;
+  top:11%;
   position: fixed;
   z-index: 5000;
 }
