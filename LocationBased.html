@@ -753,6 +753,7 @@
         function handleNotificationClick() {
             const virtualSpace = document.querySelector('#virtual-space');
             const notification = document.querySelector('.notification-container');
+            resetAnimation(notification);
             notification.classList.add('slide-out-left');
 
             virtualSpace.setAttribute('visible', true);
