@@ -338,7 +338,7 @@ form:hover .fa {
   top: 20%;
   left: 15px;
   right: 15px;
-  background: #ffffff86;
+  background: #cececed0;
   max-height: 400px;
   /* Limit height for long lists */
   border-radius: 10px;
@@ -807,7 +807,7 @@ form:hover .fa {
   position:absolute;
   width: auto;
   height: 80%;
-  transform: translate(110%, 0); /* Adjust image position */
+  transform: translate(115%, 0); /* Adjust image position */
   z-index: 5002;
 }
 
