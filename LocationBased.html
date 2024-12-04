@@ -713,11 +713,9 @@
         }
 
         function handleExitEnv() {
-            
+            hideExitEnv();
             slideInNotification();
             clearVirtualSpace();
-            hideExitEnv();
-
         }
 
         function unhideExitEnv() {
@@ -725,7 +723,7 @@
             btnContent.classList.remove('hidden');
             btnContent.classList.add('slide-in-left');
 
-            resetAnimation(notification);
+            //resetAnimation(notification);
             // Add the event listener
             btnContent.addEventListener("click", handleExitEnv);
         }
@@ -733,14 +731,14 @@
         function slideOutNotification()
         {
             const notification = document.querySelector('.notification-container');
-            resetAnimation(notification);
+            //resetAnimation(notification);
             notification.classList.add('slide-out-left');
         }
 
         function slideInNotification()
         {
             const notification = document.querySelector('.notification-container');
-            resetAnimation(notification);
+            //resetAnimation(notification);
             notification.classList.add('slide-in-left');
         }
 
@@ -748,7 +746,6 @@
             const btnContent = document.querySelector('.btn-content2');
             btnContent.classList.add('slide-out-left');
             btnContent.classList.add('hidden');
-            
             clearEnvEvent(btnContent)
         }
 
