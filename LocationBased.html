@@ -703,9 +703,6 @@
         function handleExitEnv() {
             
             const notification = document.querySelector('.notification-container');
-            const searchForm = document.getElementById("search-form");
-
-            searchForm.style.display = "block";
             notification.classList.add('slide-in-left');
             clearVirtualSpace();
             hideExitEnv();
@@ -715,15 +712,16 @@
         function unhideExitEnv() {
             const btnContent = document.querySelector('.btn-content2');
             btnContent.classList.remove('hidden');
-
+            btnContent.classList.add('slide-in-left');
             // Add the event listener
             btnContent.addEventListener("click", handleExitEnv);
         }
 
         function hideExitEnv() {
             const btnContent = document.querySelector('.btn-content2');
+            btnContent.classList.add('slide-out-left');
             btnContent.classList.add('hidden');
-
+            
             clearEnvEvent(btnContent)
         }
 
@@ -742,10 +740,7 @@
         function handleNotificationClick() {
             const virtualSpace = document.querySelector('#virtual-space');
             const notification = document.querySelector('.notification-container');
-            const searchForm = document.getElementById("search-form");
-
             notification.classList.add('slide-out-left');
-            searchForm.style.display = "none";
 
             virtualSpace.setAttribute('visible', true);
             virtualSpace.setAttribute('follow-camera', '');
