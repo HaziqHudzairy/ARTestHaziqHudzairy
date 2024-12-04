@@ -724,8 +724,11 @@
 
         function unhideExitEnv() {
             const btnContent = document.querySelector('.btn-content2');
+            const notification = document.querySelector('.notification-container');
             btnContent.classList.remove('hidden');
             btnContent.classList.add('slide-in-left');
+
+            resetAnimation(notification);
             // Add the event listener
             btnContent.addEventListener("click", handleExitEnv);
         }
@@ -758,7 +761,6 @@
 
             virtualSpace.setAttribute('visible', true);
             virtualSpace.setAttribute('follow-camera', '');
-
             unhideExitEnv();
         }
 
