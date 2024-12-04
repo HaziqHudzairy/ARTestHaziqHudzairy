@@ -693,7 +693,7 @@ form:hover .fa {
   z-index: 9999;
   position: fixed;
   top: 9%;
-  left: 4px;
+  right: 4px;
   text-align: center;
   margin: 20px;
 }
@@ -747,7 +747,7 @@ form:hover .fa {
   z-index: 9999;
   position: fixed;
   top: 9%;
-  right: 4px;
+  left: 4px;
   text-align: center;
   margin: 20px;
 }
