@@ -702,6 +702,11 @@
 
         function handleExitEnv() {
             
+            const notification = document.querySelector('.notification-container');
+            const searchForm = document.getElementById("search-form");
+
+            searchForm.style.display = "none";
+            notification.classList.add('slide-in-left');
             clearVirtualSpace();
             hideExitEnv();
 
