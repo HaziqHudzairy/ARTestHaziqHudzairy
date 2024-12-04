@@ -745,7 +745,7 @@ form:hover .fa {
 }
 
 .btn-content2 {
-  z-index: 9999;
+  z-index: 9998;
   position: fixed;
   top: 9%;
   left: 4px;
