@@ -811,6 +811,14 @@ form:hover .fa {
   z-index: 5002;
 }
 
+.slide-out-left {
+  animation: slideOutLeft 0.5s ease-out forwards; /* 0.5s slide out with easing */
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.5s ease-out forwards; /* 0.5s slide out with easing */
+}
+
 
 /* Keyframes for scaling effect */
 @keyframes boink {
@@ -879,3 +887,22 @@ form:hover .fa {
     transform: translateX(-100%); /* Move off-screen to the left */
   }
 }
+
+@keyframes slideOutLeft {
+  0% {
+    transform: translateX(0); /* Start at its current position */
+  }
+  100% {
+    transform: translateX(-100vw); /* Move completely off-screen to the left */
+  }
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100vw);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
