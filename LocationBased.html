@@ -714,9 +714,6 @@
 
         function handleExitEnv() {
             
-            const notification = document.querySelector('.notification-container');
-            resetAnimation(notification);
-            notification.classList.add('slide-in-left');
             clearVirtualSpace();
             hideExitEnv();
 
@@ -724,7 +721,6 @@
 
         function unhideExitEnv() {
             const btnContent = document.querySelector('.btn-content2');
-            const notification = document.querySelector('.notification-container');
             btnContent.classList.remove('hidden');
             btnContent.classList.add('slide-in-left');
 
@@ -737,7 +733,8 @@
             const btnContent = document.querySelector('.btn-content2');
             btnContent.classList.add('slide-out-left');
             btnContent.classList.add('hidden');
-            
+            const notification = document.querySelector('.notification-container');
+            notification.classList.add('slide-in-left');
             clearEnvEvent(btnContent)
         }
 
