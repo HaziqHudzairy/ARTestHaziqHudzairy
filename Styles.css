@@ -791,7 +791,7 @@ form:hover .fa {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ba181b,#ff686b, );
+  background: linear-gradient(135deg, #ba181b,#ff686b);
   /* Darker green for the pointy section */
   padding-left: 20px;
   border-radius: 10px;
