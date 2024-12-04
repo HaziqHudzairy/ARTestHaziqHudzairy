@@ -739,7 +739,6 @@
         function slideInNotification()
         {
             const notification = document.querySelector('.notification-container');
-            //resetAnimation(notification);
             notification.classList.add('slide-in-left');
         }
 
@@ -753,7 +752,7 @@
         function showNotification(entityname) {
             const notification = document.querySelector('.notification-container');
             const locationName = document.querySelector('.notification-box h1');
-
+            resetAnimation(notification);
             locationName.textContent = entityname;
             notification.classList.remove('hide-notification'); // Remove fade-out class
             notification.classList.add('show-notification'); // Add fade-in class
