@@ -402,29 +402,34 @@
             entityElement.setAttribute("look-at", "[gps-camera]");
             entityElement.setAttribute("animation-mixer", "clip: *"); // Optional for animations
 
-            // Wait for the model to load before applying the toon shader
             entityElement.addEventListener('model-loaded', () => {
-                const model = entityElement.getObject3D('mesh'); // Get the loaded 3D model
+            const model = entityElement.getObject3D('mesh'); // Get the loaded 3D model
 
-                if (model) {
-                    // Traverse the model and apply MeshToonMaterial
-                    model.traverse((child) => {
-                        if (child.isMesh) {
-                            // Create a gradient map texture
-                            const textureLoader = new THREE.TextureLoader();
-                            const gradientMap = textureLoader.load('asset/middle_button/threeTone.jpg'); // Use a proper path
-                            gradientMap.minFilter = THREE.NearestFilter;
-                            gradientMap.magFilter = THREE.NearestFilter;
+            if (model) {
+                // Traverse through the model's children to find meshes
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        const originalMaterial = child.material; // Save the original material
 
-                            // Apply MeshToonMaterial
-                            child.material = new THREE.MeshToonMaterial({
-                                color: 0x0077ff, // Set a base color
-                                gradientMap: gradientMap, // Use the gradient map for toon effect
-                            });
-                        }
-                    });
-                }
-            });
+                        // Create a gradient map texture for toon shading
+                        const textureLoader = new THREE.TextureLoader();
+                        const gradientMap = textureLoader.load('asset/middle_button/threeTone.jpg');
+                        gradientMap.minFilter = THREE.NearestFilter;
+                        gradientMap.magFilter = THREE.NearestFilter;
+
+                        // Apply MeshToonMaterial while preserving the original material's color/texture
+                        child.material = new THREE.MeshToonMaterial({
+                            color: originalMaterial.color || 0xffffff, // Use the original color
+                            map: originalMaterial.map || null,         // Preserve the original texture
+                            gradientMap: gradientMap,                 // Use the gradient map for toon effect
+                            emissive: originalMaterial.emissive || 0x000000, // Preserve emissive color if set
+                            emissiveMap: originalMaterial.emissiveMap || null, // Preserve emissive texture if set
+                        });
+                    }
+                });
+            }
+        });
+
 
             // Append to Scene
             scene.appendChild(entityElement);
