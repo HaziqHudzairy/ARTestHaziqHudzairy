@@ -12,6 +12,7 @@
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.loaders.min.js"></script>
+    <script src="https://unpkg.com/three-line-outline"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
@@ -425,6 +426,17 @@
                             emissive: originalMaterial.emissive || 0x000000, // Preserve emissive color if set
                             emissiveMap: originalMaterial.emissiveMap || null, // Preserve emissive texture if set
                         });
+
+                        // Add the LineOutline effect
+                        const lineOutline = new LineOutline(child.geometry, {
+                            thickness: 0.02,      // Line thickness
+                            color: 0xff0000,      // Outline color
+                            alpha: 1.0,           // Outline transparency
+                            smoothEdges: true,    // Smooth the edges of the outline
+                        });
+
+                        // Attach the outline to the mesh
+                        child.add(lineOutline);
                     }
                 });
             }
