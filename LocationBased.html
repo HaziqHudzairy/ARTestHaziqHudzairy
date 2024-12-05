@@ -8,6 +8,7 @@
 
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-glow@1.0.3/dist/aframe-glow.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
@@ -1177,6 +1178,8 @@
                 marker.setAttribute('scale', '0.5 0.5 0.5');
                 marker.setAttribute('look-at', '[gps-camera]');
                 marker.classList.add('route-marker'); // Add a unique class
+
+                marker.setAttribute('glow', 'intensity: 0.8; color: lightblue');
 
                 // Append the marker to the wrapper
                 wrapper.appendChild(marker);
