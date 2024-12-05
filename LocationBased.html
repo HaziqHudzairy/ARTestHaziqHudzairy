@@ -20,6 +20,28 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js"></script>
+    <script>
+        // Register an A-Frame component to apply MeshToonMaterial to all assets
+        AFRAME.registerComponent('apply-toon-material', {
+          init: function () {
+            const scene = this.el;
+      
+            // Traverse the scene once all assets are loaded
+            scene.addEventListener('loaded', () => {
+              scene.object3D.traverse((child) => {
+                if (child.isMesh) {
+                  // Replace the material with MeshToonMaterial
+                  child.material = new THREE.MeshToonMaterial({
+                    color: 0x00ffcc, // Customize color
+                    gradientMap: null, // Optional gradient map
+                  });
+                }
+              });
+            });
+          },
+        });
+      </script>
+      
 </head>
 
 <body style="margin: 0; overflow: hidden;">
@@ -157,7 +179,7 @@
     "></div>
 
     <!--  -->
-    <a-scene renderer="logarithmicDepthBuffer: true; debugUIEnabled: false;" embedded loading-screen="enabled: false;"
+    <a-scene apply-toon-material renderer="logarithmicDepthBuffer: true; debugUIEnabled: false;" embedded loading-screen="enabled: false;"
         arjs="sourceType: webcam; cameraParametersUrl: camera_para.dat;" id="ar-scene">
         <a-assets>
 
