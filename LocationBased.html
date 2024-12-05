@@ -426,17 +426,6 @@
                             emissive: originalMaterial.emissive || 0x000000, // Preserve emissive color if set
                             emissiveMap: originalMaterial.emissiveMap || null, // Preserve emissive texture if set
                         });
-
-                        // Add the LineOutline effect
-                        const lineOutline = new LineOutline(child.geometry, {
-                            thickness: 1,      // Line thickness
-                            color: 0xff0000,      // Outline color
-                            alpha: 1.0,           // Outline transparency
-                            smoothEdges: true,    // Smooth the edges of the outline
-                        });
-
-                        // Attach the outline to the mesh
-                        child.add(lineOutline);
                     }
                 });
             }
