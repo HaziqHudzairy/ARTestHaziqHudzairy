@@ -21,27 +21,37 @@
     <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js"></script>
     <script>
-        // Register an A-Frame component to apply MeshToonMaterial to all assets
-        AFRAME.registerComponent('apply-toon-material', {
-          init: function () {
-            const scene = this.el;
-      
-            // Traverse the scene once all assets are loaded
-            scene.addEventListener('loaded', () => {
-              scene.object3D.traverse((child) => {
-                if (child.isMesh) {
-                  // Replace the material with MeshToonMaterial
-                  child.material = new THREE.MeshToonMaterial({
-                    color: 0x00ffcc, // Customize color
-                    gradientMap: null, // Optional gradient map
-                  });
-                }
-              });
-            });
+        // A-Frame Component to Apply Toon Shader
+        AFRAME.registerComponent('apply-toon-shader', {
+          schema: {
+            gradientTexture: { type: 'selector' } // Reference the gradient texture
           },
+          init: function () {
+            const gradientTextureEl = this.data.gradientTexture;
+            const model = this.el.object3D;
+    
+            if (!gradientTextureEl) {
+              console.error('Gradient texture is not provided!');
+              return;
+            }
+    
+            // Load the gradient texture
+            const gradientTexture = new THREE.TextureLoader().load(gradientTextureEl.getAttribute('src'));
+            gradientTexture.minFilter = THREE.NearestFilter; // Optimize for toon shading
+            gradientTexture.magFilter = THREE.NearestFilter;
+    
+            // Traverse the GLTF model and apply MeshToonMaterial
+            model.traverse((child) => {
+              if (child.isMesh) {
+                child.material = new THREE.MeshToonMaterial({
+                  color: 0x0077ff, // Base color for the material
+                  gradientMap: gradientTexture, // Apply the gradient map
+                });
+              }
+            });
+          }
         });
       </script>
-      
 </head>
 
 <body style="margin: 0; overflow: hidden;">
@@ -183,6 +193,9 @@
         arjs="sourceType: webcam; cameraParametersUrl: camera_para.dat;" id="ar-scene">
         <a-assets>
 
+            <img id="threeTone" src="asset/middle_button/threeTone.jpg">
+            <img id="fiveTone" src="asset/middle_button/fiveTone.jpg">
+
             <img id="FSKTMLogo" src="asset/logo/Logo FSKTM.png">
             <a-asset-item id="animated-asset" src="asset/LocationPin.glb"></a-asset-item>
             <a-asset-item id="FSKTM" src="asset/FSKTMAnim3.glb"></a-asset-item>
@@ -283,6 +296,9 @@
 
         <!-- <a-entity id="dynamic-model"></a-entity> -->
 
+        <a-light type="directional" position="2 4 -3" intensity="1"></a-light>
+        <a-light type="ambient" intensity="0.5"></a-light>
+
         <a-camera gps-camera look-controls rotation-reader position="0 1.6 0"></a-camera>
 
         <!-- <script>
@@ -372,7 +388,7 @@
             });
         }
 
-        // Function to Create AR Entity
+        // Function to Create AR Entity with Toon Shader
         window.createAREntity = function (entity, id, parentCategory = null) {
             const scene = document.querySelector("a-scene");
             const entityElement = document.createElement("a-entity");
@@ -386,12 +402,33 @@
             entityElement.setAttribute("look-at", "[gps-camera]");
             entityElement.setAttribute("animation-mixer", "clip: *"); // Optional for animations
 
-            // Optional Debugging
-            //showDebugMessage(`Added entity: ${id}, Parent Category: ${parentCategory}`);
+            // Wait for the model to load before applying the toon shader
+            entityElement.addEventListener('model-loaded', () => {
+                const model = entityElement.getObject3D('mesh'); // Get the loaded 3D model
+
+                if (model) {
+                    // Traverse the model and apply MeshToonMaterial
+                    model.traverse((child) => {
+                        if (child.isMesh) {
+                            // Create a gradient map texture
+                            const textureLoader = new THREE.TextureLoader();
+                            const gradientMap = textureLoader.load('asset/middle_button/threeTone.jpg'); // Use a proper path
+                            gradientMap.minFilter = THREE.NearestFilter;
+                            gradientMap.magFilter = THREE.NearestFilter;
+
+                            // Apply MeshToonMaterial
+                            child.material = new THREE.MeshToonMaterial({
+                                color: 0x0077ff, // Set a base color
+                                gradientMap: gradientMap, // Use the gradient map for toon effect
+                            });
+                        }
+                    });
+                }
+            });
 
             // Append to Scene
             scene.appendChild(entityElement);
-        }
+        };
 
         // Re-fetch and render entities from the database
         window.fetchAndRenderEntities = function () {
