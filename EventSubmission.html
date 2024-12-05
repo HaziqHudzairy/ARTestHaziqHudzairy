@@ -61,6 +61,7 @@
                     <label for="categoryFilter" class="block text-gray-700 font-medium mb-1">Category:</label>
                     <select id="categoryFilter" name="categoryFilter"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option value="" disabled selected>Select a location</option>
                         <option value="facilities">Facilities</option>
                         <option value="faculties">Faculties</option>
                         <option value="libraries">Libraries</option>
@@ -98,6 +99,8 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
         import { getStorage } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
+        import { ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
+
 
         // Firebase Initialization
         const firebaseConfig = {
