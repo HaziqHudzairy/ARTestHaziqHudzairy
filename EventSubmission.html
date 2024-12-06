@@ -245,7 +245,7 @@
         }
 
         const eventId = `event_${Date.now()}`;
-        const posterPath = `UMAR-events_poster/${eventId}_${eventPoster.name}`;
+        const posterPath = `UMAR-events_poster/${fileName}`;
         const metadata = {
             contentType: eventPoster.type // Ensures correct MIME type
         };
@@ -253,9 +253,9 @@
         try {
             // Upload poster with metadata
             const posterStorageRef = storageRef(storage, posterPath);
-            await uploadBytes(posterStorageRef, eventPoster, metadata);
+            await uploadBytes(posterStorageRef, eventPoster);
             const posterUrl = await getDownloadURL(posterStorageRef);
-
+            
             // Save event details to Firebase Realtime Database
             await set(ref(db, 'events/' + eventId), {
                 eventName,
