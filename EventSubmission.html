@@ -245,7 +245,7 @@
         }
 
         const eventId = `event_${Date.now()}`;
-        const posterPath = `UMAR-events_poster/${fileName}`;
+        const posterPath = `UMAR-events_poster/${eventId}_${eventPoster.name}`;
         const metadata = {
             contentType: eventPoster.type // Ensures correct MIME type
         };
