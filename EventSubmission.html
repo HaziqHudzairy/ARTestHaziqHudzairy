@@ -98,8 +98,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-        import { getStorage } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
-        import { ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
 
 
         // Firebase Initialization
@@ -229,7 +228,8 @@
         });
 
         const eventForm = document.getElementById('eventForm');
-    eventForm.addEventListener('submit', async (e) => {
+   // Form submission
+   eventForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const eventName = document.getElementById('eventName').value;
@@ -239,41 +239,54 @@
         const eventLocationValue = eventLocation.value;
         const eventPoster = document.getElementById('eventPoster').files[0];
 
-        if (!eventPoster) {
-            alert("Please upload an event poster.");
-            return;
-        }
-
-        const eventId = `event_${Date.now()}`;
-        const posterPath = `UMAR-events_poster/${eventId}_${eventPoster.name}`;
-        const metadata = {
-            contentType: eventPoster.type // Ensures correct MIME type
-        };
-
         try {
-            // Upload poster with metadata
-            const posterStorageRef = storageRef(storage, posterPath);
-            await uploadBytes(posterStorageRef, eventPoster);
-            const posterUrl = await getDownloadURL(posterStorageRef);
-            
+            if (!eventPoster) throw new Error("No poster selected.");
+
+            // Upload poster and get the URL
+            const posterUrl = await uploadImage(eventPoster);
+
+            // Generate a unique event ID
+            const eventId = Date.now(); // Or use a library like UUID for more complex IDs
+
             // Save event details to Firebase Realtime Database
-            await set(ref(db, 'events/' + eventId), {
+            await set(ref(db, `events/${eventId}`), {
                 eventName,
                 eventDate,
                 eventTime,
                 eventDetails,
                 eventOrganizer: "Admin",
                 eventLocation: eventLocationValue,
-                eventPosterUrl: posterUrl
+                eventPosterUrl: posterUrl,
             });
 
             alert('Event submitted successfully!');
             eventForm.reset();
         } catch (error) {
             console.error('Error:', error);
-            alert('Failed to submit the event. Please try again.');
+            alert(`Failed to submit the event: ${error.message}`);
         }
     });
+
+    // Function to upload an image
+    async function uploadImage(file) {
+        try {
+            // Create a storage reference
+            const fileRef = storageRef(storage, `uploads/${file.name}`);
+
+            // Upload the file
+            const snapshot = await uploadBytes(fileRef, file);
+            console.log('Uploaded a file successfully:', snapshot.metadata);
+
+            // Get the file's download URL
+            const downloadURL = await getDownloadURL(fileRef);
+            console.log('File available at:', downloadURL);
+
+            return downloadURL;
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            throw error;
+        }
+    }
     </script>
 </body>
 
