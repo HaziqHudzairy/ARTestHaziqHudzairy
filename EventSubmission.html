@@ -228,50 +228,52 @@
             }
         });
 
-        // Form submission handler
         const eventForm = document.getElementById('eventForm');
-        eventForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    eventForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-            const eventName = document.getElementById('eventName').value;
-            const eventDate = document.getElementById('eventDate').value;
-            const eventTime = document.getElementById('eventTime').value;
-            const eventDetails = document.getElementById('eventDetails').value;
-            const eventLocationValue = eventLocation.value;
-            const eventPoster = document.getElementById('eventPoster').files[0];
+        const eventName = document.getElementById('eventName').value;
+        const eventDate = document.getElementById('eventDate').value;
+        const eventTime = document.getElementById('eventTime').value;
+        const eventDetails = document.getElementById('eventDetails').value;
+        const eventLocationValue = eventLocation.value;
+        const eventPoster = document.getElementById('eventPoster').files[0];
 
-            if (!eventPoster) {
-                alert("Please upload an event poster.");
-                return;
-            }
+        if (!eventPoster) {
+            alert("Please upload an event poster.");
+            return;
+        }
 
-            const eventId = `event_${Date.now()}`;
-            const posterPath = `UMAR-events_poster/${eventId}_${eventPoster.name}`;
+        const eventId = `event_${Date.now()}`;
+        const posterPath = `UMAR-events_poster/${eventId}_${eventPoster.name}`;
+        const metadata = {
+            contentType: eventPoster.type // Ensures correct MIME type
+        };
 
-            try {
-                // Upload poster
-                const posterStorageRef = storageRef(storage, posterPath);
-                await uploadBytes(posterStorageRef, eventPoster);
-                const posterUrl = await getDownloadURL(posterStorageRef);
+        try {
+            // Upload poster with metadata
+            const posterStorageRef = storageRef(storage, posterPath);
+            await uploadBytes(posterStorageRef, eventPoster, metadata);
+            const posterUrl = await getDownloadURL(posterStorageRef);
 
-                // Save to Firebase
-                await set(ref(db, 'events/' + eventId), {
-                    eventName,
-                    eventDate,
-                    eventTime,
-                    eventDetails,
-                    eventOrganizer: "Admin",
-                    eventLocation: eventLocationValue,
-                    eventPosterUrl: posterUrl
-                });
+            // Save event details to Firebase Realtime Database
+            await set(ref(db, 'events/' + eventId), {
+                eventName,
+                eventDate,
+                eventTime,
+                eventDetails,
+                eventOrganizer: "Admin",
+                eventLocation: eventLocationValue,
+                eventPosterUrl: posterUrl
+            });
 
-                alert('Event submitted successfully!');
-                eventForm.reset();
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to submit the event. Please try again.');
-            }
-        });
+            alert('Event submitted successfully!');
+            eventForm.reset();
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to submit the event. Please try again.');
+        }
+    });
     </script>
 </body>
 
