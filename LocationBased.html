@@ -505,16 +505,19 @@
 
                         // Plane 1: Name and Description
                         const plane1 = document.createElement('a-plane');
-                        plane1.setAttribute('position', '-1.5 1.6 -5');
+                        plane1.setAttribute('position', '-2.5 1.2 -5');
                         plane1.setAttribute('width', '4');
                         plane1.setAttribute('height', '3');
                         plane1.setAttribute('material', backgroundMaterial);
 
                         const nameText = document.createElement('a-text');
                         nameText.setAttribute('value', foundEntity.name || 'No Name Available');
-                        nameText.setAttribute('color', 'black');
+                        nameText.setAttribute('color', 'white');
                         nameText.setAttribute('align', 'center');
-                        nameText.setAttribute('position', '0 0.5 0');
+                        nameText.setAttribute('position', '-2.5 1.2 -3');
+                        nameText.setAttribute('width', '3.8'); 
+                        nameText.setAttribute('wrap-count', '20');
+                        nameText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
                         plane1.appendChild(nameText);
 
                         const descText = document.createElement('a-text');
@@ -528,7 +531,7 @@
 
                         // Plane 2: Contact, Operating Hours, Website
                         const plane2 = document.createElement('a-plane');
-                        plane2.setAttribute('position', '1.5 1.6 -5');
+                        plane2.setAttribute('position', '2.5 1.2 -5');
                         plane2.setAttribute('width', '4');
                         plane2.setAttribute('height', '3');
                         plane2.setAttribute('material', backgroundMaterial);
