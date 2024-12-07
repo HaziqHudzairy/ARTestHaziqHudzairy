@@ -325,24 +325,31 @@
     </a-scene>
 
     <script>
-        AFRAME.registerComponent('follow-gps-camera', {
+        AFRAME.registerComponent('sync-virtual-space', {
             tick: function () {
                 const camera = document.querySelector('a-camera[gps-camera]');
-                const virtualSpace = this.el;
-
-                if (camera && camera.components['gps-camera'].currentCoords) {
+                const virtualSpace = document.querySelector('#virtual-space');
+    
+                if (!camera || !virtualSpace) return;
+    
+                // Update GPS entity if available
+                if (camera.components['gps-camera'].currentCoords) {
                     const { latitude, longitude } = camera.components['gps-camera'].currentCoords;
-
-                    // Update GPS entity
                     virtualSpace.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
-
-                    // Apply manual position offset to make it visible
-                    virtualSpace.object3D.position.set(0, 1.6, -5);
                 }
+    
+                // Get the camera's world position
+                const cameraWorldPosition = new THREE.Vector3();
+                camera.object3D.getWorldPosition(cameraWorldPosition);
+    
+                // Update the virtual space's position to follow the camera with an offset
+                const offset = new THREE.Vector3(0, 1.6, -5); // Adjust offset as needed
+                const updatedPosition = cameraWorldPosition.clone().add(offset);
+                virtualSpace.object3D.position.copy(updatedPosition);
             }
         });
-
     </script>
+    
 
     <!-- Firebase Script -->
     <script type="module">
@@ -752,9 +759,6 @@
 
             // Hide virtual space
             virtualSpace.setAttribute('visible', false);
-                    virtualSpace.object3D.traverse((child) => {
-                child.visible = true; // Manually show child entities
-            });
 
             
         }
