@@ -752,6 +752,11 @@
 
             // Hide virtual space
             virtualSpace.setAttribute('visible', false);
+                    virtualSpace.object3D.traverse((child) => {
+                child.visible = true; // Manually show child entities
+            });
+
+            
         }
 
         // Example function to show the cancel button with a fade effect
