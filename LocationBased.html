@@ -285,7 +285,7 @@
 
         </a-assets>
 
-        <a-entity id="virtual-space" visible="false" position="0 0 -5" sync-virtual-space>
+        <a-entity id="virtual-space" visible="false" position="0 -10 -5" sync-virtual-space>
             <!-- <a-plane id="imagePlane" position="0 1 -10" width="4" height="3"
                 material="src: asset/images/background1.png;"></a-plane>
                 <a-entity
@@ -305,15 +305,28 @@
          height="2" 
          color="blue"
          material="shader: flat; depthTest: false;">
+
+         <a-text value="Academy of Malay Studies"
+            text-align="justify" 
+            baseline="top" 
+            anchor="left" 
+            color="white"
+            width="7.6"
+            wrap-count="40"
+            position="-1.8 0.8 0.01" 
+            scale="0.7 0.7 0.7" 
+            material="shader: flat; depthTest: false;"
+            look-at="[gps-camera]">
+    </a-text>
     <!-- Embedded text -->
     <a-text value="The Academy of Malay Studies (Akademi Pengajian Melayu, APM) at Universiti Malaya, established in 1990, is a leading institution dedicated to advancing Malay studies. Initially focused on research, publication, and documentation, APM merged with the Department of Malay Studies in 1995 to create a comprehensive academic entity. The academy offers a variety of academic programs, including the Bachelor of Malay Studies, which provides a full-time coursework experience in Malay language, literature, and culture. Postgraduate programs include the Master of Arts in Malay Studies, available through research or coursework, and a research-intensive Doctor of Philosophy (Ph.D.) program aimed at generating original contributions to the field. Structured into several departments—such as Malay Language, Socio-Culture and Malay Arts, Malay Linguistics, and Malay Literature—APM emphasizes both teaching and research in their specialized disciplines..<br><br>The academy actively publishes scholarly works, including the Jurnal Pengajian Melayu (Journal of Malay Studies), a biannual journal featuring academic articles on advancements in Malay studies. Beyond academics, APM organizes seminars, workshops, and cultural events to promote and preserve Malay heritage. As a center of excellence, APM contributes significantly to national development and global understanding of Malay culture, supported by Universiti Malaya’s conducive learning environment and comprehensive facilities."
             text-align="justify" 
             baseline="top" 
             anchor="left" 
             color="white"
-            width="3.8"
+            width="7.6"
             wrap-count="40"
-            position="-1.9 0.9 0.01" 
+            position="-1.8 0.6 0.01" 
             scale="0.5 0.5 0.5" 
             material="shader: flat; depthTest: false;"
             look-at="[gps-camera]">
@@ -371,7 +384,7 @@
                 camera.object3D.getWorldPosition(cameraWorldPosition);
 
                 // Offset virtual-space to always stay relative to the camera
-                const offset = new THREE.Vector3(0, 1.6, -5);
+                const offset = new THREE.Vector3(0, 0, -5);
                 const updatedPosition = cameraWorldPosition.clone().add(offset);
                 virtualSpace.object3D.position.copy(updatedPosition);
             }
