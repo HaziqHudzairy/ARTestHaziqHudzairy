@@ -282,7 +282,7 @@
 
         </a-assets>
 
-        <a-entity id="virtual-space" visible="false" position="0 1.6 -5">
+        <a-entity id="virtual-space" visible="false" position="0 1.6 -5" gps-entity-place follow-gps-camera>
             <a-plane id="imagePlane" position="0 1 -10" width="4" height="3"
                 material="src: asset/images/F315/image1.jpg;"></a-plane>
             <a-box position="0 1 -10" color=blue></a-box>
@@ -326,20 +326,22 @@
 
     <script>
         AFRAME.registerComponent('follow-gps-camera', {
-            init: function () {
-                this.camera = document.querySelector('a-camera[gps-camera]');
-                this.virtualSpace = this.el;
-            },
             tick: function () {
-                // Check if the GPS coordinates are available
-                if (this.camera && this.camera.components['gps-camera'].currentCoords) {
-                    const { latitude, longitude } = this.camera.components['gps-camera'].currentCoords;
-    
-                    // Update the virtual-space position
-                    this.virtualSpace.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
+                const camera = document.querySelector('a-camera[gps-camera]');
+                const virtualSpace = this.el;
+
+                if (camera && camera.components['gps-camera'].currentCoords) {
+                    const { latitude, longitude } = camera.components['gps-camera'].currentCoords;
+
+                    // Update GPS entity
+                    virtualSpace.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
+
+                    // Apply manual position offset to make it visible
+                    virtualSpace.object3D.position.set(0, 1.6, -5);
                 }
             }
         });
+
     </script>
 
     <!-- Firebase Script -->
