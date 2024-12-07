@@ -508,33 +508,31 @@
                         plane1.setAttribute('position', '-2.5 1.2 -10');
                         plane1.setAttribute('width', '5');
                         plane1.setAttribute('height', '3');
-                        plane1.setAttribute('material', 'src: asset/images/background1.png; transparent: true');
+                        plane1.setAttribute('material', backgroundMaterial);
+                        virtualSpace.appendChild(plane1);
 
                         const nameText = document.createElement('a-text');
                         nameText.setAttribute('value', foundEntity.name || 'No Name Available');
                         nameText.setAttribute('color', 'white');
                         nameText.setAttribute('align', 'center');
-                        nameText.setAttribute('position', '0 0.5 0.01');
+                        nameText.setAttribute('position', '-5 1.2 -1');
                         nameText.setAttribute('width', '3.8'); 
                         nameText.setAttribute('wrap-count', '15');
                         nameText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
                         nameText.setAttribute('render-order', '1');
-                        nameText.setAttribute('material', 'depthTest: false'); // Disable depth test
-                        plane1.appendChild(nameText);
+                        virtualSpace.appendChild(nameText);
 
                         const descText = document.createElement('a-text');
                         descText.setAttribute('value', foundEntity.description || 'No Description Available');
-                        descText.setAttribute('color', 'white'); // Fixing incorrect reference to `nameText`
+                        descText.setAttribute('color', 'white');
                         descText.setAttribute('align', 'center');
-                        descText.setAttribute('position', '0 0 0.01'); // Corrected position
+                        descText.setAttribute('position', '-5 1 -1');
                         descText.setAttribute('width', '3.8'); 
                         descText.setAttribute('wrap-count', '10');
                         descText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
                         descText.setAttribute('render-order', '1');
-                        descText.setAttribute('material', 'depthTest: false'); // Disable depth test
-                        plane1.appendChild(descText);
 
-                        virtualSpace.appendChild(plane1);
+                        virtualSpace.appendChild(descText);
 
                         // Plane 2: Contact, Operating Hours, Website
                         const plane2 = document.createElement('a-plane');
