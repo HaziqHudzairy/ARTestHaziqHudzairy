@@ -454,6 +454,7 @@
                     Object.keys(data).forEach((category) => {
                         Object.values(data[category]).forEach((entity) => {
                             window.dynamicEntities.push({
+                                id: entity.id,
                                 name: entity.name,
                                 latitude: entity.latitude,
                                 longitude: entity.longitude,
@@ -1016,17 +1017,6 @@ function getIDBasedOnNames(entityName, entities) {
             const cameraWorldPosition = new THREE.Vector3();
             camera.object3D.getWorldPosition(cameraWorldPosition);
 
-            // Collect debugging information
-            // const debugInfo = `
-            //     Virtual Space Visibility: ${virtualSpace.getAttribute('visible')}<br>
-            //     Virtual Space Position: ${JSON.stringify(virtualSpace.getAttribute('position'))}<br>
-            //     Virtual Space GPS Entity: ${JSON.stringify(virtualSpace.getAttribute('gps-entity-place'))}<br>
-            //     Camera World Position: x: ${cameraWorldPosition.x.toFixed(2)}, y: ${cameraWorldPosition.y.toFixed(2)}, z: ${cameraWorldPosition.z.toFixed(2)}<br>
-            //     Camera Coordinates: ${camera && camera.components['gps-camera'].currentCoords
-            //         ? `Latitude: ${camera.components['gps-camera'].currentCoords.latitude.toFixed(6)}, 
-            //         Longitude: ${camera.components['gps-camera'].currentCoords.longitude.toFixed(6)}`
-            //         : 'No GPS data available'}<br>
-            // `;
 
             const debugInfo = `Current entity name:${CurrentEntityID}`;
             // Display debugging information
