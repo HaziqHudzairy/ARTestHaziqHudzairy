@@ -989,12 +989,13 @@ function getIDBasedOnNames(entityName, entities) {
     // Iterate through entities to find the matching name
     entities.forEach(entity => {
         if (entity.name === entityName) {
-            entityID = entity.id; // Assign the ID of the matching entity
+            entityID = String(entity.id); // Explicitly convert the ID to a string
         }
     });
 
     return entityID; // Return the found ID or null if not found
 }
+
 
 
 
