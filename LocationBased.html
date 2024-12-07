@@ -994,12 +994,14 @@
             const virtualSpace = document.querySelector('#virtual-space');
             slideOutNotification();
             //virtualSpace.setAttribute('visible', true);
-            showEntityInformation('entityAcademyIslam');
+            showEntityInformation(currentEntityName);
             virtualSpace.setAttribute('follow-camera', '');
             virtualSpace.setAttribute('position', '0 1.6 -5');
             debugVirtualSpaceState();
             unhideExitEnv();
         }
+
+        
 
         function hideNotification() {
             const notification = document.querySelector('.notification-container');
@@ -1094,6 +1096,8 @@
 
         // }
 
+        let currentEntityName = "";
+
         // Function to check proximity and retrieve the Environment Model
         function checkProximity(userLat, userLon, entities, radius) {
             let isNearAnyEntity = false;
@@ -1105,6 +1109,7 @@
                 if (distance <= radius) {
                     isNearAnyEntity = true;
 
+                    currentEntityName = `${entity.name}`;
                     showNotification(`${entity.name}`);
                     // showProximityMessage(`${entity.name}`);
 
