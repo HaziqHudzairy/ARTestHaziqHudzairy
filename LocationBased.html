@@ -263,33 +263,28 @@
             <a-asset-item id="locationPinDentalLibrary" src="asset/FacilitiesEntity/dental_lib.glb"></a-asset-item>
             <a-asset-item id="locationPinIslamicLibrary" src="asset/FacilitiesEntity/islamic_lib.glb"></a-asset-item;>
 
-                <!-- Sports and Recreation -->
-                <a-asset-item id="locationPinUMWallSquash" src="asset/FacilitiesEntity/squash.glb"></a-asset-item>
-                <a-asset-item id="locationPinVarsityGreen" src="asset/FacilitiesEntity/varsity_green.glb"></a-asset-item>
-                <a-asset-item id="locationPinUMPark" src="asset/FacilitiesEntity/um_park.glb"></a-asset-item>
-                <a-asset-item id="locationPinPadangC" src="asset/FacilitiesEntity/padang_c.glb"></a-asset-item>
-                <a-asset-item id="locationPinKayaks" src="asset/FacilitiesEntity/kayak.glb"></a-asset-item>
-                <a-asset-item id="locationPinSwimmingPool" src="asset/FacilitiesEntity/pool.glb"></a-asset-item>
-                <a-asset-item id="locationPinUMSportsCentre" src="asset/FacilitiesEntity/um_sports_center.glb"></a-asset-item>
-                <a-asset-item id="locationPinUMArenaStadium" src="asset/FacilitiesEntity/um_arena.glb"></a-asset-item>
-                <a-asset-item id="locationPinRimbaIlmu" src="asset/FacilitiesEntity/rimba_ilmu.glb"></a-asset-item>
-                <a-asset-item id="locationPinLadangMini" src="asset/FacilitiesEntity/isb.glb"></a-asset-item>
-                <a-asset-item id="locationPinMustafaRiver" src="asset/FacilitiesEntity/sungai.glb"></a-asset-item>
+            <!-- Sports and Recreation -->
+            <a-asset-item id="locationPinUMWallSquash" src="asset/FacilitiesEntity/squash.glb"></a-asset-item>
+            <a-asset-item id="locationPinVarsityGreen" src="asset/FacilitiesEntity/varsity_green.glb"></a-asset-item>
+            <a-asset-item id="locationPinUMPark" src="asset/FacilitiesEntity/um_park.glb"></a-asset-item>
+            <a-asset-item id="locationPinPadangC" src="asset/FacilitiesEntity/padang_c.glb"></a-asset-item>
+            <a-asset-item id="locationPinKayaks" src="asset/FacilitiesEntity/kayak.glb"></a-asset-item>
+            <a-asset-item id="locationPinSwimmingPool" src="asset/FacilitiesEntity/pool.glb"></a-asset-item>
+            <a-asset-item id="locationPinUMSportsCentre" src="asset/FacilitiesEntity/um_sports_center.glb"></a-asset-item>
+            <a-asset-item id="locationPinUMArenaStadium" src="asset/FacilitiesEntity/um_arena.glb"></a-asset-item>
+            <a-asset-item id="locationPinRimbaIlmu" src="asset/FacilitiesEntity/rimba_ilmu.glb"></a-asset-item>
+            <a-asset-item id="locationPinLadangMini" src="asset/FacilitiesEntity/isb.glb"></a-asset-item>
+            <a-asset-item id="locationPinMustafaRiver" src="asset/FacilitiesEntity/sungai.glb"></a-asset-item>
 
-                <!-- Environment -->
-                <a-asset-item id="f315Scene" src="asset/AR_Environment_Info/F315.glb"></a-asset-item>
-                <a-asset-item id="Scenescene" src="asset/AR_Environment_Info/Room.glb"></a-asset-item>
+            <!-- Environment -->
+            <a-asset-item id="f315Scene" src="asset/AR_Environment_Info/F315.glb"></a-asset-item>
+            <a-asset-item id="Scenescene" src="asset/AR_Environment_Info/Room.glb"></a-asset-item>
 
         </a-assets>
 
-        <a-entity id="virtual-space" visible="false">
+        <a-entity id="virtual-space" visible="false" gps-entity-place follow-gps-camera>
             <a-plane id="imagePlane" position="0 1 -10" width="4" height="3"
                 material="src: asset/images/F315/image1.jpg;"></a-plane>
-            <!-- <video id="videoPlane" width="640" height="360" autoplay loop muted>
-                <source src="asset/videos/F315/video1.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video> -->
-
             <a-box position="0 1 -10" color=blue></a-box>
             <a-box position="0 1 10" color=red></a-box>
             <a-box position="10 1 0" color=yellow></a-box>
@@ -325,9 +320,28 @@
                 }
             });
         </script> -->
+        
 
     </a-scene>
 
+    <script>
+        AFRAME.registerComponent('follow-gps-camera', {
+            init: function () {
+                this.camera = document.querySelector('a-camera[gps-camera]');
+                this.virtualSpace = this.el;
+            },
+            tick: function () {
+                // Check if the GPS coordinates are available
+                if (this.camera && this.camera.components['gps-camera'].currentCoords) {
+                    const { latitude, longitude } = this.camera.components['gps-camera'].currentCoords;
+    
+                    // Update the virtual-space position
+                    this.virtualSpace.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
+                }
+            }
+        });
+    </script>
+    
     <!-- Firebase Script -->
     <script type="module">
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
@@ -736,12 +750,6 @@
 
             // Hide virtual space
             virtualSpace.setAttribute('visible', false);
-
-            // Clear all dynamic entities
-            // const dynamicEntities = scene.querySelectorAll('.location-entity');
-            // dynamicEntities.forEach((entity) => {
-            //     scene.removeChild(entity);
-            // });
         }
 
         // Example function to show the cancel button with a fade effect
