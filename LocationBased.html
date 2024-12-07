@@ -965,17 +965,17 @@
 
             let environmentModel = null; // To store the model for display
 
-            entities.forEach(entity => {
-                const entity = entities[category][entityId];
-                const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
-                if (distance <= radius) {
-                    isNearAnyEntity = true;
+            Object.keys(entities).forEach(category => {
+                Object.keys(entities[category]).forEach(entityId => {
+                    const entity = entities[category][entityId];
+                    const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
+                    if (distance <= radius) {
+                        isNearAnyEntity = true;
 
-                    currentEntityName = entityId;
-                    showNotification(`${entity.name}`);
-                    // showProximityMessage(`${entity.name}`);
-
-                }
+                        currentEntityName = entityId; // Set the key as the current entity name
+                        showNotification(entity.name); // Use the name for display
+                    }
+                });
             });
 
             // Hide the center menu if the user is not near any entity
