@@ -970,7 +970,8 @@
                 if (distance <= radius) {
                     isNearAnyEntity = true;
 
-                    currentEntityName = `${entity.id}`;
+                    currentEntityName = `${entity.name}`;
+                    getIDBasedOnNames(currentEntityName, entities);
                     showNotification(`${entity.name}`);
                     // showProximityMessage(`${entity.name}`);
 
@@ -983,6 +984,22 @@
                 // hideProximityMessage();
             }
         }
+
+
+        let CurrentEntityID = null;
+        function getIDBasedOnNames(entityName, entities) {
+            
+
+            // Iterate through entities to find the matching name
+            entities.forEach(entity => {
+                if (entity.name === entityName) {
+                    entityID = entity.id; // Assign the ID of the matching entity
+                }
+            });
+
+            return entityID; // Return the found ID or null if not found
+        }
+
 
 
         function showNotification(entityname) {
@@ -1014,7 +1031,7 @@
             //         : 'No GPS data available'}<br>
             // `;
 
-            const debugInfo = `Current entity name:${currentEntityName}`;
+            const debugInfo = `Current entity name:${CurrentEntityID}`;
             // Display debugging information
             showDebugMessage(debugInfo);
         }
