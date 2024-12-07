@@ -341,7 +341,7 @@
             }
         });
     </script>
-    
+
     <!-- Firebase Script -->
     <script type="module">
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
@@ -844,12 +844,32 @@
             notification.addEventListener('click', handleNotificationClick);
         }
 
+        function debugVirtualSpaceState() {
+            const virtualSpace = document.querySelector('#virtual-space');
+            const camera = document.querySelector('a-camera[gps-camera]');
+
+            // Collect debugging information
+            const debugInfo = `
+                Virtual Space Visibility: ${virtualSpace.getAttribute('visible')}<br>
+                Virtual Space Position: ${JSON.stringify(virtualSpace.getAttribute('position'))}<br>
+                Virtual Space GPS Entity: ${JSON.stringify(virtualSpace.getAttribute('gps-entity-place'))}<br>
+                Camera Coordinates: ${camera && camera.components['gps-camera'].currentCoords 
+                    ? `Latitude: ${camera.components['gps-camera'].currentCoords.latitude}, 
+                    Longitude: ${camera.components['gps-camera'].currentCoords.longitude}` 
+                    : 'No GPS data available'}<br>
+            `;
+
+            // Use your custom function to display the debug information
+            showDebugMessage(debugInfo);
+        }
+
         function handleNotificationClick() {
             const virtualSpace = document.querySelector('#virtual-space');
             slideOutNotification();
 
             virtualSpace.setAttribute('visible', true);
             virtualSpace.setAttribute('follow-camera', '');
+            debugVirtualSpaceState();
             unhideExitEnv();
         }
 
