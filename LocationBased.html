@@ -519,17 +519,19 @@
                         nameText.setAttribute('wrap-count', '15');
                         nameText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
                         nameText.setAttribute('render-order', '1');
+                        nameText.setAttribute('material', 'depthTest: false'); // Disable depth test
                         plane1.appendChild(nameText);
 
                         const descText = document.createElement('a-text');
                         descText.setAttribute('value', foundEntity.description || 'No Description Available');
-                        nameText.setAttribute('color', 'white');
-                        nameText.setAttribute('align', 'center');
-                        nameText.setAttribute('position', '0 2 0.01');
-                        nameText.setAttribute('width', '3.8'); 
-                        nameText.setAttribute('wrap-count', '10');
-                        nameText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
+                        descText.setAttribute('color', 'white'); // Fixing incorrect reference to `nameText`
+                        descText.setAttribute('align', 'center');
+                        descText.setAttribute('position', '0 0 0.01'); // Corrected position
+                        descText.setAttribute('width', '3.8'); 
+                        descText.setAttribute('wrap-count', '10');
+                        descText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
                         descText.setAttribute('render-order', '1');
+                        descText.setAttribute('material', 'depthTest: false'); // Disable depth test
                         plane1.appendChild(descText);
 
                         virtualSpace.appendChild(plane1);
