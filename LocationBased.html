@@ -8,7 +8,7 @@
 
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
@@ -25,35 +25,35 @@
     <script>
         // A-Frame Component to Apply Toon Shader
         AFRAME.registerComponent('apply-toon-shader', {
-          schema: {
-            gradientTexture: { type: 'selector' } // Reference the gradient texture
-          },
-          init: function () {
-            const gradientTextureEl = this.data.gradientTexture;
-            const model = this.el.object3D;
-    
-            if (!gradientTextureEl) {
-              console.error('Gradient texture is not provided!');
-              return;
-            }
-    
-            // Load the gradient texture
-            const gradientTexture = new THREE.TextureLoader().load(gradientTextureEl.getAttribute('src'));
-            gradientTexture.minFilter = THREE.NearestFilter; // Optimize for toon shading
-            gradientTexture.magFilter = THREE.NearestFilter;
-    
-            // Traverse the GLTF model and apply MeshToonMaterial
-            model.traverse((child) => {
-              if (child.isMesh) {
-                child.material = new THREE.MeshToonMaterial({
-                  color: 0x0077ff, // Base color for the material
-                  gradientMap: gradientTexture, // Apply the gradient map
+            schema: {
+                gradientTexture: { type: 'selector' } // Reference the gradient texture
+            },
+            init: function () {
+                const gradientTextureEl = this.data.gradientTexture;
+                const model = this.el.object3D;
+
+                if (!gradientTextureEl) {
+                    console.error('Gradient texture is not provided!');
+                    return;
+                }
+
+                // Load the gradient texture
+                const gradientTexture = new THREE.TextureLoader().load(gradientTextureEl.getAttribute('src'));
+                gradientTexture.minFilter = THREE.NearestFilter; // Optimize for toon shading
+                gradientTexture.magFilter = THREE.NearestFilter;
+
+                // Traverse the GLTF model and apply MeshToonMaterial
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        child.material = new THREE.MeshToonMaterial({
+                            color: 0x0077ff, // Base color for the material
+                            gradientMap: gradientTexture, // Apply the gradient map
+                        });
+                    }
                 });
-              }
-            });
-          }
+            }
         });
-      </script>
+    </script>
 </head>
 
 <body style="margin: 0; overflow: hidden;">
@@ -98,13 +98,14 @@
 
         <div class="btn-content2 hidden">
             <a href="#" class="btn-custom2">
-                <i class="fas fa-sign-out-alt" style="transform: rotate(180deg); margin-left: 10px; margin-right: 15px;"></i>                      
+                <i class="fas fa-sign-out-alt"
+                    style="transform: rotate(180deg); margin-left: 10px; margin-right: 15px;"></i>
                 <span class="right icon-container2">
-                    <span class="left title">Hide Content</span>  
+                    <span class="left title">Hide Content</span>
                 </span>
             </a>
         </div>
-    
+
 
         <div id="cancel-button" class="cancel-btn-container">
             <i class="fa fa-times cancel-btn"></i>
@@ -191,8 +192,8 @@
     "></div>
 
     <!--  -->
-    <a-scene apply-toon-material renderer="logarithmicDepthBuffer: true; debugUIEnabled: false;" embedded loading-screen="enabled: false;"
-        arjs="sourceType: webcam; cameraParametersUrl: camera_para.dat;" id="ar-scene">
+    <a-scene apply-toon-material renderer="logarithmicDepthBuffer: true; debugUIEnabled: false;" embedded
+        loading-screen="enabled: false;" arjs="sourceType: webcam; cameraParametersUrl: camera_para.dat;" id="ar-scene">
         <a-assets>
 
             <img id="threeTone" src="asset/middle_button/threeTone.jpg">
@@ -204,13 +205,11 @@
 
             <!-- Faculties -->
             <a-asset-item id="locationPinMedicine" src="asset/FacultyEntity/Medicine.glb"></a-asset-item>
-            <a-asset-item id="locationPinEngineering"
-                src="asset/FacultyEntity/Engineering.glb"></a-asset-item>
+            <a-asset-item id="locationPinEngineering" src="asset/FacultyEntity/Engineering.glb"></a-asset-item>
             <a-asset-item id="locationPinLaw" src="asset/FacultyEntity/Law.glb"></a-asset-item>
             <a-asset-item id="locationPinScience" src="asset/FacultyEntity/Science.glb"></a-asset-item>
             <a-asset-item id="locationPinCS" src="asset/FacultyEntity/Computer_Science.glb"></a-asset-item>
-            <a-asset-item id="locationPinBusiness"
-                src="asset/FacultyEntity/Business_Entity.glb"></a-asset-item>
+            <a-asset-item id="locationPinBusiness" src="asset/FacultyEntity/Business_Entity.glb"></a-asset-item>
             <a-asset-item id="locationPinArts" src="asset/FacultyEntity/Social_Science.glb"></a-asset-item>
             <a-asset-item id="locationPinBuiltEnvironment"
                 src="asset/FacultyEntity/Built_Environment_Entity.glb"></a-asset-item>
@@ -221,10 +220,11 @@
             <a-asset-item id="locationPinPharmacy" src="asset/FacultyEntity/Pharmacy.glb"></a-asset-item>
             <a-asset-item id="locationPinCreativeArts"
                 src="asset/FacultyEntity/Creative_Arts_Entity.glb"></a-asset-item>
-            <a-asset-item id="locationPinAkademiMelayu" src="asset/FacultyEntity/AkademiPengajianMelayu.glb"></a-asset-item>
-            <a-asset-item id="locationPinAkademiIslam" src="asset/FacultyEntity/AkademiPengajianIslam.glb"></a-asset-item>
-            <a-asset-item id="locationPinInstituteAdvancedStudies"
-                src="asset/FacultyEntity/Advance.glb"></a-asset-item>
+            <a-asset-item id="locationPinAkademiMelayu"
+                src="asset/FacultyEntity/AkademiPengajianMelayu.glb"></a-asset-item>
+            <a-asset-item id="locationPinAkademiIslam"
+                src="asset/FacultyEntity/AkademiPengajianIslam.glb"></a-asset-item>
+            <a-asset-item id="locationPinInstituteAdvancedStudies" src="asset/FacultyEntity/Advance.glb"></a-asset-item>
             <a-asset-item id="locationPinPusatAsasi" src="asset/FacultyEntity/Pasum.glb"></a-asset-item>
 
             <!-- Residential Colleges -->
@@ -241,7 +241,8 @@
             <a-asset-item id="locationPinKolej11" src="asset/CollegeEntity/kk11.glb"></a-asset-item>
             <a-asset-item id="locationPinKolej12" src="asset/CollegeEntity/kk12.glb"></a-asset-item>
             <a-asset-item id="locationPinKolej13" src="asset/CollegeEntity/kk13.glb"></a-asset-item>
-            <a-asset-item id="locationPinRumahUniversiti" src="asset/CollegeEntity/InternationalHouse.glb"></a-asset-item>
+            <a-asset-item id="locationPinRumahUniversiti"
+                src="asset/CollegeEntity/InternationalHouse.glb"></a-asset-item>
 
             <!-- Facilities -->
             <a-asset-item id="locationPinDTC" src="asset/FacilitiesEntity/dtc.glb"></a-asset-item>
@@ -263,22 +264,24 @@
             <a-asset-item id="locationPinDentalLibrary" src="asset/FacilitiesEntity/dental_lib.glb"></a-asset-item>
             <a-asset-item id="locationPinIslamicLibrary" src="asset/FacilitiesEntity/islamic_lib.glb"></a-asset-item;>
 
-            <!-- Sports and Recreation -->
-            <a-asset-item id="locationPinUMWallSquash" src="asset/FacilitiesEntity/squash.glb"></a-asset-item>
-            <a-asset-item id="locationPinVarsityGreen" src="asset/FacilitiesEntity/varsity_green.glb"></a-asset-item>
-            <a-asset-item id="locationPinUMPark" src="asset/FacilitiesEntity/um_park.glb"></a-asset-item>
-            <a-asset-item id="locationPinPadangC" src="asset/FacilitiesEntity/padang_c.glb"></a-asset-item>
-            <a-asset-item id="locationPinKayaks" src="asset/FacilitiesEntity/kayak.glb"></a-asset-item>
-            <a-asset-item id="locationPinSwimmingPool" src="asset/FacilitiesEntity/pool.glb"></a-asset-item>
-            <a-asset-item id="locationPinUMSportsCentre" src="asset/FacilitiesEntity/um_sports_center.glb"></a-asset-item>
-            <a-asset-item id="locationPinUMArenaStadium" src="asset/FacilitiesEntity/um_arena.glb"></a-asset-item>
-            <a-asset-item id="locationPinRimbaIlmu" src="asset/FacilitiesEntity/rimba_ilmu.glb"></a-asset-item>
-            <a-asset-item id="locationPinLadangMini" src="asset/FacilitiesEntity/isb.glb"></a-asset-item>
-            <a-asset-item id="locationPinMustafaRiver" src="asset/FacilitiesEntity/sungai.glb"></a-asset-item>
+                <!-- Sports and Recreation -->
+                <a-asset-item id="locationPinUMWallSquash" src="asset/FacilitiesEntity/squash.glb"></a-asset-item>
+                <a-asset-item id="locationPinVarsityGreen"
+                    src="asset/FacilitiesEntity/varsity_green.glb"></a-asset-item>
+                <a-asset-item id="locationPinUMPark" src="asset/FacilitiesEntity/um_park.glb"></a-asset-item>
+                <a-asset-item id="locationPinPadangC" src="asset/FacilitiesEntity/padang_c.glb"></a-asset-item>
+                <a-asset-item id="locationPinKayaks" src="asset/FacilitiesEntity/kayak.glb"></a-asset-item>
+                <a-asset-item id="locationPinSwimmingPool" src="asset/FacilitiesEntity/pool.glb"></a-asset-item>
+                <a-asset-item id="locationPinUMSportsCentre"
+                    src="asset/FacilitiesEntity/um_sports_center.glb"></a-asset-item>
+                <a-asset-item id="locationPinUMArenaStadium" src="asset/FacilitiesEntity/um_arena.glb"></a-asset-item>
+                <a-asset-item id="locationPinRimbaIlmu" src="asset/FacilitiesEntity/rimba_ilmu.glb"></a-asset-item>
+                <a-asset-item id="locationPinLadangMini" src="asset/FacilitiesEntity/isb.glb"></a-asset-item>
+                <a-asset-item id="locationPinMustafaRiver" src="asset/FacilitiesEntity/sungai.glb"></a-asset-item>
 
-            <!-- Environment -->
-            <a-asset-item id="f315Scene" src="asset/AR_Environment_Info/F315.glb"></a-asset-item>
-            <a-asset-item id="Scenescene" src="asset/AR_Environment_Info/Room.glb"></a-asset-item>
+                <!-- Environment -->
+                <a-asset-item id="f315Scene" src="asset/AR_Environment_Info/F315.glb"></a-asset-item>
+                <a-asset-item id="Scenescene" src="asset/AR_Environment_Info/Room.glb"></a-asset-item>
 
         </a-assets>
 
@@ -320,7 +323,7 @@
                 }
             });
         </script> -->
-        
+
 
     </a-scene>
 
@@ -329,27 +332,22 @@
             tick: function () {
                 const camera = document.querySelector('a-camera[gps-camera]');
                 const virtualSpace = document.querySelector('#virtual-space');
-    
+
                 if (!camera || !virtualSpace) return;
-    
-                // Update GPS entity if available
-                if (camera.components['gps-camera'].currentCoords) {
-                    const { latitude, longitude } = camera.components['gps-camera'].currentCoords;
-                    virtualSpace.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
-                }
-    
+
                 // Get the camera's world position
                 const cameraWorldPosition = new THREE.Vector3();
                 camera.object3D.getWorldPosition(cameraWorldPosition);
-    
-                // Update the virtual space's position to follow the camera with an offset
-                const offset = new THREE.Vector3(0, 1.6, -5); // Adjust offset as needed
+
+                // Offset virtual-space to always stay relative to the camera
+                const offset = new THREE.Vector3(0, 1.6, -5);
                 const updatedPosition = cameraWorldPosition.clone().add(offset);
                 virtualSpace.object3D.position.copy(updatedPosition);
             }
         });
+
     </script>
-    
+
 
     <!-- Firebase Script -->
     <script type="module">
@@ -428,32 +426,32 @@
             entityElement.setAttribute("animation-mixer", "clip: *"); // Optional for animations
 
             entityElement.addEventListener('model-loaded', () => {
-            const model = entityElement.getObject3D('mesh'); // Get the loaded 3D model
+                const model = entityElement.getObject3D('mesh'); // Get the loaded 3D model
 
-            if (model) {
-                // Traverse through the model's children to find meshes
-                model.traverse((child) => {
-                    if (child.isMesh) {
-                        const originalMaterial = child.material; // Save the original material
+                if (model) {
+                    // Traverse through the model's children to find meshes
+                    model.traverse((child) => {
+                        if (child.isMesh) {
+                            const originalMaterial = child.material; // Save the original material
 
-                        // Create a gradient map texture for toon shading
-                        const textureLoader = new THREE.TextureLoader();
-                        const gradientMap = textureLoader.load('asset/middle_button/threeTone.jpg');
-                        gradientMap.minFilter = THREE.NearestFilter;
-                        gradientMap.magFilter = THREE.NearestFilter;
+                            // Create a gradient map texture for toon shading
+                            const textureLoader = new THREE.TextureLoader();
+                            const gradientMap = textureLoader.load('asset/middle_button/threeTone.jpg');
+                            gradientMap.minFilter = THREE.NearestFilter;
+                            gradientMap.magFilter = THREE.NearestFilter;
 
-                        // Apply MeshToonMaterial while preserving the original material's color/texture
-                        child.material = new THREE.MeshToonMaterial({
-                            color: originalMaterial.color || 0xffffff, // Use the original color
-                            map: originalMaterial.map || null,         // Preserve the original texture
-                            gradientMap: gradientMap,                 // Use the gradient map for toon effect
-                            emissive: originalMaterial.emissive || 0x000000, // Preserve emissive color if set
-                            emissiveMap: originalMaterial.emissiveMap || null, // Preserve emissive texture if set
-                        });
-                    }
-                });
-            }
-        });
+                            // Apply MeshToonMaterial while preserving the original material's color/texture
+                            child.material = new THREE.MeshToonMaterial({
+                                color: originalMaterial.color || 0xffffff, // Use the original color
+                                map: originalMaterial.map || null,         // Preserve the original texture
+                                gradientMap: gradientMap,                 // Use the gradient map for toon effect
+                                emissive: originalMaterial.emissive || 0x000000, // Preserve emissive color if set
+                                emissiveMap: originalMaterial.emissiveMap || null, // Preserve emissive texture if set
+                            });
+                        }
+                    });
+                }
+            });
 
 
             // Append to Scene
@@ -500,91 +498,27 @@
                         // Set virtual space visible
                         virtualSpace.setAttribute('visible', true);
 
-                        // Create planes for information
-                        const backgroundMaterial = "src: asset/images/background1.png";
-
-                        // // Plane 1: Name and Description
-                        // const plane1 = document.createElement('a-plane');
-                        // plane1.setAttribute('position', '-2.5 1.2 -10');
-                        // plane1.setAttribute('width', '5');
-                        // plane1.setAttribute('height', '3');
-                        // plane1.setAttribute('material', backgroundMaterial);
-                        // virtualSpace.appendChild(plane1);
-
-                        // const nameText = document.createElement('a-text');
-                        // nameText.setAttribute('value', foundEntity.name || 'No Name Available');
-                        // nameText.setAttribute('color', 'white');
-                        // nameText.setAttribute('align', 'center');
-                        // nameText.setAttribute('position', '-5 1.2 -9');
-                        // nameText.setAttribute('width', '3.8'); 
-                        // nameText.setAttribute('wrap-count', '15');
-                        // nameText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
-                        // nameText.setAttribute('render-order', '1');
-                        // virtualSpace.appendChild(nameText);
-
-                        // const descText = document.createElement('a-text');
-                        // descText.setAttribute('value', foundEntity.description || 'No Description Available');
-                        // descText.setAttribute('color', 'white');
-                        // descText.setAttribute('align', 'center');
-                        // descText.setAttribute('position', '-5 1 -9');
-                        // descText.setAttribute('width', '3.8'); 
-                        // descText.setAttribute('wrap-count', '10');
-                        // descText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
-                        // descText.setAttribute('render-order', '1');
-
-                        // virtualSpace.appendChild(descText);
-
-                        // Name Entity with Blue Background and Text
+                        // Name Entity with Background
                         const nameEntity = document.createElement('a-entity');
-                        nameEntity.setAttribute('geometry', 'primitive: plane; width: 5; height: 3'); // Background plane for the text
-                        nameEntity.setAttribute('material', 'src: asset/images/background1.png; transparent: true'); // Set the background material
+                        nameEntity.setAttribute('geometry', 'primitive: plane; width: 5; height: 3');
+                        nameEntity.setAttribute('material', 'src: asset/images/background1.png; transparent: true');
                         nameEntity.setAttribute(
-                        'text',
-                        `value: ${foundEntity.name || 'No Name Available'}; align: justify; color: white; width: 4.8; wrapCount: 15`
+                            'text',
+                            `value: ${foundEntity.name || 'No Name Available'}; align: center; color: white; width: 4.8; wrapCount: 15`
                         );
-                        nameEntity.setAttribute('position', '-2.5 1.2 -10'); // Set position in the virtual space
+                        nameEntity.setAttribute('position', '0 0.5 0.01'); // Position within virtual space
                         virtualSpace.appendChild(nameEntity);
 
-                        // Description Text (Separate Entity)
+                        // Description Text
                         const descEntity = document.createElement('a-entity');
-                        descEntity.setAttribute('geometry', 'primitive: plane; width: 4.8; height: 0.5'); // Bounding box for the description
-                        descEntity.setAttribute('material', 'color: blue; opacity: 0.5'); // Optional: Add a semi-transparent bounding box
+                        descEntity.setAttribute('geometry', 'primitive: plane; width: 4.8; height: 0.5');
+                        descEntity.setAttribute('material', 'color: blue; opacity: 0.5');
                         descEntity.setAttribute(
-                        'text',
-                        `value: ${foundEntity.description || 'No Description Available'}; align: justify; color: white; width: 4.8; wrapCount: 20`
+                            'text',
+                            `value: ${foundEntity.description || 'No Description Available'}; align: center; color: white; width: 4.8; wrapCount: 20`
                         );
-                        descEntity.setAttribute('position', '-2.5 0.5 -9.99'); // Slightly below the name entity and closer to the camera
+                        descEntity.setAttribute('position', '0 -0.5 0.01'); // Below nameEntity
                         virtualSpace.appendChild(descEntity);
-
-                        // Plane 2: Contact, Operating Hours, Website
-                        const plane2 = document.createElement('a-plane');
-                        plane2.setAttribute('position', '2.5 1.2 -5');
-                        plane2.setAttribute('width', '4');
-                        plane2.setAttribute('height', '3');
-                        plane2.setAttribute('material', backgroundMaterial);
-
-                        const contactText = document.createElement('a-text');
-                        contactText.setAttribute('value', `Contact: ${foundEntity.contact_information || 'N/A'}`);
-                        contactText.setAttribute('color', 'black');
-                        contactText.setAttribute('align', 'center');
-                        contactText.setAttribute('position', '0 0.5 0');
-                        plane2.appendChild(contactText);
-
-                        const hoursText = document.createElement('a-text');
-                        hoursText.setAttribute('value', `Hours: ${foundEntity.operating_hours || 'N/A'}`);
-                        hoursText.setAttribute('color', 'black');
-                        hoursText.setAttribute('align', 'center');
-                        hoursText.setAttribute('position', '0 0 0');
-                        plane2.appendChild(hoursText);
-
-                        const websiteText = document.createElement('a-text');
-                        websiteText.setAttribute('value', `Website: ${foundEntity.website || 'N/A'}`);
-                        websiteText.setAttribute('color', 'black');
-                        websiteText.setAttribute('align', 'center');
-                        websiteText.setAttribute('position', '0 -0.5 0');
-                        plane2.appendChild(websiteText);
-
-                        virtualSpace.appendChild(plane2);
                     } else {
                         console.error('Entity not found:', entityName);
                     }
@@ -592,7 +526,8 @@
                     console.error('No data found in database.');
                 }
             });
-        }
+        };
+
 
     </script>
     <script>
@@ -605,7 +540,7 @@
             const searchForm = document.getElementById("search-form");
             const centerMenu = document.querySelector('.center-menu2');
             searchForm.style.display = 'block';
-            
+
             clearMarkers();
             hideExitNav();
 
@@ -615,7 +550,7 @@
                 centerMenu.style.animation = 'none';
                 fallBackCenterMenu();
             }, 500);
-            
+
         }
 
         function recreateCenterMenu() {
@@ -879,7 +814,7 @@
             // Hide virtual space
             virtualSpace.setAttribute('visible', false);
 
-            
+
         }
 
         // Example function to show the cancel button with a fade effect
@@ -920,7 +855,7 @@
             hideExitEnv();
             clearVirtualSpace();
             slideInNotification();
-            
+
         }
 
         function unhideExitEnv() {
@@ -986,9 +921,9 @@
                 Virtual Space Position: ${JSON.stringify(virtualSpace.getAttribute('position'))}<br>
                 Virtual Space GPS Entity: ${JSON.stringify(virtualSpace.getAttribute('gps-entity-place'))}<br>
                 Camera World Position: x: ${cameraWorldPosition.x.toFixed(2)}, y: ${cameraWorldPosition.y.toFixed(2)}, z: ${cameraWorldPosition.z.toFixed(2)}<br>
-                Camera Coordinates: ${camera && camera.components['gps-camera'].currentCoords 
+                Camera Coordinates: ${camera && camera.components['gps-camera'].currentCoords
                     ? `Latitude: ${camera.components['gps-camera'].currentCoords.latitude.toFixed(6)}, 
-                    Longitude: ${camera.components['gps-camera'].currentCoords.longitude.toFixed(6)}` 
+                    Longitude: ${camera.components['gps-camera'].currentCoords.longitude.toFixed(6)}`
                     : 'No GPS data available'}<br>
             `;
 
@@ -1003,7 +938,7 @@
             virtualSpace.setAttribute('visible', true);
             showEntityInformation('entityAcademyIslam');
             virtualSpace.setAttribute('follow-camera', '');
-            virtualSpace.setAttribute('position', '0 1.6 -5'); 
+            virtualSpace.setAttribute('position', '0 1.6 -5');
             debugVirtualSpaceState();
             unhideExitEnv();
         }
