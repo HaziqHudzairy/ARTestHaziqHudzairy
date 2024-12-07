@@ -300,23 +300,23 @@
             <a-box position="-10 1 0" color=green></a-box> -->
 
             <a-plane id="text-plane" 
-         position="0 1.6 -3" 
+         position="0 0 -3" 
          width="4" 
          height="2" 
          color="blue"
          material="shader: flat; depthTest: false;">
-  <!-- Embedded text -->
-  <a-text value="This is embedded text!"
-        text-align="center"
-        color="white"
-        width="3.8"
-        position="0 0 0.01"
-        material="shader: flat; depthTest: false;"
-        class="always-on-top"
-        look-at="[gps-camera]">
-</a-text>
+    <!-- Embedded text -->
+    <a-text value="This is a longer text that will wrap within the plane boundaries!"
+            text-align="left"
+            color="white"
+            width="3.8"
+            wrap-count="40"
+            position="0 0 0.01"
+            material="shader: flat; depthTest: false;"
+            look-at="[gps-camera]">
+    </a-text>
+</a-plane>
 
-</a-plane> 
                 <!-- Text -->
             
         </a-entity>
@@ -372,18 +372,6 @@
                 virtualSpace.object3D.position.copy(updatedPosition);
             }
         });
-
-        AFRAME.registerComponent('always-on-top', {
-            init: function () {
-                this.el.object3D.traverse((node) => {
-                    if (node.isMesh) {
-                        node.renderOrder = 9999; // Highest render order
-                        node.material.depthWrite = false; // Prevent writing to depth buffer
-                    }
-                });
-            }
-        });
-
 
     </script>
 
