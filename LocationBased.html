@@ -522,9 +522,12 @@
 
                         const descText = document.createElement('a-text');
                         descText.setAttribute('value', foundEntity.description || 'No Description Available');
-                        descText.setAttribute('color', 'black');
-                        descText.setAttribute('align', 'center');
-                        descText.setAttribute('position', '0 -0.5 0');
+                        nameText.setAttribute('color', 'white');
+                        nameText.setAttribute('align', 'center');
+                        nameText.setAttribute('position', '-2.5 1 -3');
+                        nameText.setAttribute('width', '3.8'); 
+                        nameText.setAttribute('wrap-count', '20');
+                        nameText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
                         plane1.appendChild(descText);
 
                         virtualSpace.appendChild(plane1);
