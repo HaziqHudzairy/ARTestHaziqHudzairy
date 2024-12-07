@@ -966,11 +966,12 @@
             let environmentModel = null; // To store the model for display
 
             entities.forEach(entity => {
+                const entity = entities[category][entityId];
                 const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
                 if (distance <= radius) {
                     isNearAnyEntity = true;
 
-                    currentEntityName = `${entity}`;
+                    currentEntityName = entityId;
                     showNotification(`${entity.name}`);
                     // showProximityMessage(`${entity.name}`);
 
