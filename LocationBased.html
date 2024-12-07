@@ -300,13 +300,20 @@
             <a-box position="-10 1 0" color=green></a-box> -->
 
             <a-plane id="text-plane" 
-           position="0 1.6 -3" 
-           width="4" 
-           height="2" 
-           color="blue"
-           text="value: This is embedded text!; align: center; color: white; width: 3.8">
-  </a-plane>
-                
+         position="0 1.6 -3" 
+         width="4" 
+         height="2" 
+         color="blue"
+         material="shader: flat; depthTest: false;">
+  <!-- Embedded text -->
+  <a-text value="This is embedded text!" 
+          text-align="center" 
+          color="white" 
+          width="3.8" 
+          position="0 0 0.01"
+          material="shader: flat; depthTest: false;">
+  </a-text>
+</a-plane>  
                 <!-- Text -->
             
         </a-entity>
