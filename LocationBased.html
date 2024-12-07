@@ -282,7 +282,7 @@
 
         </a-assets>
 
-        <a-entity id="virtual-space" visible="false" follow-camera>
+        <a-entity id="virtual-space" visible="false" gps-entity-place="latitude: 0; longitude: 0">
             <a-plane id="imagePlane" position="0 1 -10" width="4" height="3"
                 material="src: asset/images/F315/image1.jpg;"></a-plane>
             <!-- <video id="videoPlane" width="640" height="360" autoplay loop muted>
@@ -836,12 +836,43 @@
             notification.addEventListener('click', handleNotificationClick);
         }
 
+        document.addEventListener('DOMContentLoaded', () => {
+            // Watch the device's GPS position
+            navigator.geolocation.watchPosition(
+                (position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                // Update the virtual-space's position
+                updateVirtualSpacePosition(latitude, longitude);
+                },
+                (error) => {
+                console.error('Error retrieving GPS position:', error);
+                },
+                {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 5000,
+                }
+            );
+            });
+
+
+        function updateVirtualSpacePosition(latitude, longitude) {
+        const virtualSpace = document.getElementById('virtual-space');
+        virtualSpace.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
+        }
+
         function handleNotificationClick() {
             const virtualSpace = document.querySelector('#virtual-space');
             slideOutNotification();
 
             virtualSpace.setAttribute('visible', true);
-            virtualSpace.setAttribute('follow-camera', '');
+            navigator.geolocation.getCurrentPosition((position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                updateVirtualSpacePosition(latitude, longitude);
+            });
             unhideExitEnv();
         }
 
