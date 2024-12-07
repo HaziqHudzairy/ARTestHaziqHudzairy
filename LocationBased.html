@@ -287,7 +287,13 @@
 
         <a-entity id="virtual-space" visible="false" position="0 1.6 -5" sync-virtual-space>
             <a-plane id="imagePlane" position="0 1 -10" width="4" height="3"
-                material="src: asset/images/F315/image1.jpg;"></a-plane>
+                material="src: asset/images/background1.png;"></a-plane>
+                <a-entity
+                    geometry="primitive: plane; width: 4; height: 0"
+                    material="color: blue"
+                    text="value: This text will be 4 units wide."
+                    position="0 1 -3">
+                </a-entity>
             <a-box position="0 1 -10" color=blue></a-box>
             <a-box position="0 1 10" color=red></a-box>
             <a-box position="10 1 0" color=yellow></a-box>
@@ -475,57 +481,57 @@
         fetchAndRenderEntities();
 
         window.showEntityInformation = async function (entityName) {
-            const virtualSpace = document.querySelector('#virtual-space');
-            const entitiesRef = ref(database, "information");
+            // const virtualSpace = document.querySelector('#virtual-space');
+            // const entitiesRef = ref(database, "information");
 
-            onValue(entitiesRef, (snapshot) => {
-                const data = snapshot.val();
+            // onValue(entitiesRef, (snapshot) => {
+            //     const data = snapshot.val();
 
-                if (data) {
-                    let foundEntity = null;
+            //     if (data) {
+            //         let foundEntity = null;
 
-                    // Loop through categories to find the entity
-                    Object.keys(data).forEach((category) => {
-                        if (data[category] && data[category][entityName]) {
-                            foundEntity = data[category][entityName];
-                        }
-                    });
+            //         // Loop through categories to find the entity
+            //         Object.keys(data).forEach((category) => {
+            //             if (data[category] && data[category][entityName]) {
+            //                 foundEntity = data[category][entityName];
+            //             }
+            //         });
 
-                    if (foundEntity) {
-                        // Clear previous content
-                        clearVirtualSpace();
+            //         if (foundEntity) {
+            //             // Clear previous content
+            //             clearVirtualSpace();
 
-                        // Set virtual space visible
-                        virtualSpace.setAttribute('visible', true);
+            //             // Set virtual space visible
+            //             virtualSpace.setAttribute('visible', true);
 
-                        // Name Entity with Background
-                        const nameEntity = document.createElement('a-entity');
-                        nameEntity.setAttribute('geometry', 'primitive: plane; width: 5; height: 3');
-                        nameEntity.setAttribute('material', 'src: asset/images/background1.png; transparent: true');
-                        nameEntity.setAttribute(
-                            'text',
-                            `value: ${foundEntity.name || 'No Name Available'}; align: center; color: white; width: 4.8; wrapCount: 15`
-                        );
-                        nameEntity.setAttribute('position', '0 0.5 0.01'); // Position within virtual space
-                        virtualSpace.appendChild(nameEntity);
+            //             // Name Entity with Background
+            //             const nameEntity = document.createElement('a-entity');
+            //             nameEntity.setAttribute('geometry', 'primitive: plane; width: 5; height: 3');
+            //             nameEntity.setAttribute('material', 'src: asset/images/background1.png; transparent: true');
+            //             nameEntity.setAttribute(
+            //                 'text',
+            //                 `value: ${foundEntity.name || 'No Name Available'}; align: center; color: white; width: 4.8; wrapCount: 15`
+            //             );
+            //             nameEntity.setAttribute('position', '0 0.5 0.01'); // Position within virtual space
+            //             virtualSpace.appendChild(nameEntity);
 
-                        // Description Text
-                        const descEntity = document.createElement('a-entity');
-                        descEntity.setAttribute('geometry', 'primitive: plane; width: 4.8; height: 0.5');
-                        descEntity.setAttribute('material', 'color: blue; opacity: 0.5');
-                        descEntity.setAttribute(
-                            'text',
-                            `value: ${foundEntity.description || 'No Description Available'}; align: center; color: white; width: 4.8; wrapCount: 20`
-                        );
-                        descEntity.setAttribute('position', '0 -0.5 0.01'); // Below nameEntity
-                        virtualSpace.appendChild(descEntity);
-                    } else {
-                        console.error('Entity not found:', entityName);
-                    }
-                } else {
-                    console.error('No data found in database.');
-                }
-            });
+            //             // Description Text
+            //             const descEntity = document.createElement('a-entity');
+            //             descEntity.setAttribute('geometry', 'primitive: plane; width: 4.8; height: 0.5');
+            //             descEntity.setAttribute('material', 'color: blue; opacity: 0.5');
+            //             descEntity.setAttribute(
+            //                 'text',
+            //                 `value: ${foundEntity.description || 'No Description Available'}; align: center; color: white; width: 4.8; wrapCount: 20`
+            //             );
+            //             descEntity.setAttribute('position', '0 -0.5 0.01'); // Below nameEntity
+            //             virtualSpace.appendChild(descEntity);
+            //         } else {
+            //             console.error('Entity not found:', entityName);
+            //         }
+            //     } else {
+            //         console.error('No data found in database.');
+            //     }
+            // });
         };
 
 
@@ -936,7 +942,7 @@
             slideOutNotification();
 
             virtualSpace.setAttribute('visible', true);
-            showEntityInformation('entityAcademyIslam');
+            // showEntityInformation('entityAcademyIslam');
             virtualSpace.setAttribute('follow-camera', '');
             virtualSpace.setAttribute('position', '0 1.6 -5');
             debugVirtualSpaceState();
