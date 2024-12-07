@@ -958,47 +958,43 @@
         }
 
         let currentEntityName = "";
+let CurrentEntityID = null; // Global variable to store the current entity ID
 
-        // Function to check proximity and retrieve the Environment Model
-        function checkProximity(userLat, userLon, entities, radius) {
-            let isNearAnyEntity = false;
+// Function to check proximity and retrieve the Environment Model
+function checkProximity(userLat, userLon, entities, radius) {
+    let isNearAnyEntity = false;
 
-            let environmentModel = null; // To store the model for display
+    entities.forEach(entity => {
+        const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
+        if (distance <= radius) {
+            isNearAnyEntity = true;
 
-            entities.forEach(entity => {
-                const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
-                if (distance <= radius) {
-                    isNearAnyEntity = true;
-
-                    currentEntityName = `${entity.name}`;
-                    getIDBasedOnNames(currentEntityName, entities);
-                    showNotification(`${entity.name}`);
-                    // showProximityMessage(`${entity.name}`);
-
-                }
-            });
-
-            // Hide the center menu if the user is not near any entity
-            if (!isNearAnyEntity) {
-                hideNotification();
-                // hideProximityMessage();
-            }
+            currentEntityName = entity.name;
+            CurrentEntityID = getIDBasedOnNames(currentEntityName, entities); // Set CurrentEntityID globally
+            showNotification(entity.name);
         }
+    });
 
+    // Hide the center menu if the user is not near any entity
+    if (!isNearAnyEntity) {
+        CurrentEntityID = null; // Reset CurrentEntityID if no entity is near
+        hideNotification();
+    }
+}
 
-        let CurrentEntityID = null;
-        function getIDBasedOnNames(entityName, entities) {
-            
+// Function to get the ID based on the name
+function getIDBasedOnNames(entityName, entities) {
+    let entityID = null; // Declare `entityID`
 
-            // Iterate through entities to find the matching name
-            entities.forEach(entity => {
-                if (entity.name === entityName) {
-                    entityID = entity.id; // Assign the ID of the matching entity
-                }
-            });
-
-            return entityID; // Return the found ID or null if not found
+    // Iterate through entities to find the matching name
+    entities.forEach(entity => {
+        if (entity.name === entityName) {
+            entityID = entity.id; // Assign the ID of the matching entity
         }
+    });
+
+    return entityID; // Return the found ID or null if not found
+}
 
 
 
