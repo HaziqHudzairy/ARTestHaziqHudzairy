@@ -503,36 +503,58 @@
                         // Create planes for information
                         const backgroundMaterial = "src: asset/images/background1.png";
 
-                        // Plane 1: Name and Description
-                        const plane1 = document.createElement('a-plane');
-                        plane1.setAttribute('position', '-2.5 1.2 -10');
-                        plane1.setAttribute('width', '5');
-                        plane1.setAttribute('height', '3');
-                        plane1.setAttribute('material', backgroundMaterial);
-                        virtualSpace.appendChild(plane1);
+                        // // Plane 1: Name and Description
+                        // const plane1 = document.createElement('a-plane');
+                        // plane1.setAttribute('position', '-2.5 1.2 -10');
+                        // plane1.setAttribute('width', '5');
+                        // plane1.setAttribute('height', '3');
+                        // plane1.setAttribute('material', backgroundMaterial);
+                        // virtualSpace.appendChild(plane1);
 
-                        const nameText = document.createElement('a-text');
-                        nameText.setAttribute('value', foundEntity.name || 'No Name Available');
-                        nameText.setAttribute('color', 'white');
-                        nameText.setAttribute('align', 'center');
-                        nameText.setAttribute('position', '-5 1.2 -9');
-                        nameText.setAttribute('width', '3.8'); 
-                        nameText.setAttribute('wrap-count', '15');
-                        nameText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
-                        nameText.setAttribute('render-order', '1');
-                        virtualSpace.appendChild(nameText);
+                        // const nameText = document.createElement('a-text');
+                        // nameText.setAttribute('value', foundEntity.name || 'No Name Available');
+                        // nameText.setAttribute('color', 'white');
+                        // nameText.setAttribute('align', 'center');
+                        // nameText.setAttribute('position', '-5 1.2 -9');
+                        // nameText.setAttribute('width', '3.8'); 
+                        // nameText.setAttribute('wrap-count', '15');
+                        // nameText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
+                        // nameText.setAttribute('render-order', '1');
+                        // virtualSpace.appendChild(nameText);
 
-                        const descText = document.createElement('a-text');
-                        descText.setAttribute('value', foundEntity.description || 'No Description Available');
-                        descText.setAttribute('color', 'white');
-                        descText.setAttribute('align', 'center');
-                        descText.setAttribute('position', '-5 1 -9');
-                        descText.setAttribute('width', '3.8'); 
-                        descText.setAttribute('wrap-count', '10');
-                        descText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
-                        descText.setAttribute('render-order', '1');
+                        // const descText = document.createElement('a-text');
+                        // descText.setAttribute('value', foundEntity.description || 'No Description Available');
+                        // descText.setAttribute('color', 'white');
+                        // descText.setAttribute('align', 'center');
+                        // descText.setAttribute('position', '-5 1 -9');
+                        // descText.setAttribute('width', '3.8'); 
+                        // descText.setAttribute('wrap-count', '10');
+                        // descText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
+                        // descText.setAttribute('render-order', '1');
 
-                        virtualSpace.appendChild(descText);
+                        // virtualSpace.appendChild(descText);
+
+                        // Name Entity with Blue Background and Text
+                        const nameEntity = document.createElement('a-entity');
+                        nameEntity.setAttribute('geometry', 'primitive: plane; width: 5; height: 3'); // Background plane for the text
+                        nameEntity.setAttribute('material', 'src: asset/images/background1.png; transparent: true'); // Set the background material
+                        nameEntity.setAttribute(
+                        'text',
+                        `value: ${foundEntity.name || 'No Name Available'}; align: justify; color: white; width: 4.8; wrapCount: 15`
+                        );
+                        nameEntity.setAttribute('position', '-2.5 1.2 -10'); // Set position in the virtual space
+                        virtualSpace.appendChild(nameEntity);
+
+                        // Description Text (Separate Entity)
+                        const descEntity = document.createElement('a-entity');
+                        descEntity.setAttribute('geometry', 'primitive: plane; width: 4.8; height: 0.5'); // Bounding box for the description
+                        descEntity.setAttribute('material', 'color: blue; opacity: 0.5'); // Optional: Add a semi-transparent bounding box
+                        descEntity.setAttribute(
+                        'text',
+                        `value: ${foundEntity.description || 'No Description Available'}; align: justify; color: white; width: 4.8; wrapCount: 20`
+                        );
+                        descEntity.setAttribute('position', '-2.5 0.5 -9.99'); // Slightly below the name entity and closer to the camera
+                        virtualSpace.appendChild(descEntity);
 
                         // Plane 2: Contact, Operating Hours, Website
                         const plane2 = document.createElement('a-plane');
