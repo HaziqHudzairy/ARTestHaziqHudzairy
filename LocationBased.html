@@ -286,7 +286,7 @@
         </a-assets>
 
         <a-entity id="virtual-space" visible="false" position="0 1.6 -5" sync-virtual-space>
-            <a-plane id="imagePlane" position="0 1 -10" width="4" height="3"
+            <!-- <a-plane id="imagePlane" position="0 1 -10" width="4" height="3"
                 material="src: asset/images/background1.png;"></a-plane>
                 <a-entity
                     geometry="primitive: plane; width: 4; height: 0"
@@ -297,7 +297,23 @@
             <a-box position="0 1 -10" color=blue></a-box>
             <a-box position="0 1 10" color=red></a-box>
             <a-box position="10 1 0" color=yellow></a-box>
-            <a-box position="-10 1 0" color=green></a-box>
+            <a-box position="-10 1 0" color=green></a-box> -->
+
+            <a-plane 
+                width="4" 
+                height="2" 
+                color="#FFFFFF" 
+                rotation="0 0 0">
+            </a-plane>
+                
+                <!-- Text -->
+            <a-text 
+                value="Soaring High" 
+                color="#000000" 
+                position="0 1 0" 
+                text-align="center" 
+                scale="2 2 2">
+            </a-text>
         </a-entity>
 
         <!-- <a-entity id="dynamic-model"></a-entity> -->
