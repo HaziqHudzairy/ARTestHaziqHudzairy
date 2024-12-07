@@ -283,17 +283,18 @@
 
         <a-entity id="virtual-space" visible="false" position="0 -10 -5" sync-virtual-space>
 
-            <a-plane id="description" position="0 0 -3" width="5" height="3"
+            <a-plane id="information" position="0 0 -3" width="5" height="3"
                 material="shader: flat; depthTest: false; src: asset/images/background1.png;">
 
                 <!-- Title Text -->
-                <a-text value="Academy of Malay Studies" text-align="justify" baseline="top" anchor="left" color="white"
+                <a-text id="Name" value="Academy of Malay Studies" text-align="justify" baseline="top" anchor="left" color="white"
                     width="7.6" wrap-count="40" position="-2.25 1.25 0.01" scale="0.7 0.7 0.7"
                     material="shader: flat; depthTest: false;" look-at="[gps-camera]">
                 </a-text>
 
                 <!-- Paragraph Text -->
                 <a-text
+                    id="Description"
                     value="The Academy of Malay Studies (Akademi Pengajian Melayu, APM) at Universiti Malaya, established in 1990, is a leading institution dedicated to advancing Malay studies. Initially focused on research, publication, and documentation, APM merged with the Department of Malay Studies in 1995 to create a comprehensive academic entity. The academy offers a variety of academic programs, including the Bachelor of Malay Studies, which provides a full-time coursework experience in Malay language, literature, and culture. Postgraduate programs include the Master of Arts in Malay Studies, available through research or coursework, and a research-intensive Doctor of Philosophy (Ph.D.) program aimed at generating original contributions to the field. Structured into several departments—such as Malay Language, Socio-Culture and Malay Arts, Malay Linguistics, and Malay Literature—APM emphasizes both teaching and research in their specialized disciplines.\n\nThe academy actively publishes scholarly works, including the Jurnal Pengajian Melayu (Journal of Malay Studies), a biannual journal featuring academic articles on advancements in Malay studies. Beyond academics, APM organizes seminars, workshops, and cultural events to promote and preserve Malay heritage. As a center of excellence, APM contributes significantly to national development and global understanding of Malay culture, supported by Universiti Malaya’s conducive learning environment and comprehensive facilities."
                     text-align="justify" baseline="top" anchor="left" color="white" width="10" wrap-count="70"
                     position="-2.25 0.95 0.01" scale="0.3 0.3 0.3" material="shader: flat; depthTest: false;"
@@ -318,6 +319,7 @@
 
                 <!-- Paragraph Text -->
                 <a-text
+                    id="operating_hours"
                     value="Monday to Thursday: 8:00 AM - 5:30 PM\nFriday: 8:00 AM -12:15 PM and 2:45 PM - 5:30 PM\nSaturday, Sunday, and Public Holidays: Closed"
                     text-align="justify" baseline="top" anchor="left" color="white" width="10" wrap-count="70"
                     position="-1.5 0.9 0.01" scale="0.3 0.3 0.3" material="shader: flat; depthTest: false;"
@@ -333,6 +335,7 @@
 
                 <!-- Paragraph Text -->
                 <a-text
+                    id="contact_information"
                     value="Level 4, Block D\nAcademy of Islamic Studies\nUniversiti Malaya\n50603 Kuala Lumpur\nMALAYSIA\nT: (603)-7967 6000\nE: apipp@um.edu.my"
                     text-align="justify" baseline="top" anchor="left" color="white" width="10" wrap-count="70"
                     position="-1.5 -0.1 0.01" scale="0.3 0.3 0.3" material="shader: flat; depthTest: false;"
@@ -543,58 +546,46 @@
         fetchAndRenderEntities();
 
         window.showEntityInformation = async function (entityName) {
-            // const virtualSpace = document.querySelector('#virtual-space');
-            // const entitiesRef = ref(database, "information");
+            const virtualSpace = document.querySelector('#virtual-space');
+            const nameElement = document.querySelector('#Name');
+            const descriptionElement = document.querySelector('#Description');
+            const operatingHoursElement = document.querySelector('#operating_hours');
+            const contactInformationElement = document.querySelector('#contact_information');
+            
+            const entitiesRef = ref(database, "information");
 
-            // onValue(entitiesRef, (snapshot) => {
-            //     const data = snapshot.val();
+            onValue(entitiesRef, (snapshot) => {
+                const data = snapshot.val();
 
-            //     if (data) {
-            //         let foundEntity = null;
+                if (data) {
+                    let foundEntity = null;
 
-            //         // Loop through categories to find the entity
-            //         Object.keys(data).forEach((category) => {
-            //             if (data[category] && data[category][entityName]) {
-            //                 foundEntity = data[category][entityName];
-            //             }
-            //         });
+                    // Loop through categories to find the entity
+                    Object.keys(data).forEach((category) => {
+                        if (data[category] && data[category][entityName]) {
+                            foundEntity = data[category][entityName];
+                        }
+                    });
 
-            //         if (foundEntity) {
-            //             // Clear previous content
-            //             clearVirtualSpace();
-
-            //             // Set virtual space visible
-            //             virtualSpace.setAttribute('visible', true);
-
-            //             // Name Entity with Background
-            //             const nameEntity = document.createElement('a-entity');
-            //             nameEntity.setAttribute('geometry', 'primitive: plane; width: 5; height: 3');
-            //             nameEntity.setAttribute('material', 'src: asset/images/background1.png; transparent: true');
-            //             nameEntity.setAttribute(
-            //                 'text',
-            //                 `value: ${foundEntity.name || 'No Name Available'}; align: center; color: white; width: 4.8; wrapCount: 15`
-            //             );
-            //             nameEntity.setAttribute('position', '0 0.5 0.01'); // Position within virtual space
-            //             virtualSpace.appendChild(nameEntity);
-
-            //             // Description Text
-            //             const descEntity = document.createElement('a-entity');
-            //             descEntity.setAttribute('geometry', 'primitive: plane; width: 4.8; height: 0.5');
-            //             descEntity.setAttribute('material', 'color: blue; opacity: 0.5');
-            //             descEntity.setAttribute(
-            //                 'text',
-            //                 `value: ${foundEntity.description || 'No Description Available'}; align: center; color: white; width: 4.8; wrapCount: 20`
-            //             );
-            //             descEntity.setAttribute('position', '0 -0.5 0.01'); // Below nameEntity
-            //             virtualSpace.appendChild(descEntity);
-            //         } else {
-            //             console.error('Entity not found:', entityName);
-            //         }
-            //     } else {
-            //         console.error('No data found in database.');
-            //     }
-            // });
+                    if (foundEntity) {
+                        // Update elements with found data
+                        nameElement.setAttribute('value', foundEntity.name || "N/A");
+                        descriptionElement.setAttribute('value', foundEntity.description || "Description not available.");
+                        operatingHoursElement.setAttribute('value', foundEntity.operating_hours || "Operating hours not available.");
+                        contactInformationElement.setAttribute('value', foundEntity.contact_information || "Contact information not available.");
+                        
+                        virtualSpace.setAttribute('visible', true); // Make the virtual space visible
+                    } else {
+                        console.error('Entity not found:', entityName);
+                        virtualSpace.setAttribute('visible', false); // Hide the virtual space
+                    }
+                } else {
+                    console.error('No data found in database.');
+                    virtualSpace.setAttribute('visible', false); // Hide the virtual space
+                }
+            });
         };
+
 
 
     </script>
@@ -974,7 +965,7 @@
             notification.classList.add('show-notification'); // Add fade-in class
             notification.style.display = 'flex'; // Ensure it's visible
 
-            notification.addEventListener('click', handleNotificationClick);
+            notification.addEventListener('click', handleNotificationClick(entityname));
         }
 
         function debugVirtualSpaceState() {
@@ -999,14 +990,14 @@
             showDebugMessage(debugInfo);
         }
 
-        function handleNotificationClick() {
-            const virtualSpace = document.querySelector('#virtual-space');
+        function handleNotificationClick(entityname) {
+            //const virtualSpace = document.querySelector('#virtual-space');
             slideOutNotification();
 
-            virtualSpace.setAttribute('visible', true);
-            // showEntityInformation('entityAcademyIslam');
+            //virtualSpace.setAttribute('visible', true);
+            showEntityInformation('entityAcademyIslam');
             virtualSpace.setAttribute('follow-camera', '');
-            virtualSpace.setAttribute('position', '0 1.6 -5');
+            //virtualSpace.setAttribute('position', '0 1.6 -5');
             debugVirtualSpaceState();
             unhideExitEnv();
         }
@@ -1064,45 +1055,45 @@
             console.log("Cleared all dynamic entities.");
         }
 
-        function showProximityMessage(message) {
-            const virtualSpace = document.querySelector('#virtual-space');
-            const proximityDiv = document.getElementById("proximity-message");
-            const searchForm = document.getElementById("search-form");
+        // function showProximityMessage(message) {
+        //     const virtualSpace = document.querySelector('#virtual-space');
+        //     const proximityDiv = document.getElementById("proximity-message");
+        //     const searchForm = document.getElementById("search-form");
 
-            // Display and update the proximity message
-            proximityDiv.innerText = message;
-            proximityDiv.style.display = "block";
-            proximityDiv.style.opacity = "1"; // Fade-in effect
+        //     // Display and update the proximity message
+        //     proximityDiv.innerText = message;
+        //     proximityDiv.style.display = "block";
+        //     proximityDiv.style.opacity = "1"; // Fade-in effect
 
-            showNotification(message);
+        //     showNotification(message);
 
-            // Add event listener if not already added
-            if (!centerMenu.dataset.listener) {
-                centerMenu.addEventListener('click', function () {
-                    hideProximityMessage();
-                    searchForm.style.display = "none";
-                    showCancelButton();
-                    virtualSpace.setAttribute('visible', true);
-                    virtualSpace.setAttribute('follow-camera', '');
-                    clearSceneEntities();
-                    showDebugMessage(`You are viewing ${message} AR environment`);
-                });
+        //     // Add event listener if not already added
+        //     if (!centerMenu.dataset.listener) {
+        //         centerMenu.addEventListener('click', function () {
+        //             hideProximityMessage();
+        //             searchForm.style.display = "none";
+        //             showCancelButton();
+        //             virtualSpace.setAttribute('visible', true);
+        //             virtualSpace.setAttribute('follow-camera', '');
+        //             clearSceneEntities();
+        //             showDebugMessage(`You are viewing ${message} AR environment`);
+        //         });
 
-                // Mark the listener as added
-                centerMenu.dataset.listener = 'true';
-            }
-        }
+        //         // Mark the listener as added
+        //         centerMenu.dataset.listener = 'true';
+        //     }
+        // }
 
-        // Function to hide the proximity message
-        function hideProximityMessage() {
-            const proximityDiv = document.getElementById("proximity-message");
-            proximityDiv.style.opacity = "0"; // Fade-out effect\
-            hideNotification();
-            setTimeout(() => {
-                proximityDiv.style.display = "none";
-            }, 500); // Match this timeout with the CSS transition duration
+        // // Function to hide the proximity message
+        // function hideProximityMessage() {
+        //     const proximityDiv = document.getElementById("proximity-message");
+        //     proximityDiv.style.opacity = "0"; // Fade-out effect\
+        //     hideNotification();
+        //     setTimeout(() => {
+        //         proximityDiv.style.display = "none";
+        //     }, 500); // Match this timeout with the CSS transition duration
 
-        }
+        // }
 
         // Function to check proximity and retrieve the Environment Model
         function checkProximity(userLat, userLon, entities, radius) {
