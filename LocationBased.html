@@ -475,6 +475,95 @@
         }
         // Call the function after assigning it to window
         fetchAndRenderEntities();
+
+        window.showEntityInformation = async function (entityName) {
+            const virtualSpace = document.querySelector('#virtual-space');
+            const entitiesRef = ref(database, "information");
+
+            onValue(entitiesRef, (snapshot) => {
+                const data = snapshot.val();
+
+                if (data) {
+                    let foundEntity = null;
+
+                    // Loop through categories to find the entity
+                    Object.keys(data).forEach((category) => {
+                        if (data[category] && data[category][entityName]) {
+                            foundEntity = data[category][entityName];
+                        }
+                    });
+
+                    if (foundEntity) {
+                        // Clear previous content
+                        clearVirtualSpace();
+
+                        // Set virtual space visible
+                        virtualSpace.setAttribute('visible', true);
+
+                        // Create planes for information
+                        const backgroundMaterial = "src: asset/images/background1.png";
+
+                        // Plane 1: Name and Description
+                        const plane1 = document.createElement('a-plane');
+                        plane1.setAttribute('position', '-1.5 1.6 -5');
+                        plane1.setAttribute('width', '4');
+                        plane1.setAttribute('height', '3');
+                        plane1.setAttribute('material', backgroundMaterial);
+
+                        const nameText = document.createElement('a-text');
+                        nameText.setAttribute('value', foundEntity.name || 'No Name Available');
+                        nameText.setAttribute('color', 'black');
+                        nameText.setAttribute('align', 'center');
+                        nameText.setAttribute('position', '0 0.5 0');
+                        plane1.appendChild(nameText);
+
+                        const descText = document.createElement('a-text');
+                        descText.setAttribute('value', foundEntity.description || 'No Description Available');
+                        descText.setAttribute('color', 'black');
+                        descText.setAttribute('align', 'center');
+                        descText.setAttribute('position', '0 -0.5 0');
+                        plane1.appendChild(descText);
+
+                        virtualSpace.appendChild(plane1);
+
+                        // Plane 2: Contact, Operating Hours, Website
+                        const plane2 = document.createElement('a-plane');
+                        plane2.setAttribute('position', '1.5 1.6 -5');
+                        plane2.setAttribute('width', '4');
+                        plane2.setAttribute('height', '3');
+                        plane2.setAttribute('material', backgroundMaterial);
+
+                        const contactText = document.createElement('a-text');
+                        contactText.setAttribute('value', `Contact: ${foundEntity.contact_information || 'N/A'}`);
+                        contactText.setAttribute('color', 'black');
+                        contactText.setAttribute('align', 'center');
+                        contactText.setAttribute('position', '0 0.5 0');
+                        plane2.appendChild(contactText);
+
+                        const hoursText = document.createElement('a-text');
+                        hoursText.setAttribute('value', `Hours: ${foundEntity.operating_hours || 'N/A'}`);
+                        hoursText.setAttribute('color', 'black');
+                        hoursText.setAttribute('align', 'center');
+                        hoursText.setAttribute('position', '0 0 0');
+                        plane2.appendChild(hoursText);
+
+                        const websiteText = document.createElement('a-text');
+                        websiteText.setAttribute('value', `Website: ${foundEntity.website || 'N/A'}`);
+                        websiteText.setAttribute('color', 'black');
+                        websiteText.setAttribute('align', 'center');
+                        websiteText.setAttribute('position', '0 -0.5 0');
+                        plane2.appendChild(websiteText);
+
+                        virtualSpace.appendChild(plane2);
+                    } else {
+                        console.error('Entity not found:', entityName);
+                    }
+                } else {
+                    console.error('No data found in database.');
+                }
+            });
+        }
+
     </script>
     <script>
 
@@ -882,6 +971,7 @@
             slideOutNotification();
 
             virtualSpace.setAttribute('visible', true);
+            showEntityInformation('entityAcademyIslam');
             virtualSpace.setAttribute('follow-camera', '');
             virtualSpace.setAttribute('position', '0 1.6 -5'); 
             debugVirtualSpaceState();
