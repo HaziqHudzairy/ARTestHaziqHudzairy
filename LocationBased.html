@@ -1018,7 +1018,7 @@ function getIDBasedOnNames(entityName, entities) {
             camera.object3D.getWorldPosition(cameraWorldPosition);
 
 
-            const debugInfo = `Current entity id:${CurrentEntityID} \n Current entity name: ${CurrentEntityName} `;
+            const debugInfo = `Current entity id:${CurrentEntityID}, current entity name:${currentEntityName} `;
             // Display debugging information
             showDebugMessage(debugInfo);
         }
@@ -1027,7 +1027,7 @@ function getIDBasedOnNames(entityName, entities) {
             const virtualSpace = document.querySelector('#virtual-space');
             slideOutNotification();
             //virtualSpace.setAttribute('visible', true);
-            showEntityInformation(currentEntityName);
+            showEntityInformation(currentEntityID);
             virtualSpace.setAttribute('follow-camera', '');
             virtualSpace.setAttribute('position', '0 1.6 -5');
             debugVirtualSpaceState();
