@@ -965,7 +965,7 @@
             notification.classList.add('show-notification'); // Add fade-in class
             notification.style.display = 'flex'; // Ensure it's visible
 
-            notification.addEventListener('click', handleNotificationClick(entityname));
+            notification.addEventListener('click', handleNotificationClick());
         }
 
         function debugVirtualSpaceState() {
@@ -990,7 +990,7 @@
             showDebugMessage(debugInfo);
         }
 
-        function handleNotificationClick(entityname) {
+        function handleNotificationClick() {
             //const virtualSpace = document.querySelector('#virtual-space');
             slideOutNotification();
 
