@@ -505,8 +505,8 @@
 
                         // Plane 1: Name and Description
                         const plane1 = document.createElement('a-plane');
-                        plane1.setAttribute('position', '-2.5 1.2 -5');
-                        plane1.setAttribute('width', '4');
+                        plane1.setAttribute('position', '-2.5 1.2 -10');
+                        plane1.setAttribute('width', '5');
                         plane1.setAttribute('height', '3');
                         plane1.setAttribute('material', backgroundMaterial);
 
@@ -514,20 +514,22 @@
                         nameText.setAttribute('value', foundEntity.name || 'No Name Available');
                         nameText.setAttribute('color', 'white');
                         nameText.setAttribute('align', 'center');
-                        nameText.setAttribute('position', '-2.5 1.2 -3');
+                        nameText.setAttribute('position', '-5 1.2 -1');
                         nameText.setAttribute('width', '3.8'); 
-                        nameText.setAttribute('wrap-count', '20');
+                        nameText.setAttribute('wrap-count', '15');
                         nameText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
+                        nameText.setAttribute('render-order', '1');
                         plane1.appendChild(nameText);
 
                         const descText = document.createElement('a-text');
                         descText.setAttribute('value', foundEntity.description || 'No Description Available');
                         nameText.setAttribute('color', 'white');
                         nameText.setAttribute('align', 'center');
-                        nameText.setAttribute('position', '-2.5 1 -3');
+                        nameText.setAttribute('position', '-5 1 -1');
                         nameText.setAttribute('width', '3.8'); 
-                        nameText.setAttribute('wrap-count', '20');
+                        nameText.setAttribute('wrap-count', '10');
                         nameText.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json'); 
+                        descText.setAttribute('render-order', '1');
                         plane1.appendChild(descText);
 
                         virtualSpace.appendChild(plane1);
