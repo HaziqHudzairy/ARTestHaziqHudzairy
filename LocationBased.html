@@ -965,7 +965,7 @@
             notification.classList.add('show-notification'); // Add fade-in class
             notification.style.display = 'flex'; // Ensure it's visible
 
-            notification.addEventListener('click', handleNotificationClick());
+            notification.addEventListener('click', handleNotificationClick);
         }
 
         function debugVirtualSpaceState() {
@@ -991,13 +991,13 @@
         }
 
         function handleNotificationClick() {
-            //const virtualSpace = document.querySelector('#virtual-space');
+            const virtualSpace = document.querySelector('#virtual-space');
             slideOutNotification();
 
-            //virtualSpace.setAttribute('visible', true);
-            //showEntityInformation('entityAcademyIslam');
+            virtualSpace.setAttribute('visible', true);
+            // showEntityInformation('entityAcademyIslam');
             virtualSpace.setAttribute('follow-camera', '');
-            //virtualSpace.setAttribute('position', '0 1.6 -5');
+            virtualSpace.setAttribute('position', '0 1.6 -5');
             debugVirtualSpaceState();
             unhideExitEnv();
         }
