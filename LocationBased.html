@@ -546,46 +546,93 @@
         // Call the function after assigning it to window
         fetchAndRenderEntities();
 
-        window.showEntityInformation = async function (entityName) {
-            const virtualSpace = document.querySelector('#virtual-space');
-            const nameElement = document.querySelector('#Name');
-            const descriptionElement = document.querySelector('#Description');
-            const operatingHoursElement = document.querySelector('#operating_hours');
-            const contactInformationElement = document.querySelector('#contact_information');
+        // window.showEntityInformation = async function (entityName) {
+        //     const virtualSpace = document.querySelector('#virtual-space');
+        //     const nameElement = document.querySelector('#Name');
+        //     const descriptionElement = document.querySelector('#Description');
+        //     const operatingHoursElement = document.querySelector('#operating_hours');
+        //     const contactInformationElement = document.querySelector('#contact_information');
             
-            const entitiesRef = ref(database, "information");
+        //     const entitiesRef = ref(database, "information");
 
-            onValue(entitiesRef, (snapshot) => {
-                const data = snapshot.val();
+        //     onValue(entitiesRef, (snapshot) => {
+        //         const data = snapshot.val();
 
-                if (data) {
-                    let foundEntity = null;
+        //         if (data) {
+        //             let foundEntity = null;
 
-                    // Loop through categories to find the entity
-                    Object.keys(data).forEach((category) => {
-                        if (data[category] && data[category][entityName]) {
-                            foundEntity = data[category][entityName];
+        //             // Loop through categories to find the entity
+        //             Object.keys(data).forEach((category) => {
+        //                 if (data[category] && data[category][entityName]) {
+        //                     foundEntity = data[category][entityName];
+        //                 }
+        //             });
+
+        //             if (foundEntity) {
+        //                 // Update elements with found data
+        //                 nameElement.setAttribute('value', foundEntity.name || "N/A");
+        //                 descriptionElement.setAttribute('value', foundEntity.description || "Description not available.");
+        //                 operatingHoursElement.setAttribute('value', foundEntity.operating_hours || "Operating hours not available.");
+        //                 contactInformationElement.setAttribute('value', foundEntity.contact_information || "Contact information not available.");
+                        
+        //                 virtualSpace.setAttribute('visible', true); // Make the virtual space visible
+        //             } else {
+        //                 console.error('Entity not found:', entityName);
+        //                 virtualSpace.setAttribute('visible', false); // Hide the virtual space
+        //             }
+        //         } else {
+        //             console.error('No data found in database.');
+        //             virtualSpace.setAttribute('visible', false); // Hide the virtual space
+        //         }
+        //     });
+        // };
+
+        window.showEntityInformation = async function (entityName) {
+    const virtualSpace = document.querySelector('#virtual-space');
+    const nameElement = document.querySelector('#Name');
+    const descriptionElement = document.querySelector('#Description');
+    const operatingHoursElement = document.querySelector('#operating_hours');
+    const contactInformationElement = document.querySelector('#contact_information');
+    
+    const entitiesRef = ref(database, "information");
+
+    onValue(entitiesRef, (snapshot) => {
+        const data = snapshot.val();
+
+        if (data) {
+            let foundEntity = null;
+
+            // Loop through categories to find the entity by name
+            Object.keys(data).forEach((category) => {
+                if (data[category]) {
+                    Object.keys(data[category]).forEach((entityKey) => {
+                        const entity = data[category][entityKey];
+                        if (entity.name && entity.name.toLowerCase() === entityName.toLowerCase()) {
+                            foundEntity = entity;
                         }
                     });
-
-                    if (foundEntity) {
-                        // Update elements with found data
-                        nameElement.setAttribute('value', foundEntity.name || "N/A");
-                        descriptionElement.setAttribute('value', foundEntity.description || "Description not available.");
-                        operatingHoursElement.setAttribute('value', foundEntity.operating_hours || "Operating hours not available.");
-                        contactInformationElement.setAttribute('value', foundEntity.contact_information || "Contact information not available.");
-                        
-                        virtualSpace.setAttribute('visible', true); // Make the virtual space visible
-                    } else {
-                        console.error('Entity not found:', entityName);
-                        virtualSpace.setAttribute('visible', false); // Hide the virtual space
-                    }
-                } else {
-                    console.error('No data found in database.');
-                    virtualSpace.setAttribute('visible', false); // Hide the virtual space
                 }
             });
-        };
+
+            if (foundEntity) {
+                // Update elements with found data
+                nameElement.setAttribute('value', foundEntity.name || "N/A");
+                descriptionElement.setAttribute('value', foundEntity.description || "Description not available.");
+                operatingHoursElement.setAttribute('value', foundEntity.operating_hours || "Operating hours not available.");
+                contactInformationElement.setAttribute('value', foundEntity.contact_information || "Contact information not available.");
+                
+                virtualSpace.setAttribute('visible', true); // Make the virtual space visible
+            } else {
+                console.error('Entity not found:', entityName);
+                virtualSpace.setAttribute('visible', false); // Hide the virtual space
+            }
+        } else {
+            console.error('No data found in database.');
+            virtualSpace.setAttribute('visible', false); // Hide the virtual space
+        }
+    });
+};
+
 
 
 
