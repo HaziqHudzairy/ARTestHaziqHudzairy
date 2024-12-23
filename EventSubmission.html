@@ -96,9 +96,9 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
 
 
         // Firebase Initialization
@@ -107,7 +107,7 @@
             authDomain: "um-ar-d0418.firebaseapp.com",
             databaseURL: "https://um-ar-d0418-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "um-ar-d0418",
-            storageBucket: "um-ar-d0418.firebasestorage.com",
+            storageBucket: "um-ar-d0418.firebasestorage.app",
             messagingSenderId: "624669072499",
             appId: "1:624669072499:web:315e91c12fad88513c6d52",
             measurementId: "G-XWM53Y6FBZ"

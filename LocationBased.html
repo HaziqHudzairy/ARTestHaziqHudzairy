@@ -1388,7 +1388,7 @@ function getIDBasedOnNames(entityName, entities) {
 
                 // Create the actual marker as a child of the wrapper
                 const marker = document.createElement('a-entity');
-                marker.setAttribute('geometry', 'primitive: box; depth: 3; height: 1; width: 1');
+                marker.setAttribute('geometry', 'primitive: box; depth: 1; height: 0,5; width: 0.5');
                 marker.setAttribute('material', 'color: lightblue');
                 marker.setAttribute('scale', '0.5 0.5 0.5');
                 marker.setAttribute('look-at', '[gps-camera]');
