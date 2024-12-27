@@ -206,7 +206,7 @@ h1 {
 }
 
 .event-date,
-.event-location {
+.event-location, .event-time {
     display: inline-block;
     margin-right: 20px;
     color: #555;
@@ -640,6 +640,266 @@ h1 {
     opacity: 0;
     transition: opacity 0.3s ease;
 }
+
+.details-event {
+    background-color: #ffffff;
+    height: auto;
+    max-height: 90%;
+    overflow-y: auto;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    padding: 50px 70px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.edit-btn {
+    padding: 10px 20px;
+    background-color: #2980b9;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn {
+    padding: 10px 20px;
+    background-color: #b92941;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.done-btn {
+    padding: 10px 20px;
+    background-color: #29b982;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.img-container {
+    position: relative;
+    padding: 20px;
+    height: 100%; /* The height of the container */
+    display: flex; /* Ensure the image is contained and centered */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    overflow: hidden; /* Hide any overflow */
+    overflow-y: auto;
+}
+
+.img-container img {
+    height: 100%; /* Scale the image to match the container's height */
+    width: auto; /* Automatically adjust the width to maintain aspect ratio */
+    object-fit: contain; /* Ensure the aspect ratio is maintained */
+}
+
+.loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px; /* Center the spinner */
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #007BFF; /* Blue color for the spinner */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 15; /* Ensure it's above the image */
+}
+
+/* Spinner Animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Delete Modal Styles */
+.delete-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.delete-modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.delete-modal-content h3 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.delete-modal-content p {
+    margin: 10px 0;
+    font-size: 1em;
+    color: #555;
+}
+
+.delete-modal-actions {
+    margin-top: 15px;
+}
+
+.delete-modal-actions button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.delete-modal-actions .delete-confirm-btn {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.delete-modal-actions .delete-cancel-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+
+.change-image-btn {
+    position: absolute;
+    top: 10px; /* Distance from the top of the container */
+    right: 30px; /* Distance from the right of the container */
+    background-color: #FFA500; /* Orange color */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 10; /* Ensure it appears above the image */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Optional shadow */
+    transition: background-color 0.3s ease;
+}
+
+.change-image-btn:hover {
+    background-color: #e69500; /* Slightly darker orange on hover */
+}
+
+
+
+/* General input and textarea styles */
+.edit-title,
+.edit-date,
+.edit-time,
+.edit-location,
+.edit-description {
+    width: 100%; /* Full width */
+    padding: 10px; /* Spacing inside the field */
+    font-size: 1rem; /* Consistent font size */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    outline: none; /* Remove blue outline on focus */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin-bottom: 15px; /* Space between fields */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+.edit-description{
+    width: 50vw; 
+}
+
+/* Focus effect */
+.edit-title:focus,
+.edit-date:focus,
+.edit-time:focus,
+.edit-location:focus,
+.edit-description:focus {
+    border-color: #007BFF; /* Blue border on focus */
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2); /* Slight shadow on focus */
+}
+
+/* Textarea-specific styles */
+.edit-description {
+    resize: vertical; /* Allow vertical resizing */
+    min-height: 100px; /* Minimum height for textarea */
+}
+
+/* Save and Cancel button styles */
+.save-btn,
+.cancel-btn {
+    padding: 10px 20px; /* Button padding */
+    font-size: 1rem; /* Font size */
+    font-weight: bold; /* Bold text */
+    border-radius: 5px; /* Rounded corners */
+    border: none; /* No border */
+    cursor: pointer; /* Pointer cursor */
+    margin-right: 10px; /* Space between buttons */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Save button specific style */
+.save-btn {
+    background-color: #28a745; /* Green background */
+    color: white; /* White text */
+}
+
+.save-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Cancel button specific style */
+.cancel-btn {
+    background-color: #dc3545; /* Red background */
+    color: white; /* White text */
+}
+
+.cancel-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+/* General label styling */
+label {
+    display: block; /* Ensure labels are on a new line */
+    font-size: 1rem; /* Set font size */
+    font-weight: bold; /* Make labels bold */
+    color: #444; /* Dark gray text color */
+    margin-bottom: 5px; /* Add space below the label */
+}
+
+/* Add some spacing between fields */
+.edit-title,
+.edit-date,
+.edit-time,
+.edit-location,
+.edit-description {
+    margin-bottom: 20px; /* Space between fields */
+}
+
 
 .form-container {
     background-color: #ffffff;

@@ -108,8 +108,7 @@
     </div>
     <div class="background"></div>
     <div class="overlay"></div>
-    <div class="form-container"
-        style="align-items: center; position: absolute; width:70%; border-radius: 10px; z-index: 100;">
+    <div class="form-container" style="align-items: center; position: absolute; width:70%; border-radius: 10px; z-index: 100;">
         <h1>Submit an Event</h1>
         <form id="eventForm">
             <!-- Event Name -->
@@ -172,6 +171,24 @@
 
     </div>
 
+    <div class="details-event" style="align-items: center; position: absolute; width:70%; border-radius: 10px; z-index: 100;">
+        <div class="event-title"></div>
+        <div class="event-details">
+            <span class="event-date"></span>
+            <span class="event-time"></span>
+            <span class="event-location"></span>
+        </div>
+        <div class="event-description"></div>
+        <div class="img-container">
+            <img src="" alt="">
+        </div>
+    
+        <div class="button-container" style="margin-top: 10px;">
+            <button class="edit-btn">Edit</button>
+            <button class="done-btn">Done</button>
+        </div>
+    </div>
+    
     <script src="DashboardJS.js"></script>
     <script src="EventDatabaseHelper.js" type="module"></script>
 </body>
@@ -183,6 +200,11 @@
     // Retrieve the email or UID from the URL parameters
     const email = urlParams.get('email');
     const uid = urlParams.get('uid');
+
+    if (!uid) {
+        // Redirect to login page if 'uid' is missing
+        window.location.href = 'loginpage.html'; // Replace 'login.html' with your desired redirect page
+    }
 
     // Display the user email or user ID
     if (email) {
@@ -245,6 +267,27 @@
         // Show the navbar again
         $('.nav').removeClass('hidden');
     });
+
+    // Function to hide the details-event and overlay, and unhide the navigation bar
+function handleDoneClick() {
+    const detailsContainer = document.querySelector('.details-event');
+    const overlay = document.querySelector('.overlay');
+
+    // Hide the details-event container
+    detailsContainer.style.visibility = 'hidden';
+    detailsContainer.style.opacity = '0';
+
+    // Hide the overlay
+    overlay.style.visibility = 'hidden';
+    overlay.style.opacity = '0';
+
+    // Unhide the navigation bar
+    $('.nav').removeClass('hidden');
+}
+
+// Attach the event listener to the "Done" button
+document.querySelector('.done-btn').addEventListener('click', handleDoneClick);
+
 
 
 </script>
