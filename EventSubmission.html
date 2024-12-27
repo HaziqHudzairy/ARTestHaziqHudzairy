@@ -91,6 +91,16 @@
                     class="w-full bg-blue-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
                     Submit
                 </button>
+
+                <button type="cancel"
+                    class="w-full bg-red-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300">
+                    Cancel
+                </button>
+
+                <a href="Dashboard.html" style="position: absolute; top: 20px; left: 20px; width: auto; padding: 20px 50px;"
+                    class="w-full bg-red-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300">
+                    Back
+                </a>
             </form>
         </div>
     </div>
@@ -229,6 +239,7 @@
 
         const eventForm = document.getElementById('eventForm');
    // Form submission
+
    eventForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 

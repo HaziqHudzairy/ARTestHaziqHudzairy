@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="DashboardStyle.css">
+    <!-- Google Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+</head>
+
+<body>
+    <!-- Logo at the top -->
+    <nav class="nav">
+        <div class="container">
+            <div class="logo">
+                <a>
+                    <img src="asset/UM.AR_Logo_Font_White.png" alt="Logo" class="logo">
+                </a>
+            </div>
+
+            <div id="mainListDiv" class="main_list">
+                <ul class="navlinks">
+                    <li><a id="addNewEvent">Publish New Event</a></li>
+                </ul>
+            </div>
+            <span class="navTrigger">
+                <i></i>
+                <i></i>
+                <i></i>
+            </span>
+        </div>
+    </nav>
+
+    <div class="outer-container">
+        <div class="full-container">
+            <p id="user-info" style="margin-bottom: 50px;"></p>
+
+            <h1>Your Event(s)</h1>
+            <div class="personal-container">
+                <div class="event-list">
+                    <div class="event-item">
+                        <div class="event-title">Event Title 1</div>
+                        <div class="event-details">
+                            <span class="event-date">Date: January 1, 2025</span>
+                            <span class="event-location">Location: New York</span>
+                        </div>
+                        <div class="event-description">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent
+                            libero.
+                        </div>
+                        <button class="event-btn">View Details</button>
+                    </div>
+
+                    <div class="event-item">
+                        <div class="event-title">Event Title 2</div>
+                        <div class="event-details">
+                            <span class="event-date">Date: February 15, 2025</span>
+                            <span class="event-location">Location: Los Angeles</span>
+                        </div>
+                        <div class="event-description">
+                            Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                        </div>
+                        <button class="event-btn">View Details</button>
+                    </div>
+
+                    <div class="event-item">
+                        <div class="event-title">Event Title 1</div>
+                        <div class="event-details">
+                            <span class="event-date">Date: January 1, 2025</span>
+                            <span class="event-location">Location: New York</span>
+                        </div>
+                        <div class="event-description">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent
+                            libero.
+                        </div>
+                        <button class="event-btn">View Details</button>
+                    </div>
+
+
+                    <!-- Add more event items here as needed -->
+
+                </div>
+            </div>
+            <div class="container" style="margin-top: 100px;">
+                <h1>Available Events</h1>
+                <div class="slider-container">
+                    <div class="slider">
+                    </div>
+
+                    <div class="slider-nav">
+                        <button class="prev">&#10094;</button>
+                        <button class="next">&#10095;</button>
+                    </div>
+                    <div class="dots-container">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="background"></div>
+    <div class="overlay"></div>
+    <div class="form-container"
+        style="align-items: center; position: absolute; width:70%; border-radius: 10px; z-index: 100;">
+        <h1>Submit an Event</h1>
+        <form id="eventForm">
+            <!-- Event Name -->
+            <div class="form-group">
+                <label for="eventName">Event Name:</label>
+                <input type="text" id="eventName" name="eventName" required>
+            </div>
+
+            <!-- Event Date -->
+            <div class="form-group">
+                <label for="eventDate">Event Date:</label>
+                <input type="date" id="eventDate" name="eventDate" required>
+            </div>
+
+            <!-- Event Time -->
+            <div class="form-group">
+                <label for="eventTime">Event Time:</label>
+                <input type="time" id="eventTime" name="eventTime" required>
+            </div>
+
+            <!-- Event Details -->
+            <div class="form-group">
+                <label for="eventDetails">Event Details:</label>
+                <textarea id="eventDetails" name="eventDetails" required></textarea>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="form-group">
+                <label for="categoryFilter">Category:</label>
+                <select id="categoryFilter" name="categoryFilter" required>
+                    <option value="" disabled selected>Select a location</option>
+                    <option value="facilities">Facilities</option>
+                    <option value="faculties">Faculties</option>
+                    <option value="libraries">Libraries</option>
+                    <option value="residentialColleges">Residential Colleges</option>
+                    <option value="sportsAndRecreation">Sports and Recreation</option>
+                </select>
+            </div>
+
+            <!-- Event Location -->
+            <div class="form-group">
+                <label for="eventLocation">Event Location:</label>
+                <select id="eventLocation" name="eventLocation" required>
+                    <!-- Dynamically populated options -->
+                </select>
+            </div>
+
+            <!-- Event Poster -->
+            <div class="form-group">
+                <label for="eventPoster">Event Poster:</label>
+                <input type="file" id="eventPoster" name="eventPoster" accept="image/*" required>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-actions">
+                <button type="reset" class="cancel-btn">Cancel</button>
+                <button type="submit" class="submit-btn">Submit</button>
+            </div>
+        </form>
+
+    </div>
+
+    <script src="DashboardJS.js"></script>
+    <script src="EventDatabaseHelper.js" type="module"></script>
+</body>
+
+<script>
+    // Get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Retrieve the email or UID from the URL parameters
+    const email = urlParams.get('email');
+    const uid = urlParams.get('uid');
+
+    // Display the user email or user ID
+    if (email) {
+        document.getElementById('user-info').textContent = `Logged in as: ${email}`;
+    } else {
+        document.getElementById('user-info').textContent = `User ID: ${uid}`;
+    }
+
+    window.userEmail = email;
+    window.userUid = uid;
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".regular").slick({
+            dots: true, // Enable navigation dots
+            infinite: true, // Infinite looping
+            slidesToShow: 3, // Show 3 slides at a time
+            slidesToScroll: 3 // Scroll 3 slides at a time
+        });
+    });
+
+    // jQuery to handle the click event on "Publish New Event"
+    $('#addNewEvent').click(function () {
+        // Hide the navbar by adding the "hidden" class
+        $('.nav').addClass('hidden');
+
+        // Show the overlay and form-container
+        $('.overlay').addClass('visible');
+        $('.form-container').addClass('visible');
+    });
+
+    // To hide the overlay and form-container when clicked outside
+    $('.overlay').click(function () {
+        // Hide the form and overlay
+        $(this).removeClass('visible');
+        $('.form-container').removeClass('visible');
+
+        // Show the navbar again by removing the "hidden" class
+        $('.nav').removeClass('hidden');
+    });
+
+    $('#eventForm').submit(function (e) {
+        e.preventDefault();  // Prevent the default form submission
+
+        // Hide the overlay and form-container
+        $('.overlay').removeClass('visible');
+        $('.form-container').removeClass('visible');
+
+        // Show the navbar again
+        $('.nav').removeClass('hidden');
+    });
+
+    $('.cancel-btn').click(function () {
+        // Hide the overlay and form-container
+        $('.overlay').removeClass('visible');
+        $('.form-container').removeClass('visible');
+
+        // Show the navbar again
+        $('.nav').removeClass('hidden');
+    });
+
+
+</script>
+
+</html>

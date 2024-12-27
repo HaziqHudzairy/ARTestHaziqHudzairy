@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="LoginStyle.css">
+    <!-- Google Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <!-- Logo at the top -->
+    <img src="asset/UM.AR_Logo_Font_White.png" alt="UM.AR Logo" class="login-logo">
+
+
+    <div id="error-message" style="width: 500px; height: auto; background-color: red; color: white; display: none;"></div>
+
+    <div class="outer-container">
+        <div class="login">
+            <div class="container">
+                <h1>Administrator Login</h1>
+                <div class="input-container">
+                    <input type="email" id="email" placeholder=" ">
+                    <label for="email">Email</label>
+                </div>
+                <div class="input-container">
+                    <input type="password" id="password" placeholder=" ">
+                    <label for="password">Password</label>
+                </div>
+                <div class="remember-forgot-container">
+                    <label id="remember-me"><input type="checkbox"> Remember me</label>
+                    <a href="#" id="forgot-password">Forgot password?</a>
+                </div>
+                <button>Log in</button>
+            </div>
+        </div>
+        <div class="register">
+            <div class="container">
+                <i class="fas fa-user-plus fa-5x" style="color: #fff;"></i>
+                <h2>Hello, friend!</h2>
+                <p>Are you an event organizer looking to promote your event on UM.AR? <br> Register here!</p>
+                <button id="register-btn">Register <i class="fas fa-arrow-circle-right"></i></button>
+            </div>
+            <div class="register-content">
+                <h1>Administrator Sign Up Request</h1>
+                <h3>Login Details</h3>
+                    <div class="input-container">
+                        <input type="email-reg" id="email-reg" placeholder=" ">
+                        <label for="email-reg">Email</label>
+                    </div>
+                    <div class="input-container">
+                        <input type="password" id="password-reg" placeholder=" ">
+                        <label for="password-reg">Password</label>
+                    </div>
+                    <div class="input-container">
+                        <input type="password" id="password-reg-re-eenter" placeholder=" ">
+                        <label for="password-reg-re-eenter">Re-enter Password</label>
+                    </div>
+                    <div class="details-container">
+                        <h3>Club/Association Details</h3>
+                    
+                        <!-- Club/Association Name -->
+                        <div class="input-row">
+                            <h4>Club/Association Name</h4>
+                            <div class="input-group">
+                                <input type="text" id="club-name" placeholder=" ">
+                            </div>
+                        </div>
+                    
+                        <!-- Club/Association Type -->
+                        <div class="input-row">
+                            <h4>Club/Association Type</h4>
+                            <div class="select-group">
+                                <select id="club-type" name="club-type">
+                                    <option value="" disabled selected>Please select</option>
+                                    <option value="faculty-level">Faculty Level</option>
+                                    <option value="colleges-level">Colleges Level</option>
+                                    <option value="university-level">University Level</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-container">
+                        <button  id="cancel-btn" class="cancel-button">Cancel</button>
+                        <button  class="submit-button">Submit</button>
+                    </div>
+                    
+                    
+            </div>
+        </div>
+        
+    </div>
+    <script src="LoginJS.js"></script>
+    <script src="UserAuth.js" type="module"></script>
+</body>
+</html>

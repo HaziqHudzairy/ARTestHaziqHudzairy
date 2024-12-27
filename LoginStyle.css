@@ -1,0 +1,551 @@
+/* Start Global Style */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background: #e9ebee;
+    display: flex;
+    flex-direction: column; /* Stack the logo and content vertically */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: sans-serif;
+    padding-top: 20px;
+    background: #2980b9 url('https://static.tumblr.com/03fbbc566b081016810402488936fbae/pqpk3dn/MRSmlzpj3/tumblr_static_bg3.png') repeat 0 0;
+    animation: 10s linear 0s normal none infinite animate;
+}
+
+.login-logo {
+    height: 70px;
+    margin-bottom: -70px;
+}
+
+/* Outer container for content */
+.outer-container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: auto;
+    padding: 0 !important;
+    height: 70%;
+    position: relative;
+    overflow: hidden; /* Prevents overflow during the animation */
+    border-radius: 15px; /* Apply border radius to outer container */
+}
+
+/* Login Section */
+.login {
+    background-color: #fafafa;
+    height: 100%;
+    text-align: center;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px; */
+    position: relative;
+    z-index: 1; /* Ensure it stays under the register section */
+}
+
+
+.login h1 {
+    margin-bottom: 60px;
+    font-size: 2.5em;
+}
+
+
+
+
+/* Input Container */
+.input-container {
+    position: relative;
+    margin: 35px 0;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 15px 0;
+    padding-left: 20px;
+    margin-bottom: 10px;
+    border: none;
+    background-color: #eeeeef;
+    font-size: 16px;
+    outline: none;
+}
+
+.input-container label {
+    position: absolute;
+    left: 20px;
+    top: 40%;
+    font-size: 16px;
+    color: #aaa;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: 0.3s all ease;
+}
+
+.input-container label.focused {
+    top: -30px;
+    font-size: 16px;
+    color: #000000;
+    transform: translateY(0);
+}
+
+.details-container{
+    width: 100%;
+    padding: 15px 0;
+    padding-left: 0px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.register-content h1{
+    margin-bottom: 30px;
+}
+.register-content h3{
+    text-align: left;
+    margin-bottom: 50px;
+    font-size: 20px;
+}
+
+/* Login Button */
+.login button {
+    width: 100%;
+    margin: 30px 0;
+    padding: 10px;
+    border: none;
+    background-color: #2980b9;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s all ease-in-out;
+}
+
+.login button:hover {
+    width: 97%;
+    font-size: 22px;
+    border-radius: 5px;
+}
+
+/* Position Remember Me and Forgot Password */
+.remember-forgot-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 30px 0;
+}
+
+.remember-forgot-container input {
+    margin-left: 10px;
+}
+
+.remember-forgot-container a {
+    color: #2980b9;
+    margin-right: 10px;
+}
+
+
+.register {
+    height: 100%;
+    width: 50%; /* Initially 50% width */
+    background-image: url('asset/AccountAsset/backgroundAdmin.png');
+    background-size: cover;
+    background-position: center;
+    background-color: #fafafa; /* Initial background color */
+    text-align: center;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute; /* Position on top of the login */
+    top: 0;
+    left: 0;
+    z-index: 2; /* Make sure it overlays on top of the login */
+    transform: translateX(100%); /* Initially positioned off-screen */
+    transition: transform 0.5s ease-in-out, width 0.5s ease-in-out, background-color 0.5s ease-in-out; /* Smooth transition for sliding and resizing */
+}
+
+/* When register section is active, it expands to 100% width */
+.register.active {
+    transform: translateX(0); /* Slide into view */
+    width: 100%; /* Expand to 100% width */
+}
+
+
+
+.register h2 {
+    color: #fff;
+    margin: 30px 0;
+    font-size: 50px;
+    letter-spacing: 3px;
+}
+
+.register p {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.register button {
+    background-color: transparent;
+    border: 1px solid #FFF;
+    border-radius: 20px;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 20px;
+    text-transform: uppercase;
+    transition: 0.2s all ease-in-out;
+}
+
+.register button:hover {
+    color: #2980b9;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+
+.register .container {
+    margin: 0 30px;
+    position: absolute;
+    height: 100%;
+    display: flex; /* Ensure it's using flexbox */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Vertically center the content */
+    align-items: center; /* Horizontally center the content */
+    opacity: 1;
+    transition: opacity 0.5s ease-out; /* Smooth transition for fade-out */
+}
+
+
+.register .container.fade-out {
+    opacity: 0; /* Fade out */
+    pointer-events: none; /* Disable interaction during the fade-out */
+}
+
+.register .container.fade-out {
+    opacity: 1; /* Fade out */
+    pointer-events: auto; /* Disable interaction during the fade-out */
+}
+
+
+/* Register content initially hidden */
+.register-content {
+    background-color: #fafafa;
+    min-height: 100%;
+    text-align: center;
+    padding: 80px 100px;
+    width: 100%;
+    opacity: 0; /* Initially invisible */
+    visibility: hidden; /* Initially hidden */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Smooth transition for opacity and visibility */
+    overflow: auto;
+}
+
+.button-container{
+    position: absolute;
+    bottom: 10px;
+    right:100px;
+}
+
+.register-content .submit-button {
+    width: auto;
+    margin: 30px 0px;
+    margin-left: 10px;
+    padding: 10px 30px;
+    border-radius: 5px;
+    border: none;
+    background-color: #2980b9;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s all ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* When the submit button is clicked (active state) */
+.register-content .submit-button:hover {
+    background-color: #fff;  /* Change background to white */
+    color: #2980b9;  /* Change text color to blue */
+    border: 2px solid #2980b9;  /* Add blue outline */
+}
+
+.register-content .cancel-button {
+    width: auto;
+    margin: 30px 0;
+    padding: 10px 30px;
+    border-radius: 5px;
+    border: none;
+    background-color: #b93f29;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s all ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* When the submit button is clicked (active state) */
+.register-content .cancel-button:hover {
+    background-color: #fff;  /* Change background to white */
+    color: #2980b9;  /* Change text color to blue */
+    border: 2px solid #b93f29;  /* Add blue outline */
+}
+
+
+
+/* When the element is visible (fade-in) */
+.register-content.fade-in {
+    opacity: 1; /* Fade in */
+    visibility: visible; /* Make it visible */
+    pointer-events: auto; /* Re-enable interaction */
+}
+
+.register-content.fade-out {
+    opacity: 0; /* Fade out */
+    visibility: hidden; /* Make it hidden but still take up space */
+    pointer-events: none; /* Disable interaction */
+}
+
+
+
+
+/* When the element is to be hidden (fade-out) */
+.fade-out {
+    opacity: 0;
+    pointer-events: none; /* Disable interaction during fade-out */
+    transition: opacity 0.5s ease-in-out; /* Smooth fade-out transition */
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Label takes 1 fraction of space, input/dropdown takes 2 fractions */
+    gap: 10px; /* Space between the label and the input */
+    margin-bottom: 15px; /* Space between rows */
+}
+
+h4 {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.input-group input,
+.select-group select {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.input-group input {
+    width: 100%; /* Makes the input take full width of its grid cell */
+}
+
+.select-group select {
+    width: 100%; /* Makes the select element take full width of its grid cell */
+}
+
+
+
+@keyframes animate {
+    from {background-position:0 0;}
+    to {background-position: 500px 0;}
+}
+
+    /* Mobile View Adjustments */
+    @media only screen and (max-width: 1024px) {
+
+        .login h1 {
+            margin-bottom: 60px;
+            font-size: 2em;
+        }
+        .login .h2{
+            font-size: 2em;
+        }
+        .login .h3{
+            font-size: 2em;
+        }
+        .login .h4{
+            font-size: 2em;
+        }
+        .login .h5{
+            font-size: 2em;
+        }
+        .login .h6{
+            font-size: 2em;
+        }
+        .login .p{
+            font-size: 2em;
+        }
+
+
+        .input-container label {
+            position: absolute;
+            left: 10px;
+            top: 40%;
+            font-size: 12px;
+            color: #aaa;
+            pointer-events: none;
+            transform: translateY(-50%);
+            transition: 0.3s all ease;
+        }
+        
+        .input-container label.focused {
+            top: -30px;
+            font-size: 14px;
+            color: #000000;
+            transform: translateY(0);
+        }
+        /* Allow scrolling on the whole page */
+        body {
+            height: auto; /* Ensure the body takes the height of its content */
+            min-height: 100vh; /* Ensure the body covers the full viewport height */
+            overflow-y: auto; /* Enable vertical scrolling if content overflows */
+            display: flex;
+            flex-direction: column;
+        }
+    
+        .outer-container {
+            margin-top: 20%;
+            width: 100%;
+            border-radius: 0;
+            flex-direction: column; /* Stack login and register vertically */
+            height: auto; /* Allow container to grow with content */
+            overflow-y: auto; /* Ensure it doesn't block vertical overflow */
+        }
+    
+        /* Login and Register sections take full width on mobile */
+        .login, .register {
+            padding: 80px 0;
+            height: auto;
+            width: 100%; /* Full width for mobile view */
+            display: flex;
+            flex-direction: column; /* Stack content vertically */
+            justify-content: center;
+            align-items: center;
+        }
+    
+        /* Remove any transition or animation for smooth layout change */
+        .register {
+            position: relative;
+            transform: translateY(0);
+            width: 100%;
+            height: auto;
+            margin-bottom: 80px;
+            padding: 0;
+        }
+    
+        .register.active {
+            transform: translateY(0);
+            height: 100%;
+            transition: none; /* Remove transition */
+        }
+    
+        /* Adjust input sizes for mobile */
+        .input-container input {
+            padding: 10px 10px;
+            font-size: 14px;
+        }
+    
+        /* Adjust button sizes for mobile */
+        .login button{
+            width: 90%; /* Ensure buttons are not too wide */
+            margin: 10px 0;
+        }
+
+        .register-content .submit-button, .register-content .cancel-button {
+            font-size: 12px;
+            padding: 10px 20px;
+            width: auto;
+        }
+    
+        .register-content {
+            background-color: #fafafa;
+            height: auto;
+            text-align: center;
+            padding: 80px 50px;
+            width: 100%;
+            opacity: 0; /* Initially invisible */
+            visibility: hidden; /* Initially hidden */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Smooth transition for opacity and visibility */
+            overflow: auto;
+        }
+
+        /* When the element is visible (fade-in) */
+        .register-content.fade-in {
+            opacity: 1; /* Fade in */
+            visibility: visible; /* Make it visible */
+            pointer-events: auto; /* Re-enable interaction */
+        }
+
+        .register-content.fade-out {
+            opacity: 0; /* Fade out */
+            visibility: hidden; /* Make it hidden but still take up space */
+            pointer-events: none; /* Disable interaction */
+        }
+
+    
+        .register .container {
+            padding: 20px; /* Adjust padding */
+        }
+    
+        /* Adjust logo size for mobile */
+        .login-logo {
+            height: 50px;
+        }
+
+        .register h2 {
+            color: #fff;
+            margin: 30px 0;
+            font-size: 25px;
+            letter-spacing: 3px;
+        }
+        
+        .register p {
+            color: #fff;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .register button {
+            background-color: transparent;
+            border: 1px solid #FFF;
+            border-radius: 20px;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 15px;
+            text-transform: uppercase;
+            transition: 0.2s all ease-in-out;
+        }
+
+        .register-content h1{
+            margin-bottom: 30px;
+        }
+        .register-content h3{
+            text-align: left;
+            margin-bottom: 50px;
+            font-size: 15px;
+        }
+
+        .register-content h4{
+            text-align: left;
+            margin-bottom: 50px;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+    }
+    
+
