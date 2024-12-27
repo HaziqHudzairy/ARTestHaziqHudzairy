@@ -1,238 +1,654 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="Styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+    <title>UM.AR Main Page</title>
+    <style>
 
-</head>
-<body style="margin: 0; overflow: hidden;">
+        @import url('https://fonts.googleapis.com/css?family=Exo:400,700');
 
-    <div class="container">
-    <div class="logo-container">
-        <!-- First logo -->
-        <img src="asset/University_of_Malaya-Logo.png" alt="UM Logo" class="logoTop">
-        <img src="asset/UM.AR_Logo_Font_Black.png" alt="UM AR Logo" class="logoTop">
-    </div>
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
 
-    <a href="https://um-ar.netlify.app/main.html" class="backButton">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-        </svg>
-    </a>
-</div>
-
-    <div id="Loading"class="box">
-        <div class="cat">
-          <div class="cat__body"></div>
-          <div class="cat__body"></div>
-          <div class="cat__tail"></div>
-          <div class="cat__head"></div>
-        </div>
-      </div>
-    
-    <a-scene
-        vr-mode-ui="enabled: false;"
-        loading-screen="enabled: false;"
-        renderer="logarithmicDepthBuffer: true;"
-        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-        id="scene"
-        embedded
-    >
-        <a-assets>
-            <a-asset-item id="Dog" src="asset/asset.gltf"></a-asset-item>
-            <a-asset-item id="Environment" src="asset/CloudScene.glb"></a-asset-item>
-            <a-asset-item id="Gundam" src="asset/Gundam.glb"></a-asset-item>
-            <a-asset-item id="InfoContainer1" src="asset/console.glb"></a-asset-item>
-            <a-asset-item id="FSKTMLogo" src="asset/FSKTMAnim3.glb"></a-asset-item>
-            <a-asset-item id="TV" src="asset/tv.glb"></a-asset-item>
-            <a-asset-item id="Pin" src="asset/LocationPin.glb"></a-asset-item>
-            <video muted id="FSKTMVideo" src="Videos/Welcome to Faculty of Computer Science and Information Technology, University of Malaya.mp4" autoplay loop="true"></video>
-            <img id="WelcomePhoto" src="asset/WelcomToFSKTM.png"></img>
-        </a-assets>
-
-        <!-- Origin marker -->
-        <a-marker
-            id="origin-marker"
-            type="pattern"
-            url="asset/marker.patt"
-            emitevents="true"
-        >
-        <a-image id="origin-model" src="#WelcomePhoto" scale="3 3 3" class="clickable" gesture-handler rotation="-90 0 0"></a-image>
-        </a-marker>
-
-        <!-- Virtual 3D space (initially hidden) -->
-        <a-entity id="virtual-space" visible="false">
-            <a-entity 
-                id="Pin Location"
-                scale="0.2 0.2 0.2"
-                gltf-model="#Pin"
-                position="0 4 -5"
-            ></a-entity>
-            <a-entity
-                id="Fsktm"
-                scale="2 2 2"
-                gltf-model="#FSKTMLogo"
-                position="0 0 -5"
-            ></a-entity>
-            <a-entity
-                id="Env"
-                scale="10 10 10"
-                gltf-model="#Environment"
-                position="0 -50 0"
-                rotation="0 0 0"
-            ></a-entity>
-            <a-entity
-                id="Env"
-                scale="10 10 10"
-                gltf-model="#Gundam"
-                position="0 -60 0"
-                rotation="0 0 0"
-            ></a-entity>
-
-            <a-entity
-                id="ConsoleGame"
-                scale="6 6 6"
-                gltf-model="#InfoContainer1"
-                position="12 -1 8"
-                rotation="10 260 0"
-            ></a-entity>
-
-            <a-entity
-                id="TVPlayer"
-                scale="5.2 4 5 "
-                gltf-model="#TV"
-                position="18 -2.4 -5.37"
-                rotation="0 -60 0"
-            ></a-entity>
+        .context {
+            width: 100%;
+            position: absolute;
+            top:50vh;
             
-            <a-video src="#FSKTMVideo" width="8" height="4.5" position="14 2 -3.3" rotation="0 -60 0"></a-video>
-             
-        </a-entity>
+        }
 
-        <!-- Camera -->
-        <a-entity camera look-controls></a-entity>
-    </a-scene>
+        .context h1{
+            text-align: center;
+            color: #fff;
+            font-size: 50px;
+        }
 
-    <div id="QR-animation" class="center" style="display:none;">
-        <div class="square">
-            <i class="fa fa-qrcode"></i>
-            <div class="scan"></div>
-        </div>
-        <h6 style="text-align:center; font-size: large;" class="roboto-black">Find UM.AR marker</h6>
+
+        .area{
+            background: #4e54c8;  
+            background: -webkit-linear-gradient(to left, #666eff, #4e54c8);  
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+        }
+
+        .circles{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .circles li{
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+            
+        }
+
+        .circles li:nth-child(1){
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+
+        .circles li:nth-child(2){
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .circles li:nth-child(3){
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .circles li:nth-child(4){
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+
+        .circles li:nth-child(5){
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(6){
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        .circles li:nth-child(7){
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+
+        .circles li:nth-child(8){
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+
+        .circles li:nth-child(9){
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+
+        .circles li:nth-child(10){
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
+
+
+
+        @keyframes animate {
+
+            0%{
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+
+            100%{
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            overflow-y: auto; /* Enable vertical scrolling */
+            /* background: linear-gradient(to right, #7400b8, #6930c3, #f72585);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite; */
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        
+        #video-background {
+            filter: blur(2px);
+            -webkit-filter: blur(2px);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+    
+        #content {
+            position: relative;
+            z-index: 2;
+            text-align: left;
+            color: white;
+        }
+        .container {
+            position: relative;
+            margin: 10px auto; /* Auto margin for top and bottom, and left and right */
+            width: 90%; /* Adjust width of the container */
+            max-width: 800px; /* Set maximum width */
+            height: auto;
+            padding: 20px;
+            background-color: rgba(22, 22, 22, 0.5); /* Grey with 70% opacity */
+            border-radius: 20px; /* Rounded corners */
+            z-index: 1; /* Adjusted z-index to be on top of the video background */
+            margin-bottom: 100px;
+        }
+        h1 {
+            color: #ffffff;
+            font-family: "Manrope", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 800; /* Change the weight value as needed */
+            font-style: normal;
+        }
+        h3{
+            color: #ffffff;
+            font-family: "Manrope", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 800; /* Change the weight value as needed */
+            font-style: normal;
+        }
+        p {
+            font-size: 1.5em;
+            font-family: "Manrope", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400; /* Change the weight value as needed */
+            font-style: normal;
+        }
+        .logoTop {
+            width: auto; /* Set the width of the logos */
+            height: 40px; /* Maintain aspect ratio */
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: white;
+            margin: 10px 0;
+        }
+        .AR-button {
+            position: relative; /* Ensure relative positioning for the child elements */
+            background-color: rgba(0, 0, 0, 0.548);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.5em;
+            margin: 15px auto ;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: block;
+            height: auto;
+            width: 60%;
+            margin-bottom: 10px;
+            overflow: hidden; /* Ensure overflow content is hidden */
+            text-align: center; /* Center the text horizontally */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7); /* Apply shadow */
+            transition: box-shadow 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .logo {
+            width: 60px; /* Adjust the width of the logo as needed */
+            height: auto;
+            margin-left: 10px; /* Add spacing between the text and the logo */
+        }
+
+        .footer-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .new_footer_area {
+            background: #fbfbfd;
+        }
+
+
+        .new_footer_top {
+            padding: 30px 0px 30px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .new_footer_area .footer_bottom {
+            padding-top: 5px;
+            padding-bottom: 50px;
+        }
+        .footer_bottom {
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 20px;
+            color: #7f88a6;
+            padding: 27px 0px;
+        }
+        .new_footer_top .company_widget p {
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 28px;
+            color: #6a7695;
+            margin-bottom: 20px;
+        }
+        .new_footer_top .company_widget .f_subscribe_two .btn_get {
+            border-width: 1px;
+            margin-top: 20px;
+        }
+        .btn_get_two:hover {
+            background: transparent;
+            color: #5e2ced;
+        }
+        .btn_get:hover {
+            color: #fff;
+            background: #6754e2;
+            border-color: #6754e2;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+        a:hover, a:focus, .btn:hover, .btn:focus, button:hover, button:focus {
+            text-decoration: none;
+            outline: none;
+        }
+        .new_footer_top .f_widget.about-widget .f_list li a:hover {
+            color: #5e2ced;
+        }
+        .new_footer_top .f_widget.about-widget .f_list li {
+            margin-bottom: 11px;
+        }
+        .f_widget.about-widget .f_list li:last-child {
+            margin-bottom: 0px;
+        }
+        .f_widget.about-widget .f_list li {
+            margin-bottom: 15px;
+        }
+        .f_widget.about-widget .f_list {
+            margin-bottom: 0px;
+        }
+        .new_footer_top .f_social_icon a {
+            width: 44px;
+            height: 44px;
+            line-height: 43px;
+            background: transparent;
+            border: 1px solid #e2e2eb;
+            font-size: 24px;
+        }
+        .f_social_icon a {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            font-size: 14px;
+            line-height: 45px;
+            color: #858da8;
+            display: inline-block;
+            background: #ebeef5;
+            text-align: center;
+            -webkit-transition: all 0.2s linear;
+            -o-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+        }
+        .ti-facebook:before {
+            content: "\e741";
+        }
+        .ti-twitter-alt:before {
+            content: "\e74b";
+        }
+        .ti-vimeo-alt:before {
+            content: "\e74a";
+        }
+        .ti-pinterest:before {
+            content: "\e731";
+        }
+
+        .btn_get_two {
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            background: #5e2ced;
+            border-color: #5e2ced;
+            color: #fff;
+        }
+
+        .btn_get_two:hover {
+            background: transparent;
+            color: #5e2ced;
+        }
+
+        .new_footer_top .f_social_icon a:hover {
+            background: #5e2ced;
+            border-color: #5e2ced;
+        color:white;
+        }
+        .new_footer_top .f_social_icon a + a {
+            margin-left: 4px;
+        }
+        .new_footer_top .f-title {
+            margin-bottom: 30px;
+            color: #263b5e;
+        }
+        .f_600 {
+            font-weight: 600;
+        }
+        .f_size_18 {
+            font-size: 18px;
+        }
+        .new_footer_top .f_widget.about-widget .f_list li a {
+            color: #6a7695;
+        }
+
+
+        .new_footer_top .footer_bg {
+            position: absolute;
+            bottom: 0;
+            background: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigB8iI5tb8WSVBuVUGc9UjjB8O0708X7Fdic_4O1LT4CmLHoiwhanLXiRhe82yw0R7LgACQ2IhZaTY0hhmGi0gYp_Ynb49CVzfmXtYHUVKgXXpWvJ_oYT8cB4vzsnJLe3iCwuzj-w6PeYq_JaHmy_CoGoa6nw0FBo-2xLdOPvsLTh_fmYH2xhkaZ-OGQ/s16000/footer_bg.png") no-repeat scroll center 0;
+            width: 100%;
+            height: 266px;
+        }
+
+        .new_footer_top .footer_bg .footer_bg_one {
+            background: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEia0PYPxwT5ifToyP3SNZeQWfJEWrUENYA5IXM6sN5vLwAKvaJS1pQVu8mOFFUa_ET4JuHNTFAxKURFerJYHDUWXLXl1vDofYXuij45JZelYOjEFoCOn7E6Vxu0fwV7ACPzArcno1rYuVxGB7JY6G7__e4_KZW4lTYIaHSLVaVLzklZBLZnQw047oq5-Q/s16000/volks.gif") no-repeat center center;
+            width: 330px;
+            height: 105px;
+            background-size:100%;
+            position: absolute;
+            bottom: 0;
+            left: 30%;
+            -webkit-animation: myfirst 22s linear infinite;
+            animation: myfirst 22s linear infinite;
+        }
+
+        .new_footer_top .footer_bg .footer_bg_two {
+            background: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhyLGwEUVwPK6Vi8xXMymsc-ZXVwLWyXhogZxbcXQYSY55REw_0D4VTQnsVzCrL7nsyjd0P7RVOI5NKJbQ75koZIalD8mqbMquP20fL3DxsWngKkOLOzoOf9sMuxlbyfkIBTsDw5WFUj-YJiI50yzgVjF8cZPHhEjkOP_PRTQXDHEq8AyWpBiJdN9SfQA/s16000/cyclist.gif") no-repeat center center;
+            width: 88px;
+            height: 100px;
+            background-size:100%;
+            bottom: 0;
+            left: 38%;
+            position: absolute;
+            -webkit-animation: myfirst 30s linear infinite;
+            animation: myfirst 30s linear infinite;
+        }
+
+
+
+        @-moz-keyframes myfirst {
+        0% {
+            left: -25%;
+        }
+        100% {
+            left: 100%;
+        }
+        }
+
+        @-webkit-keyframes myfirst {
+        0% {
+            left: -25%;
+        }
+        100% {
+            left: 100%;
+        }
+        }
+
+        @keyframes myfirst {
+        0% {
+            left: -25%;
+        }
+        100% {
+            left: 100%;
+        }
+        }
+
+        .container-top {
+            position: relative;
+            width: 100%; /* Adjust width of the container */
+            height: 100px;
+            background-color: rgba(0, 0, 0, 0.7); /* Black with 70% opacity */
+            z-index: 1; /* Ensures it is on top of the video background */
+            margin: auto; /* Center the container horizontally with margin at the top */
+            padding: 1px;
+            box-sizing: border-box; /* Include padding in width and height calculations */
+            border-bottom: 100px;
+            display: flex; /* Use flexbox to handle the positioning of the logos */
+            justify-content: center; /* Center the content horizontally */
+            align-items: center; /* Center the content vertically */
+        }
+
+        .logoTop {
+            margin: 0 10px; /* Add horizontal margin to create a gap between the logos */
+        }
+
+
+        .container-invisible {
+            position: relative;
+            width: 100%; /* Adjust width of the container */
+            max-width: 800px; /* Set maximum width */
+            height: auto;
+            background-color: rgba(0, 0, 0, 0); /* Transparent background */
+            z-index: 1; /* Ensures it is on top of the video background */
+            margin: 10px auto; /* Center the container horizontally with margin at the top */
+            padding: 10px;
+            box-sizing: border-box; /* Include padding in width and height calculations */
+            border-bottom: 100px;
+            display: flex; /* Use flexbox to center content */
+            flex-direction: column; /* Arrange children in a column */
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
+            text-align: center; /* Center text horizontally */
+        }
+
+        .phoneAR-image {
+            width: 80%; /* Set width to 80% of the container's width */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="area" >
+        <ul class="circles">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+        </ul>
+
+        <!-- <img src="Assets\ARbuttonBG.png" alt="bg" id="video-background"> -->
+    <div class="container-top">
+        <!-- First logo -->
+        <img src="asset/UM.AR_Logo_Font_White.png" alt="UM Logo" class="logoTop">
+        <!-- Second logo -->
+        <img src="asset/img-logo-UM-putih.png" alt="UM AR Logo" class="logoTop">
     </div>
+    <div class="container-invisible">
+        <div class="container-invisible">
+            <img src="asset/ARIllustration.png" alt="phoneAR" class="phoneAR-image">
+        </div>        
+        <h1 style="margin: 0; width: 80%;">LANDMARK BASED AR IN UNIVERSITY MALAYA: UM.AR</h3>
+        <br>
+        <p style="color: #ffffff; width: 80%; font-size: medium;">Augmented Reality (AR) technology has gained significant interest in recent years due to its potential to enhance user experiences in various domains. In line with this, my proposed project aims to leverage AR technology to create an immersive campus exploration and navigation system for students at University Malaya.</p>
+        <button class="AR-button" onclick="window.location.href='main.html';">
+            Try UM.AR
+            <img src="asset/UM.AR_logo-02.png" alt="AR_Logo_White" class="logo">
+        </button>
+    </div>
+
+    <footer class="new_footer_area">
+    <footer class="new_footer_area bg_color">
+        <div class="new_footer_top">
+            <div class="container" style="background-color:#ffffff00;">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="f_widget company_widget wow fadeInLeft" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInLeft;">
+                            <h3 class="f-title f_600 t_color f_size_18">Get in Touch</h3>
+                            <p>Feel free to reach out to know more about the project!</p>
+                            <form action="#" class="f_subscribe_two mailchimp" method="post" novalidate="true" _lpchecked="1">
+                                <h3 class="f-title f_600 t_color f_size_18">Email</h3>
+                                <a href="emailto:haziq.huzairi11@gmail.com">haziq.huzairi11@gmail.com</a>
+                                <br>
+                                <br>
+                            </form>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="f_widget social-widget pl_70 wow fadeInLeft" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInLeft;">
+                            <h3 class="f-title f_600 t_color f_size_18">Follow me</h3>
+                            <div class="f_social_icon">
+                                <a href="#" class="fab fa-facebook"></a>
+                                <a href="#" class="fab fa-tiktok"></a>
+                                <a href="#" class="fab fa-linkedin"></a>
+                                <a href="#" class="fab fa-instagram"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="col-lg-3 col-md-6">
+                    <div class="f_widget about-widget pl_70 wow fadeInLeft" data-wow-delay="0.6s" style="visibility: visible; animation-delay: 0.6s; animation-name: fadeInLeft;">
+                        <h3 class="f-title f_600 t_color f_size_18">Help</h3>
+                        <ul class="list-unstyled f_list">
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Term &amp; conditions</a></li>
+                            <li><a href="#">Reporting</a></li>
+                            <li><a href="#">Documentation</a></li>
+                            <li><a href="#">Support Policy</a></li>
+                            <li><a href="#">Privacy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <div class="footer_bg">
+                <div class="footer_bg_one"></div>
+                <div class="footer_bg_two"></div>
+            </div>
+        </div>
+    </footer>
+</footer>
+
+</div >
+
+
     
 
     <script>
-        // Get a reference to the video element
-        var video = document.querySelector('#FSKTMVideo');
-
-// Wait for the A-Frame scene to be fully loaded
-document.querySelector('a-scene').addEventListener('loaded', function () {
-    document.getElementById("Loading").style.display = "none";
-    // Call the function to check camera permission status
-    checkCameraPermission();
-});
-
-// Function to check the camera permission status
-function checkCameraPermission() {
-    // Check if getUserMedia is supported by the browser
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Check if the camera permission is granted
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function (stream) {
-                console.log('Camera access granted. AR scene is ready.');
-                document.getElementById("QR-animation").style.display = "block";
-                // Do further initialization here
-            })
-            .catch(function (error) {
-                console.log('Failed to access camera:', error);
-                // Handle camera access denied or failed state here
-            });
-    } else {
-        console.log('getUserMedia not supported by the browser.');
-    }
-}
-
-        
-        
-        let originPosition = null;
-    
-        // Function to initialize the AR environment
-        function initializeAREnvironment() {
-            const marker = document.querySelector("#origin-marker");
-            const virtualSpace = document.querySelector("#virtual-space");
-    
-            // Set the position of the virtual space based on the marker's position
-            const markerPosition = new THREE.Vector3();
-            marker.object3D.getWorldPosition(markerPosition);
-    
-            if (!originPosition) {
-                originPosition = markerPosition.clone();
-            }
-    
-            virtualSpace.object3D.position.copy(originPosition);
-    
-            document.querySelector("#QR-animation").style.display = "none";
-            
-            // Show the virtual space
-            virtualSpace.setAttribute('visible', true);
-
-            // Check if the video element exists
-            if (video) {
-            setTimeout(function() {
-                // Autoplay the video
-                video.play();
-            }, 2000); // 3000 milliseconds = 3 seconds
-        }
-        }
-    
-        // Marker found event
-        document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
-            initializeAREnvironment();
+        document.getElementById("scanButton").addEventListener("click", function() {
+            // Replace the window.location.href with the URL of the next page
+            window.location.href = "https://arprojectneedlejairyy.netlify.app/"; // Change "next_page.html" to the URL of your next page
         });
 
-    
-        // Model loaded event to debug animation clips and play all animations
-        document.querySelectorAll('a-entity[gltf-model]').forEach((entity) => {
-            entity.addEventListener('model-loaded', (e) => {
-                const model = e.detail.model;
-                const animations = model.animations;
+        // Function to handle button clicks
+        function handleButtonClick(buttonName) {
+            console.log(buttonName + " button clicked");
+        }
 
-                if (animations && animations.length > 0) {
-                    console.log('Available animation clips:', animations.map(anim => anim.name));
-                    const mixer = new THREE.AnimationMixer(model);
-                    animations.forEach((clip) => {
-                        const action = mixer.clipAction(clip);
-                        action.play();
-                    });
-
-                    const clock = new THREE.Clock();
-
-                    const animate = () => {
-                        requestAnimationFrame(animate);
-                        const delta = clock.getDelta();
-                        mixer.update(delta);
-                    };
-
-                    animate();
-                } else {
-                    console.log('No animations found for model:', entity);
-                }
+        // Get all buttons and add click event listener
+        document.querySelectorAll('.UI-button').forEach(button => {
+            button.addEventListener('click', function() {
+                handleButtonClick(this.innerText.trim());
             });
         });
 
+        // Get all card containers and add click event listener
+        document.querySelectorAll('.card-container').forEach(card => {
+            card.addEventListener('click', function() {
+                handleButtonClick("Card clicked");
+            });
+        });
 
+        // Add click event listener to AR button
+        document.querySelector('.AR-button').addEventListener('click', function() {
+            handleButtonClick("AR button clicked");
+        });
         
-
-        
-
     </script>
-    
+
 </body>
+<footer>
+
 </html>

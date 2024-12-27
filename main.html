@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+    <title>UM.AR Main Page</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+        
+        #video-background {
+            filter: blur(8px);
+            -webkit-filter: blur(8px);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+    
+        #content {
+            position: relative;
+            z-index: 2;
+            text-align: left;
+            color: white;
+        }
+        .container {
+            position: relative;
+            margin: 10px auto; /* Auto margin for top and bottom, and left and right */
+            width: 90%; /* Adjust width of the container */
+            max-width: 800px; /* Set maximum width */
+            height: auto;
+            padding: 20px;
+            background-color: rgba(22, 22, 22, 0.5); /* Grey with 70% opacity */
+            border-radius: 20px; /* Rounded corners */
+            z-index: 1; /* Adjusted z-index to be on top of the video background */
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 3em;
+        }
+        h3{
+            color: #ffffff;
+            font-family: "Manrope", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 800; /* Change the weight value as needed */
+            font-style: normal;
+        }
+        p {
+            font-size: 1.5em;
+            font-family: "Manrope", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400; /* Change the weight value as needed */
+            font-style: normal;
+        }
+
+        .logo-container {
+            margin-top: 5%;
+            display: flex; /* Use flexbox layout */
+            justify-content: center; /* Center the logos horizontally */
+            align-items: center; /* Center the logos vertically */
+            padding: 10px; /* Add some padding around the logos */
+            gap: 12px;
+        }
+
+        .logoTop {
+            width: auto; /* Set the width of the logos */
+            height: 40px; /* Maintain aspect ratio */
+        }
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .search-container {
+            background-color: rgba(0, 0, 0, 0.548);
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 5px; /* Adjust the padding */
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            margin-right: 10px; /* Add some space to the right */
+            justify-content: end;
+            position: relative;
+        }
+        svg.bi-search {
+            fill: rgb(153, 152, 152);
+            margin-right: 5px; /* Add gap to the right of the search icon */
+            margin-left: 5px;
+        }
+        input[type="text"] {
+            border: none;
+            outline: none;
+            color: #ffffff;
+            padding: 5px; /* Adjust the padding */
+            border-radius: 20px;
+            font-size: 14px; /* Adjust the font size */
+            width: 100%; /* Set width to 100% to be responsive */
+            background-color: transparent;
+        }
+
+        .menu-icon {
+            fill: rgb(255, 255, 255);
+            height: 30px;
+            width: 30px;
+        }
+        
+        button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: white;
+            margin: 10px 0;
+        }
+        .AR-button {
+            position: relative; /* Ensure relative positioning for the child elements */
+            background-color: rgba(0, 0, 0, 0.548);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.25em;
+            margin: 15px auto ;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: block;
+            height: 100px;
+            width: calc(100% - 10px);
+            margin-bottom: 10px;
+            overflow: hidden; /* Ensure overflow content is hidden */
+            text-align: center; /* Center the text horizontally */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7); /* Apply shadow */
+            transition: box-shadow 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .logo {
+            width: 60px; /* Adjust the width of the logo as needed */
+            height: auto;
+            margin-left: 10px; /* Add spacing between the text and the logo */
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between; /* Ensure equal space between buttons */
+            gap: 10px; /* Optional: add gap between buttons */
+            padding: 0 6px; /* Optional: adjust padding to fit your layout */
+        }
+
+        .UI-button {
+            flex: 1; /* Make buttons take equal space */
+            background-color: rgba(0, 0, 0, 0.548); /* New background color */
+            border: none;
+            border-radius: 15px; /* Different border radius */
+            color: white;
+            padding: 15px 25px; /* Different padding */
+            font-size: 1.2em; /* Adjusted font size (larger) for the text */
+            cursor: pointer;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); /* Different shadow */
+            height: 100px; /* Adjusted height to accommodate icon and text */
+            overflow: hidden;
+            text-align: center;
+            display: flex; /* Flexbox to center content */
+            flex-direction: column; /* Arrange items vertically */
+            align-items: center; /* Center items horizontally */
+            justify-content: center; /* Center items vertically */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7); /* Apply shadow */
+            transition: box-shadow 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .UI-button svg {
+            width: 60px; /* Adjust the size of the icon */
+            height: 60px; /* Adjust the size of the icon */
+        }
+
+        .UI-button span {
+            font-size: 0.8em; /* Adjusted font size (smaller) for the text */
+            margin-top: 5px; /* Add space between icon and text */
+        }
+
+        .custom-button:hover {
+            box-shadow: 0 0 10px rgba(29, 28, 28, 0.7);
+        }
+        
+
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+        
+        .card-container {
+            position: relative;
+            flex: 0 0 auto;
+            border: 1px solid rgba(34, 34, 34,0.5);
+            height: 180px;
+            width: 150px;
+            padding: 20px;
+            border-radius: 20px;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+
+        .card-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("Assets/Image not found.png"); /* Default image */
+            background-size: cover;
+            border-radius: 20px;
+        }
+
+        .card-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        .card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7));
+            padding: 15px;
+            box-sizing: border-box;
+            color: #fff;
+        }
+
+        .app-card {
+            display: inline-block; /* Display as inline-block to allow multiple cards in a row */
+            border-radius: 8px; /* Add border radius for rounded corners */
+            padding: 20px; /* Add padding for spacing */
+            margin: 10px; /* Add margin for spacing between cards */
+            cursor: pointer; /* Change cursor to pointer on hover to indicate interactivity */
+            background-color: rgba(28, 28, 28, 1); /* Add background color for better visibility */
+            height: 150px;
+            width: 150px;
+        }
+
+        .app-card:hover {
+            box-shadow: 0 0 10px rgba(29, 28, 28, 0.7); /* Add shadow on hover for depth effect */
+        }
+
+        .footer-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .new_footer_area {
+            background: #fbfbfd;
+        }
+
+
+        .new_footer_top {
+            padding: 30px 0px 30px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .new_footer_area .footer_bottom {
+            padding-top: 5px;
+            padding-bottom: 50px;
+        }
+        .footer_bottom {
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 20px;
+            color: #7f88a6;
+            padding: 27px 0px;
+        }
+        .new_footer_top .company_widget p {
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 28px;
+            color: #6a7695;
+            margin-bottom: 20px;
+        }
+        .new_footer_top .company_widget .f_subscribe_two .btn_get {
+            border-width: 1px;
+            margin-top: 20px;
+        }
+        .btn_get_two:hover {
+            background: transparent;
+            color: #5e2ced;
+        }
+        .btn_get:hover {
+            color: #fff;
+            background: #6754e2;
+            border-color: #6754e2;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+        a:hover, a:focus, .btn:hover, .btn:focus, button:hover, button:focus {
+            text-decoration: none;
+            outline: none;
+        }
+
+
+
+        .new_footer_top .f_widget.about-widget .f_list li a:hover {
+            color: #5e2ced;
+        }
+        .new_footer_top .f_widget.about-widget .f_list li {
+            margin-bottom: 11px;
+        }
+        .f_widget.about-widget .f_list li:last-child {
+            margin-bottom: 0px;
+        }
+        .f_widget.about-widget .f_list li {
+            margin-bottom: 15px;
+        }
+        .f_widget.about-widget .f_list {
+            margin-bottom: 0px;
+        }
+        .new_footer_top .f_social_icon a {
+            width: 44px;
+            height: 44px;
+            line-height: 43px;
+            background: transparent;
+            border: 1px solid #e2e2eb;
+            font-size: 24px;
+        }
+        .f_social_icon a {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            font-size: 14px;
+            line-height: 45px;
+            color: #858da8;
+            display: inline-block;
+            background: #ebeef5;
+            text-align: center;
+            -webkit-transition: all 0.2s linear;
+            -o-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+        }
+        .ti-facebook:before {
+            content: "\e741";
+        }
+        .ti-twitter-alt:before {
+            content: "\e74b";
+        }
+        .ti-vimeo-alt:before {
+            content: "\e74a";
+        }
+        .ti-pinterest:before {
+            content: "\e731";
+        }
+
+        .btn_get_two {
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            background: #5e2ced;
+            border-color: #5e2ced;
+            color: #fff;
+        }
+
+        .btn_get_two:hover {
+            background: transparent;
+            color: #5e2ced;
+        }
+
+        .new_footer_top .f_social_icon a:hover {
+            background: #5e2ced;
+            border-color: #5e2ced;
+        color:white;
+        }
+        .new_footer_top .f_social_icon a + a {
+            margin-left: 4px;
+        }
+        .new_footer_top .f-title {
+            margin-bottom: 30px;
+            color: #263b5e;
+        }
+        .f_600 {
+            font-weight: 600;
+        }
+        .f_size_18 {
+            font-size: 18px;
+        }
+        .new_footer_top .f_widget.about-widget .f_list li a {
+            color: #6a7695;
+        }
+
+
+        .new_footer_top .footer_bg {
+            position: absolute;
+            bottom: 0;
+            background: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigB8iI5tb8WSVBuVUGc9UjjB8O0708X7Fdic_4O1LT4CmLHoiwhanLXiRhe82yw0R7LgACQ2IhZaTY0hhmGi0gYp_Ynb49CVzfmXtYHUVKgXXpWvJ_oYT8cB4vzsnJLe3iCwuzj-w6PeYq_JaHmy_CoGoa6nw0FBo-2xLdOPvsLTh_fmYH2xhkaZ-OGQ/s16000/footer_bg.png") no-repeat scroll center 0;
+            width: 100%;
+            height: 266px;
+        }
+
+        .new_footer_top .footer_bg .footer_bg_one {
+            background: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEia0PYPxwT5ifToyP3SNZeQWfJEWrUENYA5IXM6sN5vLwAKvaJS1pQVu8mOFFUa_ET4JuHNTFAxKURFerJYHDUWXLXl1vDofYXuij45JZelYOjEFoCOn7E6Vxu0fwV7ACPzArcno1rYuVxGB7JY6G7__e4_KZW4lTYIaHSLVaVLzklZBLZnQw047oq5-Q/s16000/volks.gif") no-repeat center center;
+            width: 330px;
+            height: 105px;
+            background-size:100%;
+            position: absolute;
+            bottom: 0;
+            left: 30%;
+            -webkit-animation: myfirst 22s linear infinite;
+            animation: myfirst 22s linear infinite;
+        }
+
+        .new_footer_top .footer_bg .footer_bg_two {
+            background: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhyLGwEUVwPK6Vi8xXMymsc-ZXVwLWyXhogZxbcXQYSY55REw_0D4VTQnsVzCrL7nsyjd0P7RVOI5NKJbQ75koZIalD8mqbMquP20fL3DxsWngKkOLOzoOf9sMuxlbyfkIBTsDw5WFUj-YJiI50yzgVjF8cZPHhEjkOP_PRTQXDHEq8AyWpBiJdN9SfQA/s16000/cyclist.gif") no-repeat center center;
+            width: 88px;
+            height: 100px;
+            background-size:100%;
+            bottom: 0;
+            left: 38%;
+            position: absolute;
+            -webkit-animation: myfirst 30s linear infinite;
+            animation: myfirst 30s linear infinite;
+        }
+
+
+
+        @-moz-keyframes myfirst {
+        0% {
+            left: -25%;
+        }
+        100% {
+            left: 100%;
+        }
+        }
+
+        @-webkit-keyframes myfirst {
+        0% {
+            left: -25%;
+        }
+        100% {
+            left: 100%;
+        }
+        }
+
+        @keyframes myfirst {
+        0% {
+            left: -25%;
+        }
+        100% {
+            left: 100%;
+        }
+        }
+
+    </style>
+</head>
+<body>
+    <video id="video-background" autoplay muted loop playsinline>
+        <source src="https://assets.codepen.io/3364143/7btrrd.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="logo-container">
+        <!-- First logo -->
+        <img src="asset/UM.AR_Logo_Font_White.png" alt="UM Logo" class="logoTop">
+        <!-- Second logo -->
+        <img src="asset/img-logo-UM-putih.png" alt="UM AR Logo" class="logoTop">
+    </div>
+    <div class="container">
+        <div class="top-bar">
+        <div class="search-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+            <input type="text" placeholder="Search your destination in UM!">
+            <button><span class="bi bi-search"></span></button>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi menu-icon" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+          </svg>
+        </div>
+        <hr>
+        <h3>UM.AR</h3>
+        <button id="AR-button" class="AR-button">
+            Use Location Based AR
+            <img src="asset\UM.AR_logo-02.png" alt="AR_Logo_White" class="logo">
+        </button>        
+        <div class="button-container">
+            <button id="scanButton" class="UI-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-qr-code-scan" viewBox="0 0 16 16">
+                    <path d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5M.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5M4 4h1v1H4z"/>
+                    <path d="M7 2H2v5h5zM3 3h3v3H3zm2 8H4v1h1z"/>
+                    <path d="M7 9H2v5h5zm-4 1h3v3H3zm8-6h1v1h-1z"/>
+                    <path d="M9 2h5v5H9zm1 1v3h3V3zM8 8v2h1v1H8v1h2v-2h1v2h1v-1h2v-1h-3V8zm2 2H9V9h1zm4 2h-1v1h-2v1h3zm-4 2v-1H8v1z"/>
+                    <path d="M12 9h2V8h-2z"/>
+                </svg>
+                <span style="font-size: 0.6em;">Marker based AR</span>
+            </button>
+            <button class="UI-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-diamond-fill" viewBox="0 0 16 16">
+                    <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098zM5.495 6.033a.237.237 0 0 1-.24-.247C5.35 4.091 6.737 3.5 8.005 3.5c1.396 0 2.672.73 2.672 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.105a.25.25 0 0 1-.25.25h-.81a.25.25 0 0 1-.25-.246l-.004-.217c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.803 0-1.253.478-1.342 1.134-.018.137-.128.25-.266.25zm2.325 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927"/>
+                </svg>
+                <span>Guide</span>
+            </button>
+            <button class="UI-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-raised-hand" viewBox="0 0 16 16">
+                    <path d="M6 6.207v9.043a.75.75 0 0 0 1.5 0V10.5a.5.5 0 0 1 1 0v4.75a.75.75 0 0 0 1.5 0v-8.5a.25.25 0 1 1 .5 0v2.5a.75.75 0 0 0 1.5 0V6.5a3 3 0 0 0-3-3H6.236a1 1 0 0 1-.447-.106l-.33-.165A.83.83 0 0 1 5 2.488V.75a.75.75 0 0 0-1.5 0v2.083c0 .715.404 1.37 1.044 1.689L5.5 5c.32.32.5.754.5 1.207"/>
+                    <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                </svg>
+                <span>Help</span>
+            </button>
+        </div>  
+        <br>
+        <div id="content">
+            <h3>Events</h3>
+            <hr>
+            <div class="scroll-container">
+                <div class="card-container">
+                    <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tfGVufDB8fDB8fHww" class="card-image">
+                    <div class="card-content">University Malaya The Best</div>
+                </div>
+                <div class="card-container">
+                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1462570/ss_c8a5566056a7b1ee346d20e2f4a71eb691008115.1920x1080.jpg?t=1662047426" class="card-image">
+                    <div class="card-content">University Malaya The Best</div>
+                </div>
+                <div class="card-container">
+                    <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D" class="card-image">
+                    <div class="card-content">University Malaya The Best</div>
+                </div>
+                <div class="card-container">
+                    <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D" class="card-image">
+                    <div class="card-content">University Malaya The Best</div>
+                </div>
+                <div class="card-container">
+                    <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D" class="card-image">
+                    <div class="card-content">University Malaya The Best</div>
+                </div>
+                <div class="card-container">
+                    <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D" class="card-image">
+                    <div class="card-content">University Malaya The Best</div>
+                </div>
+                <!-- Add more card containers as needed -->
+            </div>
+            <br>
+            <h3>Suggestion</h3>
+            <hr>
+            <div class="scroll-container">
+                <div class="card-container">
+                    <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tfGVufDB8fDB8fHww" class="card-image">
+                    <div class="card-content">University Malaya The Best</div>
+                </div>
+                <div class="card-container">
+                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1462570/ss_c8a5566056a7b1ee346d20e2f4a71eb691008115.1920x1080.jpg?t=1662047426" class="card-image">
+                    <div class="card-content">University Malaya The Best</div>
+                </div>
+                <div class="card-container">
+                    <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D" class="card-image">
+                    <div class="card-content">University Malaya The Best</div>
+                </div>
+                <div class="card-container">
+                    <img src="link" class="card-image">
+                    <div class="card-content">University Malaya The Best</div>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+
+    <footer class="new_footer_area">
+        <footer class="new_footer_area bg_color">
+            <div class="new_footer_top">
+                <div class="container" style="background-color:#ffffff00;">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="f_widget company_widget wow fadeInLeft" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInLeft;">
+                                <h3 class="f-title f_600 t_color f_size_18">Get in Touch</h3>
+                                <p>Feel free to reach out to know more about the project!</p>
+                                <form action="#" class="f_subscribe_two mailchimp" method="post" novalidate="true" _lpchecked="1">
+                                    <h3 class="f-title f_600 t_color f_size_18">Email</h3>
+                                    <a href="emailto:haziq.huzairi11@gmail.com">haziq.huzairi11@gmail.com</a>
+                                    <br>
+                                    <br>
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="f_widget social-widget pl_70 wow fadeInLeft" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInLeft;">
+                                <h3 class="f-title f_600 t_color f_size_18">Follow me</h3>
+                                <div class="f_social_icon">
+                                    <a href="#" class="fab fa-facebook"></a>
+                                    <a href="#" class="fab fa-tiktok"></a>
+                                    <a href="#" class="fab fa-linkedin"></a>
+                                    <a href="#" class="fab fa-instagram"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="f_widget about-widget pl_70 wow fadeInLeft" data-wow-delay="0.6s" style="visibility: visible; animation-delay: 0.6s; animation-name: fadeInLeft;">
+                            <h3 class="f-title f_600 t_color f_size_18">Help</h3>
+                            <ul class="list-unstyled f_list">
+                                <li><a href="#">FAQ</a></li>
+                                <li><a href="#">Term &amp; conditions</a></li>
+                                <li><a href="#">Reporting</a></li>
+                                <li><a href="#">Documentation</a></li>
+                                <li><a href="#">Support Policy</a></li>
+                                <li><a href="#">Privacy</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="footer_bg">
+                    <div class="footer_bg_one"></div>
+                    <div class="footer_bg_two"></div>
+                </div>
+            </div>
+        </footer>
+    </footer>
+
+    <script>
+        document.getElementById("scanButton").addEventListener("click", function() {
+            // Replace the window.location.href with the URL of the next page
+            window.location.href = "MarkerBased.html"; // Change "next_page.html" to the URL of your next page
+        });
+
+        document.getElementById("AR-button").addEventListener("click", function() {
+            // Replace the window.location.href with the URL of the next page
+            window.location.href = "LocationBased.html"; // Change "next_page.html" to the URL of your next page
+        });
+
+        // Function to handle button clicks
+        function handleButtonClick(buttonName) {
+            console.log(buttonName + " button clicked");
+        }
+
+        // Get all buttons and add click event listener
+        document.querySelectorAll('.UI-button').forEach(button => {
+            button.addEventListener('click', function() {
+                handleButtonClick(this.innerText.trim());
+            });
+        });
+
+        // Get all card containers and add click event listener
+        document.querySelectorAll('.card-container').forEach(card => {
+            card.addEventListener('click', function() {
+                handleButtonClick("Card clicked");
+            });
+        });
+
+        // Add click event listener to AR button
+        document.querySelector('.AR-button').addEventListener('click', function() {
+            handleButtonClick("AR button clicked");
+        });
+        
+    </script>
+
+</body>
+<footer>
+
+</html>
