@@ -348,14 +348,14 @@
                             this.scene.add(loadedModel);
                             console.log(`Model loaded successfully for: ${name}`);
 
-                            // Initialize animation mixer and start animations
-                            if (gltf.animations && gltf.animations.length > 0) {
-                                this.mixer = new THREE.AnimationMixer(loadedModel);
-                                gltf.animations.forEach((clip) => {
-                                    const action = this.mixer.clipAction(clip);
-                                    action.play(); // Start the animation
-                                });
-                            }
+                            // // Initialize animation mixer and start animations
+                            // if (gltf.animations && gltf.animations.length > 0) {
+                            //     this.mixer = new THREE.AnimationMixer(loadedModel);
+                            //     gltf.animations.forEach((clip) => {
+                            //         const action = this.mixer.clipAction(clip);
+                            //         action.play(); // Start the animation
+                            //     });
+                            // }
                         },
                         undefined,
                         (error) => {
