@@ -1,21 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <title>3D Map with Joystick in VR</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-mapbox-component/dist/aframe-mapbox-component.min.js"></script>
+    <meta charset="utf-8" />
+    <title>3D Map with Joystick and Device Orientation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.9.0/nipplejs.min.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
     <style>
         body {
             margin: 0;
         }
 
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
         #joystick-container {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            bottom: 50px;
+            left: 50px;
             width: 150px;
             height: 150px;
             z-index: 10;
@@ -24,24 +31,42 @@
 </head>
 
 <body>
+    <div id="map"></div>
     <div id="joystick-container"></div>
-    <a-scene>
-        <!-- Add the Mapbox 3D Map -->
-        <a-entity id="map"
-                  mapbox="accessToken: pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg;
-                          style: mapbox://styles/mapbox/streets-v12;
-                          center: 101.653585,3.120975;
-                          zoom: 150;
-                          pitch: 90;
-                          bearing: 0;">
-        </a-entity>
-
-        <!-- Add a camera for VR -->
-        <a-entity id="camera" camera look-controls wasd-controls position="0 1.6 0"></a-entity>
-    </a-scene>
-
     <script>
-        // Initialize Joystick for Movement
+        // Initialize Mapbox
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v12',
+            center: [101.653585, 3.120975], // Initial coordinates
+            zoom: 150,
+            pitch: 90, // Default tilt
+            bearing: 0, // Default rotation
+            antialias: true,
+            accessToken: 'pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg'
+        });
+
+        // Disable default drag for moving the map
+        map.dragPan.disable();
+        map.touchZoomRotate.enableRotation();
+        map.touchZoomRotate.enable();
+
+        // Enable Device Orientation for Camera Tilt and Rotation
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener("deviceorientation", (event) => {
+                if (event.alpha !== null && event.beta !== null && event.gamma !== null) {
+                    const rotation = event.alpha; // Rotation around the Z-axis (0–360 degrees)
+                    const tilt = Math.min(Math.max(event.beta, 0), 85); // Limit pitch to 0–85 degrees
+
+                    map.setBearing(rotation); // Set map rotation
+                    map.setPitch(tilt); // Set map tilt (pitch)
+                }
+            });
+        } else {
+            console.log("DeviceOrientation is not supported on this device.");
+        }
+
+        // Joystick for Movement
         const joystick = nipplejs.create({
             zone: document.getElementById('joystick-container'),
             mode: 'static',
@@ -50,37 +75,46 @@
             size: 150
         });
 
-        const mapEntity = document.querySelector("#map");
+        // Speed multiplier for movement
+        const movementSpeed = 0.0000001;
+
+        // Variable to track movement interval
         let movementInterval = null;
-        let angle = null;
-        let distance = 0;
+        let angle = null; // Current angle of movement
+        let distance = 0; // Current distance from joystick center
 
-        // Movement speed
-        const movementSpeed = 0.0001;
-
-        // Joystick movement logic
+        // Start movement when joystick is moved
         joystick.on('move', function (evt, data) {
             if (data.angle && data.distance) {
                 angle = data.angle.degree; // Get angle in degrees
                 distance = data.distance; // Get distance from joystick center
 
+                // Start movement if not already moving
                 if (!movementInterval) {
                     movementInterval = setInterval(() => {
                         if (angle !== null && distance > 0) {
-                            // Adjust movement based on joystick angle
-                            const radianAngle = (angle * Math.PI) / 180;
+                            const center = map.getCenter();
+                            let lng = center.lng;
+                            let lat = center.lat;
 
+                            // Get the current map bearing (rotation)
+                            const mapBearing = map.getBearing(); // In degrees
+
+                            // Adjust joystick angle based on map rotation
+                            const adjustedAngle = (angle - mapBearing + 360) % 360; // Normalize to 0–360
+                            const radianAngle = (adjustedAngle * Math.PI) / 180;
+
+                            // Calculate movement offsets
                             const deltaLng = movementSpeed * Math.cos(radianAngle) * distance;
                             const deltaLat = movementSpeed * Math.sin(radianAngle) * distance;
 
                             // Update map center
-                            const currentCenter = mapEntity.getAttribute("mapbox").center.split(",");
-                            const lng = parseFloat(currentCenter[0]) + deltaLng;
-                            const lat = parseFloat(currentCenter[1]) + deltaLat;
+                            lng += deltaLng;
+                            lat += deltaLat;
 
-                            mapEntity.setAttribute("mapbox", `center: ${lng},${lat}`);
+                            map.setCenter([lng, lat]);
                         }
-                    }, 16); // Update ~60 FPS
+                    }, 16); // Update ~60 times per second
                 }
             }
         });
@@ -88,24 +122,32 @@
         // Stop movement when joystick is released
         joystick.on('end', function () {
             if (movementInterval) {
-                clearInterval(movementInterval);
+                clearInterval(movementInterval); // Stop movement
                 movementInterval = null;
             }
-            angle = null;
-            distance = 0;
+            angle = null; // Clear angle
+            distance = 0; // Reset distance
         });
 
-        // Enable Device Orientation for Rotation
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener("deviceorientation", (event) => {
-                if (event.alpha !== null) {
-                    const rotation = event.alpha; // Rotation around the Z-axis
-                    mapEntity.setAttribute("mapbox", `bearing: ${rotation}`);
+        map.on('load', function () {
+            const layers = map.getStyle().layers;
+            const labelLayerId = layers.find(layer => layer.type === 'symbol' && layer.layout['text-field'])?.id;
+
+            map.addLayer({
+                id: '3d-buildings',
+                source: 'composite',
+                'source-layer': 'building',
+                filter: ['==', 'extrude', 'true'],
+                type: 'fill-extrusion',
+                minzoom: 15,
+                paint: {
+                    'fill-extrusion-color': '#aaa',
+                    'fill-extrusion-height': ['get', 'height'],
+                    'fill-extrusion-base': ['get', 'min_height'],
+                    'fill-extrusion-opacity': 0.6
                 }
-            });
-        } else {
-            console.log("DeviceOrientation is not supported on this device.");
-        }
+            }, labelLayerId);
+        });
     </script>
 </body>
 
