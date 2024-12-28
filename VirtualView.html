@@ -236,11 +236,16 @@
             rotationDirection = null;
         });
 
-        setInterval(() => {
+        function animate() {
+
             if (rotationDirection !== null) {
                 map.setBearing(map.getBearing() + rotationSpeed * rotationDirection);
             }
-        }, 16);
+            // Movement and rotation logic
+            requestAnimationFrame(animate);
+        }
+        animate();
+
 
         map.on('load', function () {
             const layers = map.getStyle().layers;
