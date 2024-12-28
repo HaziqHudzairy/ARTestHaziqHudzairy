@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8" />
     <title>3D Map with Joystick and Device Orientation</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.9.0/nipplejs.min.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
@@ -51,27 +50,22 @@
         map.touchZoomRotate.enableRotation();
         map.touchZoomRotate.enable();
 
-        // Adjust orientation to make the origin appear closer to the device camera
-        let initialAlpha = null;
-        let initialBeta = null;
-
+        // Use Device Orientation for Camera-Based Tilt and Rotation
         if (window.DeviceOrientationEvent) {
             window.addEventListener("deviceorientation", (event) => {
                 if (event.alpha !== null && event.beta !== null && event.gamma !== null) {
-                    // Get the initial orientation for normalization
-                    if (initialAlpha === null) initialAlpha = event.alpha;
-                    if (initialBeta === null) initialBeta = event.beta;
+                    const alpha = event.alpha; // Rotation around Z-axis
+                    const beta = event.beta; // Forward/backward tilt
+                    const gamma = event.gamma; // Left/right tilt
 
-                    // Normalize the orientation relative to the initial alpha and beta
-                    const normalizedAlpha = event.alpha - initialAlpha; // Rotation around Z-axis
-                    const normalizedBeta = event.beta - initialBeta; // Forward/backward tilt (Y-axis)
+                    // Map pitch corresponds to beta (forward/backward tilt)
+                    const newPitch = Math.min(Math.max(beta - 90, 0), 85); // Normalize pitch to 0-85 degrees
 
-                    // Adjust bearing (rotation)
-                    map.setBearing((normalizedAlpha + 360) % 360);
+                    // Map bearing corresponds to alpha + gamma for combined rotation
+                    const newBearing = (alpha + gamma + 360) % 360;
 
-                    // Adjust pitch (tilt) with a focus on the device's camera perspective
-                    const tilt = Math.min(Math.max(normalizedBeta + 60, 0), 85); // Ensure pitch is within 0–85 degrees
-                    map.setPitch(tilt);
+                    map.setPitch(newPitch); // Set the tilt
+                    map.setBearing(newBearing); // Set the rotation
                 }
             });
         } else {
