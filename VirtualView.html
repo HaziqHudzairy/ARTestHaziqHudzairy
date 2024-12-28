@@ -111,32 +111,8 @@
                     'line-width': 2
                 }
             });
-
-
-            map.addLayer({
-                id: 'user-position',
-                type: 'circle',
-                source: 'user-position',
-                paint: {
-                    'circle-radius': 15,
-                    'circle-color': '#2980b9'
-                }
-            });
         });
 
-        // Function to update user position
-        function updateUserPosition(newPosition) {
-            const userSource = map.getSource('user-position');
-            if (userSource) {
-                userSource.setData({
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Point',
-                        coordinates: newPosition
-                    }
-                });
-            }
-        }
 
         // Function to check if a point is within the polygon
         function isPointInPolygon(point, polygon) {
@@ -192,7 +168,6 @@ function updateMovement(timestamp) {
             const newCenter = [center.lng + deltaLng, center.lat + deltaLat];
             if (isPointInPolygon(newCenter, boundaryPolygon)) {
                 map.setCenter(newCenter);
-                updateUserPosition(newCenter);
             }
         }
         lastTimestamp = timestamp;
@@ -281,10 +256,8 @@ requestAnimationFrame(updateMovement);
         const json = await response.json();
 
         // Combine all entities into a single array
-        const entities = [
-            ...Object.values(json.entities.facilities),
-            ...Object.values(json.entities.faculties),
-        ];
+        const entities = Object.values(json.entities)
+            .flatMap(category => Object.values(category)); // Flatten all nested values into one array
 
         // Validate and add each model
         entities.forEach(validateAndAddModel);
@@ -292,6 +265,7 @@ requestAnimationFrame(updateMovement);
         console.error('Error loading entities:', error);
     }
 }
+
 
 
     function validateAndAddModel(entity) {
