@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Malaya 3D Map</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.16.0/mapbox-gl.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.16.0/mapbox-gl.js"></script>
+    <script>
+        // Initialize Mapbox
+        mapboxgl.accessToken = 'pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/mapbox-streets-v12',
+            center: [101.653477, 3.116064], // Center of UM
+            zoom: 15,
+            pitch: 45,
+            bearing: -17.6,
+            antialias: true
+        });
+
+        // Add navigation controls
+        map.addControl(new mapboxgl.NavigationControl());
+
+        // Load GeoJSON file
+        map.on('load', () => {
+            // Add UM boundary GeoJSON source
+            map.addSource('um-boundary', {
+                type: 'geojson',
+                data: './map.geojson' // Ensure this path is correct
+            });
+
+            // Add a layer to style the boundary
+            map.addLayer({
+                id: 'um-boundary-layer',
+                type: 'fill',
+                source: 'um-boundary',
+                layout: {},
+                paint: {
+                    'fill-color': '#088',
+                    'fill-opacity': 0.4
+                }
+            });
+
+            // Add a line layer for the boundary edge
+            map.addLayer({
+                id: 'um-boundary-line',
+                type: 'line',
+                source: 'um-boundary',
+                layout: {},
+                paint: {
+                    'line-color': '#000',
+                    'line-width': 2
+                }
+            });
+
+            // Add hover interactivity with popup
+            const popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+
+            map.on('mousemove', 'um-boundary-layer', (e) => {
+                map.getCanvas().style.cursor = 'pointer';
+                const coordinates = e.lngLat.toArray();
+                const description = "University Malaya Boundary";
+                popup.setLngLat(coordinates).setHTML(`<strong>${description}</strong>`).addTo(map);
+            });
+
+            map.on('mouseleave', 'um-boundary-layer', () => {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
+        });
+    </script>
+</body>
+</html>
