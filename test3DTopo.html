@@ -1,28 +1,21 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <title>3D Map with Joystick for Movement</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <meta charset="UTF-8">
+    <title>3D Map with Joystick in VR</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-mapbox-component/dist/aframe-mapbox-component.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.9.0/nipplejs.min.js"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
     <style>
         body {
             margin: 0;
         }
 
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-
         #joystick-container {
             position: absolute;
-            bottom: 50px;
-            left: 50px;
+            bottom: 20px;
+            left: 20px;
             width: 150px;
             height: 150px;
             z-index: 10;
@@ -31,40 +24,24 @@
 </head>
 
 <body>
-    <div id="map"></div>
     <div id="joystick-container"></div>
+    <a-scene>
+        <!-- Add the Mapbox 3D Map -->
+        <a-entity id="map"
+                  mapbox="accessToken: pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg;
+                          style: mapbox://styles/mapbox/streets-v12;
+                          center: 101.653585,3.120975;
+                          zoom: 150;
+                          pitch: 90;
+                          bearing: 0;">
+        </a-entity>
+
+        <!-- Add a camera for VR -->
+        <a-entity id="camera" camera look-controls wasd-controls position="0 1.6 0"></a-entity>
+    </a-scene>
+
     <script>
-        // Initialize Mapbox
-        const map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v12',
-            center: [101.653585, 3.120975], // Initial coordinates
-            zoom: 150,
-            pitch: 90,
-            bearing: 0,
-            antialias: true,
-            accessToken: 'pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg'
-        });
-
-        // Disable default drag for moving the map
-        map.dragPan.disable();
-        map.touchZoomRotate.enableRotation();
-        map.touchZoomRotate.enable();
-
-        // Enable Device Orientation for Rotation
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener("deviceorientation", (event) => {
-                if (event.alpha !== null) {
-                    // Get the device's rotation angle (alpha value)
-                    const rotation = event.alpha; // Rotation around the Z-axis (in degrees)
-                    map.setBearing(rotation); // Set the map's bearing to match the device's orientation
-                }
-            });
-        } else {
-            console.log("DeviceOrientation is not supported on this device.");
-        }
-
-        // Joystick for Movement
+        // Initialize Joystick for Movement
         const joystick = nipplejs.create({
             zone: document.getElementById('joystick-container'),
             mode: 'static',
@@ -73,46 +50,37 @@
             size: 150
         });
 
-        // Speed multiplier for movement
-        const movementSpeed = 0.0000001;
-
-        // Variable to track movement interval
+        const mapEntity = document.querySelector("#map");
         let movementInterval = null;
-        let angle = null; // Current angle of movement
-        let distance = 0; // Current distance from joystick center
+        let angle = null;
+        let distance = 0;
 
-        // Start movement when joystick is moved
+        // Movement speed
+        const movementSpeed = 0.0001;
+
+        // Joystick movement logic
         joystick.on('move', function (evt, data) {
             if (data.angle && data.distance) {
                 angle = data.angle.degree; // Get angle in degrees
                 distance = data.distance; // Get distance from joystick center
 
-                // Start movement if not already moving
                 if (!movementInterval) {
                     movementInterval = setInterval(() => {
                         if (angle !== null && distance > 0) {
-                            const center = map.getCenter();
-                            let lng = center.lng;
-                            let lat = center.lat;
+                            // Adjust movement based on joystick angle
+                            const radianAngle = (angle * Math.PI) / 180;
 
-                            // Get the current map bearing (rotation)
-                            const mapBearing = map.getBearing(); // In degrees
-
-                            // Adjust joystick angle based on map rotation
-                            const adjustedAngle = (angle - mapBearing + 360) % 360; // Normalize to 0–360
-                            const radianAngle = (adjustedAngle * Math.PI) / 180;
-
-                            // Calculate movement offsets
                             const deltaLng = movementSpeed * Math.cos(radianAngle) * distance;
                             const deltaLat = movementSpeed * Math.sin(radianAngle) * distance;
 
                             // Update map center
-                            lng += deltaLng;
-                            lat += deltaLat;
+                            const currentCenter = mapEntity.getAttribute("mapbox").center.split(",");
+                            const lng = parseFloat(currentCenter[0]) + deltaLng;
+                            const lat = parseFloat(currentCenter[1]) + deltaLat;
 
-                            map.setCenter([lng, lat]);
+                            mapEntity.setAttribute("mapbox", `center: ${lng},${lat}`);
                         }
-                    }, 16); // Update ~60 times per second
+                    }, 16); // Update ~60 FPS
                 }
             }
         });
@@ -120,33 +88,24 @@
         // Stop movement when joystick is released
         joystick.on('end', function () {
             if (movementInterval) {
-                clearInterval(movementInterval); // Stop movement
+                clearInterval(movementInterval);
                 movementInterval = null;
             }
-            angle = null; // Clear angle
-            distance = 0; // Reset distance
+            angle = null;
+            distance = 0;
         });
 
-
-        map.on('load', function () {
-            const layers = map.getStyle().layers;
-            const labelLayerId = layers.find(layer => layer.type === 'symbol' && layer.layout['text-field'])?.id;
-
-            map.addLayer({
-                id: '3d-buildings',
-                source: 'composite',
-                'source-layer': 'building',
-                filter: ['==', 'extrude', 'true'],
-                type: 'fill-extrusion',
-                minzoom: 15,
-                paint: {
-                    'fill-extrusion-color': '#aaa',
-                    'fill-extrusion-height': ['get', 'height'],
-                    'fill-extrusion-base': ['get', 'min_height'],
-                    'fill-extrusion-opacity': 0.6
+        // Enable Device Orientation for Rotation
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener("deviceorientation", (event) => {
+                if (event.alpha !== null) {
+                    const rotation = event.alpha; // Rotation around the Z-axis
+                    mapEntity.setAttribute("mapbox", `bearing: ${rotation}`);
                 }
-            }, labelLayerId);
-        });
+            });
+        } else {
+            console.log("DeviceOrientation is not supported on this device.");
+        }
     </script>
 </body>
 
