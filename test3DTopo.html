@@ -27,18 +27,27 @@
 <body>
     <!-- A-Frame Scene -->
     <a-scene>
-        <!-- Mapbox Environment -->
-        <a-mapbox
-            mapbox-token="pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg"
-            mapbox-style="mapbox://styles/mapbox/streets-v12"
-            center="101.653585,3.120975"
-            zoom="150"
-            height="10"
-            extrude-buildings="true">
-        </a-mapbox>
 
-        <!-- Camera and Device Orientation -->
-        <a-entity id="camera" position="0 1.6 0" camera look-controls></a-entity>
+        <!-- Add a skybox for better visibility -->
+    <a-sky color="#ECECEC"></a-sky>
+
+    <!-- Mapbox Map -->
+    <a-mapbox
+        mapbox-token="pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg"
+        mapbox-style="mapbox://styles/mapbox/streets-v12"
+        center="101.653585,3.120975"
+        zoom="150"
+        height="10"
+        extrude-buildings="true">
+    </a-mapbox>
+
+    <!-- Camera -->
+    <a-entity id="camera" position="0 10 0" camera look-controls>
+        <a-light type="point" position="0 5 0"></a-light>
+    </a-entity>
+
+    <!-- Debug Box -->
+    <a-box position="0 1 -5" color="red"></a-box>
     </a-scene>
 
     <!-- Joystick Container -->
