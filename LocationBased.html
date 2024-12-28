@@ -1376,7 +1376,7 @@ function getIDBasedOnNames(entityName, entities) {
             const route = await fetchRoute(start, end); // Fetch route
             if (!route || route.length === 0) return;
 
-            const densifiedPoints = densifyPolyline(route, 10); // Densify polyline
+            const densifiedPoints = densifyPolyline(route, 1); // Densify polyline
 
             // Render markers with jumping animation using a wrapper entity
             densifiedPoints.forEach(([lon, lat], index) => {
