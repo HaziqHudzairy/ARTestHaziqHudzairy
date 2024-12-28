@@ -1,90 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University Malaya 3D Map</title>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.16.0/mapbox-gl.css" rel="stylesheet">
+    <meta charset="utf-8" />
+    <title>3D Map with Joystick for Movement</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.9.0/nipplejs.min.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
         }
+
         #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
             width: 100%;
-            height: 100vh;
+        }
+
+        #joystick-container {
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            width: 150px;
+            height: 150px;
+            z-index: 10;
         }
     </style>
 </head>
+
 <body>
     <div id="map"></div>
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.16.0/mapbox-gl.js"></script>
+    <div id="joystick-container"></div>
     <script>
         // Initialize Mapbox
-        mapboxgl.accessToken = 'pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg';
         const map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/mapbox-streets-v12',
-            center: [101.653477, 3.116064], // Center of UM
-            zoom: 15,
-            pitch: 45,
-            bearing: -17.6,
-            antialias: true
+            style: 'mapbox://styles/mapbox/streets-v12',
+            center: [101.653585, 3.120975], // Initial coordinates
+            zoom: 150,
+            pitch: 90,
+            bearing: 0,
+            antialias: true,
+            accessToken: 'pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg'
         });
 
-        // Add navigation controls
-        map.addControl(new mapboxgl.NavigationControl());
+// Disable default drag for moving the map
+map.dragPan.disable();
 
-        // Load GeoJSON file
-        map.on('load', () => {
-            // Add UM boundary GeoJSON source
-            map.addSource('um-boundary', {
-                type: 'geojson',
-                data: './map.geojson' // Ensure this path is correct
-            });
+// Enable touch gestures for rotation and zoom only
+map.touchZoomRotate.enableRotation();
+map.touchZoomRotate.enable();
 
-            // Add a layer to style the boundary
-            map.addLayer({
-                id: 'um-boundary-layer',
-                type: 'fill',
-                source: 'um-boundary',
-                layout: {},
-                paint: {
-                    'fill-color': '#088',
-                    'fill-opacity': 0.4
+        // Joystick for Movement
+        const joystick = nipplejs.create({
+            zone: document.getElementById('joystick-container'),
+            mode: 'static',
+            position: { left: '50%', bottom: '50%' },
+            color: 'blue',
+            size: 150
+        });
+
+        // Speed multiplier for movement
+const movementSpeed = 0.0000001;
+
+// Variable to track movement interval
+let movementInterval = null;
+let angle = null; // Current angle of movement
+let distance = 0; // Current distance from joystick center
+
+// Start movement when joystick is moved
+joystick.on('move', function (evt, data) {
+    if (data.angle && data.distance) {
+        angle = data.angle.degree; // Get angle in degrees
+        distance = data.distance; // Get distance from joystick center
+
+        // Start movement if not already moving
+        if (!movementInterval) {
+            movementInterval = setInterval(() => {
+                if (angle !== null && distance > 0) {
+                    const center = map.getCenter();
+                    let lng = center.lng;
+                    let lat = center.lat;
+
+                    // Get the current map bearing (rotation)
+                    const mapBearing = map.getBearing(); // In degrees
+
+                    // Adjust joystick angle based on map rotation
+                    const adjustedAngle = (angle - mapBearing + 360) % 360; // Normalize to 0–360
+                    const radianAngle = (adjustedAngle * Math.PI) / 180;
+
+                    // Calculate movement offsets
+                    const deltaLng = movementSpeed * Math.cos(radianAngle) * distance;
+                    const deltaLat = movementSpeed * Math.sin(radianAngle) * distance;
+
+                    // Update map center
+                    lng += deltaLng;
+                    lat += deltaLat;
+
+                    map.setCenter([lng, lat]);
                 }
-            });
+            }, 16); // Update ~60 times per second
+        }
+    }
+});
 
-            // Add a line layer for the boundary edge
+// Stop movement when joystick is released
+joystick.on('end', function () {
+    if (movementInterval) {
+        clearInterval(movementInterval); // Stop movement
+        movementInterval = null;
+    }
+    angle = null; // Clear angle
+    distance = 0; // Reset distance
+});
+
+
+        map.on('load', function () {
+            const layers = map.getStyle().layers;
+            const labelLayerId = layers.find(layer => layer.type === 'symbol' && layer.layout['text-field'])?.id;
+
             map.addLayer({
-                id: 'um-boundary-line',
-                type: 'line',
-                source: 'um-boundary',
-                layout: {},
+                id: '3d-buildings',
+                source: 'composite',
+                'source-layer': 'building',
+                filter: ['==', 'extrude', 'true'],
+                type: 'fill-extrusion',
+                minzoom: 15,
                 paint: {
-                    'line-color': '#000',
-                    'line-width': 2
+                    'fill-extrusion-color': '#aaa',
+                    'fill-extrusion-height': ['get', 'height'],
+                    'fill-extrusion-base': ['get', 'min_height'],
+                    'fill-extrusion-opacity': 0.6
                 }
-            });
-
-            // Add hover interactivity with popup
-            const popup = new mapboxgl.Popup({
-                closeButton: false,
-                closeOnClick: false
-            });
-
-            map.on('mousemove', 'um-boundary-layer', (e) => {
-                map.getCanvas().style.cursor = 'pointer';
-                const coordinates = e.lngLat.toArray();
-                const description = "University Malaya Boundary";
-                popup.setLngLat(coordinates).setHTML(`<strong>${description}</strong>`).addTo(map);
-            });
-
-            map.on('mouseleave', 'um-boundary-layer', () => {
-                map.getCanvas().style.cursor = '';
-                popup.remove();
-            });
+            }, labelLayerId);
         });
     </script>
 </body>
+
 </html>
