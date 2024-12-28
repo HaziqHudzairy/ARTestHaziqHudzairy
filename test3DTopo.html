@@ -40,7 +40,7 @@
             style: 'mapbox://styles/mapbox/streets-v12',
             center: [101.653585, 3.120975], // Initial coordinates
             zoom: 150,
-            pitch: 90, // Default tilt
+            pitch: 60, // Default tilt
             bearing: 0, // Default rotation
             antialias: true,
             accessToken: 'pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg'
@@ -51,15 +51,27 @@
         map.touchZoomRotate.enableRotation();
         map.touchZoomRotate.enable();
 
-        // Enable Device Orientation for Camera Tilt and Rotation
+        // Adjust orientation to make the origin appear closer to the device camera
+        let initialAlpha = null;
+        let initialBeta = null;
+
         if (window.DeviceOrientationEvent) {
             window.addEventListener("deviceorientation", (event) => {
                 if (event.alpha !== null && event.beta !== null && event.gamma !== null) {
-                    const rotation = event.alpha; // Rotation around the Z-axis (0–360 degrees)
-                    const tilt = Math.min(Math.max(event.beta, 0), 85); // Limit pitch to 0–85 degrees
+                    // Get the initial orientation for normalization
+                    if (initialAlpha === null) initialAlpha = event.alpha;
+                    if (initialBeta === null) initialBeta = event.beta;
 
-                    map.setBearing(rotation); // Set map rotation
-                    map.setPitch(tilt); // Set map tilt (pitch)
+                    // Normalize the orientation relative to the initial alpha and beta
+                    const normalizedAlpha = event.alpha - initialAlpha; // Rotation around Z-axis
+                    const normalizedBeta = event.beta - initialBeta; // Forward/backward tilt (Y-axis)
+
+                    // Adjust bearing (rotation)
+                    map.setBearing((normalizedAlpha + 360) % 360);
+
+                    // Adjust pitch (tilt) with a focus on the device's camera perspective
+                    const tilt = Math.min(Math.max(normalizedBeta + 60, 0), 85); // Ensure pitch is within 0–85 degrees
+                    map.setPitch(tilt);
                 }
             });
         } else {
