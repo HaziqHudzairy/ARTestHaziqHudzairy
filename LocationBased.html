@@ -1388,8 +1388,8 @@ function getIDBasedOnNames(entityName, entities) {
 
                 // Create the actual marker as a child of the wrapper
                 const marker = document.createElement('a-entity');
-                marker.setAttribute('geometry', 'primitive: box; depth: 1; height: 0,5; width: 0.5');
-                marker.setAttribute('material', 'color: lightblue');
+                marker.setAttribute('geometry', 'primitive: box; depth: 1; height: 0.5; width: 0.2');
+                marker.setAttribute('material', 'color: lightred');
                 marker.setAttribute('scale', '0.5 0.5 0.5');
                 marker.setAttribute('look-at', '[gps-camera]');
                 marker.classList.add('route-marker'); // Add a unique class
