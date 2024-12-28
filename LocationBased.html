@@ -420,7 +420,6 @@
     </script>
 
 
-    <!-- Firebase Script -->
     <script type="module">
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
@@ -1377,7 +1376,7 @@ function getIDBasedOnNames(entityName, entities) {
             const route = await fetchRoute(start, end); // Fetch route
             if (!route || route.length === 0) return;
 
-            const densifiedPoints = densifyPolyline(route, 3); // Densify polyline
+            const densifiedPoints = densifyPolyline(route, 10); // Densify polyline
 
             // Render markers with jumping animation using a wrapper entity
             densifiedPoints.forEach(([lon, lat], index) => {
@@ -1389,7 +1388,7 @@ function getIDBasedOnNames(entityName, entities) {
                 // Create the actual marker as a child of the wrapper
                 const marker = document.createElement('a-entity');
                 marker.setAttribute('geometry', 'primitive: box; depth: 1; height: 0.5; width: 0.2');
-                marker.setAttribute('material', 'color: lightred');
+                marker.setAttribute('material', 'color: red');
                 marker.setAttribute('scale', '0.5 0.5 0.5');
                 marker.setAttribute('look-at', '[gps-camera]');
                 marker.classList.add('route-marker'); // Add a unique class
