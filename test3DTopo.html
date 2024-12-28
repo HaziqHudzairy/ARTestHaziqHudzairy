@@ -46,12 +46,23 @@
             accessToken: 'pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg'
         });
 
-// Disable default drag for moving the map
-map.dragPan.disable();
+        // Disable default drag for moving the map
+        map.dragPan.disable();
+        map.touchZoomRotate.enableRotation();
+        map.touchZoomRotate.enable();
 
-// Enable touch gestures for rotation and zoom only
-map.touchZoomRotate.enableRotation();
-map.touchZoomRotate.enable();
+        // Enable Device Orientation for Rotation
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener("deviceorientation", (event) => {
+                if (event.alpha !== null) {
+                    // Get the device's rotation angle (alpha value)
+                    const rotation = event.alpha; // Rotation around the Z-axis (in degrees)
+                    map.setBearing(rotation); // Set the map's bearing to match the device's orientation
+                }
+            });
+        } else {
+            console.log("DeviceOrientation is not supported on this device.");
+        }
 
         // Joystick for Movement
         const joystick = nipplejs.create({
@@ -63,58 +74,58 @@ map.touchZoomRotate.enable();
         });
 
         // Speed multiplier for movement
-const movementSpeed = 0.0000001;
+        const movementSpeed = 0.0000001;
 
-// Variable to track movement interval
-let movementInterval = null;
-let angle = null; // Current angle of movement
-let distance = 0; // Current distance from joystick center
+        // Variable to track movement interval
+        let movementInterval = null;
+        let angle = null; // Current angle of movement
+        let distance = 0; // Current distance from joystick center
 
-// Start movement when joystick is moved
-joystick.on('move', function (evt, data) {
-    if (data.angle && data.distance) {
-        angle = data.angle.degree; // Get angle in degrees
-        distance = data.distance; // Get distance from joystick center
+        // Start movement when joystick is moved
+        joystick.on('move', function (evt, data) {
+            if (data.angle && data.distance) {
+                angle = data.angle.degree; // Get angle in degrees
+                distance = data.distance; // Get distance from joystick center
 
-        // Start movement if not already moving
-        if (!movementInterval) {
-            movementInterval = setInterval(() => {
-                if (angle !== null && distance > 0) {
-                    const center = map.getCenter();
-                    let lng = center.lng;
-                    let lat = center.lat;
+                // Start movement if not already moving
+                if (!movementInterval) {
+                    movementInterval = setInterval(() => {
+                        if (angle !== null && distance > 0) {
+                            const center = map.getCenter();
+                            let lng = center.lng;
+                            let lat = center.lat;
 
-                    // Get the current map bearing (rotation)
-                    const mapBearing = map.getBearing(); // In degrees
+                            // Get the current map bearing (rotation)
+                            const mapBearing = map.getBearing(); // In degrees
 
-                    // Adjust joystick angle based on map rotation
-                    const adjustedAngle = (angle - mapBearing + 360) % 360; // Normalize to 0–360
-                    const radianAngle = (adjustedAngle * Math.PI) / 180;
+                            // Adjust joystick angle based on map rotation
+                            const adjustedAngle = (angle - mapBearing + 360) % 360; // Normalize to 0–360
+                            const radianAngle = (adjustedAngle * Math.PI) / 180;
 
-                    // Calculate movement offsets
-                    const deltaLng = movementSpeed * Math.cos(radianAngle) * distance;
-                    const deltaLat = movementSpeed * Math.sin(radianAngle) * distance;
+                            // Calculate movement offsets
+                            const deltaLng = movementSpeed * Math.cos(radianAngle) * distance;
+                            const deltaLat = movementSpeed * Math.sin(radianAngle) * distance;
 
-                    // Update map center
-                    lng += deltaLng;
-                    lat += deltaLat;
+                            // Update map center
+                            lng += deltaLng;
+                            lat += deltaLat;
 
-                    map.setCenter([lng, lat]);
+                            map.setCenter([lng, lat]);
+                        }
+                    }, 16); // Update ~60 times per second
                 }
-            }, 16); // Update ~60 times per second
-        }
-    }
-});
+            }
+        });
 
-// Stop movement when joystick is released
-joystick.on('end', function () {
-    if (movementInterval) {
-        clearInterval(movementInterval); // Stop movement
-        movementInterval = null;
-    }
-    angle = null; // Clear angle
-    distance = 0; // Reset distance
-});
+        // Stop movement when joystick is released
+        joystick.on('end', function () {
+            if (movementInterval) {
+                clearInterval(movementInterval); // Stop movement
+                movementInterval = null;
+            }
+            angle = null; // Clear angle
+            distance = 0; // Reset distance
+        });
 
 
         map.on('load', function () {
