@@ -237,16 +237,14 @@
         });
 
         function animate() {
+
             if (rotationDirection !== null) {
                 map.setBearing(map.getBearing() + rotationSpeed * rotationDirection);
             }
-            // Skip repaint if no changes
-            if (rotationDirection !== null || movementDirection !== null) {
-                requestAnimationFrame(animate);
-            }
+            // Movement and rotation logic
+            requestAnimationFrame(animate);
         }
         animate();
-
 
 
         map.on('load', function () {
@@ -341,10 +339,6 @@
                     const light1 = new THREE.DirectionalLight(0xffffff);
                     light1.position.set(0, -70, 100).normalize();
                     this.scene.add(light1);
-
-                    const light2 = new THREE.DirectionalLight(0xffffff);
-                    light2.position.set(0, 70, 100).normalize();
-                    this.scene.add(light2);
 
                     const loader = new THREE.GLTFLoader();
                     loader.load(
