@@ -2,10 +2,11 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>3D Map with Joystick and Device Orientation</title>
+    <title>3D Map with Joysticks for Movement and Rotation</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.9.0/nipplejs.min.js"></script>
+    <script src="https://unpkg.com/threebox-plugin@2.3.4/dist/Threebox.min.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
     <style>
         body {
@@ -19,20 +20,30 @@
             width: 100%;
         }
 
-        #joystick-container {
+        #joystick-container-move,
+        #joystick-container-rotate {
             position: absolute;
-            bottom: 50px;
-            left: 50px;
             width: 150px;
             height: 150px;
             z-index: 10;
+        }
+
+        #joystick-container-move {
+            bottom: 50px;
+            left: 50px;
+        }
+
+        #joystick-container-rotate {
+            bottom: 50px;
+            right: 50px;
         }
     </style>
 </head>
 
 <body>
     <div id="map"></div>
-    <div id="joystick-container"></div>
+    <div id="joystick-container-move"></div>
+    <div id="joystick-container-rotate"></div>
     <script>
         // Initialize Mapbox
         const map = new mapboxgl.Map({
@@ -43,7 +54,7 @@
             pitch: 90, // Default tilt
             bearing: 0, // Default rotation
             antialias: true,
-            accessToken: 'pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg'
+            accessToken: 'pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg',
         });
 
         // Disable default drag for moving the map
@@ -51,69 +62,72 @@
         map.touchZoomRotate.enableRotation();
         map.touchZoomRotate.enable();
 
-
         // Joystick for Movement
-        const joystick = nipplejs.create({
-            zone: document.getElementById('joystick-container'),
+        const moveJoystick = nipplejs.create({
+            zone: document.getElementById('joystick-container-move'),
             mode: 'static',
             position: { left: '50%', bottom: '50%' },
             color: 'blue',
             size: 150
         });
 
-        // Speed multiplier for movement
-        const movementSpeed = 0.0000001;
+        const movementSpeed = 0.00000005;
+        let movementDirection = null;
 
-        // Variable to track movement interval
-        let movementInterval = null;
-        let angle = null; // Current angle of movement
-        let distance = 0; // Current distance from joystick center
-
-        // Start movement when joystick is moved
-        joystick.on('move', function (evt, data) {
+        moveJoystick.on('move', function (evt, data) {
             if (data.angle && data.distance) {
-                angle = data.angle.degree; // Get angle in degrees
-                distance = data.distance; // Get distance from joystick center
-
-                // Start movement if not already moving
-                if (!movementInterval) {
-                    movementInterval = setInterval(() => {
-                        if (angle !== null && distance > 0) {
-                            const center = map.getCenter();
-                            let lng = center.lng;
-                            let lat = center.lat;
-
-                            // Get the current map bearing (rotation)
-                            const mapBearing = map.getBearing(); // In degrees
-
-                            // Adjust joystick angle based on map rotation
-                            const adjustedAngle = (angle - mapBearing + 360) % 360; // Normalize to 0–360
-                            const radianAngle = (adjustedAngle * Math.PI) / 180;
-
-                            // Calculate movement offsets
-                            const deltaLng = movementSpeed * Math.cos(radianAngle) * distance;
-                            const deltaLat = movementSpeed * Math.sin(radianAngle) * distance;
-
-                            // Update map center
-                            lng += deltaLng;
-                            lat += deltaLat;
-
-                            map.setCenter([lng, lat]);
-                        }
-                    }, 16); // Update ~60 times per second
-                }
+                const angle = data.angle.degree;
+                const distance = data.distance;
+                movementDirection = { angle, distance };
             }
         });
 
-        // Stop movement when joystick is released
-        joystick.on('end', function () {
-            if (movementInterval) {
-                clearInterval(movementInterval); // Stop movement
-                movementInterval = null;
-            }
-            angle = null; // Clear angle
-            distance = 0; // Reset distance
+        moveJoystick.on('end', function () {
+            movementDirection = null;
         });
+
+        setInterval(() => {
+            if (movementDirection) {
+                const center = map.getCenter();
+                const mapBearing = map.getBearing();
+                const adjustedAngle = (movementDirection.angle - mapBearing + 360) % 360;
+                const radianAngle = (adjustedAngle * Math.PI) / 180;
+
+                const deltaLng = movementSpeed * Math.cos(radianAngle) * movementDirection.distance;
+                const deltaLat = movementSpeed * Math.sin(radianAngle) * movementDirection.distance;
+
+                map.setCenter([center.lng + deltaLng, center.lat + deltaLat]);
+            }
+        }, 16);
+
+        // Joystick for Rotation
+        const rotateJoystick = nipplejs.create({
+            zone: document.getElementById('joystick-container-rotate'),
+            mode: 'static',
+            position: { right: '50%', bottom: '50%' },
+            color: 'red',
+            size: 150
+        });
+
+        const rotationSpeed = 0.5;
+        let rotationDirection = null;
+
+        rotateJoystick.on('move', function (evt, data) {
+            if (data.angle) {
+                const angle = data.angle.degree;
+                rotationDirection = angle >= 90 && angle <= 270 ? -1 : 1; // Left or right
+            }
+        });
+
+        rotateJoystick.on('end', function () {
+            rotationDirection = null;
+        });
+
+        setInterval(() => {
+            if (rotationDirection !== null) {
+                map.setBearing(map.getBearing() + rotationSpeed * rotationDirection);
+            }
+        }, 16);
 
         map.on('load', function () {
             const layers = map.getStyle().layers;
@@ -133,25 +147,7 @@
                     'fill-extrusion-opacity': 0.6
                 }
             }, labelLayerId);
-
-            map.addSource('custom-polygon', {
-                type: 'geojson',
-                data: data
-            });
-
-            map.addLayer({
-                id: 'polygon-fill-extrusion',
-                type: 'fill-extrusion',
-                source: 'custom-polygon',
-                paint: {
-                    'fill-extrusion-color': '#008000',
-                    'fill-extrusion-height': 10,
-                    'fill-extrusion-opacity': 0.6
-                }
-            });
         });
-
-
     </script>
 </body>
 
