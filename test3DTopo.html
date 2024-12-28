@@ -39,7 +39,7 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v12',
             center: [101.653585, 3.120975], // Initial coordinates
-            zoom: 150,
+            zoom: 25,
             pitch: 90, // Default tilt
             bearing: 0, // Default rotation
             antialias: true,
@@ -51,20 +51,19 @@
         map.touchZoomRotate.enableRotation();
         map.touchZoomRotate.enable();
 
-        // Enable Device Orientation for Camera Tilt and Rotation
+        // Enable Device Orientation for Camera Rotation (Bearing)
         if (window.DeviceOrientationEvent) {
             window.addEventListener("deviceorientation", (event) => {
-                if (event.alpha !== null && event.beta !== null && event.gamma !== null) {
+                if (event.alpha !== null) {
                     const rotation = event.alpha; // Rotation around the Z-axis (0–360 degrees)
-                    const tilt = Math.min(Math.max(event.beta, 0), 85); // Limit pitch to 0–85 degrees
 
-                    map.setBearing(rotation); // Set map rotation
-                    map.setPitch(tilt); // Set map tilt (pitch)
+                    map.setBearing(rotation); // Set map rotation based on device orientation
                 }
             });
         } else {
             console.log("DeviceOrientation is not supported on this device.");
         }
+
 
         // Joystick for Movement
         const joystick = nipplejs.create({
