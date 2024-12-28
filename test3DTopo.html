@@ -62,6 +62,106 @@
         map.touchZoomRotate.enableRotation();
         map.touchZoomRotate.enable();
 
+        // Polygon boundary from GeoJSON
+        const boundaryPolygon = [
+            [101.64738755612893, 3.1285276604927645],
+            [101.64986936323078, 3.119719619331889],
+            [101.65103480562635, 3.1188659153812637],
+            [101.65021859361025, 3.118430800811197],
+            [101.64937297849514, 3.11749365560172],
+            [101.65067252809746, 3.11524717010532],
+            [101.65254045209338, 3.1099995854748954],
+            [101.65482572145748, 3.111519571076286],
+            [101.65790333010443, 3.1134663099523436],
+            [101.66195800458485, 3.116351353104534],
+            [101.66321275186533, 3.1179224338463314],
+            [101.66335063126661, 3.1187339445736626],
+            [101.66148321332452, 3.119906556364171],
+            [101.66104041750026, 3.1210211616459844],
+            [101.66179021975944, 3.1245297151786957],
+            [101.66165413776821, 3.128469100380755],
+            [101.660967005425, 3.1315384151605485],
+            [101.65839489809252, 3.1346028217926403],
+            [101.65411358951718, 3.1348735186712418],
+            [101.64887420755485, 3.1311816111767143],
+            [101.64738755612893, 3.1285276604927645]
+        ];
+
+        // Add boundary as a layer
+        map.on('load', () => {
+            map.addSource('boundary', {
+                type: 'geojson',
+                data: {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Polygon',
+                        coordinates: [boundaryPolygon]
+                    }
+                }
+            });
+
+            map.addLayer({
+                id: 'boundary',
+                type: 'line',
+                source: 'boundary',
+                paint: {
+                    'line-color': '#FF0000',
+                    'line-width': 2
+                }
+            });
+
+            // Add a red dot for user position
+            const userPosition = [101.653585, 3.120975];
+            map.addSource('user-position', {
+                type: 'geojson',
+                data: {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: userPosition
+                    }
+                }
+            });
+
+            map.addLayer({
+                id: 'user-position',
+                type: 'circle',
+                source: 'user-position',
+                paint: {
+                    'circle-radius': 15,
+                    'circle-color': '#2980b9'
+                }
+            });
+        });
+
+        // Function to update user position
+        function updateUserPosition(newPosition) {
+            const userSource = map.getSource('user-position');
+            if (userSource) {
+                userSource.setData({
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: newPosition
+                    }
+                });
+            }
+        }
+
+        // Function to check if a point is within the polygon
+        function isPointInPolygon(point, polygon) {
+            const [lng, lat] = point;
+            let inside = false;
+            for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+                const xi = polygon[i][0], yi = polygon[i][1];
+                const xj = polygon[j][0], yj = polygon[j][1];
+                const intersect = ((yi > lat) !== (yj > lat)) &&
+                    (lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+
         // Joystick for Movement
         const moveJoystick = nipplejs.create({
             zone: document.getElementById('joystick-container-move'),
@@ -71,7 +171,7 @@
             size: 150
         });
 
-        const movementSpeed = 0.00000005;
+        const movementSpeed = 0.00000003;
         let movementDirection = null;
 
         moveJoystick.on('move', function (evt, data) {
@@ -87,18 +187,29 @@
         });
 
         setInterval(() => {
-            if (movementDirection) {
-                const center = map.getCenter();
-                const mapBearing = map.getBearing();
-                const adjustedAngle = (movementDirection.angle - mapBearing + 360) % 360;
-                const radianAngle = (adjustedAngle * Math.PI) / 180;
+    if (movementDirection) {
+        const center = map.getCenter();
+        const mapBearing = map.getBearing();
+        const adjustedAngle = (movementDirection.angle - mapBearing + 360) % 360;
+        const radianAngle = (adjustedAngle * Math.PI) / 180;
 
-                const deltaLng = movementSpeed * Math.cos(radianAngle) * movementDirection.distance;
-                const deltaLat = movementSpeed * Math.sin(radianAngle) * movementDirection.distance;
+        const deltaLng = movementSpeed * Math.cos(radianAngle) * movementDirection.distance;
+        const deltaLat = movementSpeed * Math.sin(radianAngle) * movementDirection.distance;
 
-                map.setCenter([center.lng + deltaLng, center.lat + deltaLat]);
+        const newCenter = [center.lng + deltaLng, center.lat + deltaLat];
+
+        // Check if the point is inside a building
+        isPointInBuilding(newCenter, (insideBuilding) => {
+            if (!insideBuilding && isPointInPolygon(newCenter, boundaryPolygon)) {
+                map.setCenter(newCenter);
+                updateUserPosition(newCenter);
+            } else {
+                console.log('Movement blocked: Point intersects a building or is outside the boundary.');
             }
-        }, 16);
+        });
+    }
+}, 16);
+
 
         // Joystick for Rotation
         const rotateJoystick = nipplejs.create({
@@ -133,6 +244,7 @@
             const layers = map.getStyle().layers;
             const labelLayerId = layers.find(layer => layer.type === 'symbol' && layer.layout['text-field'])?.id;
 
+
             map.addLayer({
                 id: '3d-buildings',
                 source: 'composite',
@@ -144,10 +256,26 @@
                     'fill-extrusion-color': '#aaa',
                     'fill-extrusion-height': ['get', 'height'],
                     'fill-extrusion-base': ['get', 'min_height'],
-                    'fill-extrusion-opacity': 0.6
+                    'fill-extrusion-opacity': 0.7
                 }
             }, labelLayerId);
         });
+
+        function isPointInBuilding(point, callback) {
+    const features = map.queryRenderedFeatures(map.project(point), {
+        layers: ['3d-buildings'], // Use the 3D building layer ID
+    });
+
+    if (features && features.length > 0) {
+        // If there are features (buildings) at this point, return true
+        callback(true);
+    } else {
+        // No buildings at this point
+        callback(false);
+    }
+}
+
+        
     </script>
 </body>
 
