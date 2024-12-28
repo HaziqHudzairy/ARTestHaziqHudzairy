@@ -210,7 +210,7 @@
                     }
                 });
             }
-        }, 16);
+        }, 50);
 
 
         // Joystick for Rotation
@@ -237,14 +237,16 @@
         });
 
         function animate() {
-
             if (rotationDirection !== null) {
                 map.setBearing(map.getBearing() + rotationSpeed * rotationDirection);
             }
-            // Movement and rotation logic
-            requestAnimationFrame(animate);
+            // Skip repaint if no changes
+            if (rotationDirection !== null || movementDirection !== null) {
+                requestAnimationFrame(animate);
+            }
         }
         animate();
+
 
 
         map.on('load', function () {
@@ -284,163 +286,153 @@
 
     </script>
 
-<script type="module">
-    const response = await fetch('./entities.json');
-    const json = await response.json();
+    <script type="module">
 
-    // Combine all entities into a single array
-    const entities = [
-        ...Object.values(json.entities.facilities || {}),
-        ...Object.values(json.entities.faculties || {}),
-        ...Object.values(json.entities.libraries || {}),
-        ...Object.values(json.entities.residentialColleges || {}),
-        ...Object.values(json.entities.sportsAndRecreation || {})
-    ];
+        const response = await fetch('./entities.json');
+        const json = await response.json();
 
-    // Helper function to detect mobile devices
-    function isMobileDevice() {
-        return /Mobi|Android/i.test(navigator.userAgent);
-    }
-
-    function addModel(entity) {
-        const { latitude, longitude, model, scale, name } = entity;
-
-        // Validate entity data
-        if (!latitude || !longitude || !model || !scale) {
-            console.error(`Missing data for entity: ${name}`, entity);
-            return;
-        }
-
-        const modelOrigin = [longitude, latitude];
-        const modelAltitude = 0;
-        const modelRotation = [Math.PI / 2, 0, 0];
-
-        const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(
-            modelOrigin,
-            modelAltitude
-        );
-
-        const modelTransform = {
-            translateX: modelAsMercatorCoordinate.x,
-            translateY: modelAsMercatorCoordinate.y,
-            translateZ: modelAsMercatorCoordinate.z,
-            rotateX: modelRotation[0],
-            rotateY: modelRotation[1],
-            rotateZ: modelRotation[2],
-            scale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits() * (parseFloat(scale.split(' ')[0]) || 1)
+        // Combine all entities into one object
+        const entities = {
+            ...json.entities.facilities,
+            ...json.entities.faculties,
+            ...json.entities.libraries,
+            ...json.entities.residentialColleges,
+            ...json.entities.sportsAndRecreation
         };
 
-        const customLayer = {
-            id: `3d-model-${name}`,
-            type: 'custom',
-            renderingMode: '3d',
-            onAdd: function (map, gl) {
-                this.map = map;
-                this.camera = new THREE.Camera();
-                this.scene = new THREE.Scene();
-                const light = new THREE.AmbientLight(0xffffff, 0.5); // Use ambient light for better performance
-                this.scene.add(light);
+        function addModel(entity) {
+            const { latitude, longitude, model, scale, name } = entity;
 
-                const loader = new THREE.GLTFLoader();
-                loader.load(
-                    model,
-                    (gltf) => {
-                        const loadedModel = gltf.scene;
-                        if (isMobileDevice()) {
-                            // Reduce model scale for mobile devices
-                            loadedModel.scale.set(0.5, 0.5, 0.5);
-                        }
-                        this.scene.add(loadedModel);
-                        console.log(`Model loaded successfully for: ${name}`);
-                    },
-                    undefined,
-                    (error) => {
-                        console.error(`Error loading model for ${name}:`, error);
-                    }
-                );
-
-                this.renderer = new THREE.WebGLRenderer({
-                    canvas: map.getCanvas(),
-                    context: gl,
-                    antialias: true
-                });
-
-                this.renderer.autoClear = false;
-            },
-            render: function (gl, matrix) {
-                const rotationX = new THREE.Matrix4().makeRotationAxis(
-                    new THREE.Vector3(1, 0, 0),
-                    modelTransform.rotateX
-                );
-                const rotationY = new THREE.Matrix4().makeRotationAxis(
-                    new THREE.Vector3(0, 1, 0),
-                    modelTransform.rotateY
-                );
-                const rotationZ = new THREE.Matrix4().makeRotationAxis(
-                    new THREE.Vector3(0, 0, 1),
-                    modelTransform.rotateZ
-                );
-
-                const m = new THREE.Matrix4().fromArray(matrix);
-                const l = new THREE.Matrix4()
-                    .makeTranslation(
-                        modelTransform.translateX,
-                        modelTransform.translateY,
-                        modelTransform.translateZ
-                    )
-                    .scale(
-                        new THREE.Vector3(
-                            modelTransform.scale,
-                            -modelTransform.scale,
-                            modelTransform.scale
-                        )
-                    )
-                    .multiply(rotationX)
-                    .multiply(rotationY)
-                    .multiply(rotationZ);
-
-                this.camera.projectionMatrix = m.multiply(l);
-
-                this.renderer.resetState();
-                this.renderer.render(this.scene, this.camera);
-                this.map.triggerRepaint();
-            }
-        };
-
-        map.addLayer(customLayer);
-    }
-
-    // Queue-based loading with error handling
-    function loadEntitiesWithQueue(entities) {
-        let index = 0;
-
-        function loadNextEntity() {
-            if (index >= entities.length) {
-                console.log('All entities have been loaded.');
+            // Validate entity data
+            if (!latitude || !longitude || !model || !scale) {
+                console.error(`Missing data for entity: ${name}`, entity);
                 return;
             }
 
-            const entity = entities[index];
-            try {
-                addModel(entity); // Add the next entity
-                console.log(`Entity loaded: ${entity.name}`);
-            } catch (error) {
-                console.error(`Failed to load entity ${entity.name}:`, error);
-            }
+            const modelOrigin = [longitude, latitude];
+            const modelAltitude = 0;
+            const modelRotation = [Math.PI / 2, 0, 0];
 
-            index++;
+            const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(
+                modelOrigin,
+                modelAltitude
+            );
 
-            // Use setTimeout to load the next entity after 0.5 seconds
-            setTimeout(loadNextEntity, 500);
+            const modelTransform = {
+                translateX: modelAsMercatorCoordinate.x,
+                translateY: modelAsMercatorCoordinate.y,
+                translateZ: modelAsMercatorCoordinate.z,
+                rotateX: modelRotation[0],
+                rotateY: modelRotation[1],
+                rotateZ: modelRotation[2],
+                scale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits() * (parseFloat(scale.split(' ')[0]) || 1)
+            };
+
+            const customLayer = {
+                id: `3d-model-${name}`,
+                type: 'custom',
+                renderingMode: '3d',
+                onAdd: function (map, gl) {
+                    this.map = map;
+                    this.camera = new THREE.Camera();
+                    this.scene = new THREE.Scene();
+                    this.mixer = null; // Animation mixer for handling animations
+
+                    const light1 = new THREE.DirectionalLight(0xffffff);
+                    light1.position.set(0, -70, 100).normalize();
+                    this.scene.add(light1);
+
+                    const light2 = new THREE.DirectionalLight(0xffffff);
+                    light2.position.set(0, 70, 100).normalize();
+                    this.scene.add(light2);
+
+                    const loader = new THREE.GLTFLoader();
+                    loader.load(
+                        model, // Use the `model` directly as the path
+                        (gltf) => {
+                            const loadedModel = gltf.scene;
+                            this.scene.add(loadedModel);
+                            console.log(`Model loaded successfully for: ${name}`);
+
+                            // Initialize animation mixer and start animations
+                            if (gltf.animations && gltf.animations.length > 0) {
+                                this.mixer = new THREE.AnimationMixer(loadedModel);
+                                gltf.animations.forEach((clip) => {
+                                    const action = this.mixer.clipAction(clip);
+                                    action.play(); // Start the animation
+                                });
+                            }
+                        },
+                        undefined,
+                        (error) => {
+                            console.error(`Error loading model for ${name}:`, error);
+                        }
+                    );
+
+                    this.renderer = new THREE.WebGLRenderer({
+                        canvas: map.getCanvas(),
+                        context: gl,
+                        antialias: true
+                    });
+
+                    this.renderer.autoClear = false;
+                    this.clock = new THREE.Clock(); // Clock for animation updates
+                },
+                render: function (gl, matrix) {
+                    const rotationX = new THREE.Matrix4().makeRotationAxis(
+                        new THREE.Vector3(1, 0, 0),
+                        modelTransform.rotateX
+                    );
+                    const rotationY = new THREE.Matrix4().makeRotationAxis(
+                        new THREE.Vector3(0, 1, 0),
+                        modelTransform.rotateY
+                    );
+                    const rotationZ = new THREE.Matrix4().makeRotationAxis(
+                        new THREE.Vector3(0, 0, 1),
+                        modelTransform.rotateZ
+                    );
+
+                    const m = new THREE.Matrix4().fromArray(matrix);
+                    const l = new THREE.Matrix4()
+                        .makeTranslation(
+                            modelTransform.translateX,
+                            modelTransform.translateY,
+                            modelTransform.translateZ
+                        )
+                        .scale(
+                            new THREE.Vector3(
+                                modelTransform.scale,
+                                -modelTransform.scale,
+                                modelTransform.scale
+                            )
+                        )
+                        .multiply(rotationX)
+                        .multiply(rotationY)
+                        .multiply(rotationZ);
+
+                    this.camera.projectionMatrix = m.multiply(l);
+
+                    // Update animations
+                    if (this.mixer) {
+                        const delta = this.clock.getDelta(); // Get time delta for the animation update
+                        this.mixer.update(delta);
+                    }
+
+                    this.renderer.resetState();
+                    this.renderer.render(this.scene, this.camera);
+                    this.map.triggerRepaint();
+                }
+            };
+
+            map.addLayer(customLayer);
         }
 
-        loadNextEntity();
-    }
 
-    // Start loading entities
-    loadEntitiesWithQueue(entities);
-</script>
+        // Loop through all entities and add them to the map
+        Object.values(entities).forEach(addModel);
 
+
+    </script>
 </body>
 
 </html>
