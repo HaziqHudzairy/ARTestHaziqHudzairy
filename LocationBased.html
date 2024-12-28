@@ -123,7 +123,6 @@
         <div class="center-circle2">
             <h6>You are going to</h6>
             <h3></h3>
-            <p>Click here to view full route</p>
         </div>
     </div>
 
@@ -1376,7 +1375,7 @@ function getIDBasedOnNames(entityName, entities) {
             const route = await fetchRoute(start, end); // Fetch route
             if (!route || route.length === 0) return;
 
-            const densifiedPoints = densifyPolyline(route, 1); // Densify polyline
+            const densifiedPoints = densifyPolyline(route, 2); // Densify polyline
 
             // Render markers with jumping animation using a wrapper entity
             densifiedPoints.forEach(([lon, lat], index) => {
