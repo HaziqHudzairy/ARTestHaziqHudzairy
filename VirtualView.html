@@ -288,7 +288,7 @@
     const response = await fetch('./entities.json');
     const json = await response.json();
 
-    // Combine all entities into one object
+    // Combine all entities into a single array
     const entities = [
         ...Object.values(json.entities.facilities || {}),
         ...Object.values(json.entities.faculties || {}),
@@ -296,6 +296,11 @@
         ...Object.values(json.entities.residentialColleges || {}),
         ...Object.values(json.entities.sportsAndRecreation || {})
     ];
+
+    // Helper function to detect mobile devices
+    function isMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent);
+    }
 
     function addModel(entity) {
         const { latitude, longitude, model, scale, name } = entity;
@@ -333,32 +338,20 @@
                 this.map = map;
                 this.camera = new THREE.Camera();
                 this.scene = new THREE.Scene();
-                this.mixer = null; // Animation mixer for handling animations
-
-                const light1 = new THREE.DirectionalLight(0xffffff);
-                light1.position.set(0, -70, 100).normalize();
-                this.scene.add(light1);
-
-                const light2 = new THREE.DirectionalLight(0xffffff);
-                light2.position.set(0, 70, 100).normalize();
-                this.scene.add(light2);
+                const light = new THREE.AmbientLight(0xffffff, 0.5); // Use ambient light for better performance
+                this.scene.add(light);
 
                 const loader = new THREE.GLTFLoader();
                 loader.load(
-                    model, // Use the `model` directly as the path
+                    model,
                     (gltf) => {
                         const loadedModel = gltf.scene;
+                        if (isMobileDevice()) {
+                            // Reduce model scale for mobile devices
+                            loadedModel.scale.set(0.5, 0.5, 0.5);
+                        }
                         this.scene.add(loadedModel);
                         console.log(`Model loaded successfully for: ${name}`);
-
-                        // Initialize animation mixer and start animations
-                        if (gltf.animations && gltf.animations.length > 0) {
-                            this.mixer = new THREE.AnimationMixer(loadedModel);
-                            gltf.animations.forEach((clip) => {
-                                const action = this.mixer.clipAction(clip);
-                                action.play(); // Start the animation
-                            });
-                        }
                     },
                     undefined,
                     (error) => {
@@ -373,7 +366,6 @@
                 });
 
                 this.renderer.autoClear = false;
-                this.clock = new THREE.Clock(); // Clock for animation updates
             },
             render: function (gl, matrix) {
                 const rotationX = new THREE.Matrix4().makeRotationAxis(
@@ -409,12 +401,6 @@
 
                 this.camera.projectionMatrix = m.multiply(l);
 
-                // Update animations
-                if (this.mixer) {
-                    const delta = this.clock.getDelta(); // Get time delta for the animation update
-                    this.mixer.update(delta);
-                }
-
                 this.renderer.resetState();
                 this.renderer.render(this.scene, this.camera);
                 this.map.triggerRepaint();
@@ -424,26 +410,35 @@
         map.addLayer(customLayer);
     }
 
-    // Load entities one by one with a 0.5-second interval
-    function loadEntitiesSequentially(entities) {
+    // Queue-based loading with error handling
+    function loadEntitiesWithQueue(entities) {
         let index = 0;
 
-        const interval = setInterval(() => {
+        function loadNextEntity() {
             if (index >= entities.length) {
-                clearInterval(interval); // Stop the interval when all entities are added
                 console.log('All entities have been loaded.');
                 return;
             }
 
             const entity = entities[index];
-            addModel(entity); // Add the next entity
-            console.log(`Entity loaded: ${entity.name}`);
+            try {
+                addModel(entity); // Add the next entity
+                console.log(`Entity loaded: ${entity.name}`);
+            } catch (error) {
+                console.error(`Failed to load entity ${entity.name}:`, error);
+            }
+
             index++;
-        }, 500); // 0.5-second delay
+
+            // Use setTimeout to load the next entity after 0.5 seconds
+            setTimeout(loadNextEntity, 500);
+        }
+
+        loadNextEntity();
     }
 
     // Start loading entities
-    loadEntitiesSequentially(entities);
+    loadEntitiesWithQueue(entities);
 </script>
 
 </body>
