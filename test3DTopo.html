@@ -39,7 +39,7 @@
             style: 'mapbox://styles/mapbox/streets-v12',
             center: [101.653585, 3.120975], // Initial coordinates
             zoom: 150,
-            pitch: 60, // Default tilt
+            pitch: 90, // Default tilt
             bearing: 0, // Default rotation
             antialias: true,
             accessToken: 'pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg'
@@ -50,22 +50,28 @@
         map.touchZoomRotate.enableRotation();
         map.touchZoomRotate.enable();
 
-        // Use Device Orientation for Camera-Based Tilt and Rotation
+        // Device Orientation for Tilt and Rotation with Camera as Origin
         if (window.DeviceOrientationEvent) {
             window.addEventListener("deviceorientation", (event) => {
                 if (event.alpha !== null && event.beta !== null && event.gamma !== null) {
                     const alpha = event.alpha; // Rotation around Z-axis
                     const beta = event.beta; // Forward/backward tilt
-                    const gamma = event.gamma; // Left/right tilt
 
-                    // Map pitch corresponds to beta (forward/backward tilt)
+                    // Calculate new pitch and clamp it
                     const newPitch = Math.min(Math.max(beta - 90, 0), 85); // Normalize pitch to 0-85 degrees
+                    const currentPitch = map.getPitch(); // Current pitch
 
-                    // Map bearing corresponds to alpha + gamma for combined rotation
-                    const newBearing = (alpha + gamma + 360) % 360;
+                    // Adjust map center to simulate tilting from the device's camera
+                    const center = map.getCenter();
+                    const zoomFactor = 0.0001 / Math.pow(2, map.getZoom() - 15); // Adjust center offset based on zoom level
+                    const deltaLat = (newPitch - currentPitch) * zoomFactor;
 
-                    map.setPitch(newPitch); // Set the tilt
-                    map.setBearing(newBearing); // Set the rotation
+                    // Update the map center dynamically
+                    map.setCenter([center.lng, center.lat + deltaLat]);
+
+                    // Update pitch and bearing
+                    map.setPitch(newPitch);
+                    map.setBearing((alpha + 360) % 360); // Normalize bearing to 0-360 degrees
                 }
             });
         } else {
