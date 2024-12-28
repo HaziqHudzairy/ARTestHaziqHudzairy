@@ -112,18 +112,6 @@
                 }
             });
 
-            // Add a red dot for user position
-            const userPosition = [101.662398, 3.118806];
-            map.addSource('user-position', {
-                type: 'geojson',
-                data: {
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Point',
-                        coordinates: userPosition
-                    }
-                }
-            });
 
             map.addLayer({
                 id: 'user-position',
@@ -173,7 +161,7 @@
             size: 150
         });
 
-        const movementSpeed = 0.00000003;
+        const movementSpeed = 0.0000001;
         let movementDirection = null;
 
         moveJoystick.on('move', function (evt, data) {
@@ -188,29 +176,31 @@
             movementDirection = null;
         });
 
-        setInterval(() => {
-            if (movementDirection) {
-                const center = map.getCenter();
-                const mapBearing = map.getBearing();
-                const adjustedAngle = (movementDirection.angle - mapBearing + 360) % 360;
-                const radianAngle = (adjustedAngle * Math.PI) / 180;
+        let lastTimestamp = 0;
 
-                const deltaLng = movementSpeed * Math.cos(radianAngle) * movementDirection.distance;
-                const deltaLat = movementSpeed * Math.sin(radianAngle) * movementDirection.distance;
+function updateMovement(timestamp) {
+    if (lastTimestamp === 0 || timestamp - lastTimestamp > 50) {
+        if (movementDirection) {
+            const center = map.getCenter();
+            const mapBearing = map.getBearing();
+            const adjustedAngle = (movementDirection.angle - mapBearing + 360) % 360;
+            const radianAngle = (adjustedAngle * Math.PI) / 180;
 
-                const newCenter = [center.lng + deltaLng, center.lat + deltaLat];
+            const deltaLng = movementSpeed * Math.cos(radianAngle) * movementDirection.distance;
+            const deltaLat = movementSpeed * Math.sin(radianAngle) * movementDirection.distance;
 
-                // Check if the point is inside a building
-                isPointInBuilding(newCenter, (insideBuilding) => {
-                    if (!insideBuilding && isPointInPolygon(newCenter, boundaryPolygon)) {
-                        map.setCenter(newCenter);
-                        updateUserPosition(newCenter);
-                    } else {
-                        //console.log('Movement blocked: Point intersects a building or is outside the boundary.');
-                    }
-                });
+            const newCenter = [center.lng + deltaLng, center.lat + deltaLat];
+            if (isPointInPolygon(newCenter, boundaryPolygon)) {
+                map.setCenter(newCenter);
+                updateUserPosition(newCenter);
             }
-        }, 50);
+        }
+        lastTimestamp = timestamp;
+    }
+    requestAnimationFrame(updateMovement);
+}
+requestAnimationFrame(updateMovement);
+
 
 
         // Joystick for Rotation
@@ -292,7 +282,8 @@
 
         // Combine all entities into a single array
         const entities = [
-            ...Object.values(json.entities.facilities)
+            ...Object.values(json.entities.facilities),
+            ...Object.values(json.entities.faculties),
         ];
 
         // Validate and add each model
