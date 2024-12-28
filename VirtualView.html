@@ -292,11 +292,7 @@
 
         // Combine all entities into a single array
         const entities = [
-            ...Object.values(json.entities.facilities),
-            ...Object.values(json.entities.faculties),
-            ...Object.values(json.entities.libraries),
-            ...Object.values(json.entities.residentialColleges),
-            ...Object.values(json.entities.sportsAndRecreation)
+            ...Object.values(json.entities.facilities)
         ];
 
         // Validate and add each model
