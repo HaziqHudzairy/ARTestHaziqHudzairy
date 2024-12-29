@@ -1,0 +1,491 @@
+{"entities": {
+      "entityAcademyIslam": {
+        
+        "latitude": 3.132754,
+        "longitude": 101.657415,
+        "model": "locationPinMusollaAPI",
+        "name": "Academy of Islamic Studies Musolla",
+        "scale": "800 800 800"
+      },
+      "entityAidil": {
+        "Environment Model": "asset/FacultyEntity/Education.glb",
+        "latitude": 3.129456,
+        "longitude": 101.649293,
+        "model": "asset/FacilitiesEntity/dtc.glb",
+        "name": "E307",
+        "scale": "800 800 800"
+      },
+      "entityBangunanCanseleri": {
+        
+        "latitude": 3.120445,
+        "longitude": 101.657636,
+        "model": "asset/FacilitiesEntity/chancelerry.glb",
+        "name": "Bangunan Canseleri",
+        "scale": "800 800 800"
+      },
+      "entityBankIslam": {
+        
+        "latitude": 3.122143,
+        "longitude": 101.656503,
+        "model": "asset/FacilitiesEntity/bank_islam.glb",
+        "name": "Bank Islam",
+        "scale": "800 800 800"
+      },
+      "entityDTC": {
+        
+        "latitude": 3.121436,
+        "longitude": 101.65706,
+        "model": "asset/FacilitiesEntity/dtc.glb",
+        "name": "Dewan Tunku Canselor (DTC)",
+        "scale": "800 800 800"
+      },
+      "entityExamHall": {
+        
+        "latitude": 3.115147,
+        "longitude": 101.658086,
+        "model": "asset/FacilitiesEntity/exam_hall.glb",
+        "name": "Examination Hall",
+        "scale": "800 800 800"
+      },
+      "entityKPS": {
+        
+        "latitude": 3.121125,
+        "longitude": 101.655145,
+        "model": "asset/FacilitiesEntity/kps.glb",
+        "name": "KPS Complex",
+        "scale": "800 800 800"
+      },
+      "entityMasjid": {
+        
+        "latitude": 3.117938,
+        "longitude": 101.662769,
+        "model": "asset/FacilitiesEntity/masjid.glb",
+        "name": "Masjid Ar-Rahman",
+        "scale": "800 800 800"
+      },
+      "entityPanggung": {
+        
+        "latitude": 3.121522,
+        "longitude": 101.656079,
+        "model": "asset/FacilitiesEntity/panggung_eks.glb",
+        "name": "Panggung Eksperimen",
+        "scale": "800 800 800"
+      },
+      "entityTemple": {
+        
+        "latitude": 3.127944,
+        "longitude": 101.660709,
+        "model": "asset/FacilitiesEntity/temple.glb",
+        "name": "Sri Sivan Temple",
+        "scale": "800 800 800"
+      },
+      "entityUMCentral": {
+        
+        "latitude": 3.120975,
+        "longitude": 101.653585,
+        "model": "asset/FacilitiesEntity/um_central.glb",
+        "name": "UM Central",
+        "scale": "800 800 800"
+      },
+      "entityUser": {
+        "Environment Model": "asset/FacultyEntity/Education.glb",
+        "latitude": 3.129264,
+        "longitude": 101.649731,
+        "model": "asset/FacilitiesEntity/um_central.glb",
+        "name": "F315",
+        "scale": "800 800 800"
+      },
+  "entityAkademiIslam": {
+    
+    "latitude": 3.132609,
+    "longitude": 101.65778,
+    "model": "asset/FacultyEntity/AkademiPengajianIslam.glb",
+    "name": "Islamic Studies Academy",
+    "scale": "800 800 800"
+  },
+  "entityAkademiMelayu": {
+    
+    "latitude": 3.125078,
+    "longitude": 101.652265,
+    "model": "asset/FacultyEntity/AkademiPengajianMelayu.glb",
+    "name": "Malay Studies Academy",
+    "scale": "800 800 800"
+  },
+  "entityArts": {
+    
+    "latitude": 3.120916,
+    "longitude": 101.653107,
+    "model": "asset/FacultyEntity/Social_Science.glb",
+    "name": "Faculty of Arts and Social Sciences",
+    "scale": "800 800 800"
+  },
+  "entityBuiltEnvironment": {
+    
+    "latitude": 3.115871,
+    "longitude": 101.655339,
+    "model": "asset/FacultyEntity/Built_Environment_Entity.glb",
+    "name": "Faculty of Built Environment",
+    "scale": "800 800 800"
+  },
+  "entityBusiness": {
+    
+    "latitude": 3.118396,
+    "longitude": 101.652676,
+    "model": "asset/FacultyEntity/Business_Entity.glb",
+    "name": "Faculty of Business and Economics",
+    "scale": "800 800 800"
+  },
+  "entityCS": {
+    
+    "latitude": 3.127979,
+    "longitude": 101.650565,
+    "model": "asset/FacultyEntity/Computer_Science.glb",
+    "name": "Faculty of Computer Science",
+    "scale": "800 800 800"
+  },
+  "entityCreativeArts": {
+    
+    "latitude": 3.118616,
+    "longitude": 101.653299,
+    "model": "asset/FacultyEntity/Creative_Arts_Entity.glb",
+    "name": "Faculty of Creative Arts",
+    "scale": "800 800 800"
+  },
+  "entityDentistry": {
+    
+    "latitude": 3.111392,
+    "longitude": 101.652523,
+    "model": "asset/FacultyEntity/Dentistry.glb",
+    "name": "Faculty of Dentistry",
+    "scale": "800 800 800"
+  },
+  "entityEducation": {
+    
+    "latitude": 3.119958,
+    "longitude": 101.652903,
+    "model": "asset/FacultyEntity/Education.glb",
+    "name": "Faculty of Education",
+    "scale": "800 800 800"
+  },
+  "entityEngineering": {
+    
+    "latitude": 3.117802,
+    "longitude": 101.65565,
+    "model": "asset/FacultyEntity/Engineering.glb",
+    "name": "Faculty of Engineering",
+    "scale": "800 800 800"
+  },
+  "entityInstituteAdvancedStudies": {
+    
+    "latitude": 3.124623,
+    "longitude": 101.659739,
+    "model": "asset/FacultyEntity/Advance.glb",
+    "name": "Institute of Advanced Studies",
+    "scale": "800 800 800"
+  },
+  "entityLanguages": {
+    
+    "latitude": 3.122513,
+    "longitude": 101.651525,
+    "model": "asset/FacultyEntity/Linguistic.glb",
+    "name": "Faculty of Languages",
+    "scale": "800 800 800"
+  },
+  "entityLaw": {
+    
+    "latitude": 3.118005,
+    "longitude": 101.66085,
+    "model": "asset/FacultyEntity/Law.glb",
+    "name": "Faculty of Law",
+    "scale": "800 800 800"
+  },
+  "entityMedicine": {
+    
+    "latitude": 3.115828,
+    "longitude": 101.653418,
+    "model": "asset/FacultyEntity/Medicine.glb",
+    "name": "Faculty of Medicine",
+    "scale": "800 800 800"
+  },
+  "entityPharmacy": {
+    
+    "latitude": 3.115517,
+    "longitude": 101.652362,
+    "model": "asset/FacultyEntity/Pharmacy.glb",
+    "name": "Faculty of Pharmacy",
+    "scale": "800 800 800"
+  },
+  "entityPusatAsasi": {
+    
+    "latitude": 3.123262,
+    "longitude": 101.659417,
+    "model": "asset/FacultyEntity/Pasum.glb",
+    "name": "Foundation Centre",
+    "scale": "800 800 800"
+  },
+  "entityScience": {
+    
+    "latitude": 3.121827,
+    "longitude": 101.653875,
+    "model": "asset/FacultyEntity/Science.glb",
+    "name": "Faculty of Science",
+    "scale": "800 800 800"
+  },
+  "entitySport": {
+    
+    "latitude": 3.130788,
+    "longitude": 101.660023,
+    "model": "asset/FacultyEntity/Sports_Science.glb",
+    "name": "Faculty of Sports Science",
+    "scale": "800 800 800"
+  },
+  "entityDentalLibrary": {
+    
+    "latitude": 3.115774,
+    "longitude": 101.659985,
+    "model": "asset/FacilitiesEntity/dental_lib.glb",
+    "name": "UM Dental Library",
+    "scale": "800 800 800"
+  },
+  "entityIslamicLibrary": {
+    
+    "latitude": 3.132277,
+    "longitude": 101.657421,
+    "model": "asset/FacilitiesEntity/islamic_lib.glb",
+    "name": "Islamic Studies Library",
+    "scale": "800 800 800"
+  },
+  "entityLawLibrary": {
+    
+    "latitude": 3.118624,
+    "longitude": 101.653478,
+    "model": "asset/FacilitiesEntity/law_lib.glb",
+    "name": "Tan Sri Prof. Ahmad Ibrahim Law Library",
+    "scale": "800 800 800"
+  },
+  "entityMedicalLibrary": {
+    
+    "latitude": 3.114301,
+    "longitude": 101.653429,
+    "model": "asset/FacilitiesEntity/medic_lib.glb",
+    "name": "TJ Danaraj Medical Library",
+    "scale": "800 800 800"
+  },
+  "entityUMLibrary": {
+    
+    "latitude": 3.120274,
+    "longitude": 101.654513,
+    "model": "asset/FacilitiesEntity/um_lib.glb",
+    "name": "UM Main Library",
+    "scale": "800 800 800"
+  },
+  "entityZabaLibrary": {
+    
+    "latitude": 3.118624,
+    "longitude": 101.653478,
+    "model": "asset/FacilitiesEntity/zaba_lib.glb",
+    "name": "Za'ba Memorial Library",
+    "scale": "800 800 800"
+  },
+  "entityKolej1": {
+    
+    "latitude": 3.117609,
+    "longitude": 101.659361,
+    "model": "asset/CollegeEntity/kk1.glb",
+    "name": "Kolej Kediaman 1",
+    "scale": "800 800 800"
+  },
+  "entityKolej10": {
+    
+    "latitude": 3.130641,
+    "longitude": 101.650468,
+    "model": "asset/CollegeEntity/kk10.glb",
+    "name": "Kolej Kediaman 10",
+    "scale": "800 800 800"
+  },
+  "entityKolej11": {
+    
+    "latitude": 3.129356,
+    "longitude": 101.660511,
+    "model": "asset/CollegeEntity/kk11.glb",
+    "name": "Kolej Kediaman 11",
+    "scale": "800 800 800"
+  },
+  "entityKolej12": {
+    
+    "latitude": 3.125649,
+    "longitude": 101.660795,
+    "model": "asset/CollegeEntity/kk12.glb",
+    "name": "Kolej Kediaman 12",
+    "scale": "800 800 800"
+  },
+  "entityKolej13": {
+    
+    "latitude": 3.120582,
+    "longitude": 101.63961,
+    "model": "asset/CollegeEntity/kk13.glb",
+    "name": "Kolej Kediaman 13",
+    "scale": "800 800 800"
+  },
+  "entityKolej2": {
+    
+    "latitude": 3.11822,
+    "longitude": 101.657536,
+    "model": "asset/CollegeEntity/kk2.glb",
+    "name": "Kolej Kediaman 2",
+    "scale": "800 800 800"
+  },
+  "entityKolej3": {
+    
+    "latitude": 3.12431,
+    "longitude": 101.650715,
+    "model": "asset/CollegeEntity/kk3.glb",
+    "name": "Kolej Kediaman 3",
+    "scale": "800 800 800"
+  },
+  "entityKolej4": {
+    
+    "latitude": 3.124872,
+    "longitude": 101.649416,
+    "model": "asset/CollegeEntity/kk4.glb",
+    "name": "Kolej Kediaman 4",
+    "scale": "800 800 800"
+  },
+  "entityKolej5": {
+    
+    "latitude": 3.127138,
+    "longitude": 101.658605,
+    "model": "asset/CollegeEntity/kk5.glb",
+    "name": "Kolej Kediaman 5",
+    "scale": "800 800 800"
+  },
+  "entityKolej6": {
+    
+    "latitude": 3.115498,
+    "longitude": 101.654873,
+    "model": "asset/CollegeEntity/kk6.glb",
+    "name": "Kolej Kediaman 6",
+    "scale": "800 800 800"
+  },
+  "entityKolej7": {
+    
+    "latitude": 3.126104,
+    "longitude": 101.650415,
+    "model": "asset/CollegeEntity/kk7.glb",
+    "name": "Kolej Kediaman 7",
+    "scale": "800 800 800"
+  },
+  "entityKolej8": {
+    
+    "latitude": 3.129827,
+    "longitude": 101.649728,
+    "model": "asset/CollegeEntity/kk8.glb",
+    "name": "Kolej Kediaman 8",
+    "scale": "800 800 800"
+  },
+  "entityKolej9": {
+    
+    "latitude": 3.120319,
+    "longitude": 101.646064,
+    "model": "asset/CollegeEntity/kk9.glb",
+    "name": "Kolej Kediaman 9",
+    "scale": "800 800 800"
+  },
+  "entityRumahUniversiti": {
+    
+    "latitude": 3.122223,
+    "longitude": 101.65757,
+    "model": "asset/CollegeEntity/InternationalHouse.glb",
+    "name": "Rumah Universiti",
+    "scale": "800 800 800"
+  },
+  "entityKayaks": {
+    
+    "latitude": 3.119374,
+    "longitude": 101.658671,
+    "model": "asset/FacilitiesEntity/kayak.glb",
+    "name": "Kayak at Varsity Lake UM",
+    "scale": "800 800 800"
+  },
+  "entityLadangMini": {
+    
+    "latitude": 3.12819,
+    "longitude": 101.660865,
+    "model": "asset/FacilitiesEntity/isb.glb",
+    "name": "Ladang Mini ISB UM",
+    "scale": "800 800 800"
+  },
+  "entityMustafaRiver": {
+    
+    "latitude": 3.125919,
+    "longitude": 101.658998,
+    "model": "asset/FacilitiesEntity/sungai.glb",
+    "name": "Mustafa River UM",
+    "scale": "800 800 800"
+  },
+  "entityPadangC": {
+    
+    "latitude": 3.120177,
+    "longitude": 101.660135,
+    "model": "asset/FacilitiesEntity/padang_c.glb",
+    "name": "Padang C UM",
+    "scale": "800 800 800"
+  },
+  "entityRimbaIlmu": {
+    
+    "latitude": 3.130697,
+    "longitude": 101.658203,
+    "model": "asset/FacilitiesEntity/rimba_ilmu.glb",
+    "name": "Rimba Ilmu Botanical Garden UM",
+    "scale": "800 800 800"
+  },
+  "entitySwimmingPool": {
+    
+    "latitude": 3.128806,
+    "longitude": 101.659803,
+    "model": "asset/FacilitiesEntity/pool.glb",
+    "name": "Swimming Pool UM Sports Center",
+    "scale": "800 800 800"
+  },
+  "entityUMArenaStadium": {
+    
+    "latitude": 3.130895,
+    "longitude": 101.65969,
+    "model": "asset/FacilitiesEntity/um_arena.glb",
+    "name": "UM Arena Stadium",
+    "scale": "800 800 800"
+  },
+  "entityUMPark": {
+    
+    "latitude": 3.119047,
+    "longitude": 101.660017,
+    "model": "asset/FacilitiesEntity/um_park.glb",
+    "name": "UM Park",
+    "scale": "800 800 800"
+  },
+  "entityUMSportsCentre": {
+    
+    "latitude": 3.129872,
+    "longitude": 101.660018,
+    "model": "asset/FacilitiesEntity/um_sports_center.glb",
+    "name": "UM Sports Centre",
+    "scale": "800 800 800"
+  },
+  "entityUMWallSquash": {
+    
+    "latitude": 3.131988,
+    "longitude": 101.658011,
+    "model": "asset/FacilitiesEntity/squash.glb",
+    "name": "UM Wall Squash Complex",
+    "scale": "800 800 800"
+  },
+  "entityVarsityGreen": {
+  
+    "latitude": 3.120477,
+    "longitude": 101.659148,
+    "model": "asset/FacilitiesEntity/varsity_green.glb",
+    "name": "UM Varsity Green",
+    "scale": "800 800 800"
+  }
+}}
+
