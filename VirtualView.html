@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>3D Map with Joysticks for Movement and Rotation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.9.0/nipplejs.min.js"></script>
@@ -51,13 +52,15 @@
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v12',
-            center: [101.662398,3.118806], // Initial coordinates
+            center: [101.662398, 3.118806], // Initial coordinates
             zoom: 150,
             pitch: 90, // Default tilt
             bearing: -90, // Default rotation
-            antialias: true,
+            antialias: false,
             accessToken: 'pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg',
         });
+
+
 
         // Disable default drag for moving the map
         map.dragPan.disable();
@@ -113,6 +116,14 @@
             });
         });
 
+        // Load the restricted area polygon from GeoJSON
+        fetch('asset/VR/Lake.geojson') // Replace with your actual GeoJSON file path
+            .then(response => response.json())
+            .then(data => {
+                restrictedPolygon = data.features[0].geometry.coordinates[0]; // Extract the first polygon's coordinates
+            })
+            .catch(error => console.error('Error loading GeoJSON:', error));
+
 
         // Function to check if a point is within the polygon
         function isPointInPolygon(point, polygon) {
@@ -127,6 +138,23 @@
             }
             return inside;
         }
+
+        // Create an HTML element for the center dot marker
+        const centerDotElement = document.createElement('div');
+        centerDotElement.style.width = '100px'; // Set the width of the dot
+        centerDotElement.style.height = '100px'; // Set the height of the dot
+        centerDotElement.style.backgroundImage = 'url("asset/VR/car.png")'; // Replace with your image path or URL
+        centerDotElement.style.backgroundSize = 'cover';
+        centerDotElement.style.borderRadius = '50%'; // Optional: Make it circular if the image isn't circular
+        centerDotElement.style.pointerEvents = 'none'; // Prevent interactions with the marker
+
+        // Create the marker with the custom element
+        const centerDot = new mapboxgl.Marker({
+            element: centerDotElement, // Use the custom HTML element
+            anchor: 'center' // Ensure the image is centered
+        })
+            .setLngLat(map.getCenter()) // Set initial position to map center
+            .addTo(map);
 
         // Joystick for Movement
         const moveJoystick = nipplejs.create({
@@ -152,29 +180,32 @@
             movementDirection = null;
         });
 
+
+
         let lastTimestamp = 0;
 
-function updateMovement(timestamp) {
-    if (lastTimestamp === 0 || timestamp - lastTimestamp > 50) {
-        if (movementDirection) {
-            const center = map.getCenter();
-            const mapBearing = map.getBearing();
-            const adjustedAngle = (movementDirection.angle - mapBearing + 360) % 360;
-            const radianAngle = (adjustedAngle * Math.PI) / 180;
+        function updateMovement(timestamp) {
+            if (lastTimestamp === 0 || timestamp - lastTimestamp > 24) {
+                if (movementDirection) {
+                    const center = map.getCenter();
+                    const mapBearing = map.getBearing();
+                    const adjustedAngle = (movementDirection.angle - mapBearing + 360) % 360;
+                    const radianAngle = (adjustedAngle * Math.PI) / 180;
 
-            const deltaLng = movementSpeed * Math.cos(radianAngle) * movementDirection.distance;
-            const deltaLat = movementSpeed * Math.sin(radianAngle) * movementDirection.distance;
+                    const deltaLng = movementSpeed * Math.cos(radianAngle) * movementDirection.distance;
+                    const deltaLat = movementSpeed * Math.sin(radianAngle) * movementDirection.distance;
 
-            const newCenter = [center.lng + deltaLng, center.lat + deltaLat];
-            if (isPointInPolygon(newCenter, boundaryPolygon)) {
-                map.setCenter(newCenter);
+                    const newCenter = [center.lng + deltaLng, center.lat + deltaLat];
+                    if (isPointInPolygon(newCenter, boundaryPolygon) && !isPointInBuilding(newCenter) && !isPointInPolygon(newCenter, restrictedPolygon)) {
+                        map.setCenter(newCenter); // Update map center
+                        centerDot.setLngLat(newCenter); // Update the center dot
+                    }
+                }
+                lastTimestamp = timestamp;
             }
+            requestAnimationFrame(updateMovement);
         }
-        lastTimestamp = timestamp;
-    }
-    requestAnimationFrame(updateMovement);
-}
-requestAnimationFrame(updateMovement);
+        requestAnimationFrame(updateMovement);
 
 
 
@@ -212,193 +243,46 @@ requestAnimationFrame(updateMovement);
         animate();
 
 
-        map.on('load', function () {
-            const layers = map.getStyle().layers;
-            const labelLayerId = layers.find(layer => layer.type === 'symbol' && layer.layout['text-field'])?.id;
-
-
-            map.addLayer({
-                id: '3d-buildings',
-                source: 'composite',
-                'source-layer': 'building',
-                filter: ['==', 'extrude', 'true'],
-                type: 'fill-extrusion',
-                minzoom: 15,
-                paint: {
-                    'fill-extrusion-color': '#aaa',
-                    'fill-extrusion-height': ['get', 'height'],
-                    'fill-extrusion-base': ['get', 'min_height'],
-                    'fill-extrusion-opacity': 0.7
-                }
-            }, labelLayerId);
+        map.on('load', () => {
+            if (map.getSource('composite')) {
+                map.addLayer({
+                    id: '3d-buildings',
+                    source: 'composite',
+                    'source-layer': 'building',
+                    filter: ['==', 'extrude', 'true'],
+                    type: 'fill-extrusion',
+                    minzoom: 15,
+                    paint: {
+                        'fill-extrusion-color': '#aaa',
+                        'fill-extrusion-height': ['get', 'height'],
+                        'fill-extrusion-base': ['get', 'min_height'],
+                        'fill-extrusion-opacity': 0.8
+                    }
+                });
+            } else {
+                console.error("Composite source not available.");
+            }
         });
 
-        function isPointInBuilding(point, callback) {
-            const features = map.queryRenderedFeatures(map.project(point), {
-                layers: ['3d-buildings'], // Use the 3D building layer ID
-            });
+        function isPointInBuilding(point) {
+    // Check if the '3d-buildings' layer exists in the map
+    if (!map.getLayer('3d-buildings')) {
+        console.warn("The '3d-buildings' layer does not exist in the map's style.");
+        return false;
+    }
 
-            if (features && features.length > 0) {
-                // If there are features (buildings) at this point, return true
-                callback(true);
-            } else {
-                // No buildings at this point
-                callback(false);
-            }
-        }
+    // Query the 3D buildings layer for features
+    const features = map.queryRenderedFeatures(map.project(point), {
+        layers: ['3d-buildings'], // Use the 3D building layer ID
+    });
+
+    // Check if any features (buildings) are at this point
+    return features && features.length > 0;
+}
 
     </script>
 
-<script type="module">
-    async function loadEntities() {
-    try {
-        const response = await fetch('./entities.json');
-        const json = await response.json();
-
-        // Combine all entities into a single array
-        const entities = Object.values(json.entities)
-            .flatMap(category => Object.values(category)); // Flatten all nested values into one array
-
-        // Validate and add each model
-        entities.forEach(validateAndAddModel);
-    } catch (error) {
-        console.error('Error loading entities:', error);
-    }
-}
-
-
-
-    function validateAndAddModel(entity) {
-        const { latitude, longitude, model, scale, name } = entity;
-
-        // Validate data
-        if (!latitude || !longitude || !model || !scale) {
-            console.warn(`Skipping invalid entity: ${name}`, entity);
-            return;
-        }
-
-        addModelToMap(entity);
-    }
-
-    function addModelToMap(entity) {
-        const { latitude, longitude, model, scale, name } = entity;
-
-        const modelOrigin = [longitude, latitude];
-        const modelAltitude = 0;
-        const modelRotation = [Math.PI / 2, 0, 0];
-
-        const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(
-            modelOrigin,
-            modelAltitude
-        );
-
-        const modelTransform = {
-            translateX: modelAsMercatorCoordinate.x,
-            translateY: modelAsMercatorCoordinate.y,
-            translateZ: modelAsMercatorCoordinate.z,
-            rotateX: modelRotation[0],
-            rotateY: modelRotation[1],
-            rotateZ: modelRotation[2],
-            scale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits() * (parseFloat(scale.split(' ')[0]) || 1)
-        };
-
-        const customLayer = {
-            id: `3d-model-${name}`,
-            type: 'custom',
-            renderingMode: '3d',
-            onAdd: function (map, gl) {
-                this.map = map;
-                this.camera = new THREE.Camera();
-                this.scene = new THREE.Scene();
-                this.mixer = null;
-
-                const light1 = new THREE.DirectionalLight(0xffffff);
-                light1.position.set(0, -70, 100).normalize();
-                this.scene.add(light1);
-
-                const loader = new THREE.GLTFLoader();
-                loader.load(
-                    model,
-                    (gltf) => {
-                        const loadedModel = gltf.scene;
-                        this.scene.add(loadedModel);
-
-                        // Start animations if available
-                        if (gltf.animations && gltf.animations.length > 0) {
-                            this.mixer = new THREE.AnimationMixer(loadedModel);
-                            gltf.animations.forEach((clip) => {
-                                const action = this.mixer.clipAction(clip);
-                                action.play();
-                            });
-                        }
-                    },
-                    undefined,
-                    (error) => {
-                        console.error(`Error loading model for ${name}:`, error);
-                    }
-                );
-
-                this.renderer = new THREE.WebGLRenderer({
-                    canvas: map.getCanvas(),
-                    context: gl,
-                    antialias: true
-                });
-
-                this.renderer.autoClear = false;
-                this.clock = new THREE.Clock();
-            },
-            render: function (gl, matrix) {
-                const rotationX = new THREE.Matrix4().makeRotationAxis(
-                    new THREE.Vector3(1, 0, 0),
-                    modelTransform.rotateX
-                );
-                const rotationY = new THREE.Matrix4().makeRotationAxis(
-                    new THREE.Vector3(0, 1, 0),
-                    modelTransform.rotateY
-                );
-                const rotationZ = new THREE.Matrix4().makeRotationAxis(
-                    new THREE.Vector3(0, 0, 1),
-                    modelTransform.rotateZ
-                );
-
-                const m = new THREE.Matrix4().fromArray(matrix);
-                const l = new THREE.Matrix4()
-                    .makeTranslation(
-                        modelTransform.translateX,
-                        modelTransform.translateY,
-                        modelTransform.translateZ
-                    )
-                    .scale(
-                        new THREE.Vector3(
-                            modelTransform.scale,
-                            -modelTransform.scale,
-                            modelTransform.scale
-                        )
-                    )
-                    .multiply(rotationX)
-                    .multiply(rotationY)
-                    .multiply(rotationZ);
-
-                this.camera.projectionMatrix = m.multiply(l);
-
-                // Update animations
-                if (this.mixer) {
-                    const delta = this.clock.getDelta();
-                    this.mixer.update(delta);
-                }
-
-                this.renderer.resetState();
-                this.renderer.render(this.scene, this.camera);
-                this.map.triggerRepaint();
-            }
-        };
-
-        map.addLayer(customLayer);
-    }
-
-    // Call the async function to load entities
-    loadEntities();
-</script>
+<script src="virtualView.js" type="module"></script>
 
 </body>
 
