@@ -34,7 +34,6 @@ function recreateCenterMenu() {
         <div class="center-circle2">
             <h6>You are going to</h6>
             <h3></h3>
-            <p>Click here to view full route</p>
         </div>
     `;
 
@@ -369,38 +368,38 @@ let CurrentEntityID = null; // Global variable to store the current entity ID
 
 // Function to check proximity and retrieve the Environment Model
 function checkProximity(userLat, userLon, entities, radius) {
-let isNearAnyEntity = false;
+    let isNearAnyEntity = false;
 
-entities.forEach(entity => {
-const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
-if (distance <= radius) {
-    isNearAnyEntity = true;
+    entities.forEach(entity => {
+        const distance = calculateDistance(userLat, userLon, entity.latitude, entity.longitude);
+        if (distance <= radius) {
+            isNearAnyEntity = true;
 
-    currentEntityName = entity.name;
-    CurrentEntityID = getIDBasedOnNames(currentEntityName, entities); // Set CurrentEntityID globally
-    showNotification(entity.name);
-}
-});
+            currentEntityName = entity.name;
+            CurrentEntityID = getIDBasedOnNames(currentEntityName, entities); // Set CurrentEntityID globally
+            showNotification(entity.name);
+        }
+    });
 
-// Hide the center menu if the user is not near any entity
-if (!isNearAnyEntity) {
-CurrentEntityID = null; // Reset CurrentEntityID if no entity is near
-hideNotification();
-}
+    // Hide the center menu if the user is not near any entity
+    if (!isNearAnyEntity) {
+        CurrentEntityID = null; // Reset CurrentEntityID if no entity is near
+        hideNotification();
+    }
 }
 
 // Function to get the ID based on the name
 function getIDBasedOnNames(entityName, entities) {
-let entityID = null; // Declare `entityID`
+    let entityID = null; // Declare `entityID`
 
-// Iterate through entities to find the matching name
-entities.forEach(entity => {
-if (entity.name === entityName) {
-    entityID = String(entity.id); // Explicitly convert the ID to a string
-}
-});
+    // Iterate through entities to find the matching name
+    entities.forEach(entity => {
+        if (entity.name === entityName) {
+            entityID = String(entity.id); // Explicitly convert the ID to a string
+        }
+    });
 
-return entityID; // Return the found ID or null if not found
+    return entityID; // Return the found ID or null if not found
 }
 
 

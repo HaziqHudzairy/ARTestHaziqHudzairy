@@ -7,7 +7,7 @@ body {
   margin: 0;
   padding: 0;
   overscroll-behavior: none;
-  overflow-x: hidden !important;
+  overflow: hidden !important;
   /* Disable horizontal scrolling */
   width: 100%;
   /* Ensure the body fits within the viewport */
@@ -59,7 +59,7 @@ body {
 
 .backButton {
   position: fixed;
-  bottom: 11%;
+  bottom: 10px;
   /* Adjust as needed */
   left: 10px;
   /* Adjust as needed */
@@ -284,7 +284,7 @@ form {
 }
 
 form.expanded {
-  width: 80%;
+  width: 98%;
   z-index: 9999;
   /* Expanded width when clicked */
 }
