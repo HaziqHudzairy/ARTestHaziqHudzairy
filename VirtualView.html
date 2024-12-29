@@ -265,22 +265,21 @@
         });
 
         function isPointInBuilding(point) {
-            const features = map.queryRenderedFeatures(map.project(point), {
-                layers: ['3d-buildings'], // Use the 3D building layer ID
-            });
+    // Check if the '3d-buildings' layer exists in the map
+    if (!map.getLayer('3d-buildings')) {
+        console.warn("The '3d-buildings' layer does not exist in the map's style.");
+        return false;
+    }
 
-            // Check if any features (buildings) are at this point
-            return features && features.length > 0;
-        }
+    // Query the 3D buildings layer for features
+    const features = map.queryRenderedFeatures(map.project(point), {
+        layers: ['3d-buildings'], // Use the 3D building layer ID
+    });
 
-        window.onerror = function (message, source, lineno, colno, error) {
-            alert(`Error occurred:
-    Message: ${message}
-    Source: ${source}
-    Line: ${lineno}
-    Column: ${colno}
-    Error: ${error ? error.stack : 'N/A'}`);
-        };
+    // Check if any features (buildings) are at this point
+    return features && features.length > 0;
+}
+
     </script>
 
     <script type="module">
@@ -293,6 +292,8 @@
                     .flatMap(category => Object.values(category));
 
                 entities.forEach(validateAndAddModel);
+
+                //loadAndScatterTrees();
             } catch (error) {
                 console.error('Error loading entities:', error);
             }
@@ -425,40 +426,38 @@
 
 
         loadEntities();
-        // async function loadAndScatterTrees() {
-        //     try {
-        //         const randomCoordinates = await fetch('asset/VR/random_coordinates.json').then(res => res.json());
-        //         const treeModelUrl = 'asset/VR/tree.glb';
+        async function loadAndScatterTrees() {
+            try {
+                const randomCoordinates = await fetch('asset/VR/random_coordinates.json').then(res => res.json());
+                const treeModelUrl = 'asset/VR/tree.glb';
 
-        //         let batchIndex = 0;
-        //         const BATCH_SIZE = 10;
+                let batchIndex = 0;
+                const BATCH_SIZE = 10;
 
-        //         function loadBatch() {
-        //             for (let i = 0; i < BATCH_SIZE && batchIndex < randomCoordinates.coordinates.length; i++, batchIndex++) {
-        //                 const coordinate = randomCoordinates.coordinates[batchIndex];
-        //                 addModelToMap({
-        //                     latitude: coordinate[0],
-        //                     longitude: coordinate[1],
-        //                     model: treeModelUrl,
-        //                     scale: (0.6 + Math.random() * 0.4).toFixed(2),
-        //                     name: `tree-${batchIndex}`
-        //                 });
-        //             }
+                function loadBatch() {
+                    for (let i = 0; i < BATCH_SIZE && batchIndex < randomCoordinates.coordinates.length; i++, batchIndex++) {
+                        const coordinate = randomCoordinates.coordinates[batchIndex];
+                        addModelToMap({
+                            latitude: coordinate[0],
+                            longitude: coordinate[1],
+                            model: treeModelUrl,
+                            scale: (0.6 + Math.random() * 0.4).toFixed(2),
+                            name: `tree-${batchIndex}`
+                        });
+                    }
 
-        //             if (batchIndex < randomCoordinates.coordinates.length) {
-        //                 requestAnimationFrame(loadBatch);
-        //             }
-        //         }
+                    if (batchIndex < randomCoordinates.coordinates.length) {
+                        requestAnimationFrame(loadBatch);
+                    }
+                }
 
-        //         loadBatch();
-        //     } catch (error) {
-        //         console.error('Error scattering trees:', error);
-        //     }
-        // }
+                loadBatch();
+            } catch (error) {
+                console.error('Error scattering trees:', error);
+            }
+        }
 
 
-
-        // map.on('style.load', loadAndScatterTrees);
     </script>
 
 
