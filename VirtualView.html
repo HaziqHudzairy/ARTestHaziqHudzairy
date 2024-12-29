@@ -412,28 +412,28 @@
         map.addLayer(customLayer);
     }
 
-    async function loadAndScatterTrees() {
-    try {
-        const randomCoordinates = await fetch('asset/VR/random_coordinates.json').then(res => res.json());
-        const treeModelUrl = 'asset/VR/tree.glb';
+//     async function loadAndScatterTrees() {
+//     try {
+//         const randomCoordinates = await fetch('asset/VR/random_coordinates.json').then(res => res.json());
+//         const treeModelUrl = 'asset/VR/tree.glb';
 
-        randomCoordinates.coordinates.forEach((coordinate, index) => {
-            addModelToMap({
-                latitude: coordinate[0],
-                longitude: coordinate[1],
-                model: treeModelUrl,
-                scale: (0.6 + Math.random() * 0.4).toFixed(2),
-                name: `tree-${index}`
-            });
-        });
-    } catch (error) {
-        console.error('Error scattering trees:', error);
-    }
-}
+//         randomCoordinates.coordinates.forEach((coordinate, index) => {
+//             addModelToMap({
+//                 latitude: coordinate[0],
+//                 longitude: coordinate[1],
+//                 model: treeModelUrl,
+//                 scale: (0.6 + Math.random() * 0.4).toFixed(2),
+//                 name: `tree-${index}`
+//             });
+//         });
+//     } catch (error) {
+//         console.error('Error scattering trees:', error);
+//     }
+// }
 
-loadEntities();
+// loadEntities();
 
-map.on('style.load', loadAndScatterTrees);
+// map.on('style.load', loadAndScatterTrees);
 </script>
 
 
