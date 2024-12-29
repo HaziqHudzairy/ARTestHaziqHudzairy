@@ -412,36 +412,28 @@
         map.addLayer(customLayer);
     }
 
-    async function loadGeoJsonAndScatterTrees() {
-        try {
-            const geojson = await fetch('asset/VR/tree.geojson').then(res => res.json());
-            const treeModelUrl = 'asset/VR/tree.glb';
+    async function loadAndScatterTrees() {
+    try {
+        const randomCoordinates = await fetch('asset/VR/random_coordinates.json').then(res => res.json());
+        const treeModelUrl = 'asset/VR/tree.glb';
 
-            geojson.features.forEach((feature, featureIndex) => {
-                const polygon = feature.geometry;
-
-                for (let i = 0; i < 20; i++) {
-                    const randomPoint = turf.randomPoint(1, { bbox: turf.bbox(polygon) }).features[0].geometry.coordinates;
-
-                    if (turf.booleanPointInPolygon(randomPoint, polygon)) {
-                        addModelToMap({
-                            latitude: randomPoint[1],
-                            longitude: randomPoint[0],
-                            model: treeModelUrl,
-                            scale: (0.6 + Math.random() * 0.4).toFixed(2),
-                            name: `tree-${featureIndex}-${i}`
-                        });
-                    }
-                }
+        randomCoordinates.coordinates.forEach((coordinate, index) => {
+            addModelToMap({
+                latitude: coordinate[0],
+                longitude: coordinate[1],
+                model: treeModelUrl,
+                scale: (0.6 + Math.random() * 0.4).toFixed(2),
+                name: `tree-${index}`
             });
-        } catch (error) {
-            console.error('Error scattering trees:', error);
-        }
+        });
+    } catch (error) {
+        console.error('Error scattering trees:', error);
     }
+}
 
-    loadEntities();
+loadEntities();
 
-    map.on('style.load', loadGeoJsonAndScatterTrees);
+map.on('style.load', loadAndScatterTrees);
 </script>
 
 
