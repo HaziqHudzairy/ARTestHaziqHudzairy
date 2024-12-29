@@ -272,227 +272,178 @@
         }
     </script>
 
-    <script type="module">
-        async function loadEntities() {
-            try {
-                const response = await fetch('./entities.json');
-                const json = await response.json();
+<script type="module">
+    async function loadEntities() {
+        try {
+            const response = await fetch('./entities.json');
+            const json = await response.json();
 
-                // Combine all entities into a single array
-                const entities = Object.values(json.entities)
-                    .flatMap(category => Object.values(category)); // Flatten all nested values into one array
+            const entities = Object.values(json.entities)
+                .flatMap(category => Object.values(category));
 
-                // Validate and add each model
-                entities.forEach(validateAndAddModel);
-            } catch (error) {
-                console.error('Error loading entities:', error);
-            }
+            entities.forEach(validateAndAddModel);
+        } catch (error) {
+            console.error('Error loading entities:', error);
+        }
+    }
+
+    function validateAndAddModel(entity) {
+        const { latitude, longitude, model, scale, name } = entity;
+
+        if (!latitude || !longitude || !model || !scale) {
+            console.warn(`Skipping invalid entity: ${name}`, entity);
+            return;
         }
 
+        addModelToMap(entity);
+    }
 
+    function createModelTransform(entity) {
+        const { latitude, longitude, scale } = entity;
+        const modelOrigin = [longitude, latitude];
+        const modelAltitude = 0;
 
-        function validateAndAddModel(entity) {
-            const { latitude, longitude, model, scale, name } = entity;
+        const mercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(modelOrigin, modelAltitude);
+        const scaleFactor = mercatorCoordinate.meterInMercatorCoordinateUnits() * parseFloat(scale.split(' ')[0] || 1);
 
-            // Validate data
-            if (!latitude || !longitude || !model || !scale) {
-                console.warn(`Skipping invalid entity: ${name}`, entity);
-                return;
-            }
+        return {
+            translateX: mercatorCoordinate.x,
+            translateY: mercatorCoordinate.y,
+            translateZ: mercatorCoordinate.z,
+            rotateX: Math.PI / 2,
+            rotateY: 0,
+            rotateZ: 0,
+            scale: scaleFactor
+        };
+    }
 
-            addModelToMap(entity);
-        }
+    function loadTexture(url) {
+        const loader = new THREE.TextureLoader();
+        const texture = loader.load(url);
+        texture.minFilter = THREE.NearestFilter;
+        texture.magFilter = THREE.NearestFilter;
+        return texture;
+    }
 
-        function addModelToMap(entity) {
-            const { latitude, longitude, model, scale, name } = entity;
+    function addModelToMap(entity) {
+        const { model, name } = entity;
+        const modelTransform = createModelTransform(entity);
+        const gradientMap = loadTexture('asset/middle_button/threeTone.jpg');
 
-            const modelOrigin = [longitude, latitude];
-            const modelAltitude = 0;
-            const modelRotation = [Math.PI / 2, 0, 0];
+        const customLayer = {
+            id: `3d-model-${name}`,
+            type: 'custom',
+            renderingMode: '3d',
+            onAdd: function (map, gl) {
+                this.map = map;
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.Camera();
+                this.renderer = new THREE.WebGLRenderer({
+                    canvas: map.getCanvas(),
+                    context: gl,
+                    antialias: true
+                });
+                this.renderer.autoClear = false;
+                this.clock = new THREE.Clock();
+                this.mixer = null;
 
-            const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(
-                modelOrigin,
-                modelAltitude
-            );
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+                directionalLight.position.set(10, 10, 0);
+                this.scene.add(directionalLight);
 
-            const modelTransform = {
-                translateX: modelAsMercatorCoordinate.x,
-                translateY: modelAsMercatorCoordinate.y,
-                translateZ: modelAsMercatorCoordinate.z,
-                rotateX: modelRotation[0],
-                rotateY: modelRotation[1],
-                rotateZ: modelRotation[2],
-                scale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits() * (parseFloat(scale.split(' ')[0]) || 1)
-            };
+                const ambientLight = new THREE.AmbientLight(0x404040, 1);
+                this.scene.add(ambientLight);
 
-            const customLayer = {
-                id: `3d-model-${name}`,
-                type: 'custom',
-                renderingMode: '3d',
-                onAdd: function (map, gl) {
-                    this.map = map;
-                    this.camera = new THREE.Camera();
-                    this.scene = new THREE.Scene();
-                    this.mixer = null;
-
-                    // Add lighting
-                    const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Bright white light
-                    directionalLight.position.set(10, 10, 0); // Position the light
-                    this.scene.add(directionalLight);
-
-                    const ambientLight = new THREE.AmbientLight(0x404040, 1); // Soft ambient light
-                    this.scene.add(ambientLight);
-
-                    const loader = new THREE.GLTFLoader();
-                    const textureLoader = new THREE.TextureLoader();
-                    const gradientMap = textureLoader.load('asset/middle_button/threeTone.jpg'); // Path to gradient texture
-                    gradientMap.minFilter = THREE.NearestFilter;
-                    gradientMap.magFilter = THREE.NearestFilter;
-
-                    loader.load(
-                        model,
-                        (gltf) => {
-                            const loadedModel = gltf.scene;
-
-                            // Traverse the model and apply the toon material
-                            loadedModel.traverse((child) => {
-                                if (child.isMesh) {
-                                    const originalMaterial = child.material; // Save the original material
-
-                                    // Create a gradient map texture for toon shading
-                                    const textureLoader = new THREE.TextureLoader();
-                                    const gradientMap = textureLoader.load('asset/middle_button/threeTone.jpg');
-                                    gradientMap.minFilter = THREE.NearestFilter;
-                                    gradientMap.magFilter = THREE.NearestFilter;
-
-                                    // Apply MeshToonMaterial while preserving the original material's color/texture
-                                    child.material = new THREE.MeshToonMaterial({
-                                        color: originalMaterial.color || 0xffffff, // Use the original color
-                                        map: originalMaterial.map || null,         // Preserve the original texture
-                                        gradientMap: gradientMap,                 // Use the gradient map for toon effect
-                                        emissive: originalMaterial.emissive || 0x000000, // Preserve emissive color if set
-                                        emissiveMap: originalMaterial.emissiveMap || null, // Preserve emissive texture if set
-                                    });
-                                }
-                            });
-
-                            this.scene.add(loadedModel);
-
-                            // Start animations if available
-                            if (gltf.animations && gltf.animations.length > 0) {
-                                this.mixer = new THREE.AnimationMixer(loadedModel);
-                                gltf.animations.forEach((clip) => {
-                                    const action = this.mixer.clipAction(clip);
-                                    action.play();
+                const loader = new THREE.GLTFLoader();
+                loader.load(
+                    model,
+                    (gltf) => {
+                        const loadedModel = gltf.scene;
+                        loadedModel.traverse(child => {
+                            if (child.isMesh) {
+                                const originalMaterial = child.material;
+                                child.material = new THREE.MeshToonMaterial({
+                                    color: originalMaterial.color || 0xffffff,
+                                    map: originalMaterial.map || null,
+                                    gradientMap: gradientMap,
+                                    emissive: originalMaterial.emissive || 0x000000,
+                                    emissiveMap: originalMaterial.emissiveMap || null
                                 });
                             }
-                        },
-                        undefined,
-                        (error) => {
-                            console.error(`Error loading model for ${name}:`, error);
+                        });
+
+                        this.scene.add(loadedModel);
+
+                        if (gltf.animations.length > 0) {
+                            this.mixer = new THREE.AnimationMixer(loadedModel);
+                            gltf.animations.forEach(clip => this.mixer.clipAction(clip).play());
                         }
-                    );
+                    },
+                    undefined,
+                    (error) => console.error(`Error loading model for ${name}:`, error)
+                );
+            },
+            render: function (gl, matrix) {
+                const rotationX = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1, 0, 0), modelTransform.rotateX);
+                const rotationY = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0, 1, 0), modelTransform.rotateY);
+                const rotationZ = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0, 0, 1), modelTransform.rotateZ);
 
-                    this.renderer = new THREE.WebGLRenderer({
-                        canvas: map.getCanvas(),
-                        context: gl,
-                        antialias: true
-                    });
+                const m = new THREE.Matrix4().fromArray(matrix);
+                const l = new THREE.Matrix4()
+                    .makeTranslation(modelTransform.translateX, modelTransform.translateY, modelTransform.translateZ)
+                    .scale(new THREE.Vector3(modelTransform.scale, -modelTransform.scale, modelTransform.scale))
+                    .multiply(rotationX)
+                    .multiply(rotationY)
+                    .multiply(rotationZ);
 
-                    this.renderer.autoClear = false;
-                    this.clock = new THREE.Clock();
-                },
-                render: function (gl, matrix) {
-                    const rotationX = new THREE.Matrix4().makeRotationAxis(
-                        new THREE.Vector3(1, 0, 0),
-                        modelTransform.rotateX
-                    );
-                    const rotationY = new THREE.Matrix4().makeRotationAxis(
-                        new THREE.Vector3(0, 1, 0),
-                        modelTransform.rotateY
-                    );
-                    const rotationZ = new THREE.Matrix4().makeRotationAxis(
-                        new THREE.Vector3(0, 0, 1),
-                        modelTransform.rotateZ
-                    );
+                this.camera.projectionMatrix = m.multiply(l);
 
-                    const m = new THREE.Matrix4().fromArray(matrix);
-                    const l = new THREE.Matrix4()
-                        .makeTranslation(
-                            modelTransform.translateX,
-                            modelTransform.translateY,
-                            modelTransform.translateZ
-                        )
-                        .scale(
-                            new THREE.Vector3(
-                                modelTransform.scale,
-                                -modelTransform.scale,
-                                modelTransform.scale
-                            )
-                        )
-                        .multiply(rotationX)
-                        .multiply(rotationY)
-                        .multiply(rotationZ);
-
-                    this.camera.projectionMatrix = m.multiply(l);
-
-                    // Update animations
-                    if (this.mixer) {
-                        const delta = this.clock.getDelta();
-                        this.mixer.update(delta);
-                    }
-
-                    this.renderer.resetState();
-                    this.renderer.render(this.scene, this.camera);
-                    this.map.triggerRepaint();
+                if (this.mixer) {
+                    const delta = this.clock.getDelta();
+                    this.mixer.update(delta);
                 }
-            };
 
-            map.addLayer(customLayer);
-        }
+                this.renderer.resetState();
+                this.renderer.render(this.scene, this.camera);
+                this.map.triggerRepaint();
+            }
+        };
 
-        // Call the async function to load entities
-        loadEntities();
+        map.addLayer(customLayer);
+    }
 
-        map.on('style.load', async () => {
-            // Load GeoJSON file
+    async function loadGeoJsonAndScatterTrees() {
+        try {
             const geojson = await fetch('asset/VR/tree.geojson').then(res => res.json());
-
-            // Define your 3D tree model URL
             const treeModelUrl = 'asset/VR/tree.glb';
 
-            const scatterTreesInPolygons = (geojson, count) => {
-                geojson.features.forEach((feature, featureIndex) => {
-                    const polygon = feature.geometry;
+            geojson.features.forEach((feature, featureIndex) => {
+                const polygon = feature.geometry;
 
-                    for (let i = 0; i < count; i++) {
-                        // Generate random point within polygon bounds
-                        const randomPoint = turf.randomPoint(1, { bbox: turf.bbox(polygon) }).features[0].geometry.coordinates;
+                for (let i = 0; i < 20; i++) {
+                    const randomPoint = turf.randomPoint(1, { bbox: turf.bbox(polygon) }).features[0].geometry.coordinates;
 
-                        // Check if the point is inside the polygon
-                        if (turf.booleanPointInPolygon(randomPoint, polygon)) {
-                            const randomScale = 0.6 + Math.random() * 1; // Range [0.4, 0.8]
-                            const randomRotation = Math.random() * 360; // Random rotation 0-360 degrees
-
-                            // Add a tree model to this random point
-                            addModelToMap({
-                                latitude: randomPoint[1], // Lat
-                                longitude: randomPoint[0], // Lng
-                                model: treeModelUrl,
-                                scale: randomScale.toFixed(2), // Apply random scale
-                                name: `tree-${featureIndex}-${i}`, // Unique identifier
-                                rotation: randomRotation, // Pass random rotation
-                                opacity: 0.7 // Fixed opacity
-                            });
-                        }
+                    if (turf.booleanPointInPolygon(randomPoint, polygon)) {
+                        addModelToMap({
+                            latitude: randomPoint[1],
+                            longitude: randomPoint[0],
+                            model: treeModelUrl,
+                            scale: (0.6 + Math.random() * 0.4).toFixed(2),
+                            name: `tree-${featureIndex}-${i}`
+                        });
                     }
-                });
-            };
+                }
+            });
+        } catch (error) {
+            console.error('Error scattering trees:', error);
+        }
+    }
 
-            // Add the scatter function with the GeoJSON data
-            scatterTreesInPolygons(geojson, 20); // Adjust the count of trees
-        });
-    </script>
+    loadEntities();
+
+    map.on('style.load', loadGeoJsonAndScatterTrees);
+</script>
+
 
 </body>
 
