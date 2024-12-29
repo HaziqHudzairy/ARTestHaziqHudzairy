@@ -293,7 +293,7 @@
 
                 entities.forEach(validateAndAddModel);
 
-                //loadAndScatterTrees();
+                
             } catch (error) {
                 console.error('Error loading entities:', error);
             }
@@ -425,7 +425,7 @@
         }
 
 
-        loadEntities();
+        //loadEntities();
         async function loadAndScatterTrees() {
             try {
                 const randomCoordinates = await fetch('asset/VR/random_coordinates.json').then(res => res.json());
@@ -456,7 +456,7 @@
                 console.error('Error scattering trees:', error);
             }
         }
-
+        map.on('style.load', loadAndScatterTrees);
 
     </script>
 
