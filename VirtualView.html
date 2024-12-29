@@ -265,22 +265,21 @@
         });
 
         function isPointInBuilding(point) {
-            const features = map.queryRenderedFeatures(map.project(point), {
-                layers: ['3d-buildings'], // Use the 3D building layer ID
-            });
+    // Check if the '3d-buildings' layer exists in the map
+    if (!map.getLayer('3d-buildings')) {
+        console.warn("The '3d-buildings' layer does not exist in the map's style.");
+        return false;
+    }
 
-            // Check if any features (buildings) are at this point
-            return features && features.length > 0;
-        }
+    // Query the 3D buildings layer for features
+    const features = map.queryRenderedFeatures(map.project(point), {
+        layers: ['3d-buildings'], // Use the 3D building layer ID
+    });
 
-        window.onerror = function (message, source, lineno, colno, error) {
-            alert(`Error occurred:
-    Message: ${message}
-    Source: ${source}
-    Line: ${lineno}
-    Column: ${colno}
-    Error: ${error ? error.stack : 'N/A'}`);
-        };
+    // Check if any features (buildings) are at this point
+    return features && features.length > 0;
+}
+
     </script>
 
     <script type="module">
@@ -293,6 +292,8 @@
                     .flatMap(category => Object.values(category));
 
                 entities.forEach(validateAndAddModel);
+
+                loadAndScatterTrees();
             } catch (error) {
                 console.error('Error loading entities:', error);
             }
@@ -424,7 +425,7 @@
         }
 
 
-        // loadEntities();
+        loadEntities();
         async function loadAndScatterTrees() {
             try {
                 const randomCoordinates = await fetch('asset/VR/random_coordinates.json').then(res => res.json());
@@ -457,8 +458,6 @@
         }
 
 
-
-        map.on('style.load', loadAndScatterTrees);
     </script>
 
 
