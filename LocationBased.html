@@ -81,8 +81,8 @@
             </div>
             <p id="loading-message">Initializing...</p>
         </div>
-        
-        
+
+
 
         <!-- Search bar form placed below the container -->
 
@@ -400,6 +400,37 @@
     </a-scene>
 
     <script>
+
+        const preloadGPS = () => {
+            navigator.geolocation.getCurrentPosition(
+                (position) => console.log("Preloaded position:", position.coords),
+                (error) => console.warn("Preloading geolocation failed:", error.message),
+                { enableHighAccuracy: true, timeout: 2000 }
+            );
+        };
+        preloadGPS();
+
+
+        const startAR = async () => {
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 2000,
+                    });
+                });
+                console.log("Position obtained:", position.coords);
+            } catch (err) {
+                console.warn("Geolocation failed:", err.message);
+            }
+
+            // Initialize AR scene after location or fallback
+            const camera = document.querySelector('a-camera[gps-camera]');
+            camera.setAttribute('gps-camera', '');
+        };
+        startAR();
+
+
         AFRAME.registerComponent('sync-virtual-space', {
             tick: function () {
                 const camera = document.querySelector('a-camera[gps-camera]');
@@ -420,61 +451,63 @@
 
 
         document.addEventListener('DOMContentLoaded', async () => {
-    const loadingScreen = document.getElementById('loading-screen');
-    const progressBar = document.getElementById('progress-bar');
-    const loadingMessage = document.getElementById('loading-message');
-    let progress = 0;
+            const loadingScreen = document.getElementById('loading-screen');
+            const progressBar = document.getElementById('progress-bar');
+            const loadingMessage = document.getElementById('loading-message');
+            let progress = 0;
 
-    const updateProgress = (increment, message) => {
-        progress += increment;
-        progressBar.style.width = `${progress}%`;
-        loadingMessage.textContent = message;
+            const updateProgress = (increment, message) => {
+                progress += increment;
+                progressBar.style.width = `${progress}%`;
+                loadingMessage.textContent = message;
 
-        if (progress >= 100) {
-            setTimeout(() => {
-                loadingScreen.style.display = 'none';
-            }, 500); // Smooth transition delay
-        }
-    };
+                if (progress >= 100) {
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500); // Smooth transition delay
+                }
+            };
 
-    // Simulate the loading process
-    updateProgress(10, "Loading assets...");
-    setTimeout(() => updateProgress(20, "Initializing AR components..."), 1000);
+            // Simulate the loading process
+            updateProgress(10, "Loading assets...");
+            setTimeout(() => updateProgress(20, "Initializing AR components..."), 1000);
 
-    // Geolocation Permission Stage
-    try {
-        const position = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject, {
-                enableHighAccuracy: true,
-                maximumAge: 0,
-                timeout: 5000,
-            });
+            // Geolocation Permission Stage
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        maximumAge: 0,
+                        timeout: 5000,
+                    });
+                });
+                updateProgress(20, "Geolocation permissions granted!");
+                console.log("User position:", position.coords.latitude, position.coords.longitude);
+            } catch (error) {
+                updateProgress(20, "Geolocation permission denied or unavailable.");
+                console.error("Geolocation error:", error.message);
+            }
+
+            // Additional async task simulation (e.g., Firebase)
+            setTimeout(() => updateProgress(20, "Connecting to Firebase..."), 2000);
+            setTimeout(() => updateProgress(30, "Finalizing setup..."), 3000);
+
+            // AR Camera Ready Event
+            const camera = document.querySelector('a-camera[gps-camera]');
+            if (camera) {
+                camera.addEventListener('loaded', () => {
+                    updateProgress(20, "Camera ready!");
+                });
+            }
         });
-        updateProgress(20, "Geolocation permissions granted!");
-        console.log("User position:", position.coords.latitude, position.coords.longitude);
-    } catch (error) {
-        updateProgress(20, "Geolocation permission denied or unavailable.");
-        console.error("Geolocation error:", error.message);
-    }
-
-    // Additional async task simulation (e.g., Firebase)
-    setTimeout(() => updateProgress(20, "Connecting to Firebase..."), 2000);
-    setTimeout(() => updateProgress(30, "Finalizing setup..."), 3000);
-
-    // AR Camera Ready Event
-    const camera = document.querySelector('a-camera[gps-camera]');
-    if (camera) {
-        camera.addEventListener('loaded', () => {
-            updateProgress(20, "Camera ready!");
-        });
-    }
-});
 
 
     </script>
 
-    <script src="LocationBasedDB.js" type="module"></script>
+
+
     <script src="LocationBasedFunction.js"></script>
+    <script src="LocationBasedDB.js" type="module"></script>
     <script src="locationBasedNavigation.js"></script>
 
     <!-- <script>

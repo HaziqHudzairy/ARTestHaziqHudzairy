@@ -1,5 +1,46 @@
+// Update the location continuously with system popup for errors
+function updateLocation() {
+    navigator.geolocation.watchPosition(
+        function (position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
 
+            // Update the user's location display
+            updateLocationDisplay(latitude, longitude);
 
+            // Check if the user is near any entity (within a 25-meter radius)
+            checkProximity(latitude, longitude, window.dynamicEntities, 30);
+        },
+        function (error) {
+            // Handle different types of errors and show system alert popup
+            let message = "";
+            switch (error.code) {
+                case 1:
+                    message = "Permission denied. Please enable location access in your browser settings.";
+                    break;
+                case 2:
+                    message = "Position unavailable. Please check your GPS or internet connection.";
+                    break;
+                case 3:
+                    message = "Request timed out. Please try again.";
+                    break;
+                default:
+                    message = "An unknown error occurred. Please refresh and try again.";
+                    break;
+            }
+            // Display system alert popup
+            alert(message);
+        },
+        {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+            timeout: 5000
+        }
+    );
+}
+
+// Call the function to start updating the location
+updateLocation();
 
 function clearClickEvent(btnContent) {
     btnContent.removeEventListener("click", handleExitClick);
@@ -405,9 +446,6 @@ function getIDBasedOnNames(entityName, entities) {
     return entityID; // Return the found ID or null if not found
 }
 
-
-
-
 function showNotification(entityname) {
     const notification = document.querySelector('.notification-container');
     const locationName = document.querySelector('.notification-box h1');
@@ -583,54 +621,3 @@ function showEnvironmentModel(userLat, userLon, entity) {
     // Log the correct model name for debugging
     //showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${entity.model}`);
 }
-
-
-
-
-
-
-
-
-// Update the location continuously with system popup for errors
-function updateLocation() {
-    navigator.geolocation.watchPosition(
-        function (position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-
-            // Update the user's location display
-            updateLocationDisplay(latitude, longitude);
-
-            // Check if the user is near any entity (within a 25-meter radius)
-            checkProximity(latitude, longitude, window.dynamicEntities, 30);
-        },
-        function (error) {
-            // Handle different types of errors and show system alert popup
-            let message = "";
-            switch (error.code) {
-                case 1:
-                    message = "Permission denied. Please enable location access in your browser settings.";
-                    break;
-                case 2:
-                    message = "Position unavailable. Please check your GPS or internet connection.";
-                    break;
-                case 3:
-                    message = "Request timed out. Please try again.";
-                    break;
-                default:
-                    message = "An unknown error occurred. Please refresh and try again.";
-                    break;
-            }
-            // Display system alert popup
-            alert(message);
-        },
-        {
-            enableHighAccuracy: true,
-            maximumAge: 0,
-            timeout: 5000
-        }
-    );
-}
-
-// Call the function to start updating the location
-updateLocation();
