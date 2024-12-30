@@ -140,7 +140,7 @@ function addModelToMap(entity) {
     map.addLayer(customLayer);
 }
 
-
+map.on('style.load', loadAndScatterTrees);
 loadEntities();
 async function loadAndScatterTrees() {
     try {
@@ -176,6 +176,5 @@ async function loadAndScatterTrees() {
         console.error('Error scattering trees:', error);
     }
 }
-map.on('style.load', loadAndScatterTrees);
 
 
