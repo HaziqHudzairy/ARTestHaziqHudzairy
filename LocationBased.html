@@ -11,6 +11,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <!-- <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.min.js"></script> -->
+
     <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.loaders.min.js"></script>
     <script src="https://unpkg.com/three-line-outline"></script>
@@ -507,7 +509,23 @@
 
     <script>
 
+const preloadCamera = async () => {
+    alert('Preloading camera...');
+    const constraints = { video: { facingMode: "environment" } };
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        alert('Camera permission granted.');
+        stream.getTracks().forEach((track) => track.stop());
+        console.log("Camera preloaded successfully.");
+    } catch (err) {
+        alert('Camera permission denied: ' + err.message);
+        console.error("Error preloading camera:", err.message);
+    }
+};
+preloadCamera();
+
 const startAR = async () => {
+    alert('Starting AR...');
     try {
         const position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject, {
@@ -515,29 +533,28 @@ const startAR = async () => {
                 timeout: 5000,
             });
         });
+        alert('AR initialized successfully. Position obtained!');
         console.log("Position obtained:", position.coords);
     } catch (err) {
+        alert('AR initialization failed. Geolocation error: ' + err.message);
         console.warn("Geolocation failed:", err.message);
     }
 
-    // Initialize AR scene after location or fallback
     const camera = document.querySelector('a-camera[gps-camera]');
-    camera.setAttribute('gps-camera', '');
-};
-startAR();
-
-const preloadCamera = async () => {
-    const constraints = { video: { facingMode: "environment" } };
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        // Close stream after verification
-        stream.getTracks().forEach((track) => track.stop());
-        console.log("Camera preloaded successfully.");
-    } catch (err) {
-        console.error("Error preloading camera:", err.message);
+    if (camera) {
+        alert('Camera component detected. Initializing...');
+        camera.setAttribute('gps-camera', '');
+        camera.addEventListener('loaded', () => {
+            alert('Camera successfully initialized.');
+        });
+    } else {
+        alert('Camera component not found!');
     }
 };
-preloadCamera();
+
+
+
+
 
         // Update the location continuously with system popup for errors
 function updateLocation() {
