@@ -401,34 +401,34 @@
 
     <script>
 
-        const preloadGPS = () => {
-            navigator.geolocation.getCurrentPosition(
-                (position) => console.log("Preloaded position:", position.coords),
-                (error) => console.warn("Preloading geolocation failed:", error.message),
-                { enableHighAccuracy: true, timeout: 2000 }
-            );
-        };
-        preloadGPS();
+        // const preloadGPS = () => {
+        //     navigator.geolocation.getCurrentPosition(
+        //         (position) => console.log("Preloaded position:", position.coords),
+        //         (error) => console.warn("Preloading geolocation failed:", error.message),
+        //         { enableHighAccuracy: true, timeout: 2000 }
+        //     );
+        // };
+        // preloadGPS();
 
 
-        const startAR = async () => {
-            try {
-                const position = await new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(resolve, reject, {
-                        enableHighAccuracy: true,
-                        timeout: 2000,
-                    });
-                });
-                console.log("Position obtained:", position.coords);
-            } catch (err) {
-                console.warn("Geolocation failed:", err.message);
-            }
+        // const startAR = async () => {
+        //     try {
+        //         const position = await new Promise((resolve, reject) => {
+        //             navigator.geolocation.getCurrentPosition(resolve, reject, {
+        //                 enableHighAccuracy: true,
+        //                 timeout: 2000,
+        //             });
+        //         });
+        //         console.log("Position obtained:", position.coords);
+        //     } catch (err) {
+        //         console.warn("Geolocation failed:", err.message);
+        //     }
 
-            // Initialize AR scene after location or fallback
-            const camera = document.querySelector('a-camera[gps-camera]');
-            camera.setAttribute('gps-camera', '');
-        };
-        startAR();
+        //     // Initialize AR scene after location or fallback
+        //     const camera = document.querySelector('a-camera[gps-camera]');
+        //     camera.setAttribute('gps-camera', '');
+        // };
+        // startAR();
 
 
         AFRAME.registerComponent('sync-virtual-space', {
