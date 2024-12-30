@@ -407,7 +407,6 @@ function showEventDetails(eventItem) {
 function enableEditMode(eventItem) {
     const eventId = eventItem.getAttribute('data-id');
     const detailsContainer = document.querySelector('.details-event');
-    alert(`Editing Event ID: ${eventId}`);
 
     // Replace static content with input fields
     const titleField = detailsContainer.querySelector('.event-title');
@@ -557,7 +556,7 @@ function enableEditMode(eventItem) {
     cancelButton.style.marginRight = '10px'; // Set margin for Cancel button
     buttonContainer.appendChild(cancelButton);
 
-    alert(`eventId: ${eventId}`);
+
 
 
     // Attach Save and Cancel button handlers

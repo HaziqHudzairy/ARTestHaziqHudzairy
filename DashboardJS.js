@@ -126,25 +126,7 @@ function updateEventSlider() {
         dots[currentIndex].classList.add("active");
     }
 
-    // Dynamically generate dots based on the number of slides per page
-    function generateDots() {
-        const slidesPerPage = calculateSlidesPerPage();
-        const numDots = Math.ceil(slides.length / slidesPerPage);
-
-        // Clear existing dots
-        dotsContainer.innerHTML = "";
-
-        // Create new dots based on the number of slides per page
-        for (let i = 0; i < numDots; i++) {
-            const dot = document.createElement("span");
-            dot.classList.add("dot");
-            dot.onclick = () => currentSlide(i);
-            dots.push(dot);
-            dotsContainer.appendChild(dot);
-        }
-
-        updateSlider(); // Update the slider with the new dots
-    }
+    
 
     // Move the slider by a certain number of steps
     function moveSlide(step) {
@@ -166,18 +148,6 @@ function updateEventSlider() {
         currentIndex = index;
         updateSlider();
     }
-
-    // Initial setup
-    window.addEventListener("resize", generateDots); // Regenerate dots when window is resized
-    generateDots(); // Generate the dots when the page loads
-
-    // Add event listeners for prev/next buttons
-    const prevButton = document.querySelector('.prev');
-    const nextButton = document.querySelector('.next');
-
-    // Assign actions to the prev and next buttons
-    prevButton.addEventListener('click', () => moveSlide(-1)); // Move one step back
-    nextButton.addEventListener('click', () => moveSlide(1)); // Move one step forward
 }
 
 // Call this function when the page is loaded, or when the events are fetched
@@ -185,22 +155,22 @@ window.onload = updateEventSlider;
 
 
     
-    $('.navTrigger').click(function () {
-        $(this).toggleClass('active');
-        console.log("Clicked menu");
-        $("#mainListDiv").toggleClass("show_list");
-        $("#mainListDiv").fadeIn();
-    });
+$('.navTrigger').click(function () {
+    $(this).toggleClass('active');
+    console.log("Clicked menu");
+    $("#mainListDiv").toggleClass("show_list");
+    $("#mainListDiv").fadeIn();
+});
 
-    // Function to handle the navbar shrink effect on scroll
-    $(window).scroll(function() {
-        if ($(document).scrollTop() > 50) {
-            $('.nav').addClass('affix');
-            console.log("Navbar is fixed");
-        } else {
-            $('.nav').removeClass('affix');
-        }
-    });
+// Function to handle the navbar shrink effect on scroll
+$(window).scroll(function() {
+    if ($(document).scrollTop() > 50) {
+        $('.nav').addClass('affix');
+        console.log("Navbar is fixed");
+    } else {
+        $('.nav').removeClass('affix');
+    }
+});
 
 
 

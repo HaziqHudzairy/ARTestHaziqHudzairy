@@ -595,7 +595,7 @@
         .slider-item {
             flex: 1 0 50%;
             /* Ensure 3 items are displayed per slide */
-            height:250px;
+            height: 250px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -749,53 +749,82 @@
             font-size: 24px;
             margin-bottom: 15px;
         }
+
         .popup-details p {
             font-size: 16px;
             margin-bottom: 5px;
         }
 
         /* Full-Screen Focus View */
-.focus-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    visibility: visible;
-    opacity: 1;
-}
+        .focus-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            visibility: visible;
+            opacity: 1;
+        }
 
-.focus-content {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        .focus-content {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.focus-image {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-}
+        .focus-image {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        }
 
-.focus-close {
-    position: absolute;
-    top: 0px;
-    right: 30px;
-    font-size: 30px;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-    z-index: 10001;
-}
+        .focus-close {
+            position: absolute;
+            top: 0px;
+            right: 30px;
+            font-size: 30px;
+            color: rgb(253, 86, 86);
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 10001;
+        }
+
+        .suggestions-list {
+            border-radius: 10px;
+            list-style: none;
+            margin-top: 10px;
+            padding: 0;
+            background-color: rgb(250, 250, 250);
+            border: 1px solid #ccc;
+            max-height: 500px;
+            /* Limit the maximum height for scrolling */
+            overflow-y: auto;
+            display: none;
+            position: absolute;
+            top: 100%;
+            /* Anchor to the bottom of the input element */
+            left: 0;
+            width: 80vw;
+            /* Adjust to match your input width */
+            z-index: 1000;
+        }
 
 
+        .suggestions-list li {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestions-list li:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 
@@ -818,14 +847,19 @@
                     <path
                         d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                 </svg>
-                <input type="text" placeholder="Search your destination in UM!">
+                <input type="text" id="searchInput" placeholder="Search your destination in UM!">
                 <button><span class="bi bi-search"></span></button>
+                <ul id="suggestions" class="suggestions-list"></ul>
             </div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi menu-icon"
-                viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
-            </svg>
+            <a href="LoginPage.html">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" class="bi bi-person" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                    <path d="M2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z"/>
+                </svg>
+            </a>
+            
+            
+
         </div>
         <hr>
         <h3>UM.AR</h3>
@@ -873,108 +907,109 @@
                 <div class="slider-container">
                     <div class="slider">
                     </div>
-                    </div>
                 </div>
-
             </div>
 
-            <div id="popup-container" class="popup-container hidden">
-                <div class="popup-content">
-                    <span id="popup-close" class="popup-close">&times;</span>
-                    <img id="popup-poster" src="" alt="Event Poster" class="popup-poster">
-                    <div class="popup-details">
-                        <h1 id="popup-title">Event Title</h1>
-                        <p id="popup-date">Date: </p>
-                        <p id="popup-time">Time: </p>
-                        <p id="popup-location">Location: </p>
-                        <p id="popup-description">Details: </p>
-                    </div>
-                </div>
-            </div>
-            
-            
-            <br>
-            <h3>Suggestion</h3>
-            <hr>
-            <div class="scroll-container">
-                <div class="card-container">
-                    <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tfGVufDB8fDB8fHww"
-                        class="card-image">
-                    <div class="card-content">University Malaya The Best</div>
-                </div>
-                <div class="card-container">
-                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1462570/ss_c8a5566056a7b1ee346d20e2f4a71eb691008115.1920x1080.jpg?t=1662047426"
-                        class="card-image">
-                    <div class="card-content">University Malaya The Best</div>
-                </div>
-                <div class="card-container">
-                    <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D"
-                        class="card-image">
-                    <div class="card-content">University Malaya The Best</div>
-                </div>
-                <div class="card-container">
-                    <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D"
-                        class="card-image">
-                    <div class="card-content">University Malaya The Best</div>
-                </div>
-                <div class="card-container">
-                    <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D"
-                        class="card-image">
-                    <div class="card-content">University Malaya The Best</div>
-                </div>
-                <div class="card-container">
-                    <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D"
-                        class="card-image">
-                    <div class="card-content">University Malaya The Best</div>
-                </div>
-                <!-- Add more card containers as needed -->
-            </div>
-            
         </div>
 
-        
+        <div id="popup-container" class="popup-container hidden">
+            <div class="popup-content">
+                <span id="popup-close" class="popup-close">&times;</span>
+                <img id="popup-poster" src="" alt="Event Poster" class="popup-poster">
+                <div class="popup-details">
+                    <h1 id="popup-title">Event Title</h1>
+                    <p id="popup-date">Date: </p>
+                    <p id="popup-time">Time: </p>
+                    <p id="popup-location">Location: </p>
+                    <p id="popup-description">Details: </p>
+                </div>
+            </div>
+        </div>
 
-        <script>
-            document.getElementById("scanButton").addEventListener("click", function () {
-                // Replace the window.location.href with the URL of the next page
-                window.location.href = "MarkerBased.html"; // Change "next_page.html" to the URL of your next page
-            });
 
-            document.getElementById("AR-button").addEventListener("click", function () {
-                // Replace the window.location.href with the URL of the next page
-                window.location.href = "LocationBased.html"; // Change "next_page.html" to the URL of your next page
-            });
-
-            // Function to handle button clicks
-            function handleButtonClick(buttonName) {
-                console.log(buttonName + " button clicked");
-            }
-
-            // Get all buttons and add click event listener
-            document.querySelectorAll('.UI-button').forEach(button => {
-                button.addEventListener('click', function () {
-                    handleButtonClick(this.innerText.trim());
-                });
-            });
-
-            // Get all card containers and add click event listener
-            document.querySelectorAll('.card-container').forEach(card => {
-                card.addEventListener('click', function () {
-                    handleButtonClick("Card clicked");
-                });
-            });
-
-            // Add click event listener to AR button
-            document.querySelector('.AR-button').addEventListener('click', function () {
-                handleButtonClick("AR button clicked");
-            });
-
+        <br>
+        <!-- <h3>Suggestion</h3>
+        <hr>
+        <div class="scroll-container">
+            <div class="card-container">
+                <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tfGVufDB8fDB8fHww"
+                    class="card-image">
+                <div class="card-content">University Malaya The Best</div>
+            </div>
+            <div class="card-container">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1462570/ss_c8a5566056a7b1ee346d20e2f4a71eb691008115.1920x1080.jpg?t=1662047426"
+                    class="card-image">
+                <div class="card-content">University Malaya The Best</div>
+            </div>
+            <div class="card-container">
+                <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D"
+                    class="card-image">
+                <div class="card-content">University Malaya The Best</div>
+            </div>
+            <div class="card-container">
+                <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D"
+                    class="card-image">
+                <div class="card-content">University Malaya The Best</div>
+            </div>
+            <div class="card-container">
+                <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D"
+                    class="card-image">
+                <div class="card-content">University Malaya The Best</div>
+            </div>
+            <div class="card-container">
+                <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D"
+                    class="card-image">
+                <div class="card-content">University Malaya The Best</div>
+            </div>
             
+        </div> -->
+
+    </div>
 
 
-        </script>
-        <script src="DashboardJS.js"></script>
-        <script src="EventDatabaseHelper.js" type="module"></script>
+
+    <script>
+        document.getElementById("scanButton").addEventListener("click", function () {
+            // Replace the window.location.href with the URL of the next page
+            window.location.href = "MarkerBased.html"; // Change "next_page.html" to the URL of your next page
+        });
+
+        document.getElementById("AR-button").addEventListener("click", function () {
+            // Replace the window.location.href with the URL of the next page
+            window.location.href = "LocationBased.html"; // Change "next_page.html" to the URL of your next page
+        });
+
+        // Function to handle button clicks
+        function handleButtonClick(buttonName) {
+            console.log(buttonName + " button clicked");
+        }
+
+        // Get all buttons and add click event listener
+        document.querySelectorAll('.UI-button').forEach(button => {
+            button.addEventListener('click', function () {
+                handleButtonClick(this.innerText.trim());
+            });
+        });
+
+        // Get all card containers and add click event listener
+        document.querySelectorAll('.card-container').forEach(card => {
+            card.addEventListener('click', function () {
+                handleButtonClick("Card clicked");
+            });
+        });
+
+        // Add click event listener to AR button
+        document.querySelector('.AR-button').addEventListener('click', function () {
+            handleButtonClick("AR button clicked");
+        });
+
+
+
+
+    </script>
+    <script src="mainPage.js" type="module"></script>
+    <script src="DashboardJS.js"></script>
+    <script src="EventDatabaseHelper.js" type="module"></script>
 </body>
 <footer class="new_footer_area">
     <footer class="new_footer_area bg_color">

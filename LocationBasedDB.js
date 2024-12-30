@@ -44,6 +44,22 @@ function fetchEntitiesNameCoordinate() {
     });
 }
 
+// Re-fetch and render entities from the database
+window.fetchAndRenderEntities = function () {
+    fetchEntitiesNameCoordinate();
+    const entitiesRef = ref(database, "entities");
+    onValue(entitiesRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            renderEntities(data);  // Render all the entities after fetching the data
+        } else {
+            console.error("No data found in the database.");
+        }
+    });
+}
+// Call the function after assigning it to window
+fetchAndRenderEntities();
+
 // Recursive Function to Fetch and Render Entities
 function renderEntities(node, parent = null) {
     Object.keys(node).forEach((key) => {
@@ -106,21 +122,7 @@ window.createAREntity = function (entity, id, parentCategory = null) {
     scene.appendChild(entityElement);
 };
 
-// Re-fetch and render entities from the database
-window.fetchAndRenderEntities = function () {
-    fetchEntitiesNameCoordinate();
-    const entitiesRef = ref(database, "entities");
-    onValue(entitiesRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-            renderEntities(data);  // Render all the entities after fetching the data
-        } else {
-            console.error("No data found in the database.");
-        }
-    });
-}
-// Call the function after assigning it to window
-fetchAndRenderEntities();
+
 
 // window.showEntityInformation = async function (entityName) {
 //     const virtualSpace = document.querySelector('#virtual-space');
