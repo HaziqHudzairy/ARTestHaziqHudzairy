@@ -1,3 +1,36 @@
+document.addEventListener("DOMContentLoaded", () => {
+    requestPermissions(); // Start permissions immediately
+});
+
+function requestPermissions() {
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            console.log("Location permission granted.");
+            const { latitude, longitude } = position.coords;
+            updateLocation(latitude, longitude);
+        },
+        (error) => {
+            console.error("Permission error:", error.message);
+            alert("Location permission is required to use this feature.");
+        }
+    );
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => {
+            console.log("Camera permission granted.");
+        })
+        .catch((error) => {
+            console.error("Camera permission denied:", error.message);
+        });
+}
+
+function updateLocation(latitude, longitude) {
+    checkProximity(latitude, longitude, window.dynamicEntities, 30);
+    updateLocationDisplay(latitude, longitude);
+}
+
+
+
 function clearClickEvent(btnContent) {
     btnContent.removeEventListener("click", handleExitClick);
 }
