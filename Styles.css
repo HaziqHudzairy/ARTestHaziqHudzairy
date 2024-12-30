@@ -49,6 +49,7 @@ body {
   /* Disables all pointer events */
   touch-action: none;
   /* Disables touch-specific actions */
+
 }
 
 .logoTop {
@@ -961,3 +962,62 @@ form:hover .fa {
     transform: translateX(0);
   }
 }
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+  flex-direction: column;
+  color: black;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+
+.progress-container {
+  width: 80%;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+#loading-message {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.logo-container-load {
+  position: absolute;
+  top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  z-index: 10000;
+}
+
+.logoTop-load {
+  height: 40px;
+  object-fit: contain;
+}
+
+
+

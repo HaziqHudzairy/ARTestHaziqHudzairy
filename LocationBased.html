@@ -71,6 +71,19 @@
             </svg>
         </a>
 
+        <div id="loading-screen" class="loading-screen">
+            <div class="logo-container-load">
+                <img src="asset/University_of_Malaya-Logo.png" alt="UM Logo" class="logoTop-load">
+                <img src="asset/UM.AR_Logo_Font_Black.png" alt="UM AR Logo" class="logoTop-load">
+            </div>
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+            <p id="loading-message">Initializing...</p>
+        </div>
+        
+        
+
         <!-- Search bar form placed below the container -->
 
         <div class="notification-container">
@@ -405,11 +418,49 @@
             }
         });
 
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            const progressBar = document.getElementById('progress-bar');
+            const loadingMessage = document.getElementById('loading-message');
+            let progress = 0;
+
+            // Simulate the loading process
+            const updateProgress = (increment, message) => {
+                progress += increment;
+                progressBar.style.width = `${progress}%`;
+                loadingMessage.textContent = message;
+
+                // When loading is complete, hide the loading screen
+                if (progress >= 100) {
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500); // Add a slight delay for smooth transition
+                }
+            };
+
+            // Simulated stages of loading
+            updateProgress(10, "Loading assets...");
+            setTimeout(() => updateProgress(20, "Initializing AR components..."), 1000);
+            setTimeout(() => updateProgress(30, "Connecting to Firebase..."), 2000);
+            setTimeout(() => updateProgress(40, "Fetching location data..."), 3000);
+            setTimeout(() => updateProgress(20, "Configuring UI..."), 4000);
+            setTimeout(() => updateProgress(20, "Finalizing setup..."), 5000);
+
+            // Example: AR camera loading listener
+            const camera = document.querySelector('a-camera[gps-camera]');
+            if (camera) {
+                camera.addEventListener('loaded', () => {
+                    updateProgress(20, "Camera ready!");
+                });
+            }
+        });
+
     </script>
 
-    <script src="LocationBased/LocationBasedDB.js" type="module"></script>
-    <script src="LocationBased/LocationBasedFunction.js"></script>
-    <script src="LocationBased/locationBasedNavigation.js"></script>
+    <script src="LocationBasedDB.js" type="module"></script>
+    <script src="LocationBasedFunction.js"></script>
+    <script src="locationBasedNavigation.js"></script>
 
     <!-- <script>
 
