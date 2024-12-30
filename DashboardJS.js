@@ -12,11 +12,16 @@ function updateEventSlider() {
             <img src="${event.posterUrl}" alt="${event.name}">
             <div class="text-container">
                 <h1>${event.name}</h1>
-                <p>${event.locationName}</p> <!-- Display actual location name here -->
+                <p>${event.locationName}</p>
                 <p>${event.date}</p>
                 <p>${event.time}</p>
             </div>
         `;
+
+        // Add click event to show popup
+        eventElement.addEventListener('click', () => {
+            showPopup(event);
+        });
 
         sliderContainer.appendChild(eventElement);
     });
@@ -26,6 +31,76 @@ function updateEventSlider() {
     const dotsContainer = document.querySelector(".dots-container");
     const dots = [];
     const gap = 10; // Gap between images
+
+    // Popup Logic
+    const popupContainer = document.getElementById('popup-container');
+    const popupClose = document.getElementById('popup-close');
+    const popupPoster = document.getElementById('popup-poster');
+    const popupTitle = document.getElementById('popup-title');
+    const popupDate = document.getElementById('popup-date');
+    const popupTime = document.getElementById('popup-time');
+    const popupLocation = document.getElementById('popup-location');
+    const popupDescription = document.getElementById('popup-description');
+
+    function showPopup(event) {
+        popupPoster.src = event.posterUrl;
+        popupPoster.alt = event.name;
+        popupTitle.textContent = event.name;
+        popupDate.innerHTML = `<strong>Date:</strong> ${event.date}`;
+        popupTime.innerHTML = `<strong>Time:</strong> ${event.time}`;
+        popupLocation.innerHTML = `<strong>Location:</strong> ${event.locationName}`;
+        popupDescription.innerHTML = `<strong>Details:</strong> ${event.details}`;
+        popupContainer.classList.add('visible');
+    }
+    
+
+    function hidePopup() {
+        popupContainer.classList.remove('visible');
+    }
+
+    popupClose.addEventListener('click', hidePopup);
+    popupContainer.addEventListener('click', (e) => {
+        if (e.target === popupContainer) {
+            hidePopup();
+        }
+    });
+
+    // Add full-screen image view logic
+    popupPoster.addEventListener('click', () => {
+        showImageInFocus(popupPoster.src);
+    });
+
+    function showImageInFocus(imageSrc) {
+        // Check if a focus container already exists and remove it
+        const existingFocusContainer = document.querySelector('.focus-container');
+        if (existingFocusContainer) {
+            existingFocusContainer.remove();
+        }
+    
+        // Create a new focus container
+        const focusContainer = document.createElement('div');
+        focusContainer.classList.add('focus-container');
+        focusContainer.innerHTML = `
+            <div class="focus-content">
+                <span class="focus-close">&times;</span>
+                <img src="${imageSrc}" alt="Focused Image" class="focus-image">
+            </div>
+        `;
+    
+        document.body.appendChild(focusContainer);
+    
+        const focusClose = focusContainer.querySelector('.focus-close');
+        focusClose.addEventListener('click', () => {
+            document.body.removeChild(focusContainer);
+        });
+    
+        focusContainer.addEventListener('click', (e) => {
+            if (e.target === focusContainer) {
+                document.body.removeChild(focusContainer);
+            }
+        });
+    }
+    
 
     // Dynamically calculate the number of slides per page based on the screen width
     function calculateSlidesPerPage() {
@@ -42,7 +117,7 @@ function updateEventSlider() {
     function updateSlider() {
         const slidesPerPage = calculateSlidesPerPage();
         const slideWidth = slides[0].offsetWidth + gap;
-        
+
         const slider = document.querySelector(".slider");
         slider.style.transform = `translateX(-${currentIndex * slideWidth * slidesPerPage}px)`; // Adjust for new number of slides per page
 
@@ -108,6 +183,7 @@ function updateEventSlider() {
 // Call this function when the page is loaded, or when the events are fetched
 window.onload = updateEventSlider;
 
+
     
     $('.navTrigger').click(function () {
         $(this).toggleClass('active');
@@ -125,6 +201,7 @@ window.onload = updateEventSlider;
             $('.nav').removeClass('affix');
         }
     });
+
 
 
 
