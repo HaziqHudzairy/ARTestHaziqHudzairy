@@ -621,3 +621,30 @@ function showEnvironmentModel(userLat, userLon, entity) {
     // Log the correct model name for debugging
     //showDebugMessage(`Entity created at coordinates: Latitude: ${userLat}, Longitude: ${userLon}, Model: ${entity.model}`);
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const arScene = document.querySelector('a-scene');
+    
+    // Wait for the AR scene to load
+    arScene.addEventListener('loaded', () => {
+        // Locate the default VR button
+        const vrButton = document.querySelector('.a-enter-vr');
+        
+        if (vrButton) {
+            // Remove existing event listeners (if any)
+            const newButton = vrButton.cloneNode(true);
+            vrButton.parentNode.replaceChild(newButton, vrButton);
+
+            // Add custom behavior
+            newButton.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent the default VR mode behavior
+                window.location.href = 'VirtualView.html'; // Redirect to your desired page
+            });
+
+            console.log('VR button customized for redirection.');
+        } else {
+            console.error('VR button not found. Ensure the AR scene is set up correctly.');
+        }
+    });
+});
