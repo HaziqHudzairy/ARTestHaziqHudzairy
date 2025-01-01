@@ -46,7 +46,7 @@
             <video muted id="FSKTMVideo" src="Videos/Welcome to Faculty of Computer Science and Information Technology, University of Malaya.mp4" autoplay loop="true"></video>
             <img id="WelcomePhoto" src="asset/WelcomToFSKTM.png"></img>
             <img id="RouteA" src="asset/ARIllustration.png"></img>
-            <img id="UMCentral" src="asset/ARPhoneRemoveBG.png"></img>
+            <img id="UMCentral" src="https://firebasestorage.googleapis.com/v0/b/um-ar-d0418.firebasestorage.app/o/BusRoute%2FBus_route_UMCentral.png?alt=media&token=79a81a98-ea34-4dd6-a09a-0d9b51495d3c"></img>
         </a-assets>
 
         <!-- Origin marker -->
@@ -62,16 +62,16 @@
         <a-marker
         id="UMC-marker"
         type="pattern"
-        url="asset/Marker/pattern-umcentral.patt"
+        url="asset/Marker/pattern-UMC.patt"
         emitevents="true"
         >
-        <a-image id="umc-img" src="#UMCentral" scale="3 3 3" class="clickable" gesture-handler rotation="-90 0 0"></a-image>
+        <a-image id="umc-img" src="#UMCentral" scale="4 4 4" class="clickable" gesture-handler rotation="-90 0 0"></a-image>
         </a-marker>
 
         <a-marker
             id="bus-stop-marker"
             type="pattern"
-            url="asset/Marker/pattern-kk10bustop.patt"
+            url="asset/Marker/pattern-BSKK10.patt"
             emitevents="true"
         >
         <a-image id="routeA-img" src="#RouteA" scale="3 3 3" class="clickable" gesture-handler rotation="-90 0 0"></a-image>

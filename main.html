@@ -748,7 +748,7 @@
 }
 
 .popup-content strong {
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .popup-content h3 {
@@ -774,6 +774,10 @@
 
 .popup-close:hover {
     color: #007BFF; /* Optional hover effect */
+}
+
+.popup-content img{
+    max-width: 100%;
 }
 
 
@@ -977,12 +981,12 @@
         </div>
 
         <div id="popup-container" class="popup-container hidden">
-            <div class="popup-content">
+            <div class="popup-content" style="max-width: 80%; max-height: 70%; overflow-y: auto;">
                 <span id="popup-close" class="popup-close">&times;</span>
                 <img id="popup-poster" src="" alt="Event Poster" class="popup-poster">
                 <div class="popup-details">
-                    <h1 id="popup-title">Event Title</h1>
-                    <p id="popup-date">Date: </p>
+                    <h1 id="popup-title" style="font-size: 25px; margin-top: 10px;">Event Title</h1>
+                    <p id="popup-date" style="font-size: 15px;">Date: </p>
                     <p id="popup-time">Time: </p>
                     <p id="popup-location">Location: </p>
                     <p id="popup-description">Details: </p>

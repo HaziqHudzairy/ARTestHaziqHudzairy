@@ -562,9 +562,18 @@ function enableEditMode(eventItem) {
     // Attach Save and Cancel button handlers
     cancelButton.addEventListener('click', () => cancelEditMode());
     saveButton.addEventListener('click', () => saveChanges(eventId));
-    deleteButton.addEventListener('click', () => deleteEvent(eventId)); // You should implement this function
+    deleteButton.addEventListener('click', () => deleteNotif(eventId)); // You should implement this function
 }
 
+async function deleteNotif(eventID) {
+    // Show confirmation popup
+    const confirmDelete = await showDeleteConfirmation();
+    if (!confirmDelete) {
+        return; // Exit if the user cancels
+    }
+
+    deleteEvent(eventID)
+}
 
 
 async function saveChanges(currentEventId) {
@@ -619,11 +628,6 @@ async function saveChanges(currentEventId) {
 }
 
 async function deleteEvent(eventId) {
-    // Show confirmation popup
-    const confirmDelete = await showDeleteConfirmation();
-    if (!confirmDelete) {
-        return; // Exit if the user cancels
-    }
 
     try {
         // Reference the specific event in Firebase
@@ -632,7 +636,6 @@ async function deleteEvent(eventId) {
         // Remove the event
         await set(eventRef, null);
 
-        alert('Event deleted successfully!');
 
         // Hide the details-event and overlay after deletion
         const detailsContainer = document.querySelector('.details-event');
