@@ -49,6 +49,27 @@
             <img id="WelcomePhoto" src="asset/WelcomToFSKTM.png"></img>
             <img id="RouteA" src="asset/ARIllustration.png"></img>
             <img id="UMCentral" src="asset/BusRoute/Bus_route_UMCentral.png"></img>
+
+
+            <img id="UMCentralImage" src="asset/UMCentralBusStop/UMCentral.png" />
+            <img id="UMCentral-Angkasapuri" src="asset/UMCentralBusStop/Angkasapuri.png" />
+            <img id="UMCentral-API" src="asset/UMCentralBusStop/API.png" />
+            <img id="UMCentral-APM" src="asset/UMCentralBusStop/APM.png" />
+            <img id="UMCentral-BS" src="asset/UMCentralBusStop/BangsarSouth.png" />
+            <img id="UMCentral-Eng" src="asset/UMCentralBusStop/Engineering.png" />
+            <img id="UMCentral-IH" src="asset/UMCentralBusStop/InternationalHouse.png" />
+            <img id="UMCentral-IHO" src="asset/UMCentralBusStop/InternationalHouse(Outside).png" />
+            <img id="UMCentral-KK1" src="asset/UMCentralBusStop/KK1.png" />
+            <img id="UMCentral-KK11" src="asset/UMCentralBusStop/KK11.png" />
+            <img id="UMCentral-KK12" src="asset/UMCentralBusStop/KK12.png" />
+            <img id="UMCentral-KK13" src="asset/UMCentralBusStop/KK13.png" />
+            <img id="UMCentral-KK347" src="asset/UMCentralBusStop/KK3,KK4&KK7.png" />
+            <img id="UMCentral-KK5" src="asset/UMCentralBusStop/KK5.png" />
+            <img id="UMCentral-KK810" src="asset/UMCentralBusStop/KK8&KK10.png" />
+            <img id="UMCentral-KK9" src="asset/UMCentralBusStop/KK9.png" />
+            <img id="UMCentral-PP" src="asset/UMCentralBusStop/PantaiPermai.png" />
+            <img id="UMCentral-Pasum" src="asset/UMCentralBusStop/PASUM.png" />
+            <img id="UMCentral-Rapid" src="asset/UMCentralBusStop/Rapid12345.png" />
         </a-assets>
 
         <!-- Origin marker -->
@@ -58,7 +79,8 @@
         </a-marker>
 
         <a-marker id="UMC-marker" type="pattern" url="asset/Marker/pattern-UMC.patt" emitevents="true">
-            <a-image id="umc-img" src="#UMCentral" scale="4 4 4"  class="clickable" gesture-handler></a-image>
+            <a-image id="umc-img" src="#UMCentral" scale="0 0 0" rotation="-90 0 0" class="clickable"
+                gesture-handler></a-image>
         </a-marker>
 
         <a-marker id="bus-stop-marker" type="pattern" url="asset/Marker/pattern-BSKK10.patt" emitevents="true">
@@ -85,7 +107,9 @@
         </a-entity>
 
         <a-entity id="BusRoute" visible="false">
-
+            <a-entity id="BusRoute" visible="false">
+                <a-plane material="src: #UMCentralImage" width="5" height="3" position="0 0 -5"></a-plane>
+            </a-entity>
         </a-entity>
 
         <!-- Camera -->
@@ -102,6 +126,37 @@
 
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const markers = [
+                {
+                    markerId: '#UMC-marker'
+                    // ,
+                    // entityId: '#BusRoute'
+                },
+                {
+                    markerId: '#Other-marker'
+                    // ,
+                    // entityId: '#OtherBusRoute'
+                }
+            ];
+
+            markers.forEach(({ markerId, entityId }) => {
+                const marker = document.querySelector(markerId);
+                const entity = document.querySelector(entityId);
+
+                // Show the corresponding entity when the marker is found
+                marker.addEventListener('markerFound', () => {
+                    entity.setAttribute('visible', 'true');
+                });
+
+                // Hide the corresponding entity when the marker is lost
+                marker.addEventListener('markerLost', () => {
+                    entity.setAttribute('visible', 'false');
+                });
+            });
+        });
+
         // Get a reference to the video element
         var video = document.querySelector('#FSKTMVideo');
 
