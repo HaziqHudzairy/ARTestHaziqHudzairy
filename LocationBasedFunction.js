@@ -464,7 +464,7 @@ function debugVirtualSpaceState() {
     camera.object3D.getWorldPosition(cameraWorldPosition);
 
 
-    const debugInfo = `Current entity name:${currentEntityName}`;
+    //const debugInfo = `Current entity name:${currentEntityName}`;
     // Display debugging information
     showDebugMessage(debugInfo);
 }
