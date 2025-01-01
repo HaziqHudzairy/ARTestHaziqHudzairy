@@ -37,6 +37,7 @@
     <div class="expandable-button" onclick="toggleExpand()">
         <i class="bus-icon">🚌</i>
         <div class="list">
+            <div class="list-item" style="color: red; margin-top: 10px;">Exit Environment</div>
             <div class="list-item">View All Routes</div>
             <div class="list-item">Kolej Kediaman 1</div>
             <div class="list-item">Kolej Kediaman 12</div>
@@ -52,12 +53,13 @@
             <div class="list-item">Pantai Permai</div>
             <div class="list-item">Bangsar South</div>
             <div class="list-item">International House</div>
-            <div class="list-item">International House (outside KK13)</div>
+            <div class="list-item">International House outside KK13</div>
             <div class="list-item">Rapid Stop 1-2-3-4-5</div>
             <div class="list-item">Academy of Malay Study</div>
             <div class="list-item">Academy of Islamic Study</div>
         </div>
       </div>
+
     
     <a-scene vr-mode-ui="enabled: false;" loading-screen="enabled: false;" renderer="logarithmicDepthBuffer: true;"
         arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" id="scene" embedded>
@@ -84,7 +86,7 @@
             <img id="Bangsar-South" src="asset/UMCentralBusStop/BangsarSouth.png" />
             <img id="Faculty-of-Engineering" src="asset/UMCentralBusStop/Engineering.png" />
             <img id="International-House" src="asset/UMCentralBusStop/InternationalHouse.png" />
-            <img id="International-House-(outside-KK13)" src="asset/UMCentralBusStop/InternationalHouse(Outside).png" />
+            <img id="International-House-outside-KK13" src="asset/UMCentralBusStop/InternationalHouse(Outside).png" />
             <img id="Kolej-Kediaman-1" src="asset/UMCentralBusStop/KK1.png" />
             <img id="Kolej-Kediaman-11" src="asset/UMCentralBusStop/KK11.png" />
             <img id="Kolej-Kediaman-12" src="asset/UMCentralBusStop/KK12.png" />
@@ -161,48 +163,62 @@ function toggleExpand() {
   document.addEventListener('DOMContentLoaded', () => {
     const busRouteUMC = document.querySelector('#BusRouteUMC');
     const expandableButton = document.querySelector('.expandable-button');
+    const umcMarker = document.querySelector('#UMC-marker');
+
+    const listItems = document.querySelectorAll('.list-item');
+    const busRouteUMCPlane = document.querySelector('#BusRouteUMC a-plane');
+
+    // Event listener for list items
+    listItems.forEach((item) => {
+        item.addEventListener('click', () => {
+            const itemText = item.textContent.trim();
+
+            // Check if "Exit Environment" is clicked
+            if (itemText === 'Exit Environment') {
+                // Hide the BusRouteUMC and the expandable button
+                busRouteUMC.setAttribute('visible', 'false');
+                expandableButton.style.display = 'none';
+                console.log('Exited environment: BusRouteUMC and button hidden');
+            } else {
+                // Handle other list items
+                const targetImageId = `#${itemText.replace(/\s+/g, '-').replace(/\//g, '-')}`;
+                const targetImage = document.querySelector(targetImageId);
+
+                if (targetImage) {
+                    // Update the material source of the plane
+                    const busRouteUMCPlane = document.querySelector('#BusRouteUMC a-plane');
+                    busRouteUMCPlane.setAttribute('material', `src: ${targetImageId}`);
+                    console.log(`Updated plane texture to ${targetImageId}`);
+                } else {
+                    console.error(`Image with ID ${targetImageId} not found.`);
+                }
+            }
+        });
+    });
 
     // Ensure the button is initially hidden
     expandableButton.style.display = 'none';
 
-    // Add event listeners for when the `BusRouteUMC` marker is found or lost
-    const umcMarker = document.querySelector('#UMC-marker');
-
     if (umcMarker && busRouteUMC) {
         umcMarker.addEventListener('markerFound', () => {
+            // Make BusRouteUMC permanently visible
             busRouteUMC.setAttribute('visible', 'true');
             expandableButton.style.display = 'flex'; // Show the button
         });
 
         umcMarker.addEventListener('markerLost', () => {
-            // busRouteUMC.setAttribute('visible', 'false');
-            // expandableButton.style.display = 'none'; // Hide the button
+            // The button remains visible, and BusRouteUMC stays visible
+            console.log('Marker lost, but BusRouteUMC remains visible.');
         });
     } else {
         console.error('UMC marker or BusRouteUMC entity not found.');
     }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const listItems = document.querySelectorAll('.list-item');
-    const busRouteUMCPlane = document.querySelector('#BusRouteUMC a-plane');
 
-    listItems.forEach((item) => {
-        item.addEventListener('click', () => {
-            // Get the respective image ID from the clicked list item's text or custom attribute
-            const targetImageId = `#${item.textContent.replace(/\s+/g, '-')}`; // Example mapping
-            const targetImage = document.querySelector(targetImageId);
 
-            if (targetImage) {
-                // Update the material source of the plane
-                busRouteUMCPlane.setAttribute('material', `src: ${targetImageId}`);
-                console.log(`Updated plane texture to ${targetImageId}`);
-            } else {
-                console.error(`Image with ID ${targetImageId} not found.`);
-            }
-        });
-    });
-});
+
+
 
 
         // document.addEventListener('DOMContentLoaded', () => {

@@ -1,3 +1,7 @@
+.body{
+    font-family: 'Roboto', sans-serif;
+}
+
 .container-select {
     visibility: hidden;
     background: white;
@@ -62,9 +66,11 @@ select {
   
 
   .expandable-button.expanded {
+    max-height: 80%;
     width: 80%;
     height: auto;
     border-radius: 8px;
+    overflow-y: auto
   }
 
   .expandable-button i {
@@ -89,6 +95,7 @@ select {
   .list.expanded {
     display: flex;
     padding: 10px;
+    padding-top: 30px;
   }
 
   .list-item {
@@ -100,6 +107,8 @@ select {
   .list-item:last-child {
     border-bottom: none;
   }
+
+
 
 
 
