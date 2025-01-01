@@ -1,0 +1,105 @@
+.container-select {
+    visibility: hidden;
+    background: white;
+    margin-top: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 80%;
+    max-width: 500px;
+    left: 5%;
+    position: fixed;
+    z-index: 100000;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.expandable-button {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000000;
+    top: 80px;
+    right: 20px;
+  }
+  
+
+  .expandable-button.expanded {
+    width: 80%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .expandable-button i {
+    font-size: 24px;
+    color: #000; /* Icon color */
+    transition: opacity 0.3s ease;
+}
+
+.expandable-button.expanded i {
+    opacity: 0; /* Hides the icon when expanded */
+}
+
+  .list {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+
+  .list.expanded {
+    display: flex;
+    padding: 10px;
+  }
+
+  .list-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+
+  .list-item:last-child {
+    border-bottom: none;
+  }
+
+
+

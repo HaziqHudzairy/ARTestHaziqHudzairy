@@ -12,7 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="Styles.css">
-    <link rel="stylesheet" href="MarkerBaser.css">
+    <link rel="stylesheet" href="MarkerBased.css">
 
 </head>
 
@@ -33,10 +33,36 @@
             </svg>
         </a>
     </div>
+
+    <div class="expandable-button" onclick="toggleExpand()">
+        <i class="bus-icon">🚌</i>
+        <div class="list">
+            <div class="list-item">View All Routes</div>
+            <div class="list-item">Kolej Kediaman 1</div>
+            <div class="list-item">Kolej Kediaman 12</div>
+            <div class="list-item">Kolej Kediaman 11</div>
+            <div class="list-item">Kolej Kediaman 5</div>
+            <div class="list-item">Kolej Kediaman 13</div>
+            <div class="list-item">Kolej Kediaman 9</div>
+            <div class="list-item">Kolej Kediaman 8-10</div>
+            <div class="list-item">Kolej Kediaman 3-4-7</div>
+            <div class="list-item">Faculty of Engineering</div>
+            <div class="list-item">Centre of Foundation in Science</div>
+            <div class="list-item">KTM Angkasapuri Station</div>
+            <div class="list-item">Pantai Permai</div>
+            <div class="list-item">Bangsar South</div>
+            <div class="list-item">International House</div>
+            <div class="list-item">International House (outside KK13)</div>
+            <div class="list-item">Rapid Stop 1-2-3-4-5</div>
+            <div class="list-item">Academy of Malay Study</div>
+            <div class="list-item">Academy of Islamic Study</div>
+        </div>
+      </div>
+    
     <a-scene vr-mode-ui="enabled: false;" loading-screen="enabled: false;" renderer="logarithmicDepthBuffer: true;"
         arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" id="scene" embedded>
         <a-assets>
-            <a-asset-item id="Dog" src="asset/asset.gltf"></a-asset-item>
+            <!-- <a-asset-item id="Dog" src="asset/asset.gltf"></a-asset-item>
             <a-asset-item id="Environment" src="asset/CloudScene.glb"></a-asset-item>
             <a-asset-item id="Gundam" src="asset/Gundam.glb"></a-asset-item>
             <a-asset-item id="InfoContainer1" src="asset/console.glb"></a-asset-item>
@@ -46,40 +72,40 @@
             <video muted id="FSKTMVideo"
                 src="Videos/Welcome to Faculty of Computer Science and Information Technology, University of Malaya.mp4"
                 autoplay loop="true"></video>
-            <img id="WelcomePhoto" src="asset/WelcomToFSKTM.png"></img>
+            <img id="WelcomePhoto" src="asset/WelcomToFSKTM.png"></img> -->
             <img id="RouteA" src="asset/ARIllustration.png"></img>
             <img id="UMCentral" src="asset/BusRoute/Bus_route_UMCentral.png"></img>
 
 
-            <img id="UMCentralImage" src="asset/UMCentralBusStop/UMCentral.png" />
-            <img id="UMCentral-Angkasapuri" src="asset/UMCentralBusStop/Angkasapuri.png" />
-            <img id="UMCentral-API" src="asset/UMCentralBusStop/API.png" />
-            <img id="UMCentral-APM" src="asset/UMCentralBusStop/APM.png" />
-            <img id="UMCentral-BS" src="asset/UMCentralBusStop/BangsarSouth.png" />
-            <img id="UMCentral-Eng" src="asset/UMCentralBusStop/Engineering.png" />
-            <img id="UMCentral-IH" src="asset/UMCentralBusStop/InternationalHouse.png" />
-            <img id="UMCentral-IHO" src="asset/UMCentralBusStop/InternationalHouse(Outside).png" />
-            <img id="UMCentral-KK1" src="asset/UMCentralBusStop/KK1.png" />
-            <img id="UMCentral-KK11" src="asset/UMCentralBusStop/KK11.png" />
-            <img id="UMCentral-KK12" src="asset/UMCentralBusStop/KK12.png" />
-            <img id="UMCentral-KK13" src="asset/UMCentralBusStop/KK13.png" />
-            <img id="UMCentral-KK347" src="asset/UMCentralBusStop/KK3,KK4&KK7.png" />
-            <img id="UMCentral-KK5" src="asset/UMCentralBusStop/KK5.png" />
-            <img id="UMCentral-KK810" src="asset/UMCentralBusStop/KK8&KK10.png" />
-            <img id="UMCentral-KK9" src="asset/UMCentralBusStop/KK9.png" />
-            <img id="UMCentral-PP" src="asset/UMCentralBusStop/PantaiPermai.png" />
-            <img id="UMCentral-Pasum" src="asset/UMCentralBusStop/PASUM.png" />
-            <img id="UMCentral-Rapid" src="asset/UMCentralBusStop/Rapid12345.png" />
+            <img id="View-All-Routes" src="asset/UMCentralBusStop/UMCentral.png" />
+            <img id="KTM-Angkasapuri-Station" src="asset/UMCentralBusStop/Angkasapuri.png" />
+            <img id="Academy-of-Islamic-Study" src="asset/UMCentralBusStop/API.png" />
+            <img id="Academy-of-Malay-Study" src="asset/UMCentralBusStop/APM.png" />
+            <img id="Bangsar-South" src="asset/UMCentralBusStop/BangsarSouth.png" />
+            <img id="Faculty-of-Engineering" src="asset/UMCentralBusStop/Engineering.png" />
+            <img id="International-House" src="asset/UMCentralBusStop/InternationalHouse.png" />
+            <img id="International-House-(outside-KK13)" src="asset/UMCentralBusStop/InternationalHouse(Outside).png" />
+            <img id="Kolej-Kediaman-1" src="asset/UMCentralBusStop/KK1.png" />
+            <img id="Kolej-Kediaman-11" src="asset/UMCentralBusStop/KK11.png" />
+            <img id="Kolej-Kediaman-12" src="asset/UMCentralBusStop/KK12.png" />
+            <img id="Kolej-Kediaman-13" src="asset/UMCentralBusStop/KK13.png" />
+            <img id="Kolej-Kediaman-3-4-7" src="asset/UMCentralBusStop/KK3,KK4&KK7.png" />
+            <img id="Kolej-Kediaman-5" src="asset/UMCentralBusStop/KK5.png" />
+            <img id="Kolej-Kediaman-8-10" src="asset/UMCentralBusStop/KK8&KK10.png" />
+            <img id="Kolej-Kediaman-9" src="asset/UMCentralBusStop/KK9.png" />
+            <img id="Pantai-Permai" src="asset/UMCentralBusStop/PantaiPermai.png" />
+            <img id="Centre-of-Foundation-in-Science" src="asset/UMCentralBusStop/PASUM.png" />
+            <img id="Rapid-Stop-1-2-3-4-5" src="asset/UMCentralBusStop/Rapid12345.png" />
         </a-assets>
 
         <!-- Origin marker -->
-        <a-marker id="origin-marker" type="pattern" url="asset/marker.patt" emitevents="true">
+        <!-- <a-marker id="origin-marker" type="pattern" url="asset/marker.patt" emitevents="true">
             <a-image id="origin-model" src="#WelcomePhoto" scale="3 3 3" class="clickable" gesture-handler
                 rotation="-90 0 0"></a-image>
-        </a-marker>
+        </a-marker> -->
 
         <a-marker id="UMC-marker" type="pattern" url="asset/Marker/pattern-UMC.patt" emitevents="true">
-            <a-image id="umc-img" src="#UMCentral" scale="0 0 0" rotation="-90 0 0" class="clickable"
+            <a-image id="umc-img" src="#UMCentral" scale="3 3 3" rotation="-90 0 0" class="clickable"
                 gesture-handler></a-image>
         </a-marker>
 
@@ -89,7 +115,7 @@
         </a-marker>
 
         <!-- Virtual 3D space (initially hidden) -->
-        <a-entity id="virtual-space" visible="false">
+        <!-- <a-entity id="virtual-space" visible="false">
             <a-entity id="Pin Location" scale="0.2 0.2 0.2" gltf-model="#Pin" position="0 4 -5"></a-entity>
             <a-entity id="Fsktm" scale="2 2 2" gltf-model="#FSKTMLogo" position="0 0 -5"></a-entity>
             <a-entity id="Env" scale="10 10 10" gltf-model="#Environment" position="0 -50 0"
@@ -104,12 +130,10 @@
 
             <a-video src="#FSKTMVideo" width="8" height="4.5" position="14 2 -3.3" rotation="0 -60 0"></a-video>
 
-        </a-entity>
+        </a-entity> -->
 
-        <a-entity id="BusRoute" visible="false">
-            <a-entity id="BusRoute" visible="false">
-                <a-plane material="src: #UMCentralImage" width="5" height="3" position="0 0 -5"></a-plane>
-            </a-entity>
+        <a-entity id="BusRouteUMC" visible="false">
+            <a-plane material="src: #UMCentral" width="5" height="3" position="0 0 -5"></a-plane>
         </a-entity>
 
         <!-- Camera -->
@@ -127,38 +151,97 @@
 
     <script>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const markers = [
-                {
-                    markerId: '#UMC-marker'
-                    // ,
-                    // entityId: '#BusRoute'
-                },
-                {
-                    markerId: '#Other-marker'
-                    // ,
-                    // entityId: '#OtherBusRoute'
-                }
-            ];
+function toggleExpand() {
+    const button = document.querySelector('.expandable-button');
+    const list = document.querySelector('.list');
+    button.classList.toggle('expanded');
+    list.classList.toggle('expanded');
+  }
 
-            markers.forEach(({ markerId, entityId }) => {
-                const marker = document.querySelector(markerId);
-                const entity = document.querySelector(entityId);
+  document.addEventListener('DOMContentLoaded', () => {
+    const busRouteUMC = document.querySelector('#BusRouteUMC');
+    const expandableButton = document.querySelector('.expandable-button');
 
-                // Show the corresponding entity when the marker is found
-                marker.addEventListener('markerFound', () => {
-                    entity.setAttribute('visible', 'true');
-                });
+    // Ensure the button is initially hidden
+    expandableButton.style.display = 'none';
 
-                // Hide the corresponding entity when the marker is lost
-                marker.addEventListener('markerLost', () => {
-                    entity.setAttribute('visible', 'false');
-                });
-            });
+    // Add event listeners for when the `BusRouteUMC` marker is found or lost
+    const umcMarker = document.querySelector('#UMC-marker');
+
+    if (umcMarker && busRouteUMC) {
+        umcMarker.addEventListener('markerFound', () => {
+            busRouteUMC.setAttribute('visible', 'true');
+            expandableButton.style.display = 'flex'; // Show the button
         });
 
-        // Get a reference to the video element
-        var video = document.querySelector('#FSKTMVideo');
+        umcMarker.addEventListener('markerLost', () => {
+            // busRouteUMC.setAttribute('visible', 'false');
+            // expandableButton.style.display = 'none'; // Hide the button
+        });
+    } else {
+        console.error('UMC marker or BusRouteUMC entity not found.');
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const listItems = document.querySelectorAll('.list-item');
+    const busRouteUMCPlane = document.querySelector('#BusRouteUMC a-plane');
+
+    listItems.forEach((item) => {
+        item.addEventListener('click', () => {
+            // Get the respective image ID from the clicked list item's text or custom attribute
+            const targetImageId = `#${item.textContent.replace(/\s+/g, '-')}`; // Example mapping
+            const targetImage = document.querySelector(targetImageId);
+
+            if (targetImage) {
+                // Update the material source of the plane
+                busRouteUMCPlane.setAttribute('material', `src: ${targetImageId}`);
+                console.log(`Updated plane texture to ${targetImageId}`);
+            } else {
+                console.error(`Image with ID ${targetImageId} not found.`);
+            }
+        });
+    });
+});
+
+
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const markers = [
+        //         {
+        //             markerId: '#UMC-marker',
+        //             entityId: '#BusRouteUMC' // Ensure this entity exists in the DOM
+        //         },
+        //         {
+        //             markerId: '#bus-stop-marker',
+        //             entityId: '#routeA-img' // Another example entity
+        //         }
+        //     ];
+
+        //     markers.forEach(({ markerId, entityId }) => {
+        //         const marker = document.querySelector(markerId);
+        //         const entity = document.querySelector(entityId);
+
+        //         // Check if both marker and entity exist
+        //         if (marker && entity) {
+        //             // Show the corresponding entity when the marker is found
+        //             marker.addEventListener('markerFound', () => {
+        //                 entity.setAttribute('visible', 'true');
+        //                 console.log(`Activating env ${entityId}`);
+
+        //             });
+
+        //             // No markerLost event is added, so the entity will remain visible
+        //         } else {
+        //             console.error(`Marker or entity not found: markerId=${markerId}, entityId=${entityId}`);
+        //         }
+        //     });
+        // });
+
+
+
+
+        // // Get a reference to the video element
+        // var video = document.querySelector('#FSKTMVideo');
 
         // Function to check the camera permission status
         function checkCameraPermission() {
@@ -213,10 +296,10 @@
             }
         }
 
-        // Marker found event
-        document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
-            initializeAREnvironment();
-        });
+        // // Marker found event
+        // document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
+        //     initializeAREnvironment();
+        // });
 
 
         // Model loaded event to debug animation clips and play all animations
