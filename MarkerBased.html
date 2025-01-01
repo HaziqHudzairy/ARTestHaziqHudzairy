@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
@@ -7,34 +8,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="Styles.css">
     <link rel="stylesheet" href="MarkerBaser.css">
 
 </head>
+
 <body style="margin: 0; overflow: hidden;">
 
     <div class="container">
-    <div class="logo-container">
-        <!-- First logo -->
-        <img src="asset/University_of_Malaya-Logo.png" alt="UM Logo" class="logoTop">
-        <img src="asset/UM.AR_Logo_Font_Black.png" alt="UM AR Logo" class="logoTop">
-    </div>
+        <div class="logo-container">
+            <!-- First logo -->
+            <img src="asset/University_of_Malaya-Logo.png" alt="UM Logo" class="logoTop">
+            <img src="asset/UM.AR_Logo_Font_Black.png" alt="UM AR Logo" class="logoTop">
+        </div>
 
-    <a href="main.html" class="backButton">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-        </svg>
-    </a>
-</div>
-    <a-scene
-        vr-mode-ui="enabled: false;"
-        loading-screen="enabled: false;"
-        renderer="logarithmicDepthBuffer: true;"
-        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-        id="scene"
-        embedded
-    >
+        <a href="main.html" class="backButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white"
+                class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                <path
+                    d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
+            </svg>
+        </a>
+    </div>
+    <a-scene vr-mode-ui="enabled: false;" loading-screen="enabled: false;" renderer="logarithmicDepthBuffer: true;"
+        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" id="scene" embedded>
         <a-assets>
             <a-asset-item id="Dog" src="asset/asset.gltf"></a-asset-item>
             <a-asset-item id="Environment" src="asset/CloudScene.glb"></a-asset-item>
@@ -43,87 +43,50 @@
             <a-asset-item id="FSKTMLogo" src="asset/FSKTMAnim3.glb"></a-asset-item>
             <a-asset-item id="TV" src="asset/tv.glb"></a-asset-item>
             <a-asset-item id="Pin" src="asset/LocationPin.glb"></a-asset-item>
-            <video muted id="FSKTMVideo" src="Videos/Welcome to Faculty of Computer Science and Information Technology, University of Malaya.mp4" autoplay loop="true"></video>
+            <video muted id="FSKTMVideo"
+                src="Videos/Welcome to Faculty of Computer Science and Information Technology, University of Malaya.mp4"
+                autoplay loop="true"></video>
             <img id="WelcomePhoto" src="asset/WelcomToFSKTM.png"></img>
             <img id="RouteA" src="asset/ARIllustration.png"></img>
             <img id="UMCentral" src="asset/BusRoute/Bus_route_UMCentral.png"></img>
         </a-assets>
 
         <!-- Origin marker -->
-        <a-marker
-            id="origin-marker"
-            type="pattern"
-            url="asset/marker.patt"
-            emitevents="true"
-        >
-        <a-image id="origin-model" src="#WelcomePhoto" scale="3 3 3" class="clickable" gesture-handler rotation="-90 0 0"></a-image>
+        <a-marker id="origin-marker" type="pattern" url="asset/marker.patt" emitevents="true">
+            <a-image id="origin-model" src="#WelcomePhoto" scale="3 3 3" class="clickable" gesture-handler
+                rotation="-90 0 0"></a-image>
         </a-marker>
 
-        <a-marker
-        id="UMC-marker"
-        type="pattern"
-        url="asset/Marker/pattern-UMC.patt"
-        emitevents="true"
-        >
-        <a-image id="umc-img" src="#UMCentral" scale="4 4 4" rotation="0 -90 0" class="clickable" gesture-handler rotation="-90 0 0"></a-image>
+        <a-marker id="UMC-marker" type="pattern" url="asset/Marker/pattern-UMC.patt" emitevents="true">
+            <a-image id="umc-img" src="#UMCentral" scale="4 4 4" rotation="0 90 0" class="clickable" gesture-handler
+                rotation="-90 0 0"></a-image>
         </a-marker>
 
-        <a-marker
-            id="bus-stop-marker"
-            type="pattern"
-            url="asset/Marker/pattern-BSKK10.patt"
-            emitevents="true"
-        >
-        <a-image id="routeA-img" src="#RouteA" scale="3 3 3" class="clickable" gesture-handler rotation="-90 0 0"></a-image>
+        <a-marker id="bus-stop-marker" type="pattern" url="asset/Marker/pattern-BSKK10.patt" emitevents="true">
+            <a-image id="routeA-img" src="#RouteA" scale="3 3 3" class="clickable" gesture-handler
+                rotation="-90 0 0"></a-image>
         </a-marker>
 
         <!-- Virtual 3D space (initially hidden) -->
         <a-entity id="virtual-space" visible="false">
-            <a-entity 
-                id="Pin Location"
-                scale="0.2 0.2 0.2"
-                gltf-model="#Pin"
-                position="0 4 -5"
-            ></a-entity>
-            <a-entity
-                id="Fsktm"
-                scale="2 2 2"
-                gltf-model="#FSKTMLogo"
-                position="0 0 -5"
-            ></a-entity>
-            <a-entity
-                id="Env"
-                scale="10 10 10"
-                gltf-model="#Environment"
-                position="0 -50 0"
-                rotation="0 0 0"
-            ></a-entity>
-            <a-entity
-                id="Env"
-                scale="10 10 10"
-                gltf-model="#Gundam"
-                position="0 -60 0"
-                rotation="0 0 0"
-            ></a-entity>
+            <a-entity id="Pin Location" scale="0.2 0.2 0.2" gltf-model="#Pin" position="0 4 -5"></a-entity>
+            <a-entity id="Fsktm" scale="2 2 2" gltf-model="#FSKTMLogo" position="0 0 -5"></a-entity>
+            <a-entity id="Env" scale="10 10 10" gltf-model="#Environment" position="0 -50 0"
+                rotation="0 0 0"></a-entity>
+            <a-entity id="Env" scale="10 10 10" gltf-model="#Gundam" position="0 -60 0" rotation="0 0 0"></a-entity>
 
-            <a-entity
-                id="ConsoleGame"
-                scale="6 6 6"
-                gltf-model="#InfoContainer1"
-                position="12 -1 8"
-                rotation="10 260 0"
-            ></a-entity>
+            <a-entity id="ConsoleGame" scale="6 6 6" gltf-model="#InfoContainer1" position="12 -1 8"
+                rotation="10 260 0"></a-entity>
 
-            <a-entity
-                id="TVPlayer"
-                scale="5.2 4 5 "
-                gltf-model="#TV"
-                position="18 -2.4 -5.37"
-                rotation="0 -60 0"
-            ></a-entity>
-            
+            <a-entity id="TVPlayer" scale="5.2 4 5 " gltf-model="#TV" position="18 -2.4 -5.37"
+                rotation="0 -60 0"></a-entity>
+
             <a-video src="#FSKTMVideo" width="8" height="4.5" position="14 2 -3.3" rotation="0 -60 0"></a-video>
-             
+
+        </a-entity>
+
+        <a-entity id="BusRoute" visible="false">
+
         </a-entity>
 
         <!-- Camera -->
@@ -136,72 +99,72 @@
         <div class="corners corner-top-right"></div>
         <div class="corners corner-bottom-left"></div>
         <div class="corners corner-bottom-right"></div>
-      </div>
-    
+    </div>
+
 
     <script>
         // Get a reference to the video element
         var video = document.querySelector('#FSKTMVideo');
 
-// Function to check the camera permission status
-function checkCameraPermission() {
-    // Check if getUserMedia is supported by the browser
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Check if the camera permission is granted
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function (stream) {
-                console.log('Camera access granted. AR scene is ready.');
-                document.getElementById("scanner-container").style.display = "block";
-                // Do further initialization here
-            })
-            .catch(function (error) {
-                console.log('Failed to access camera:', error);
-                // Handle camera access denied or failed state here
-            });
-    } else {
-        console.log('getUserMedia not supported by the browser.');
-    }
-}
+        // Function to check the camera permission status
+        function checkCameraPermission() {
+            // Check if getUserMedia is supported by the browser
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Check if the camera permission is granted
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        console.log('Camera access granted. AR scene is ready.');
+                        document.getElementById("scanner-container").style.display = "block";
+                        // Do further initialization here
+                    })
+                    .catch(function (error) {
+                        console.log('Failed to access camera:', error);
+                        // Handle camera access denied or failed state here
+                    });
+            } else {
+                console.log('getUserMedia not supported by the browser.');
+            }
+        }
 
-        
-        
+
+
         let originPosition = null;
-    
+
         // Function to initialize the AR environment
         function initializeAREnvironment() {
             const marker = document.querySelector("#origin-marker");
             const virtualSpace = document.querySelector("#virtual-space");
-    
+
             // Set the position of the virtual space based on the marker's position
             const markerPosition = new THREE.Vector3();
             marker.object3D.getWorldPosition(markerPosition);
-    
+
             if (!originPosition) {
                 originPosition = markerPosition.clone();
             }
-    
+
             virtualSpace.object3D.position.copy(originPosition);
-    
+
             //document.querySelector("#QR-animation").style.display = "none";
-            
+
             // Show the virtual space
             virtualSpace.setAttribute('visible', true);
 
             // Check if the video element exists
             if (video) {
-            setTimeout(function() {
-                // Autoplay the video
-                video.play();
-            }, 2000); // 3000 milliseconds = 3 seconds
+                setTimeout(function () {
+                    // Autoplay the video
+                    video.play();
+                }, 2000); // 3000 milliseconds = 3 seconds
+            }
         }
-        }
-    
+
         // Marker found event
         document.querySelector("#origin-marker").addEventListener("markerFound", (e) => {
             initializeAREnvironment();
         });
 
-    
+
         // Model loaded event to debug animation clips and play all animations
         document.querySelectorAll('a-entity[gltf-model]').forEach((entity) => {
             entity.addEventListener('model-loaded', (e) => {
@@ -232,11 +195,12 @@ function checkCameraPermission() {
         });
 
 
-        
 
-        
+
+
 
     </script>
-    
+
 </body>
+
 </html>
