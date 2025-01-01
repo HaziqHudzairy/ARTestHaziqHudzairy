@@ -38,6 +38,7 @@
         <i class="bus-icon">🚌</i>
         <div class="list">
             <div class="list-item">Exit Environment</div>
+            <div class="list-item">Exit Environment</div>
             <div class="list-item">View All Routes</div>
             <div class="list-item">Kolej Kediaman 1</div>
             <div class="list-item">Kolej Kediaman 12</div>
@@ -59,9 +60,9 @@
             <div class="list-item">Academy of Islamic Study</div>
             <div class="list-item" style="color: red; margin-top: 10px;">Exit Environment</div>
         </div>
-      </div>
+    </div>
 
-    
+
     <a-scene vr-mode-ui="enabled: false;" loading-screen="enabled: false;" renderer="logarithmicDepthBuffer: true;"
         arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" id="scene" embedded>
         <a-assets>
@@ -101,12 +102,6 @@
             <img id="Rapid-Stop-1-2-3-4-5" src="asset/UMCentralBusStop/Rapid12345.png" />
         </a-assets>
 
-        <!-- Origin marker -->
-        <!-- <a-marker id="origin-marker" type="pattern" url="asset/marker.patt" emitevents="true">
-            <a-image id="origin-model" src="#WelcomePhoto" scale="3 3 3" class="clickable" gesture-handler
-                rotation="-90 0 0"></a-image>
-        </a-marker> -->
-
         <a-marker id="UMC-marker" type="pattern" url="asset/Marker/pattern-UMC.patt" emitevents="true">
             <a-image id="umc-img" src="#UMCentral" scale="3 3 3" rotation="-90 0 0" class="clickable"
                 gesture-handler></a-image>
@@ -117,24 +112,7 @@
                 rotation="-90 0 0"></a-image>
         </a-marker>
 
-        <!-- Virtual 3D space (initially hidden) -->
-        <!-- <a-entity id="virtual-space" visible="false">
-            <a-entity id="Pin Location" scale="0.2 0.2 0.2" gltf-model="#Pin" position="0 4 -5"></a-entity>
-            <a-entity id="Fsktm" scale="2 2 2" gltf-model="#FSKTMLogo" position="0 0 -5"></a-entity>
-            <a-entity id="Env" scale="10 10 10" gltf-model="#Environment" position="0 -50 0"
-                rotation="0 0 0"></a-entity>
-            <a-entity id="Env" scale="10 10 10" gltf-model="#Gundam" position="0 -60 0" rotation="0 0 0"></a-entity>
-
-            <a-entity id="ConsoleGame" scale="6 6 6" gltf-model="#InfoContainer1" position="12 -1 8"
-                rotation="10 260 0"></a-entity>
-
-            <a-entity id="TVPlayer" scale="5.2 4 5 " gltf-model="#TV" position="18 -2.4 -5.37"
-                rotation="0 -60 0"></a-entity>
-
-            <a-video src="#FSKTMVideo" width="8" height="4.5" position="14 2 -3.3" rotation="0 -60 0"></a-video>
-
-        </a-entity> -->
-
+        <!-- Environment -->
         <a-entity id="BusRouteUMC" visible="false">
             <a-plane material="src: #UMCentral" width="5" height="3" position="0 0 -5"></a-plane>
         </a-entity>
@@ -154,106 +132,67 @@
 
     <script>
 
-function toggleExpand() {
-    const button = document.querySelector('.expandable-button');
-    const list = document.querySelector('.list');
-    button.classList.toggle('expanded');
-    list.classList.toggle('expanded');
-  }
+        function toggleExpand() {
+            const button = document.querySelector('.expandable-button');
+            const list = document.querySelector('.list');
+            button.classList.toggle('expanded');
+            list.classList.toggle('expanded');
+        }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const busRouteUMC = document.querySelector('#BusRouteUMC');
-    const expandableButton = document.querySelector('.expandable-button');
-    const umcMarker = document.querySelector('#UMC-marker');
+        document.addEventListener('DOMContentLoaded', () => {
+            const busRouteUMC = document.querySelector('#BusRouteUMC');
+            const expandableButton = document.querySelector('.expandable-button');
+            const umcMarker = document.querySelector('#UMC-marker');
 
-    const listItems = document.querySelectorAll('.list-item');
-    const busRouteUMCPlane = document.querySelector('#BusRouteUMC a-plane');
+            const listItems = document.querySelectorAll('.list-item');
+            const busRouteUMCPlane = document.querySelector('#BusRouteUMC a-plane');
 
-    // Event listener for list items
-    listItems.forEach((item) => {
-        item.addEventListener('click', () => {
-            const itemText = item.textContent.trim();
+            // Event listener for list items
+            listItems.forEach((item) => {
+                item.addEventListener('click', () => {
+                    const itemText = item.textContent.trim();
 
-            // Check if "Exit Environment" is clicked
-            if (itemText === 'Exit Environment') {
-                // Hide the BusRouteUMC and the expandable button
-                busRouteUMC.setAttribute('visible', 'false');
-                expandableButton.style.display = 'none';
-                console.log('Exited environment: BusRouteUMC and button hidden');
+                    // Check if "Exit Environment" is clicked
+                    if (itemText === 'Exit Environment') {
+                        // Hide the BusRouteUMC and the expandable button
+                        busRouteUMC.setAttribute('visible', 'false');
+                        expandableButton.style.display = 'none';
+                        console.log('Exited environment: BusRouteUMC and button hidden');
+                    } else {
+                        // Handle other list items
+                        const targetImageId = `#${itemText.replace(/\s+/g, '-').replace(/\//g, '-')}`;
+                        const targetImage = document.querySelector(targetImageId);
+
+                        if (targetImage) {
+                            // Update the material source of the plane
+                            const busRouteUMCPlane = document.querySelector('#BusRouteUMC a-plane');
+                            busRouteUMCPlane.setAttribute('material', `src: ${targetImageId}`);
+                            console.log(`Updated plane texture to ${targetImageId}`);
+                        } else {
+                            console.error(`Image with ID ${targetImageId} not found.`);
+                        }
+                    }
+                });
+            });
+
+            // Ensure the button is initially hidden
+            expandableButton.style.display = 'none';
+
+            if (umcMarker && busRouteUMC) {
+                umcMarker.addEventListener('markerFound', () => {
+                    // Make BusRouteUMC permanently visible
+                    busRouteUMC.setAttribute('visible', 'true');
+                    expandableButton.style.display = 'flex'; // Show the button
+                });
+
+                umcMarker.addEventListener('markerLost', () => {
+                    // The button remains visible, and BusRouteUMC stays visible
+                    console.log('Marker lost, but BusRouteUMC remains visible.');
+                });
             } else {
-                // Handle other list items
-                const targetImageId = `#${itemText.replace(/\s+/g, '-').replace(/\//g, '-')}`;
-                const targetImage = document.querySelector(targetImageId);
-
-                if (targetImage) {
-                    // Update the material source of the plane
-                    const busRouteUMCPlane = document.querySelector('#BusRouteUMC a-plane');
-                    busRouteUMCPlane.setAttribute('material', `src: ${targetImageId}`);
-                    console.log(`Updated plane texture to ${targetImageId}`);
-                } else {
-                    console.error(`Image with ID ${targetImageId} not found.`);
-                }
+                console.error('UMC marker or BusRouteUMC entity not found.');
             }
         });
-    });
-
-    // Ensure the button is initially hidden
-    expandableButton.style.display = 'none';
-
-    if (umcMarker && busRouteUMC) {
-        umcMarker.addEventListener('markerFound', () => {
-            // Make BusRouteUMC permanently visible
-            busRouteUMC.setAttribute('visible', 'true');
-            expandableButton.style.display = 'flex'; // Show the button
-        });
-
-        umcMarker.addEventListener('markerLost', () => {
-            // The button remains visible, and BusRouteUMC stays visible
-            console.log('Marker lost, but BusRouteUMC remains visible.');
-        });
-    } else {
-        console.error('UMC marker or BusRouteUMC entity not found.');
-    }
-});
-
-
-
-
-
-
-
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     const markers = [
-        //         {
-        //             markerId: '#UMC-marker',
-        //             entityId: '#BusRouteUMC' // Ensure this entity exists in the DOM
-        //         },
-        //         {
-        //             markerId: '#bus-stop-marker',
-        //             entityId: '#routeA-img' // Another example entity
-        //         }
-        //     ];
-
-        //     markers.forEach(({ markerId, entityId }) => {
-        //         const marker = document.querySelector(markerId);
-        //         const entity = document.querySelector(entityId);
-
-        //         // Check if both marker and entity exist
-        //         if (marker && entity) {
-        //             // Show the corresponding entity when the marker is found
-        //             marker.addEventListener('markerFound', () => {
-        //                 entity.setAttribute('visible', 'true');
-        //                 console.log(`Activating env ${entityId}`);
-
-        //             });
-
-        //             // No markerLost event is added, so the entity will remain visible
-        //         } else {
-        //             console.error(`Marker or entity not found: markerId=${markerId}, entityId=${entityId}`);
-        //         }
-        //     });
-        // });
-
 
 
 
