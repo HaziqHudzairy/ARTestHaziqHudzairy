@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Styles.css">
+    <link rel="stylesheet" href="MarkerBaser.css">
 
 </head>
 <body style="margin: 0; overflow: hidden;">
@@ -44,7 +45,8 @@
             <a-asset-item id="Pin" src="asset/LocationPin.glb"></a-asset-item>
             <video muted id="FSKTMVideo" src="Videos/Welcome to Faculty of Computer Science and Information Technology, University of Malaya.mp4" autoplay loop="true"></video>
             <img id="WelcomePhoto" src="asset/WelcomToFSKTM.png"></img>
-            <img id="RouteA" src="asset/WelcomToFSKTM.png"></img>
+            <img id="RouteA" src="asset/ARIllustration.png"></img>
+            <img id="UMCentral" src="asset/ARPhoneRemoveBG.png"></img>
         </a-assets>
 
         <!-- Origin marker -->
@@ -58,9 +60,18 @@
         </a-marker>
 
         <a-marker
+        id="UMC-marker"
+        type="pattern"
+        url="asset/Marker/pattern-umcentral.patt"
+        emitevents="true"
+        >
+        <a-image id="umc-img" src="#UMCentral" scale="3 3 3" class="clickable" gesture-handler rotation="-90 0 0"></a-image>
+        </a-marker>
+
+        <a-marker
             id="bus-stop-marker"
             type="pattern"
-            url="asset/Marker/routeA.patt"
+            url="asset/Marker/pattern-kk10bustop.patt"
             emitevents="true"
         >
         <a-image id="routeA-img" src="#RouteA" scale="3 3 3" class="clickable" gesture-handler rotation="-90 0 0"></a-image>
@@ -119,25 +130,18 @@
         <a-entity camera look-controls></a-entity>
     </a-scene>
 
-    <div id="QR-animation" class="center" style="display:none;">
-        <div class="square">
-            <i class="fa fa-qrcode"></i>
-            <div class="scan"></div>
-        </div>
-        <h6 style="text-align:center; font-size: large;" class="roboto-black">Find UM.AR marker</h6>
-    </div>
+    <div class="scanner-container">
+        <div class="scanner-line"></div>
+        <div class="corners corner-top-left"></div>
+        <div class="corners corner-top-right"></div>
+        <div class="corners corner-bottom-left"></div>
+        <div class="corners corner-bottom-right"></div>
+      </div>
     
 
     <script>
         // Get a reference to the video element
         var video = document.querySelector('#FSKTMVideo');
-
-// Wait for the A-Frame scene to be fully loaded
-document.querySelector('a-scene').addEventListener('loaded', function () {
-    document.getElementById("Loading").style.display = "none";
-    // Call the function to check camera permission status
-    checkCameraPermission();
-});
 
 // Function to check the camera permission status
 function checkCameraPermission() {
@@ -147,7 +151,7 @@ function checkCameraPermission() {
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function (stream) {
                 console.log('Camera access granted. AR scene is ready.');
-                document.getElementById("QR-animation").style.display = "block";
+                document.getElementById("scanner-container").style.display = "block";
                 // Do further initialization here
             })
             .catch(function (error) {
@@ -178,7 +182,7 @@ function checkCameraPermission() {
     
             virtualSpace.object3D.position.copy(originPosition);
     
-            document.querySelector("#QR-animation").style.display = "none";
+            //document.querySelector("#QR-animation").style.display = "none";
             
             // Show the virtual space
             virtualSpace.setAttribute('visible', true);

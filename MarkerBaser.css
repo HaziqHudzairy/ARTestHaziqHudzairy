@@ -1,0 +1,64 @@
+.scanner-container {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    border: 4px solid rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .scanner-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.8), transparent);
+    animation: scan 2s infinite;
+  }
+
+  @keyframes scan {
+    0% {
+      top: 0;
+    }
+    100% {
+      top: 100%;
+    }
+  }
+
+  .corners {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 4px solid rgba(0, 255, 0, 0.8);
+  }
+
+  .corner-top-left {
+    top: -2px;
+    left: -2px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .corner-top-right {
+    top: -2px;
+    right: -2px;
+    border-left: none;
+    border-bottom: none;
+  }
+
+  .corner-bottom-left {
+    bottom: -2px;
+    left: -2px;
+    border-right: none;
+    border-top: none;
+  }
+
+  .corner-bottom-right {
+    bottom: -2px;
+    right: -2px;
+    border-left: none;
+    border-top: none;
+  }
