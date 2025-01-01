@@ -20,22 +20,12 @@
         <img src="asset/UM.AR_Logo_Font_Black.png" alt="UM AR Logo" class="logoTop">
     </div>
 
-    <a href="https://um-ar.netlify.app/main.html" class="backButton">
+    <a href="main.html" class="backButton">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
             <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
         </svg>
     </a>
 </div>
-
-    <div id="Loading"class="box">
-        <div class="cat">
-          <div class="cat__body"></div>
-          <div class="cat__body"></div>
-          <div class="cat__tail"></div>
-          <div class="cat__head"></div>
-        </div>
-      </div>
-    
     <a-scene
         vr-mode-ui="enabled: false;"
         loading-screen="enabled: false;"
@@ -54,6 +44,7 @@
             <a-asset-item id="Pin" src="asset/LocationPin.glb"></a-asset-item>
             <video muted id="FSKTMVideo" src="Videos/Welcome to Faculty of Computer Science and Information Technology, University of Malaya.mp4" autoplay loop="true"></video>
             <img id="WelcomePhoto" src="asset/WelcomToFSKTM.png"></img>
+            <img id="RouteA" src="asset/WelcomToFSKTM.png"></img>
         </a-assets>
 
         <!-- Origin marker -->
@@ -64,6 +55,15 @@
             emitevents="true"
         >
         <a-image id="origin-model" src="#WelcomePhoto" scale="3 3 3" class="clickable" gesture-handler rotation="-90 0 0"></a-image>
+        </a-marker>
+
+        <a-marker
+            id="bus-stop-marker"
+            type="pattern"
+            url="asset/Marker/routeA.patt"
+            emitevents="true"
+        >
+        <a-image id="routeA-img" src="#RouteA" scale="3 3 3" class="clickable" gesture-handler rotation="-90 0 0"></a-image>
         </a-marker>
 
         <!-- Virtual 3D space (initially hidden) -->
