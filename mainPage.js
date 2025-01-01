@@ -20,7 +20,7 @@ const database = getDatabase(app);
 // Global array to store entities
 window.dynamicEntities = [];
 
-// Function to fetch entities from Firebase
+// Fetch entities from Firebase and populate global array
 function fetchEntitiesNameCoordinate() {
     const entitiesRef = ref(database, "entities");
     onValue(entitiesRef, (snapshot) => {
@@ -35,6 +35,10 @@ function fetchEntitiesNameCoordinate() {
                         latitude: entity.latitude,
                         longitude: entity.longitude,
                         model: entity.model,
+                        contact_information: entity.contact_information,
+                        website: entity.website,
+                        description: entity.description,
+                        operating_hours: entity.operating_hours,
                     });
                 });
             });
@@ -43,40 +47,57 @@ function fetchEntitiesNameCoordinate() {
         }
     });
 }
-fetchEntitiesNameCoordinate()
+fetchEntitiesNameCoordinate();
+
+// Global array to store all locations
+let allLocations = [];
+
+// Fetch locations from Firebase and populate `allLocations`
+function fetchLocations(callback) {
+    const dbRef = ref(database, "information");
+    onValue(dbRef, (snapshot) => {
+        const categories = snapshot.val();
+        allLocations = []; // Reset the array
+        for (const category in categories) {
+            const entities = categories[category];
+            allLocations = [...allLocations, ...Object.values(entities).map((entity) => ({ ...entity, category }))];
+        }
+        callback(allLocations);
+    });
+}
+
+fetchLocations(() => {
+    console.log("Locations loaded:", allLocations);
+});
 
 const searchInput = document.getElementById("searchInput");
 const suggestionsList = document.getElementById("suggestions");
 
+// Function to render suggestions based on user input
 function renderSuggestions(filter = "") {
     suggestionsList.innerHTML = ""; // Clear existing suggestions
 
-    // Filter entities based on user input
-    const filteredEntities = window.dynamicEntities.filter((entity) =>
-        entity.name.toLowerCase().includes(filter.toLowerCase())
+    // Filter locations based on user input
+    const filteredLocations = allLocations.filter((location) =>
+        location.name.toLowerCase().includes(filter.toLowerCase())
     );
 
     // Populate the suggestions list
-    filteredEntities.forEach((entity) => {
+    filteredLocations.forEach((location) => {
         const listItem = document.createElement("li");
-        listItem.textContent = entity.name;
+        listItem.textContent = location.name;
 
-        // On click, redirect to LocationBased.html with coordinates
+        // On click, fetch respective data and show it in the popup
         listItem.onclick = () => {
-            const destinationLat = entity.latitude;
-            const destinationLon = entity.longitude;
-
-            // Redirect to LocationBased.html with query parameters
-            window.location.href = `LocationBased.html?lat=${destinationLat}&lon=${destinationLon}`;
+            showLocationDetails(location); // Pass the clicked location to the function
         };
 
         suggestionsList.appendChild(listItem);
     });
 
     // Show or hide the suggestions list based on results
-    suggestionsList.style.display = filteredEntities.length > 0 ? "block" : "none";
+    suggestionsList.style.display = filteredLocations.length > 0 ? "block" : "none";
 }
-
 
 // Show suggestions when the input is focused
 searchInput.addEventListener("focus", () => renderSuggestions(searchInput.value));
@@ -88,6 +109,34 @@ searchInput.addEventListener("input", (event) => renderSuggestions(event.target.
 document.addEventListener("click", (event) => {
     if (!searchInput.contains(event.target) && !suggestionsList.contains(event.target)) {
         suggestionsList.style.display = "none";
+    }
+});
+
+// Function to show location details in the popup
+function showLocationDetails(location) {
+    document.getElementById("locationName").innerHTML = location.name || "Unknown Location";
+    document.getElementById("locationContact").innerHTML = location.contact_information || "Not available.";
+    document.getElementById("locationWebsite").innerHTML = location.website
+        ? `<a href="${location.website}" target="_blank" style="color: #007BFF; text-decoration: none;">Visit Website</a>`
+        : "Not available.";
+    document.getElementById("locationDescription").innerHTML = location.description || "No description available.";
+    document.getElementById("locationHours").innerHTML = location.operating_hours || "Operating hours not specified.";
+
+    const modal = document.getElementById("locationModal");
+    modal.classList.add("visible");
+}
+
+// Close modal when clicking the `x` icon
+document.getElementById("modalClose").addEventListener("click", () => {
+    const modal = document.getElementById("locationModal");
+    modal.classList.remove("visible");
+});
+
+// Close modal when clicking outside the content
+document.getElementById("locationModal").addEventListener("click", (event) => {
+    if (event.target === document.getElementById("locationModal")) {
+        const modal = document.getElementById("locationModal");
+        modal.classList.remove("visible");
     }
 });
 

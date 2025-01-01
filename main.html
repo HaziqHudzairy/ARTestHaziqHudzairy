@@ -696,64 +696,88 @@
         }
 
         .popup-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            visibility: hidden;
-            opacity: 0;
-            transition: visibility 0s, opacity 0.3s ease;
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease;
+}
 
-        .popup-container.visible {
-            visibility: visible;
-            opacity: 1;
-        }
+.popup-container.visible {
+    visibility: visible;
+    opacity: 1;
+}
 
-        .popup-content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            width: 80%;
-            max-width: 500px;
-        }
+.popup-content {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    overflow-y: auto; /* Enables vertical scrolling */
+}
 
-        .popup-close {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
 
-        .popup-poster {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
+.popup-close:hover {
+    color: #007BFF; /* Optional hover effect for close button */
+}
 
-        .popup-details {
-            margin-top: 20px;
-            text-align: left;
-        }
+.popup-content p {
+    font-size: 15px;
+    margin: 5px 0;
+    white-space: pre-wrap; /* Preserve <br> and line breaks */
+    line-height: 1.5;
+    word-wrap: break-word; /* Prevent long words from overflowing */
+}
 
-        .popup-details h1 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
+.popup-content strong {
+    font-size: 20px;
+}
 
-        .popup-details p {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
+.popup-content h3 {
+    color: black;
+}
+
+.popup-content a {
+    color: #007BFF; /* Link color */
+    text-decoration: none; /* Remove underline */
+}
+
+.popup-content a:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+
+.popup-close {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.popup-close:hover {
+    color: #007BFF; /* Optional hover effect */
+}
+
+
+
 
         /* Full-Screen Focus View */
         .focus-container {
@@ -825,6 +849,46 @@
         .suggestions-list li:hover {
             background-color: #f0f0f0;
         }
+
+        .vertical-scroll-container {
+        display: block; /* Enable vertical stacking */
+        overflow-y: auto; /* Vertical scrolling */
+        max-height: 400px; /* Limit height for the scrollable area */
+        padding: 10px; /* Add padding for spacing */
+        background-color: rgba(22, 22, 22, 0.8); /* Background for the list */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    }
+
+    .vertical-list-item {
+        display: flex; /* Align content horizontally */
+        flex-direction: column; /* Stack name and contact vertically */
+        justify-content: flex-start; /* Align items to the top */
+        padding: 15px; /* Spacing inside each item */
+        margin-bottom: 10px; /* Spacing between items */
+        border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+        border-radius: 10px; /* Rounded corners for each item */
+        background-color: rgba(255, 255, 255, 0.1); /* Slightly translucent background */
+        color: white; /* White text for contrast */
+        cursor: pointer; /* Indicate interactivity */
+        transition: transform 0.3s, background-color 0.3s; /* Smooth transitions */
+    }
+
+    .vertical-list-item:hover {
+        background-color: rgba(255, 255, 255, 0.2); /* Highlight on hover */
+        transform: translateY(-2px); /* Slight lift on hover */
+    }
+
+    .vertical-item-name {
+        font-size: 1.2em; /* Larger font for name */
+        font-weight: bold; /* Emphasize the name */
+    }
+
+    .vertical-item-contact {
+        font-size: 0.9em; /* Slightly smaller font for contact */
+        margin-top: 5px; /* Spacing below the name */
+        color: #d1d1d1; /* Lighter color for contact info */
+    }
     </style>
 </head>
 
@@ -889,7 +953,7 @@
                 </svg>
                 <span>Guide</span>
             </button>
-            <button class="UI-button">
+            <button id="helpButton" class="UI-button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-person-raised-hand" viewBox="0 0 16 16">
                     <path
@@ -928,41 +992,92 @@
 
 
         <br>
-        <!-- <h3>Suggestion</h3>
+
+        
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3>Suggestions</h3>
+            <button id="filterButton" style="background: none; border: none; padding: 0; cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-funnel" viewBox="0 0 16 16">
+                    <path d="M1.5 1.5a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 .5.5v.5a1 1 0 0 1-.276.692L10 7.293V12.5a1.5 1.5 0 0 1-3 0V7.293L1.776 2.692A1 1 0 0 1 1.5 2V1.5z"/>
+                </svg>
+            </button>
+        </div>
+        
+        
+        <div id="filterModal" class="popup-container">
+            <div class="popup-content" style="width: 300px;">
+                <span id="filterClose" class="popup-close">&times;</span>
+                <h3>Filter Options</h3>
+                <form id="filterForm">
+                    <!-- Category Checkboxes -->
+                    <div style="margin-bottom: 10px;">
+                        <label>Categories:</label>
+                        <div style="margin-top: 5px; text-align: left;">
+                            <input type="checkbox" id="facilities" value="facilities">
+                            <label for="facilities">Facilities</label><br>
+                            <input type="checkbox" id="faculties" value="faculties">
+                            <label for="faculties">Faculties</label><br>
+                            <input type="checkbox" id="libraries" value="libraries">
+                            <label for="libraries">Libraries</label><br>
+                            <input type="checkbox" id="residentialColleges" value="residentialColleges">
+                            <label for="residentialColleges">Residential Colleges</label><br>
+                            <input type="checkbox" id="sportsAndRecreation" value="sportsAndRecreation">
+                            <label for="sportsAndRecreation">Sports & Recreation</label>
+                        </div>
+                    </div>
+        
+                    <!-- Name Sorting -->
+                    <div style="margin-bottom: 10px;">
+                        <label for="filterSort">Sort by Name:</label>
+                        <select id="filterSort" style="width: 100%; padding: 5px;">
+                            <option value="">None</option>
+                            <option value="asc">A to Z</option>
+                            <option value="desc">Z to A</option>
+                        </select>
+                    </div>
+        
+                    <button type="submit" style="width: 100%; padding: 10px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Apply Filter
+                    </button>
+                </form>
+            </div>
+        </div>
+        
         <hr>
-        <div class="scroll-container">
-            <div class="card-container">
-                <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tfGVufDB8fDB8fHww"
-                    class="card-image">
-                <div class="card-content">University Malaya The Best</div>
+
+        <div class="vertical-scroll-container" id="vertical-suggestions-slider"></div>
+
+        <div id="locationModal" class="popup-container">
+            <div class="popup-content" style="width: 400px; max-height: 80%; overflow-y: auto; position: relative;">
+                <span id="modalClose" class="popup-close" style="position: absolute; top: 10px; right: 15px; cursor: pointer;">&times;</span>
+                <h3 id="locationName" style="margin-bottom: 10px; font-size: 1.5em;"></h3>
+                <div style="margin-bottom: 15px;">
+                    <strong>Contact Information:</strong>
+                    <p id="locationContact"></p>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Website:</strong>
+                    <p id="locationWebsite"></p>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Description:</strong>
+                    <p id="locationDescription"></p>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Operating Hours:</strong>
+                    <p id="locationHours"></p>
+                </div>
+
+                <button id="arButton" style="width: 100%; padding: 10px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 15px;">
+                    Show Directions in AR
+                </button>
             </div>
-            <div class="card-container">
-                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1462570/ss_c8a5566056a7b1ee346d20e2f4a71eb691008115.1920x1080.jpg?t=1662047426"
-                    class="card-image">
-                <div class="card-content">University Malaya The Best</div>
-            </div>
-            <div class="card-container">
-                <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D"
-                    class="card-image">
-                <div class="card-content">University Malaya The Best</div>
-            </div>
-            <div class="card-container">
-                <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D"
-                    class="card-image">
-                <div class="card-content">University Malaya The Best</div>
-            </div>
-            <div class="card-container">
-                <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D"
-                    class="card-image">
-                <div class="card-content">University Malaya The Best</div>
-            </div>
-            <div class="card-container">
-                <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hpdGV8ZW58MHx8MHx8fDA%3D"
-                    class="card-image">
-                <div class="card-content">University Malaya The Best</div>
-            </div>
-            
-        </div> -->
+        </div>
+        
+
+
+
 
     </div>
 
@@ -978,6 +1093,12 @@
             // Replace the window.location.href with the URL of the next page
             window.location.href = "LocationBased.html"; // Change "next_page.html" to the URL of your next page
         });
+
+        document.getElementById("helpButton").addEventListener("click", function () {
+            // Replace the window.location.href with the URL of the next page
+            window.location.href = "contactHelp.html"; // Change "next_page.html" to the URL of your next page
+        });
+
 
         // Function to handle button clicks
         function handleButtonClick(buttonName) {
@@ -1004,12 +1125,11 @@
         });
 
 
-
-
     </script>
     <script src="mainPage.js" type="module"></script>
     <script src="DashboardJS.js"></script>
     <script src="EventDatabaseHelper.js" type="module"></script>
+    <script src="information.js" type="module"></script>
 </body>
 <footer class="new_footer_area">
     <footer class="new_footer_area bg_color">
@@ -1045,20 +1165,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="col-lg-3 col-md-6">
-                    <div class="f_widget about-widget pl_70 wow fadeInLeft" data-wow-delay="0.6s"
-                        style="visibility: visible; animation-delay: 0.6s; animation-name: fadeInLeft;">
-                        <h3 class="f-title f_600 t_color f_size_18">Help</h3>
-                        <ul class="list-unstyled f_list">
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Term &amp; conditions</a></li>
-                            <li><a href="#">Reporting</a></li>
-                            <li><a href="#">Documentation</a></li>
-                            <li><a href="#">Support Policy</a></li>
-                            <li><a href="#">Privacy</a></li>
-                        </ul>
-                    </div>
-                </div>
+                
                 <br>
             </div>
             <div class="footer_bg">
