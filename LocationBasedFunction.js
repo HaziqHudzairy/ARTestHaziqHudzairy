@@ -471,16 +471,15 @@ function debugVirtualSpaceState() {
 
 function handleNotificationClick() {
     const virtualSpace = document.querySelector('#virtual-space');
-    const btnContent = document.querySelector('.btn-content2');
-    btnContent.classList.remove('hidden');
     slideOutNotification();
+    unhideExitEnv();
     //virtualSpace.setAttribute('visible', true);
     // showEntityInformation(currentEntityID);S
     showEntityInformation(currentEntityName);
     virtualSpace.setAttribute('follow-camera', '');
     virtualSpace.setAttribute('position', '0 1.6 -5');
     debugVirtualSpaceState();
-    unhideExitEnv();
+    
 }
 
 
