@@ -471,8 +471,8 @@ function debugVirtualSpaceState() {
 
 function handleNotificationClick() {
     const virtualSpace = document.querySelector('#virtual-space');
-    slideOutNotification();
     unhideExitEnv();
+    slideOutNotification();
     //virtualSpace.setAttribute('visible', true);
     // showEntityInformation(currentEntityID);S
     showEntityInformation(currentEntityName);
