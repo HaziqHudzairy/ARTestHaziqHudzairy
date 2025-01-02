@@ -949,7 +949,7 @@
                 </svg>
                 <span style="font-size: 0.6em;">Marker based AR</span>
             </button>
-            <button class="UI-button">
+            <button id="guideButton" class="UI-button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-question-diamond-fill" viewBox="0 0 16 16">
                     <path
@@ -1103,6 +1103,10 @@
             window.location.href = "contactHelp.html"; // Change "next_page.html" to the URL of your next page
         });
 
+        document.getElementById("guideButton").addEventListener("click", function () {
+            // Replace the window.location.href with the URL of the next page
+            window.location.href = "guide.html"; // Change "next_page.html" to the URL of your next page
+        });
 
         // Function to handle button clicks
         function handleButtonClick(buttonName) {
