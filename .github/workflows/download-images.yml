@@ -2,7 +2,7 @@ name: Download Images Daily
 
 on:
   schedule:
-    - cron: '30 16 * * *' 
+    - cron: '35 16 * * *' 
   workflow_dispatch: # Allows manual triggering
 
 
