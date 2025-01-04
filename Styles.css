@@ -633,6 +633,7 @@ form:hover .fa {
 }
 
 .direction-container{
+  padding: 20px;
   position: absolute;
   left: 0px;
   top: 60px;
@@ -643,6 +644,7 @@ form:hover .fa {
   min-height: 100px;
   max-height: 200px;
   z-index: 99999;
+  overflow-y: auto;
 }
 
 .direction-step {

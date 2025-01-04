@@ -202,7 +202,25 @@
     transition: opacity 0.5s ease-in-out;
     "></div>
 
-    <div id="directions-container" class="direction-container"></div>
+    <div id="directions-container" class="direction-container">
+        <div class="direction-step">
+            <p>Step ${index + 1}: ${instruction}</p>
+            <p>Distance: ${(distance / 1000).toFixed(2)} km</p>
+            <p>Time: ${(time / 60).toFixed(0)} min</p>
+        </div>
+        <div class="direction-step">
+            <p>Step ${index + 1}: ${instruction}</p>
+            <p>Distance: ${(distance / 1000).toFixed(2)} km</p>
+            <p>Time: ${(time / 60).toFixed(0)} min</p>
+        </div>
+
+        <div class="direction-step">
+            <p>Step ${index + 1}: ${instruction}</p>
+            <p>Distance: ${(distance / 1000).toFixed(2)} km</p>
+            <p>Time: ${(time / 60).toFixed(0)} min</p>
+        </div>
+        
+    </div>
     <div id="summary-container"></div>
 
 
