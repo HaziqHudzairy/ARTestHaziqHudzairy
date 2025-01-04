@@ -1,28 +1,37 @@
-async function triggerImageDownload() {
-    const apiUrl = 'https://image-downloader-umber.vercel.app/api/download-images'; // Vercel backend URL
+const fs = require('fs');
+const path = require('path');
+
+exports.handler = async (event) => {
+    if (event.httpMethod !== 'POST') {
+        return {
+            statusCode: 405,
+            body: JSON.stringify({ error: 'Method not allowed' }),
+        };
+    }
 
     try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`Failed to download images: ${response.statusText}`);
+        // Extract file name from the headers
+        const fileName = event.headers['file-name'];
+        const filePath = path.join('asset/EventsImages', fileName);
+
+        // Ensure the directory exists
+        const directory = path.dirname(filePath);
+        if (!fs.existsSync(directory)) {
+            fs.mkdirSync(directory, { recursive: true });
         }
 
-        const data = await response.json();
-        console.log('Download response:', data);
+        // Save the file to the local directory
+        fs.writeFileSync(filePath, event.body, 'binary');
 
-        // Optionally display the downloaded files
-        const status = document.getElementById('status');
-        if (data.newFiles && data.newFiles.length > 0) {
-            status.textContent = `Downloaded files: ${data.newFiles.join(', ')}`;
-        } else {
-            status.textContent = 'No new images to download.';
-        }
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ message: `File ${fileName} uploaded successfully` }),
+        };
     } catch (error) {
-        console.error('Error triggering image download:', error);
-        const status = document.getElementById('status');
-        status.textContent = `Error: ${error.message}`;
+        console.error('Error uploading file:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Failed to upload file', details: error.message }),
+        };
     }
-}
-
-// Attach the function to a button click
-document.getElementById('downloadButton').addEventListener('click', triggerImageDownload);
+};
