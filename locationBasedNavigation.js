@@ -47,27 +47,6 @@ function startTrackingDestination(destinationLatitude, destinationLongitude) {
     );
 }
 
-
-function startTrackingDestination(destinationLatitude, destinationLongitude) {
-    navigator.geolocation.watchPosition(
-        (position) => {
-            const userLatitude = position.coords.latitude;
-            const userLongitude = position.coords.longitude;
-
-            // Update user's current position
-            start = [userLatitude, userLongitude];
-            end = [destinationLatitude, destinationLongitude];
-
-            // Fetch and update route, directions, and summary
-            fetchTurnByTurnDirections(start, end);
-        },
-        (error) => {
-            console.error("Error tracking user's location:", error);
-        },
-        { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 } // Settings for real-time tracking
-    );
-}
-
 async function fetchTurnByTurnDirections(start, end) {
     const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${start[1]},${start[0]};${end[1]},${end[0]}?geometries=geojson&access_token=${MAPBOX_TOKEN}`;
 

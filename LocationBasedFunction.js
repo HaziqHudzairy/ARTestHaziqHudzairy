@@ -256,6 +256,7 @@ function clickSuggestion(entity) {
     centerCircleH3.textContent = entity.name;
     centerMenu.classList.remove('hidden');
     setNavigationCoordinates(entity.latitude, entity.longitude);
+    startTrackingDestination(entity.latitude, entity.longitude)
     unhideExitNav();
 }
 
