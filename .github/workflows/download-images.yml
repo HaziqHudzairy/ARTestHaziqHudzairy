@@ -2,7 +2,7 @@ name: Download Images Daily
 
 on:
   schedule:
-  - cron: '25 23 * * *'
+  - cron: '27 23 * * *'
  # Every day at midnight (UTC)
 
 jobs:
