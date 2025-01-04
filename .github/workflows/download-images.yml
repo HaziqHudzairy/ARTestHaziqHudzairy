@@ -2,7 +2,7 @@ name: Download Images Daily
 
 on:
   schedule:
-    - cron: '00 00 * * *' # Schedule at 11:35 PM UTC
+    - cron: '27 00 * * *' # Schedule at 11:35 PM UTC
   workflow_dispatch: # Allows manual triggering
 
 

@@ -9,19 +9,26 @@
     <!-- Google Font Awesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+        (function(){
+        emailjs.init({
+            publicKey: "uJJ_n2kicfhyPnaho",
+        });
+        })();
+    </script>
 </head>
 
 <body>
     <div class="container">
-
         <div class="container-top">
             <!-- Logo at the top -->
             <div class="logo-container">
                 <img src="asset/University_of_Malaya-Logo.png" alt="UM Logo" class="logoTop">
                 <img src="asset/UM.AR_Logo_Font_Black.png" alt="UM AR Logo" class="logoTop">
             </div>
-    
-            
         </div>
         <div class="outer-container">
             <div class="enquiry">
@@ -37,11 +44,11 @@
                     <h1>Report a Bug or Problem</h1>
                     <p>If you have any enquiry, encountered a bug or issue with the website, please let me know using the form below.</p>
                     <div class="input-container">
-                        <input type="email" id="email-enquiry" placeholder=" ">
+                        <input type="email" id="email-enquiry" placeholder=" " aria-label="Your Email">
                         <label for="email-enquiry">Your Email</label>
                     </div>
                     <div class="input-container">
-                        <textarea id="bug-description" rows="5" placeholder=" "></textarea>
+                        <textarea id="bug-description" rows="5" placeholder=" " aria-label="Describe the Issue"></textarea>
                         <label for="bug-description">Describe the Issue or enquiry</label>
                     </div>
                     <button id="submit-enquiry">Submit</button>
@@ -52,47 +59,51 @@
             </div>
         </div>
     </div>
-    
 
     <script>
         document.getElementById("submit-enquiry").addEventListener("click", function () {
-    const email = document.getElementById("email-enquiry").value;
-    const description = document.getElementById("bug-description").value;
+            const email = document.getElementById("email-enquiry").value;
+            const description = document.getElementById("bug-description").value;
 
-    if (!email || !description) {
-        alert("Please fill out both fields.");
-        return;
-    }
+            if (!email || !description) {
+                alert("Please fill out both fields.");
+                return;
+            }
 
-    // Simulate sending email (backend integration required here)
-    alert(`Thank you for reporting the issue!\n\nEmail: ${email}\nDescription: ${description}`);
-});
-
+            // Use EmailJS to send the email
+            emailjs
+                .send("service_s93c0bf", "template_p3jnvdc", {
+                    from_email: email, // Matches {{from_email}} in your template
+                    message: description, // Matches {{message}} in your template
+                })
+                .then(function (response) {
+                    alert("Your enquiry has been submitted successfully!");
+                    // Clear form fields after successful submission
+                    document.getElementById("email-enquiry").value = "";
+                    document.getElementById("bug-description").value = "";
+                })
+                .catch(function (error) {
+                    alert("Failed to submit your enquiry. Please try again later.");
+                    console.error("EmailJS Error:", error);
+                });
+        });
     </script>
 </body>
+
 <footer class="new_footer_area">
     <footer class="new_footer_area bg_color">
         <div class="new_footer_top">
             <div class="container-footer" style="background-color:#ffffff00;">
                 <div class="row">
                     <div class="col-lg-3 col-md-6">
-                        <div class="f_widget company_widget wow fadeInLeft" data-wow-delay="0.2s"
-                            style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInLeft;">
+                        <div class="f_widget company_widget wow fadeInLeft" data-wow-delay="0.2s">
                             <h3 class="f-title f_600 t_color f_size_18">Get in Touch</h3>
                             <p>Feel free to reach out to know more about the project!</p>
-                            <form action="#" class="f_subscribe_two mailchimp" method="post" novalidate="true"
-                                _lpchecked="1">
-                                <h3 class="f-title f_600 t_color f_size_18">Email</h3>
-                                <a href="emailto:haziq.huzairi11@gmail.com">haziq.huzairi11@gmail.com</a>
-                                <br>
-                                <br>
-                            </form>
+                            <a href="mailto:haziq.huzairi11@gmail.com">haziq.huzairi11@gmail.com</a>
                         </div>
                     </div>
-                    <br>
                     <div class="col-lg-3 col-md-6">
-                        <div class="f_widget social-widget pl_70 wow fadeInLeft" data-wow-delay="0.8s"
-                            style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInLeft;">
+                        <div class="f_widget social-widget pl_70 wow fadeInLeft" data-wow-delay="0.8s">
                             <h3 class="f-title f_600 t_color f_size_18">Follow me</h3>
                             <div class="f_social_icon">
                                 <a href="#" class="fab fa-facebook"></a>
@@ -103,20 +114,6 @@
                         </div>
                     </div>
                 </div>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-            </div>
-            <div class="footer_bg">
-                <div class="footer_bg_one"></div>
-                <div class="footer_bg_two"></div>
             </div>
         </div>
     </footer>
