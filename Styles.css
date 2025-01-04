@@ -632,9 +632,17 @@ form:hover .fa {
   text-align: center;
 }
 
-/* #directions-container {
+.direction-container{
+  position: absolute;
+  left: 0px;
+  top: 60px;
+  background-color: #e6f7ff;
   font-family: Arial, sans-serif;
-  margin: 20px;
+  width: 100%;
+  height: auto;
+  min-height: 100px;
+  max-height: 200px;
+  z-index: 99999;
 }
 
 .direction-step {
@@ -646,7 +654,16 @@ form:hover .fa {
 
 .direction-step p {
   margin: 5px 0;
-} */
+}
+
+/* #directions-container {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+
+
+ */
 
 .cancel-btn-container2 {
   position: fixed;

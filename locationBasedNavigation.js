@@ -28,6 +28,98 @@ function setNavigationCoordinates(destinationLatitude, destinationLongitude) {
     );
 }
 
+function startTrackingDestination(destinationLatitude, destinationLongitude) {
+    navigator.geolocation.watchPosition(
+        (position) => {
+            const userLatitude = position.coords.latitude;
+            const userLongitude = position.coords.longitude;
+
+            start = [userLatitude, userLongitude];
+            end = [destinationLatitude, destinationLongitude];
+
+            // Fetch and display updated route and directions
+            fetchTurnByTurnDirections(start, end);
+        },
+        (error) => {
+            console.error("Error tracking user's location:", error);
+        },
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 } // High accuracy for real-time tracking
+    );
+}
+
+
+function startTrackingDestination(destinationLatitude, destinationLongitude) {
+    navigator.geolocation.watchPosition(
+        (position) => {
+            const userLatitude = position.coords.latitude;
+            const userLongitude = position.coords.longitude;
+
+            // Update user's current position
+            start = [userLatitude, userLongitude];
+            end = [destinationLatitude, destinationLongitude];
+
+            // Fetch and update route, directions, and summary
+            fetchTurnByTurnDirections(start, end);
+        },
+        (error) => {
+            console.error("Error tracking user's location:", error);
+        },
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 } // Settings for real-time tracking
+    );
+}
+
+async function fetchTurnByTurnDirections(start, end) {
+    const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${start[1]},${start[0]};${end[1]},${end[0]}?geometries=geojson&access_token=${MAPBOX_TOKEN}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.routes && data.routes.length > 0) {
+            const route = data.routes[0];
+            const steps = route.legs[0].steps;
+            const totalDistance = (route.legs[0].distance / 1000).toFixed(2); // Distance in km
+            const totalTime = (route.legs[0].duration / 60).toFixed(0); // Time in minutes
+
+            displayDirections(steps);
+            displaySummary(totalDistance, totalTime); // Update summary dynamically
+        } else {
+            console.error("No route found.");
+        }
+    } catch (error) {
+        console.error('Error fetching route:', error);
+    }
+}
+
+function displaySummary(distance, time) {
+    const summaryContainer = document.getElementById("summary-container");
+    summaryContainer.innerHTML = `
+        <p>Total Distance: ${distance} km</p>
+        <p>Estimated Time: ${time} min</p>
+    `;
+}
+
+// Function to display the turn-by-turn instructions
+function displayDirections(steps) {
+    const directionsContainer = document.getElementById("directions-container");
+    directionsContainer.innerHTML = ''; // Clear any existing directions
+
+    steps.forEach((step, index) => {
+        const instruction = step.maneuver.instruction;
+        const distance = step.distance; // Distance for this step
+        const time = step.duration; // Duration for this step (in seconds)
+
+        // Create a new element for the instruction and append to the container
+        const stepElement = document.createElement('div');
+        stepElement.className = "direction-step";
+        stepElement.innerHTML = `
+        <p>Step ${index + 1}: ${instruction}</p>
+        <p>Distance: ${(distance / 1000).toFixed(2)} km</p>
+        <p>Time: ${(time / 60).toFixed(0)} min</p>
+    `;
+        directionsContainer.appendChild(stepElement);
+    });
+}
 
 
 // Fetch route data from Mapbox Directions API
@@ -167,46 +259,9 @@ document.querySelector('a-scene').addEventListener('loaded', function () {
     renderRoute(); // Render route markers
 });
 
-async function fetchTurnByTurnDirections(start, end) {
-    const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${start[1]},${start[0]};${end[1]},${end[0]}?geometries=geojson&access_token=${MAPBOX_TOKEN}`;
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
 
-        if (data.routes && data.routes.length > 0) {
-            // Extract the steps from the route response
-            const steps = data.routes[0].legs[0].steps;
-            displayDirections(steps);  // Call function to display instructions
-        } else {
-            console.error("No route found.");
-        }
-    } catch (error) {
-        console.error('Error fetching route:', error);
-    }
-}
 
-// Function to display the turn-by-turn instructions
-function displayDirections(steps) {
-    const directionsContainer = document.getElementById("directions-container");
-    directionsContainer.innerHTML = ''; // Clear any existing directions
-
-    steps.forEach((step, index) => {
-        const instruction = step.maneuver.instruction;
-        const distance = step.distance; // Distance for this step
-        const time = step.duration; // Duration for this step (in seconds)
-
-        // Create a new element for the instruction and append to the container
-        const stepElement = document.createElement('div');
-        stepElement.className = "direction-step";
-        stepElement.innerHTML = `
-        <p>Step ${index + 1}: ${instruction}</p>
-        <p>Distance: ${(distance / 1000).toFixed(2)} km</p>
-        <p>Time: ${(time / 60).toFixed(0)} min</p>
-    `;
-        directionsContainer.appendChild(stepElement);
-    });
-}
 
 
 const arScene = document.getElementById("ar-scene");
