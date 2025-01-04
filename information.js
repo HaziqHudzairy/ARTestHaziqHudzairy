@@ -31,6 +31,38 @@ export function fetchLocations(callback) {
     });
 }
 
+
+window.findEntityIdByName = function findEntityIdByName(entityName, callback) {
+    const dbRef = ref(db, "information"); // Correctly access the 'information' node
+
+    // Fetch data from Firebase
+    onValue(dbRef, (snapshot) => {
+        const data = snapshot.val();
+
+        // Traverse the data structure
+        for (const category in data) {
+            const entities = data[category];
+            for (const key in entities) {
+                if (entities[key].name.trim().toLowerCase() === entityName.trim().toLowerCase()) {
+                    callback(key); // Return the key as the Entity ID
+                    return;
+                }
+            }
+        }
+        console.warn("Entity not found for name:", entityName); // Log if no match is found
+        callback(null); // Return null if entity not found
+    }, (error) => {
+        console.error("Error fetching data:", error); // Log errors
+        callback(null); // Handle errors gracefully
+    });
+};
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    initializeVerticalListSlider();
+});
+
 export function initializeVerticalListSlider() {
     const slider = document.getElementById("vertical-suggestions-slider");
     const filterButton = document.getElementById("filterButton");
@@ -80,6 +112,27 @@ export function initializeVerticalListSlider() {
         filterModal.classList.remove("visible"); // Close the modal
     });
 
+    document.getElementById("arButton").addEventListener("click", function () {
+        const locationName = document.getElementById("locationName").textContent;
+    
+        console.log("AR Button Clicked. Location Name:", locationName); // Debugging log
+    
+        // Call the global function
+        findEntityIdByName(locationName, (entityId) => {
+            if (entityId) {
+                console.log("Entity ID found:", entityId); // Debugging log
+                // Add entityID to the URL as a query parameter
+                const queryParams = new URLSearchParams({ entityID: entityId });
+                // Redirect to LocationBased.html with the entityID
+                window.location.href = `LocationBased.html?${queryParams}`;
+            } else {
+                console.warn("Entity not found for name:", locationName);
+                alert("Entity not found. Please try again.");
+            }
+        });
+    });
+    
+
     // Function to render locations in the slider
     function renderLocations(locations) {
         slider.innerHTML = ""; // Clear existing items
@@ -103,17 +156,17 @@ export function initializeVerticalListSlider() {
             : "Not available.";
         document.getElementById("locationDescription").innerHTML = location.description || "No description available.";
         document.getElementById("locationHours").innerHTML = location.operating_hours || "Operating hours not specified.";
-    
+
         const modal = document.getElementById("locationModal");
         modal.classList.add("visible");
     }
-    
+
     // Close modal when clicking the `x` icon
     document.getElementById("modalClose").addEventListener("click", () => {
         const modal = document.getElementById("locationModal");
         modal.classList.remove("visible");
     });
-    
+
     // Close modal when clicking outside the content
     document.getElementById("locationModal").addEventListener("click", (event) => {
         if (event.target === document.getElementById("locationModal")) {
@@ -121,9 +174,6 @@ export function initializeVerticalListSlider() {
             modal.classList.remove("visible");
         }
     });
-    
-    
-    
 }
 
-initializeVerticalListSlider();
+

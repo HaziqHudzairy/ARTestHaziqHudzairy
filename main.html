@@ -696,89 +696,97 @@
         }
 
         .popup-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s, opacity 0.3s ease;
-}
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease;
+        }
 
-.popup-container.visible {
-    visibility: visible;
-    opacity: 1;
-}
+        .popup-container.visible {
+            visibility: visible;
+            opacity: 1;
+        }
 
-.popup-content {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    text-align: left;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    overflow-y: auto; /* Enables vertical scrolling */
-}
+        .popup-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: left;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+            /* Enables vertical scrolling */
+        }
 
-.popup-close {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-}
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+        }
 
-.popup-close:hover {
-    color: #007BFF; /* Optional hover effect for close button */
-}
+        .popup-close:hover {
+            color: #007BFF;
+            /* Optional hover effect for close button */
+        }
 
-.popup-content p {
-    font-size: 15px;
-    margin: 5px 0;
-    white-space: pre-wrap; /* Preserve <br> and line breaks */
-    line-height: 1.5;
-    word-wrap: break-word; /* Prevent long words from overflowing */
-}
+        .popup-content p {
+            font-size: 15px;
+            margin: 5px 0;
+            white-space: pre-wrap;
+            /* Preserve <br> and line breaks */
+            line-height: 1.5;
+            word-wrap: break-word;
+            /* Prevent long words from overflowing */
+        }
 
-.popup-content strong {
-    font-size: 15px;
-}
+        .popup-content strong {
+            font-size: 15px;
+        }
 
-.popup-content h3 {
-    color: black;
-}
+        .popup-content h3 {
+            color: black;
+        }
 
-.popup-content a {
-    color: #007BFF; /* Link color */
-    text-decoration: none; /* Remove underline */
-}
+        .popup-content a {
+            color: #007BFF;
+            /* Link color */
+            text-decoration: none;
+            /* Remove underline */
+        }
 
-.popup-content a:hover {
-    text-decoration: underline; /* Add underline on hover */
-}
+        .popup-content a:hover {
+            text-decoration: underline;
+            /* Add underline on hover */
+        }
 
-.popup-close {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
+        .popup-close {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
 
-.popup-close:hover {
-    color: #007BFF; /* Optional hover effect */
-}
+        .popup-close:hover {
+            color: #007BFF;
+            /* Optional hover effect */
+        }
 
-.popup-content img{
-    max-width: 100%;
-}
+        .popup-content img {
+            max-width: 100%;
+        }
 
 
 
@@ -855,44 +863,69 @@
         }
 
         .vertical-scroll-container {
-        display: block; /* Enable vertical stacking */
-        overflow-y: auto; /* Vertical scrolling */
-        max-height: 400px; /* Limit height for the scrollable area */
-        padding: 10px; /* Add padding for spacing */
-        background-color: rgba(22, 22, 22, 0.8); /* Background for the list */
-        border-radius: 10px; /* Rounded corners */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
-    }
+            display: block;
+            /* Enable vertical stacking */
+            overflow-y: auto;
+            /* Vertical scrolling */
+            max-height: 400px;
+            /* Limit height for the scrollable area */
+            padding: 10px;
+            /* Add padding for spacing */
+            background-color: rgba(22, 22, 22, 0.8);
+            /* Background for the list */
+            border-radius: 10px;
+            /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Shadow for depth */
+        }
 
-    .vertical-list-item {
-        display: flex; /* Align content horizontally */
-        flex-direction: column; /* Stack name and contact vertically */
-        justify-content: flex-start; /* Align items to the top */
-        padding: 15px; /* Spacing inside each item */
-        margin-bottom: 10px; /* Spacing between items */
-        border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
-        border-radius: 10px; /* Rounded corners for each item */
-        background-color: rgba(255, 255, 255, 0.1); /* Slightly translucent background */
-        color: white; /* White text for contrast */
-        cursor: pointer; /* Indicate interactivity */
-        transition: transform 0.3s, background-color 0.3s; /* Smooth transitions */
-    }
+        .vertical-list-item {
+            display: flex;
+            /* Align content horizontally */
+            flex-direction: column;
+            /* Stack name and contact vertically */
+            justify-content: flex-start;
+            /* Align items to the top */
+            padding: 15px;
+            /* Spacing inside each item */
+            margin-bottom: 10px;
+            /* Spacing between items */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* Light border */
+            border-radius: 10px;
+            /* Rounded corners for each item */
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Slightly translucent background */
+            color: white;
+            /* White text for contrast */
+            cursor: pointer;
+            /* Indicate interactivity */
+            transition: transform 0.3s, background-color 0.3s;
+            /* Smooth transitions */
+        }
 
-    .vertical-list-item:hover {
-        background-color: rgba(255, 255, 255, 0.2); /* Highlight on hover */
-        transform: translateY(-2px); /* Slight lift on hover */
-    }
+        .vertical-list-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            /* Highlight on hover */
+            transform: translateY(-2px);
+            /* Slight lift on hover */
+        }
 
-    .vertical-item-name {
-        font-size: 1.2em; /* Larger font for name */
-        font-weight: bold; /* Emphasize the name */
-    }
+        .vertical-item-name {
+            font-size: 1.2em;
+            /* Larger font for name */
+            font-weight: bold;
+            /* Emphasize the name */
+        }
 
-    .vertical-item-contact {
-        font-size: 0.9em; /* Slightly smaller font for contact */
-        margin-top: 5px; /* Spacing below the name */
-        color: #d1d1d1; /* Lighter color for contact info */
-    }
+        .vertical-item-contact {
+            font-size: 0.9em;
+            /* Slightly smaller font for contact */
+            margin-top: 5px;
+            /* Spacing below the name */
+            color: #d1d1d1;
+            /* Lighter color for contact info */
+        }
     </style>
 </head>
 
@@ -920,13 +953,14 @@
                 <ul id="suggestions" class="suggestions-list"></ul>
             </div>
             <a href="LoginPage.html">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" class="bi bi-person" viewBox="0 0 16 16">
-                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                    <path d="M2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" class="bi bi-person"
+                    viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                    <path d="M2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z" />
                 </svg>
             </a>
-            
-            
+
+
 
         </div>
         <hr>
@@ -997,18 +1031,20 @@
 
         <br>
 
-        
+
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <h3>Suggestions</h3>
             <button id="filterButton" style="background: none; border: none; padding: 0; cursor: pointer;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-funnel" viewBox="0 0 16 16">
-                    <path d="M1.5 1.5a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 .5.5v.5a1 1 0 0 1-.276.692L10 7.293V12.5a1.5 1.5 0 0 1-3 0V7.293L1.776 2.692A1 1 0 0 1 1.5 2V1.5z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-funnel"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M1.5 1.5a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 .5.5v.5a1 1 0 0 1-.276.692L10 7.293V12.5a1.5 1.5 0 0 1-3 0V7.293L1.776 2.692A1 1 0 0 1 1.5 2V1.5z" />
                 </svg>
             </button>
         </div>
-        
-        
+
+
         <div id="filterModal" class="popup-container">
             <div class="popup-content" style="width: 300px;">
                 <span id="filterClose" class="popup-close">&times;</span>
@@ -1030,7 +1066,7 @@
                             <label for="sportsAndRecreation">Sports & Recreation</label>
                         </div>
                     </div>
-        
+
                     <!-- Name Sorting -->
                     <div style="margin-bottom: 10px;">
                         <label for="filterSort">Sort by Name:</label>
@@ -1040,21 +1076,23 @@
                             <option value="desc">Z to A</option>
                         </select>
                     </div>
-        
-                    <button type="submit" style="width: 100%; padding: 10px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
+
+                    <button type="submit"
+                        style="width: 100%; padding: 10px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
                         Apply Filter
                     </button>
                 </form>
             </div>
         </div>
-        
+
         <hr>
 
         <div class="vertical-scroll-container" id="vertical-suggestions-slider"></div>
 
         <div id="locationModal" class="popup-container">
             <div class="popup-content" style="width: 400px; max-height: 80%; overflow-y: auto; position: relative;">
-                <span id="modalClose" class="popup-close" style="position: absolute; top: 10px; right: 15px; cursor: pointer;">&times;</span>
+                <span id="modalClose" class="popup-close"
+                    style="position: absolute; top: 10px; right: 15px; cursor: pointer;">&times;</span>
                 <h3 id="locationName" style="margin-bottom: 10px; font-size: 1.5em;"></h3>
                 <div style="margin-bottom: 15px;">
                     <strong>Contact Information:</strong>
@@ -1073,12 +1111,13 @@
                     <p id="locationHours"></p>
                 </div>
 
-                <button id="arButton" style="width: 100%; padding: 10px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 15px;">
+                <button id="arButton"
+                    style="width: 100%; padding: 10px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 15px;">
                     Show Directions in AR
                 </button>
             </div>
         </div>
-        
+
 
 
 
@@ -1127,10 +1166,7 @@
             });
         });
 
-        // Add click event listener to AR button
-        document.querySelector('.AR-button').addEventListener('click', function () {
-            handleButtonClick("AR button clicked");
-        });
+
 
 
     </script>
@@ -1173,7 +1209,7 @@
                     </div>
                 </div>
                 <br>
-                
+
                 <br>
             </div>
             <div class="footer_bg">

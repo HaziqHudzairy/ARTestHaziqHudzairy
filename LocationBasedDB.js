@@ -44,6 +44,41 @@ function fetchEntitiesNameCoordinate() {
     });
 }
 
+window.findLatLngByEntityId = function findLatLngByEntityId(entityId, callback) {
+    const dbRef = ref(database, "entities"); // Reference to the 'information' node
+
+    // Fetch data from Firebase
+    onValue(dbRef, (snapshot) => {
+        const data = snapshot.val();
+        console.log("Firebase Data:", data); // Debugging log to view the data structure
+
+        // Traverse the data structure
+        for (const category in data) {
+            const entities = data[category];
+            if (entities[entityId]) {
+                const latitude = entities[entityId].latitude;
+                const longitude = entities[entityId].longitude;
+
+                if (latitude && longitude) {
+                    console.log("Latitude:", latitude, "Longitude:", longitude); // Debugging log
+                    callback({ latitude, longitude }); // Return the coordinates
+                    return;
+                } else {
+                    console.warn("Latitude or Longitude not found for entity:", entityId);
+                    callback(null); // Return null if coordinates are missing
+                    return;
+                }
+            }
+        }
+
+        console.warn("Entity not found for ID:", entityId); // Log if entity ID is not found
+        callback(null); // Return null if entity is not found
+    }, (error) => {
+        console.error("Error fetching data:", error); // Log errors
+        callback(null); // Handle errors gracefully
+    });
+}
+
 // Re-fetch and render entities from the database
 window.fetchAndRenderEntities = function () {
     fetchEntitiesNameCoordinate();

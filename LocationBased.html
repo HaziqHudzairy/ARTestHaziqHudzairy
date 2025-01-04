@@ -581,6 +581,36 @@
     <script src="LocationBasedFunction.js"></script>
     <script src="locationBasedNavigation.js"></script>
 
+    <script type="module">
+        import './LocationBasedDB.js';
+        // Function to get query parameters
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param); // Returns null if the parameter is not found
+        }
+
+        // Check for the entityID parameter
+        const entityId = getQueryParam("entityID");
+
+        
+        // Debugging: Log the entityID or show an appropriate message
+        if (entityId) {
+            console.log("Entity ID passed:", entityId);
+
+            window.findLatLngByEntityId("entityPusatAsasi", (coordinates) => {
+                if (coordinates) {
+                    console.log("Coordinates found:", coordinates);
+                    // Set navigation coordinates and start rendering the route
+                    setNavigationCoordinates(coordinates.latitude, coordinates.longitude);
+                } else {
+                    console.warn("Coordinates not found for entity ID: entityPusatAsasi");
+                }
+            });
+
+            //indow.setNavigationCoordinates(destinationLatitude, destinationLongitude);
+        }
+    </script>
+
     <!-- <script>
 
         
