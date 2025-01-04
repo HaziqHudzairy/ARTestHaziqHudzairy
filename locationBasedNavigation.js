@@ -61,7 +61,7 @@ async function fetchTurnByTurnDirections(start, end) {
             const totalTime = (route.legs[0].duration / 60).toFixed(0); // Time in minutes
 
             displayDirections(steps);
-            displaySummary(totalDistance, totalTime); // Update summary dynamically
+            //displaySummary(totalDistance, totalTime); // Update summary dynamically
         } else {
             console.error("No route found.");
         }
