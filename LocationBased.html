@@ -597,16 +597,15 @@
         if (entityId) {
             console.log("Entity ID passed:", entityId);
 
-            window.findLatLngByEntityId("entityPusatAsasi", (coordinates) => {
-                if (coordinates) {
-                    console.log("Coordinates found:", coordinates);
-                    // Set navigation coordinates and start rendering the route
-                    setNavigationCoordinates(coordinates.latitude, coordinates.longitude);
+            window.findEntityById(entityId, (entity) => {
+                if (entity) {
+                    console.log("Entity data:", entity);
+
+                    clickSuggestion(entity)
                 } else {
-                    console.warn("Coordinates not found for entity ID: entityPusatAsasi");
+                    console.warn("Entity not found for ID:", entityId);
                 }
             });
-
             //indow.setNavigationCoordinates(destinationLatitude, destinationLongitude);
         }
     </script>
