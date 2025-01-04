@@ -192,11 +192,10 @@ eventForm.addEventListener('submit', async (e) => {
     try {
         if (!eventPoster) throw new Error("No poster selected.");
 
-        // Upload poster and get the URL
-        const posterUrl = await uploadImage(eventPoster);
-
         // Generate a unique event ID
         const eventId = `${uidUser}-${Date.now()}`;
+
+        const posterUrl = await uploadImage(eventPoster, eventId);
 
         // Save event details to Firebase Realtime Database
         await set(ref(db, `events/${eventId}`), {
@@ -217,11 +216,11 @@ eventForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Function to upload an image
-async function uploadImage(file) {
+async function uploadImage(file, eventId) {
     try {
-        // Create a storage reference
-        const fileRef = storageRef(storage, `uploads/${file.name}`);
+        // Create a storage reference with eventId as the file name
+        const fileExtension = file.name.split('.').pop(); // Get the file extension
+        const fileRef = storageRef(storage, `uploads/${eventId}.${fileExtension}`); // Use eventId as the file name
 
         // Upload the file
         const snapshot = await uploadBytes(fileRef, file);
@@ -237,6 +236,7 @@ async function uploadImage(file) {
         throw error;
     }
 }
+
 
 
 // Function to filter events for the logged-in user
@@ -596,15 +596,15 @@ async function saveChanges(currentEventId) {
     try {
         let updatedPosterUrl = currentPosterUrl; // Default to the current image URL
 
+        // Generate a unique event ID
+        const eventId = `${uidUser}-${Date.now()}`;
+
         // If a new image is selected, upload it and update the URL
         if (newImageFile) {
             console.log('Uploading new image...');
-            updatedPosterUrl = await uploadImage(newImageFile); // Use the uploadImage function
+            updatedPosterUrl = await uploadImage(newImageFile, eventId); // Use the uploadImage function
             console.log('New image uploaded successfully:', updatedPosterUrl);
         }
-
-        // Generate a unique event ID
-        const eventId = `${uidUser}-${Date.now()}`;
 
         // Save event details to Firebase Realtime Database
         await set(ref(db, `events/${eventId}`), {
