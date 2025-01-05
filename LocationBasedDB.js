@@ -332,7 +332,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     }
                 });
 
-                alert(`Matching Event IDs: ${eventIds.join(", ")}`);
+                // alert(`Matching Event IDs: ${eventIds.join(", ")}`);
 
                 console.log("Fetched event IDs:", eventIds);
 
@@ -347,6 +347,8 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     let currentIndex = 0;
                     const currentEventId = eventIds[currentIndex];
                     const assetImage = document.querySelector(`#${currentEventId}`);
+
+                    alert(`Asset image found: ${assetImage.outerHTML}`);
 
                     if (assetImage) {
                         eventsImage.setAttribute("src", `#${currentEventId}`); // Use the ID from <a-assets>
