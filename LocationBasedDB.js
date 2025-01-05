@@ -337,10 +337,12 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 alert(`Event IDs: ${eventIds.join(", ")}`);
 
                 if (eventIds.length > 0) {
+                    alert(`Event IDs: it got here`);
                     // Use the first image from the array
                     const firstEventId = eventIds[0];
+                    alert(`Event IDs: ${firstEventId}`);
                     const targetImage = document.querySelector(firstEventId); // Already includes '#'
-
+                    alert(`Event IDs: ${targetImage}`);
                     if (targetImage) {
                         // Update the material to display the first image
                         eventsImagePlane.setAttribute("material", "src: " + targetImage);
