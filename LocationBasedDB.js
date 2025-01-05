@@ -342,19 +342,38 @@ window.showEventImagesForLocation = async function (locationEntityName) {
 
                     const rotateImages = () => {
                         const currentEventId = eventIds[currentIndex];
+                        // const imagePath = currentEventId.replace('#', 'asset/EventsImages/');
+                        // setPanelWidth(imagePath, eventsImagePlane);
 
-                        const imagePath = currentEventId.replace('#', 'asset/EventsImages/');
-                        setPanelWidth(imagePath, eventsImagePlane);
+                        // Add fade-out effect
+                        eventsImagePlane.setAttribute('animation__fadeout', {
+                            property: 'material.opacity',
+                            to: 0,
+                            dur: 500, // Duration of fade-out (in milliseconds)
+                        });
 
-                        eventsImagePlane.setAttribute('material', `src: ${currentEventId}`);
+                        setTimeout(() => {
+                            // Change the image after fade-out
+                            eventsImagePlane.setAttribute('material', `src: ${currentEventId}`);
+                            console.log(`Displaying image: ${currentEventId}`);
+
+                            // Add fade-in effect
+                            eventsImagePlane.setAttribute('animation__fadein', {
+                                property: 'material.opacity',
+                                to: 1,
+                                dur: 500, // Duration of fade-in (in milliseconds)
+                            });
+                        }, 500); // Wait for the fade-out to complete before changing the image
+
                         currentIndex = (currentIndex + 1) % eventIds.length; // Loop back to the first image
                     };
+
 
                     // Display the first image immediately
                     rotateImages();
 
                     // Change the image every 2 seconds
-                    setInterval(rotateImages, 2000);
+                    setInterval(rotateImages, 5000);
                 } else {
                     alert("No items in the event IDs array.");
                     eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
@@ -369,23 +388,23 @@ window.showEventImagesForLocation = async function (locationEntityName) {
     }
 };
 
-function setPanelWidth(imagePath, planeElement, fixedHeight = 2) {
-    const img = new Image();
-    img.src = imagePath;
+// function setPanelWidth(imagePath, planeElement, fixedHeight = 2) {
+//     const img = new Image();
+//     img.src = imagePath;
 
-    img.onload = () => {
-        const aspectRatio = img.width / img.height;
-        const planeWidth = fixedHeight * aspectRatio;
+//     img.onload = () => {
+//         const aspectRatio = img.width / img.height;
+//         const planeWidth = fixedHeight * aspectRatio;
 
-        // Set the width and height of the plane
-        planeElement.setAttribute('geometry', `height: ${fixedHeight}; width: ${planeWidth}`);
-        console.log(`Set width to ${planeWidth} for image: ${imagePath}`);
-    };
+//         // Set the width and height of the plane
+//         planeElement.setAttribute('geometry', `height: ${fixedHeight}; width: ${planeWidth}`);
+//         console.log(`Set width to ${planeWidth} for image: ${imagePath}`);
+//     };
 
-    img.onerror = () => {
-        console.error(`Failed to load image for aspect ratio calculation: ${imagePath}`);
-    };
-}
+//     img.onerror = () => {
+//         console.error(`Failed to load image for aspect ratio calculation: ${imagePath}`);
+//     };
+// }
 
 
 
