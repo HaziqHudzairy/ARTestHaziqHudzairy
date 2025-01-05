@@ -305,47 +305,68 @@ window.findEntityIdByName = function (entityName) {
 
 
 window.showEventImagesForLocation = async function (locationEntityName) {
-    const eventImagePaths = []; // Array to store image paths
+    const eventsPlane = document.querySelector('#events'); // Target the a-plane element
     const eventsRef = ref(database, "events");
 
     try {
         // Resolve the entity ID asynchronously
         const entityId = await window.findEntityIdByName(locationEntityName);
 
-        // if (!entityId) {
-        //     alert(`Entity not found for name: ${locationEntityName}`);
-        //     return;
-        // }
+        if (!entityId) {
+            console.warn(`Entity not found for name: ${locationEntityName}`);
+            eventsPlane.setAttribute("material", "src: asset/images/no-image-available.png"); // Default image
+            return;
+        }
 
         // Fetch data from Firebase Realtime Database
         onValue(eventsRef, (snapshot) => {
             const data = snapshot.val();
+            const eventImagePaths = []; // Array to store matching image paths
 
             if (data) {
+                // Collect all matching images
                 Object.keys(data).forEach((eventId) => {
                     const event = data[eventId];
                     console.log(`Checking event: ${eventId}, Location: ${event.eventLocation}`);
-                    // Check if the event's location matches the resolved entity ID
                     if (event.eventLocation === entityId) {
-                        // Construct the image path based on event ID
-                        const imagePath = `asset/EventsImages/${eventId}.png`;
-                        eventImagePaths.push(imagePath); // Add the image path to the array
+                        // Add image path to array
+                        eventImagePaths.push(`asset/EventsImages/${eventId}.png`);
                     }
                 });
 
-                // if (eventImagePaths.length > 0) {
-                //     alert(`Image paths for ${locationEntityName}:\n\n` + eventImagePaths.join("\n"));
-                // } else {
-                //     alert(`No images available for ${locationEntityName}.`);
-                // }
+                if (eventImagePaths.length > 0) {
+                    // Clear any existing interval to avoid duplicates
+                    if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
+
+                    // Set the first image immediately
+                    let currentIndex = 0;
+                    eventsPlane.setAttribute("material", `src: ${eventImagePaths[currentIndex]}`);
+                    console.log(`Displaying image: ${eventImagePaths[currentIndex]}`);
+
+                    // Loop through images every 2 seconds
+                    window.imageLoopInterval = setInterval(() => {
+                        currentIndex = (currentIndex + 1) % eventImagePaths.length; // Loop back to the start
+                        eventsPlane.setAttribute("material", `src: ${eventImagePaths[currentIndex]}`);
+                        console.log(`Displaying image: ${eventImagePaths[currentIndex]}`);
+                    }, 2000); // Change image every 2 seconds
+                } else {
+                    // If no images match, set a default placeholder and clear any existing interval
+                    if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
+                    eventsPlane.setAttribute("material", "src: asset/images/no-image-available.png");
+                    console.warn(`No events found for ${locationEntityName}`);
+                }
             } else {
                 console.error("No events data found in the database.");
             }
         });
     } catch (error) {
         console.error("Error resolving entity ID or fetching events:", error);
+        // Clear interval in case of an error
+        if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
+        eventsPlane.setAttribute("material", "src: asset/images/error-image.png"); // Error placeholder
     }
 };
+
 
 
 
