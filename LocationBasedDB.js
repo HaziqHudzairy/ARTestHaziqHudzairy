@@ -344,50 +344,26 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                         // Alert each item in the array
                         alert(`Item ${index + 1}: ${eventId}`);
                     });
+
+                    // Start rotating images
+                    let currentIndex = 0;
+
+                    const rotateImages = () => {
+                        const currentEventId = eventIds[currentIndex];
+                        eventsImagePlane.setAttribute('material', `src: ${currentEventId}`);
+                        alert(`Displaying image: ${currentEventId}`);
+                        currentIndex = (currentIndex + 1) % eventIds.length; // Loop back to the first image
+                    };
+
+                    // Display the first image immediately
+                    rotateImages();
+
+                    // Change the image every 2 seconds
+                    setInterval(rotateImages, 2000);
                 } else {
                     alert("No items in the event IDs array.");
-                }
-
-                if (eventIds.length > 0) {
-                    const firstEventId = `${eventIds[0]}`; // Example: "#event1"
-                    alert(`Step 1: First Event ID: ${firstEventId}`);
-                
-                    try {
-                        // Escape the ID to handle special characters
-                        const escapedEventId = CSS.escape(firstEventId);
-                        alert(`Step 2: Escaped Event ID: ${escapedEventId}`);
-                        
-                        eventsImagePlane.setAttribute("material", "src: #14mZWGjcBzeXAm0HWBr7DxxY5AE3-1735996254022");
-                        alert(`SImage set with src: #14mZWGjcBzeXAm0HWBr7DxxY5AE3-1735996254022`);
-
-                        eventsImagePlane.setAttribute('material', `src: ${firstEventId}`);
-                        alert(`Step 4: Image set with src: ${firstEventId}`);
-
-                        const testImage = document.querySelector('#14mZWGjcBzeXAm0HWBr7DxxY5AE3-1735996254022');
-                        alert(`Step 3: Test Image: ${testImage ? 'Found' : 'Not Found'}`);
-                        // Use the escaped ID with querySelector
-                        const targetImage = document.querySelector(escapedEventId);
-                        alert(`Step 3: Target Image: ${targetImage ? 'Found' : 'Not Found'}`);
-                
-                        if (targetImage) {
-                            // Update the material to display the first image
-                            eventsImagePlane.setAttribute('material', `src: ${firstEventId}`);
-                            alert(`Step 4: Image set with src: ${firstEventId}`);
-                            eventsImagePlane.setAttribute("material", "src: #14mZWGjcBzeXAm0HWBr7DxxY5AE3-1735996254022");
-                        } else {
-                            alert(`Step 4: Image NOT found with ID: ${firstEventId}`);
-                            eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
-                        }
-                    } catch (error) {
-                        // Catch and alert any runtime errors
-                        alert(`Error occurred: ${error.message}`);
-                    }
-                } else {
-                    alert("Step 5: No matching events for location.");
                     eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
                 }
-                
-                
             } else {
                 console.error("No events data found in the database.");
             }
@@ -397,6 +373,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         eventsImagePlane.setAttribute("material", "src: asset/images/error-image.png"); // Error placeholder
     }
 };
+
 
 
 
