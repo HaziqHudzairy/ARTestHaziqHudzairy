@@ -304,7 +304,6 @@ window.findEntityIdByName = function (entityName) {
 };
 
 
-// Function to handle automatic image changes
 window.showEventImagesForLocation = async function (locationEntityName) {
     const eventsImagePlane = document.querySelector('#events'); // Target the <a-plane> element
     const eventsRef = ref(database, "events");
@@ -334,32 +333,18 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 });
 
                 if (eventIds.length > 0) {
-                    // Clear any existing interval
-                    if (window.imageLoopInterval) {
-                        clearInterval(window.imageLoopInterval);
-                        console.log("Cleared existing interval.");
+                    const firstEventId = eventIds[0];
+                    const targetImageId = `#${firstEventId}`;
+                    const targetImage = document.querySelector(targetImageId);
+
+                    if (targetImage) {
+                        // Show only the first image
+                        eventsImagePlane.setAttribute('material', `src: ${targetImageId}`);
+                        console.log(`Displayed the first image: ${targetImageId}`);
+                    } else {
+                        console.warn(`Image with ID ${firstEventId} not found in <a-assets>.`);
+                        eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
                     }
-
-                    // Initialize index for looping
-                    let currentIndex = 0;
-
-                    // Set up the interval for image changes
-                    window.imageLoopInterval = setInterval(() => {
-                        const currentEventId = eventIds[currentIndex];
-                        const targetImageId = `#${currentEventId}`;
-                        const targetImage = document.querySelector(targetImageId);
-
-                        if (targetImage) {
-                            // Update the material source of the plane
-                            eventsImagePlane.setAttribute('material', `src: ${targetImageId}`);
-                            console.log(`Updated plane texture to ${targetImageId}`);
-                        } else {
-                            console.error(`Image with ID ${currentEventId} not found.`);
-                        }
-
-                        // Move to the next image, loop back if necessary
-                        currentIndex = (currentIndex + 1) % eventIds.length;
-                    }, 2000); // Change image every 2 seconds
                 } else {
                     console.warn(`No matching events for location: ${locationEntityName}`);
                     eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
@@ -370,16 +355,10 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         });
     } catch (error) {
         console.error("Error resolving entity ID or fetching events:", error);
-
-        // Stop any existing interval on error
-        if (window.imageLoopInterval) {
-            clearInterval(window.imageLoopInterval);
-        }
-
-        // Show an error placeholder image
-        eventsImagePlane.setAttribute("material", "src: asset/images/error-image.png");
+        eventsImagePlane.setAttribute("material", "src: asset/images/error-image.png"); // Error placeholder
     }
 };
+
 
 
 
