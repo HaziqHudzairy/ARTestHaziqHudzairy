@@ -333,6 +333,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 });
 
                 alert(`Matching Event IDs: ${eventIds.join(", ")}`);
+                alert(`Event ID length: ${eventIds.length}`);
 
                 console.log("Fetched event IDs:", eventIds);
 
@@ -349,11 +350,11 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     const assetImage = document.querySelector(`#${currentEventId}`);
 
                     // Alert the assetImage
-                    if (assetImage) {
-                        alert(`Asset image found: ${assetImage.outerHTML}`);
-                    } else {
-                        alert(`No asset image found with ID: ${currentEventId}`);
-                    }
+                    // if (assetImage) {
+                    //     alert(`Asset image found: ${assetImage.outerHTML}`);
+                    // } else {
+                    //     alert(`No asset image found with ID: ${currentEventId}`);
+                    // }
 
                     if (assetImage) {
                         eventsImage.setAttribute("src", `#${currentEventId}`); // Use the ID from <a-assets>
