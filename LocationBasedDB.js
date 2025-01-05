@@ -312,10 +312,10 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         // Resolve the entity ID asynchronously
         const entityId = await window.findEntityIdByName(locationEntityName);
 
-        if (!entityId) {
-            alert(`Entity not found for name: ${locationEntityName}`);
-            return;
-        }
+        // if (!entityId) {
+        //     alert(`Entity not found for name: ${locationEntityName}`);
+        //     return;
+        // }
 
         // Fetch data from Firebase Realtime Database
         onValue(eventsRef, (snapshot) => {
@@ -333,11 +333,11 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     }
                 });
 
-                if (eventImagePaths.length > 0) {
-                    alert(`Image paths for ${locationEntityName}:\n\n` + eventImagePaths.join("\n"));
-                } else {
-                    alert(`No images available for ${locationEntityName}.`);
-                }
+                // if (eventImagePaths.length > 0) {
+                //     alert(`Image paths for ${locationEntityName}:\n\n` + eventImagePaths.join("\n"));
+                // } else {
+                //     alert(`No images available for ${locationEntityName}.`);
+                // }
             } else {
                 console.error("No events data found in the database.");
             }
