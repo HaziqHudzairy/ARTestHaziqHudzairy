@@ -24,7 +24,7 @@ const bucket = admin.storage().bucket('um-ar-d0418.firebasestorage.app');
 log(`Using bucket: ${bucket.name}`);
 
 // Path to the record of downloaded files
-const recordFilePath = './script/downloadedFilesV2.json';
+const recordFilePath = './script/downloadedFiles.json';
 if (!fs.existsSync(recordFilePath)) {
     log('Creating downloadedFiles.json to track downloaded files...');
     fs.writeFileSync(recordFilePath, JSON.stringify([]));
