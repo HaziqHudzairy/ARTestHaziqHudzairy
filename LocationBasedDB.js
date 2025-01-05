@@ -349,9 +349,9 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     let currentIndex = 0;
                     const currentEventId = eventIds[currentIndex];
                     alert(`Asset image found: ${currentEventId}`);
-                    const assetImage = document.querySelector(`#${currentEventId}`);
+                    const assetImage = document.querySelector("#" + currentEventId);
 
-                    alert(`Asset image found: ${assetImage.outerHTML}`);
+                    alert(`Asset image found: ${assetImage}`);
 
                     if (assetImage) {
                         eventsImage.setAttribute("src", `#${currentEventId}`); // Use the ID from <a-assets>
