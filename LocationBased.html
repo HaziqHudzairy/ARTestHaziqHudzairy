@@ -318,7 +318,8 @@
         </a-assets>
 
         <a-entity id="virtual-space" visible="false" position="0 -10 -5" sync-virtual-space>
-
+            <a-light type="directional" position="0 5 5" intensity="1"></a-light>
+            <a-light type="ambient" intensity="0.5"></a-light>
             <a-plane id="information" position="0 0 -3" width="5" height="3"
                 material="shader: flat; depthTest: false; src: asset/images/background1.png;">
 
@@ -338,7 +339,7 @@
 
             </a-plane>
 
-            <a-entity id="standee-entity" gltf-model="#standee" position="0 0 -3" scale="5 5 5"></a-entity>
+            <a-entity id="standee-entity" gltf-model="#standee" position="0 -3 -3" scale="1 1 1"></a-entity>
 
             <a-plane position="1.6 -0.15 -2.95" width="1.4" height="2"
                 material="shader: flat; depthTest: false; src: asset/images/UMAR_info_image.png;">
