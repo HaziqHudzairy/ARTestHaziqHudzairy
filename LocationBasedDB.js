@@ -304,8 +304,9 @@ window.findEntityIdByName = function (entityName) {
 };
 
 
+// Function to handle automatic image changes
 window.showEventImagesForLocation = async function (locationEntityName) {
-    const eventsImage = document.querySelector('#events'); // Target the <a-image> element
+    const eventsImagePlane = document.querySelector('#events'); // Target the <a-plane> element
     const eventsRef = ref(database, "events");
 
     try {
@@ -314,7 +315,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
 
         if (!entityId) {
             console.warn(`Entity not found for name: ${locationEntityName}`);
-            eventsImage.setAttribute("src", "asset/images/no-image-available.png"); // Default image
+            eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png"); // Default image
             return;
         }
 
@@ -332,52 +333,36 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     }
                 });
 
-                alert(`Matching Event IDs: ${eventIds.join(", ")}`);
-                alert(`Event ID length: ${eventIds.length}`);
-
-                console.log("Fetched event IDs:", eventIds);
-
                 if (eventIds.length > 0) {
-                    alert(`Event ID length: ${eventIds.length}`);
-                    // Clear any existing interval to avoid duplicates
-                    // if (window.imageLoopInterval) {
-                    //     clearInterval(window.imageLoopInterval);
-                    //     console.log("Cleared existing interval.");
-                    // }
-                    
-                    // Set the first image immediately
-                    let currentIndex = 0;
-                    const currentEventId = eventIds[currentIndex];
-                    alert(`Asset image found: ${currentEventId}`);
-                    const assetImage = document.querySelector("#" + currentEventId);
-
-                    alert(`Asset image found: ${assetImage}`);
-
-                    if (assetImage) {
-                        eventsImage.setAttribute("src", `#${currentEventId}`); // Use the ID from <a-assets>
-                        console.log(`Displaying image: ${currentEventId}`);
-                    } else {
-                        console.warn(`Image with ID ${currentEventId} not found in <a-assets>.`);
+                    // Clear any existing interval
+                    if (window.imageLoopInterval) {
+                        clearInterval(window.imageLoopInterval);
+                        console.log("Cleared existing interval.");
                     }
 
-                    // Loop through images every 2 seconds
-                    window.imageLoopInterval = setInterval(() => {
-                        currentIndex = (currentIndex + 1) % eventIds.length; // Loop back to the start
-                        const nextEventId = eventIds[currentIndex];
-                        const nextAssetImage = document.querySelector(`#${nextEventId}`);
+                    // Initialize index for looping
+                    let currentIndex = 0;
 
-                        if (nextAssetImage) {
-                            eventsImage.setAttribute("src", `#${nextEventId}`); // Use the ID from <a-assets>
-                            console.log(`Displaying image: ${nextEventId}`);
+                    // Set up the interval for image changes
+                    window.imageLoopInterval = setInterval(() => {
+                        const currentEventId = eventIds[currentIndex];
+                        const targetImageId = `#${currentEventId}`;
+                        const targetImage = document.querySelector(targetImageId);
+
+                        if (targetImage) {
+                            // Update the material source of the plane
+                            eventsImagePlane.setAttribute('material', `src: ${targetImageId}`);
+                            console.log(`Updated plane texture to ${targetImageId}`);
                         } else {
-                            console.warn(`Image with ID ${nextEventId} not found in <a-assets>.`);
+                            console.error(`Image with ID ${currentEventId} not found.`);
                         }
+
+                        // Move to the next image, loop back if necessary
+                        currentIndex = (currentIndex + 1) % eventIds.length;
                     }, 2000); // Change image every 2 seconds
                 } else {
-                    // If no events match, set a default placeholder and clear any existing interval
-                    if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
-                    eventsImage.setAttribute("src", "asset/images/no-image-available.png");
-                    console.warn(`No events found for ${locationEntityName}`);
+                    console.warn(`No matching events for location: ${locationEntityName}`);
+                    eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
                 }
             } else {
                 console.error("No events data found in the database.");
@@ -385,9 +370,14 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         });
     } catch (error) {
         console.error("Error resolving entity ID or fetching events:", error);
-        // Clear interval in case of an error
-        if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
-        eventsImage.setAttribute("src", "asset/images/error-image.png"); // Error placeholder
+
+        // Stop any existing interval on error
+        if (window.imageLoopInterval) {
+            clearInterval(window.imageLoopInterval);
+        }
+
+        // Show an error placeholder image
+        eventsImagePlane.setAttribute("material", "src: asset/images/error-image.png");
     }
 };
 
