@@ -348,10 +348,25 @@ window.showEventImagesForLocation = async function (locationEntityName) {
     showImages()
 };
 
-function showImages(){
+function showImages() {
     const eventsImagePlane = document.querySelector('#events');
-    alert(`Event IDs: ${window.eventIds.join(", ")}`);
-};
+
+    // Check if window.eventIds is an array
+    const isArray = Array.isArray(window.eventIds);
+    alert(`Data type of eventIds: ${typeof window.eventIds} (Is it an array? ${isArray})`);
+
+    // Ensure the array exists and has elements
+    if (window.eventIds && window.eventIds.length > 0) {
+        window.eventIds.forEach((eventId, index) => {
+            // Alert each item in the array
+            alert(`Item ${index + 1}: ${eventId}`);
+        });
+    } else {
+        alert("No items in the event IDs array.");
+    }
+}
+
+
 
 
 
