@@ -364,6 +364,7 @@ function clearEnvEvent(btnContent) {
 function handleExitEnv() {
     hideExitEnv();
     clearVirtualSpace();
+    stopAndResetImageRotation()
     slideInNotification();
 
 }
