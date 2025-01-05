@@ -284,7 +284,7 @@ window.showEventImagesForLocation = function (locationEntityName) {
         if (data) {
             Object.keys(data).forEach((eventId) => {
                 const event = data[eventId];
-                alert(`${eventId}`);
+                alert(`${event.eventLocation}`);
                 // Check if the event's location matches the given locationEntityName
                 if (event.eventLocation === locationEntityName) {
                     // Construct the image path based on event ID
