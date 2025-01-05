@@ -331,49 +331,36 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 Object.keys(data).forEach((eventId) => {
                     const event = data[eventId];
                     if (event.eventLocation === entityId) {
-                        eventIds.push(`#${eventId}`); // Add event ID with "#" prepended
+                        eventIds.push("#" + eventId); // Add event ID with "#" prepended
                     }
                 });
-                const isArray = Array.isArray(eventIds);
-                alert(`Data type of eventIds: ${typeof eventIds} (Is it an array? ${isArray})`);
-                // Ensure the array exists and has elements
-                if (window.eventIds && window.eventIds.length > 0) {
-                    window.eventIds.forEach((eventId, index) => {
-                        // Alert each item in the array
-                        alert(`Item ${index + 1}: ${eventId}`);
-                    });}
-                
+
+                if (eventIds.length > 0) {
+                    // Use the first image from the array
+                    const firstEventId = eventIds[0];
+                    const targetImage = document.querySelector(firstEventId); // Already includes '#'
+
+                    if (targetImage) {
+                        // Update the material to display the first image
+                        eventsImagePlane.setAttribute('material', `src: ${firstEventId}`);
+                        console.log(`Displayed the first image: ${firstEventId}`);
+                    } else {
+                        console.warn(`Image with ID ${firstEventId} not found in <a-assets>.`);
+                        eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
+                    }
+                } else {
+                    console.warn(`No matching events for location: ${locationEntityName}`);
+                    eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
+                }
             } else {
                 console.error("No events data found in the database.");
-                alert(`No events data found in the database.`);
             }
         });
     } catch (error) {
         console.error("Error resolving entity ID or fetching events:", error);
-        alert(`cant fetch data`);
+        eventsImagePlane.setAttribute("material", "src: asset/images/error-image.png"); // Error placeholder
     }
-    // showImages()
 };
-
-// function showImages() {
-//     const eventsImagePlane = document.querySelector('#events');
-
-//     // Check if window.eventIds is an array
-//     const isArray = Array.isArray(window.eventIds);
-//     alert(`Data type of eventIds: ${typeof window.eventIds} (Is it an array? ${isArray})`);
-
-//     // Ensure the array exists and has elements
-//     if (window.eventIds && window.eventIds.length > 0) {
-//         window.eventIds.forEach((eventId, index) => {
-//             // Alert each item in the array
-//             alert(`Item ${index + 1}: ${eventId}`);
-//         });
-//     } else {
-//         alert("No items in the event IDs array.");
-//     }
-// }
-
-
 
 
 
