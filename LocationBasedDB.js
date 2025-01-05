@@ -332,7 +332,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     }
                 });
 
-                // alert(`Matching Event IDs: ${eventIds.join(", ")}`);
+                alert(`Matching Event IDs: ${eventIds.join(", ")}`);
 
                 console.log("Fetched event IDs:", eventIds);
 
