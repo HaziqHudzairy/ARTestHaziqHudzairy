@@ -336,8 +336,14 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 alert(`Event ID length: ${eventIds.length}`);
 
                 console.log("Fetched event IDs:", eventIds);
-
                 if (eventIds.length > 0) {
+                    alert(`Event ID length: ${eventIds.length}`);
+                } else {
+                    alert(`Nope`);
+                }
+
+
+                if (Number(eventIds.length) > 0) {
                     // Clear any existing interval to avoid duplicates
                     if (window.imageLoopInterval) {
                         clearInterval(window.imageLoopInterval);
@@ -349,12 +355,12 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     const currentEventId = eventIds[currentIndex];
                     const assetImage = document.querySelector(`#${currentEventId}`);
 
-                    // Alert the assetImage
-                    // if (assetImage) {
-                    //     alert(`Asset image found: ${assetImage.outerHTML}`);
-                    // } else {
-                    //     alert(`No asset image found with ID: ${currentEventId}`);
-                    // }
+                    //Alert the assetImage
+                    if (assetImage) {
+                        alert(`Asset image found: ${assetImage.outerHTML}`);
+                    } else {
+                        alert(`No asset image found with ID: ${currentEventId}`);
+                    }
 
                     if (assetImage) {
                         eventsImage.setAttribute("src", `#${currentEventId}`); // Use the ID from <a-assets>
