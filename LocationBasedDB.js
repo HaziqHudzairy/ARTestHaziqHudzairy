@@ -335,7 +335,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     }
                 });
 
-                alert(`Event IDs: ${window.eventIds.join(", ")}`);
+                
             } else {
                 console.error("No events data found in the database.");
                 alert(`No events data found in the database.`);
@@ -345,6 +345,12 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         console.error("Error resolving entity ID or fetching events:", error);
         alert(`cant fetch data`);
     }
+    showImages()
+};
+
+function showImages(){
+    const eventsImagePlane = document.querySelector('#events');
+    alert(`Event IDs: ${window.eventIds.join(", ")}`);
 };
 
 
