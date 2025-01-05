@@ -324,17 +324,24 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         // Fetch event data from Firebase Realtime Database
         onValue(eventsRef, (snapshot) => {
             const data = snapshot.val();
-            window.eventIds = []; // Array to store matching event IDs
+            const eventIds = []; // Array to store matching event IDs
 
             if (data) {
                 // Collect all matching event IDs with "#" prepended
                 Object.keys(data).forEach((eventId) => {
                     const event = data[eventId];
                     if (event.eventLocation === entityId) {
-                        window.eventIds.push(`#${eventId}`); // Add event ID with "#" prepended
+                        eventIds.push(`#${eventId}`); // Add event ID with "#" prepended
                     }
                 });
-
+                const isArray = Array.isArray(eventIds);
+                alert(`Data type of eventIds: ${typeof eventIds} (Is it an array? ${isArray})`);
+                // Ensure the array exists and has elements
+                if (window.eventIds && window.eventIds.length > 0) {
+                    window.eventIds.forEach((eventId, index) => {
+                        // Alert each item in the array
+                        alert(`Item ${index + 1}: ${eventId}`);
+                    });}
                 
             } else {
                 console.error("No events data found in the database.");
@@ -345,26 +352,26 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         console.error("Error resolving entity ID or fetching events:", error);
         alert(`cant fetch data`);
     }
-    showImages()
+    // showImages()
 };
 
-function showImages() {
-    const eventsImagePlane = document.querySelector('#events');
+// function showImages() {
+//     const eventsImagePlane = document.querySelector('#events');
 
-    // Check if window.eventIds is an array
-    const isArray = Array.isArray(window.eventIds);
-    alert(`Data type of eventIds: ${typeof window.eventIds} (Is it an array? ${isArray})`);
+//     // Check if window.eventIds is an array
+//     const isArray = Array.isArray(window.eventIds);
+//     alert(`Data type of eventIds: ${typeof window.eventIds} (Is it an array? ${isArray})`);
 
-    // Ensure the array exists and has elements
-    if (window.eventIds && window.eventIds.length > 0) {
-        window.eventIds.forEach((eventId, index) => {
-            // Alert each item in the array
-            alert(`Item ${index + 1}: ${eventId}`);
-        });
-    } else {
-        alert("No items in the event IDs array.");
-    }
-}
+//     // Ensure the array exists and has elements
+//     if (window.eventIds && window.eventIds.length > 0) {
+//         window.eventIds.forEach((eventId, index) => {
+//             // Alert each item in the array
+//             alert(`Item ${index + 1}: ${eventId}`);
+//         });
+//     } else {
+//         alert("No items in the event IDs array.");
+//     }
+// }
 
 
 
