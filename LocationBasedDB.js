@@ -336,19 +336,14 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 alert(`Event ID length: ${eventIds.length}`);
 
                 console.log("Fetched event IDs:", eventIds);
+
                 if (eventIds.length > 0) {
                     alert(`Event ID length: ${eventIds.length}`);
-                } else {
-                    alert(`Nope`);
-                }
-
-
-                if (Number(eventIds.length) > 0) {
                     // Clear any existing interval to avoid duplicates
-                    if (window.imageLoopInterval) {
-                        clearInterval(window.imageLoopInterval);
-                        console.log("Cleared existing interval.");
-                    }
+                    // if (window.imageLoopInterval) {
+                    //     clearInterval(window.imageLoopInterval);
+                    //     console.log("Cleared existing interval.");
+                    // }
 
                     // Set the first image immediately
                     let currentIndex = 0;
