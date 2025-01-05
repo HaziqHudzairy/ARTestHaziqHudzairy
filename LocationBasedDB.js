@@ -308,6 +308,9 @@ window.showEventImagesForLocation = async function (locationEntityName) {
     const eventsImagePlane = document.querySelector('#events'); // Target the <a-plane> element
     const eventsRef = ref(database, "events");
 
+    // Set a default placeholder image while data is loading
+    eventsImagePlane.setAttribute("material", "src: #okW0vkufRDeNJIMV0clGKwo37182-1736091043865");
+
     try {
         // Resolve the entity ID asynchronously
         const entityId = await window.findEntityIdByName(locationEntityName);
@@ -324,23 +327,23 @@ window.showEventImagesForLocation = async function (locationEntityName) {
             const eventIds = []; // Array to store matching event IDs
 
             if (data) {
-                // Collect all matching event IDs
+                // Collect all matching event IDs with "#" prepended
                 Object.keys(data).forEach((eventId) => {
                     const event = data[eventId];
                     if (event.eventLocation === entityId) {
-                        eventIds.push(eventId); // Add event ID to array
+                        eventIds.push(`#${eventId}`); // Add event ID with "#" prepended
                     }
                 });
 
                 if (eventIds.length > 0) {
+                    // Use the first image from the array
                     const firstEventId = eventIds[0];
-                    const targetImageId = `#${firstEventId}`;
-                    const targetImage = document.querySelector(targetImageId);
+                    const targetImage = document.querySelector(firstEventId); // Already includes '#'
 
                     if (targetImage) {
-                        // Show only the first image
-                        eventsImagePlane.setAttribute('material', `src: ${targetImageId}`);
-                        console.log(`Displayed the first image: ${targetImageId}`);
+                        // Update the material to display the first image
+                        eventsImagePlane.setAttribute('material', `src: ${firstEventId}`);
+                        console.log(`Displayed the first image: ${firstEventId}`);
                     } else {
                         console.warn(`Image with ID ${firstEventId} not found in <a-assets>.`);
                         eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
@@ -358,6 +361,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         eventsImagePlane.setAttribute("material", "src: asset/images/error-image.png"); // Error placeholder
     }
 };
+
 
 
 
