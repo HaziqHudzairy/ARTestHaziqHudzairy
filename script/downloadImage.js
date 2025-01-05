@@ -32,6 +32,53 @@ if (!fs.existsSync(recordFilePath)) {
     log('Found existing downloadedFiles.json.');
 }
 
+const htmlFilePath = './LocationBased.html'; // Path to your HTML file
+
+const updateHTMLWithImages = (imageFiles) => {
+    log(`Updating HTML file: ${htmlFilePath}`);
+
+    if (!fs.existsSync(htmlFilePath)) {
+        console.error(`HTML file not found at: ${htmlFilePath}`);
+        return;
+    }
+
+    // Read the current HTML content
+    let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
+
+    // Find the <a-assets> section
+    const assetsSectionStart = htmlContent.indexOf('<a-assets>');
+    const assetsSectionEnd = htmlContent.indexOf('</a-assets>');
+    if (assetsSectionStart === -1 || assetsSectionEnd === -1) {
+        console.error('Failed to locate <a-assets> section in the HTML file.');
+        return;
+    }
+
+    const assetsContent = htmlContent.slice(assetsSectionStart + '<a-assets>'.length, assetsSectionEnd).trim();
+    let updatedAssetsContent = assetsContent;
+
+    // Add <img> tags for new images
+    imageFiles.forEach((fileName) => {
+        const imgId = fileName.split('.')[0]; // Use the file name (without extension) as the ID
+        const imgSrc = `asset/EventsImages/${fileName}`;
+        const imgTag = `<img id="${imgId}" src="${imgSrc}">`;
+
+        // Avoid duplicate entries
+        if (!assetsContent.includes(imgTag)) {
+            updatedAssetsContent += `\n    ${imgTag}`;
+        }
+    });
+
+    // Update the HTML content with new <img> tags
+    htmlContent =
+        htmlContent.slice(0, assetsSectionStart + '<a-assets>'.length) +
+        `\n${updatedAssetsContent}\n` +
+        htmlContent.slice(assetsSectionEnd);
+
+    // Write back to the HTML file
+    fs.writeFileSync(htmlFilePath, htmlContent, 'utf-8');
+    log('HTML file updated successfully!');
+};
+
 const downloadImagesToDirectory = async () => {
     const folder = 'uploads'; // Folder in Firebase Storage
     const localPath = './asset/EventsImages'; // Local directory for downloads
@@ -56,6 +103,7 @@ const downloadImagesToDirectory = async () => {
             return;
         }
 
+        const newImages = [];
         for (const file of files) {
             const fileName = path.basename(file.name);
             log(`Processing file: ${file.name} (local name: ${fileName})`);
@@ -71,19 +119,26 @@ const downloadImagesToDirectory = async () => {
 
             log(`Successfully downloaded: ${fileName}`);
             downloadedFiles.push(fileName);
+            newImages.push(fileName);
         }
 
         log('Updating downloadedFiles.json...');
         fs.writeFileSync(recordFilePath, JSON.stringify(downloadedFiles, null, 2));
 
-        log('All new images downloaded successfully!');
+        // Update HTML with new images
+        if (newImages.length > 0) {
+            updateHTMLWithImages(newImages);
+        } else {
+            log('No new images to add to the HTML.');
+        }
+
+        log('All new images downloaded and added to HTML successfully!');
     } catch (error) {
         log('Error occurred while downloading images:');
         console.error(error);
     }
 };
 
-// Run the function
 log('Starting image download...');
 downloadImagesToDirectory()
     .then(() => log('Image download process completed.'))
