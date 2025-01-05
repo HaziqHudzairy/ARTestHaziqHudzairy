@@ -324,18 +324,18 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         // Fetch event data from Firebase Realtime Database
         onValue(eventsRef, (snapshot) => {
             const data = snapshot.val();
-            const eventIds = []; // Array to store matching event IDs
+            window.eventIds = []; // Array to store matching event IDs
 
             if (data) {
                 // Collect all matching event IDs with "#" prepended
                 Object.keys(data).forEach((eventId) => {
                     const event = data[eventId];
                     if (event.eventLocation === entityId) {
-                        eventIds.push(`#${eventId}`); // Add event ID with "#" prepended
+                        window.eventIds.push(`#${eventId}`); // Add event ID with "#" prepended
                     }
                 });
 
-                alert(`Event IDs: ${eventIds.join(", ")}`);
+                alert(`Event IDs: ${window.eventIds.join(", ")}`);
             } else {
                 console.error("No events data found in the database.");
                 alert(`No events data found in the database.`);
