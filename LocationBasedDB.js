@@ -342,6 +342,10 @@ window.showEventImagesForLocation = async function (locationEntityName) {
 
                     const rotateImages = () => {
                         const currentEventId = eventIds[currentIndex];
+
+                        const imagePath = currentEventId.replace('#', 'asset/EventsImages/');
+                        setPanelWidth(imagePath, eventsImagePlane);
+
                         eventsImagePlane.setAttribute('material', `src: ${currentEventId}`);
                         currentIndex = (currentIndex + 1) % eventIds.length; // Loop back to the first image
                     };
@@ -365,7 +369,23 @@ window.showEventImagesForLocation = async function (locationEntityName) {
     }
 };
 
+function setPanelWidth(imagePath, planeElement, fixedHeight = 2) {
+    const img = new Image();
+    img.src = imagePath;
 
+    img.onload = () => {
+        const aspectRatio = img.width / img.height;
+        const planeWidth = fixedHeight * aspectRatio;
+
+        // Set the width and height of the plane
+        planeElement.setAttribute('geometry', `height: ${fixedHeight}; width: ${planeWidth}`);
+        console.log(`Set width to ${planeWidth} for image: ${imagePath}`);
+    };
+
+    img.onerror = () => {
+        console.error(`Failed to load image for aspect ratio calculation: ${imagePath}`);
+    };
+}
 
 
 
