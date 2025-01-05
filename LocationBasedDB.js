@@ -315,6 +315,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         if (!entityId) {
             console.warn(`Entity not found for name: ${locationEntityName}`);
             eventsPlane.setAttribute("material", "src: asset/images/UMAR_info_image.png"); // Default image
+            eventsPlane.setAttribute("material", `shader: flat; src: ${eventImagePaths[currentIndex]}`);
             return;
         }
 
@@ -340,7 +341,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
 
                     // Set the first image immediately
                     let currentIndex = 0;
-                    eventsPlane.setAttribute("material", `src: ${eventImagePaths[currentIndex]}`);
+                    eventsPlane.setAttribute("material", `shader: flat; src: ${eventImagePaths[currentIndex]}`);
                     console.log(`Displaying image: ${eventImagePaths[currentIndex]}`);
 
                     // Loop through images every 2 seconds
