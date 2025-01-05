@@ -24,13 +24,16 @@ const bucket = admin.storage().bucket('um-ar-d0418.firebasestorage.app');
 log(`Using bucket: ${bucket.name}`);
 
 // Path to the record of downloaded files
-const recordFilePath = './script/downloadedFiles.json';
+const recordFilePath = './script/downloadedFilesV2.json';
 if (!fs.existsSync(recordFilePath)) {
     log('Creating downloadedFiles.json to track downloaded files...');
     fs.writeFileSync(recordFilePath, JSON.stringify([]));
 } else {
     log('Found existing downloadedFiles.json.');
 }
+
+// Path to your HTML file
+const htmlFilePath = '.LocationBased.html';
 
 const downloadImagesToDirectory = async () => {
     const folder = 'uploads'; // Folder in Firebase Storage
@@ -56,8 +59,11 @@ const downloadImagesToDirectory = async () => {
             return;
         }
 
+        let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
+
         for (const file of files) {
             const fileName = path.basename(file.name);
+            const eventId = path.parse(fileName).name; // Use the file name (without extension) as the event ID
             log(`Processing file: ${file.name} (local name: ${fileName})`);
 
             if (downloadedFiles.includes(fileName)) {
@@ -71,12 +77,22 @@ const downloadImagesToDirectory = async () => {
 
             log(`Successfully downloaded: ${fileName}`);
             downloadedFiles.push(fileName);
+
+            // Append the <img> tag to the <a-assets> section
+            const imgTag = `\n            <img id="${eventId}" src="asset/EventsImages/${fileName}">`;
+            const assetsTagPosition = htmlContent.indexOf('<a-assets>') + '<a-assets>'.length;
+            htmlContent =
+                htmlContent.slice(0, assetsTagPosition) + imgTag + htmlContent.slice(assetsTagPosition);
         }
+
+        // Write updated HTML back to the file
+        log('Updating HTML file with new <img> tags...');
+        fs.writeFileSync(htmlFilePath, htmlContent, 'utf-8');
 
         log('Updating downloadedFiles.json...');
         fs.writeFileSync(recordFilePath, JSON.stringify(downloadedFiles, null, 2));
 
-        log('All new images downloaded successfully!');
+        log('All new images downloaded and added to HTML successfully!');
     } catch (error) {
         log('Error occurred while downloading images:');
         console.error(error);
