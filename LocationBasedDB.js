@@ -309,7 +309,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
     const eventsRef = ref(database, "events");
 
     // Set a default placeholder image while data is loading
-    eventsImagePlane.setAttribute("material", "src: #okW0vkufRDeNJIMV0clGKwo37182-1736091043865");
+    //eventsImagePlane.setAttribute("material", "src: #okW0vkufRDeNJIMV0clGKwo37182-1736091043865");
 
     try {
         // Resolve the entity ID asynchronously
@@ -334,6 +334,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                         eventIds.push(`#${eventId}`); // Add event ID with "#" prepended
                     }
                 });
+                alert(`Event IDs: ${eventIds.join(", ")}`);
 
                 if (eventIds.length > 0) {
                     // Use the first image from the array
@@ -342,7 +343,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
 
                     if (targetImage) {
                         // Update the material to display the first image
-                        eventsImagePlane.setAttribute("material", "src: " + firstEventId);
+                        eventsImagePlane.setAttribute("material", "src: " + targetImage);
                         console.log(`Displayed the first image: ${firstEventId}`);
                     } else {
                         console.warn(`Image with ID ${firstEventId} not found in <a-assets>.`);
