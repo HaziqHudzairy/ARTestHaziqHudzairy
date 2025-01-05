@@ -355,20 +355,17 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     alert(`Step 1: First Event ID: ${firstEventId}`);
                 
                     try {
-                        // Escape the ID to handle special characters
-                        const escapedEventId = CSS.escape(firstEventId);
-                        alert(`Step 2: Escaped Event ID: ${escapedEventId}`);
                 
                         // Use the escaped ID with querySelector
                         const targetImage = document.querySelector(escapedEventId);
-                        alert(`Step 3: Target Image: ${targetImage ? 'Found' : 'Not Found'}`);
+                        alert(`Step 2: Target Image: ${targetImage ? 'Found' : 'Not Found'}`);
                 
                         if (targetImage) {
                             // Update the material to display the first image
                             eventsImagePlane.setAttribute('material', `src: ${firstEventId}`);
-                            alert(`Step 4: Image set with src: ${firstEventId}`);
+                            alert(`Step 3: Image set with src: ${firstEventId}`);
                         } else {
-                            alert(`Step 4: Image NOT found with ID: ${firstEventId}`);
+                            alert(`Step 3: Image NOT found with ID: ${firstEventId}`);
                             eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
                         }
                     } catch (error) {
