@@ -304,16 +304,6 @@ window.findEntityIdByName = function (entityName) {
 };
 
 
-window.preloadImages = function (imagePaths) {
-    const assets = document.querySelector('a-assets');
-    imagePaths.forEach((path, index) => {
-        const img = document.createElement('img');
-        img.setAttribute('id', `preloadedImage${index}`);
-        img.setAttribute('src', path);
-        assets.appendChild(img);
-    });
-};
-
 window.showEventImagesForLocation = async function (locationEntityName) {
     const eventsPlane = document.querySelector('#events'); // Target the a-plane element
     const eventsRef = ref(database, "events");
@@ -328,28 +318,52 @@ window.showEventImagesForLocation = async function (locationEntityName) {
             return;
         }
 
-        // Fetch data from Firebase Realtime Database
+        // Fetch event data from Firebase Realtime Database
         onValue(eventsRef, (snapshot) => {
             const data = snapshot.val();
-            const eventImagePaths = []; // Array to store matching image paths
+            const eventIds = []; // Array to store matching event IDs
 
             if (data) {
-                // Collect all matching images
+                // Collect all matching event IDs
                 Object.keys(data).forEach((eventId) => {
                     const event = data[eventId];
                     if (event.eventLocation === entityId) {
-                        eventImagePaths.push(`asset/EventsImages/${eventId}.png`);
+                        eventIds.push(eventId); // Add event ID to array
                     }
                 });
 
-                if (eventImagePaths.length > 0) {
-                    // Preload images
-                    window.preloadImages(eventImagePaths);
+                if (eventIds.length > 0) {
+                    // Clear any existing interval to avoid duplicates
+                    if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
 
-                    // Set the first image after preloading
-                    eventsPlane.setAttribute("material", `src: #preloadedImage0`);
-                    console.log(`Displaying first preloaded image: ${eventImagePaths[0]}`);
+                    // Set the first image immediately
+                    let currentIndex = 0;
+                    const currentEventId = eventIds[currentIndex];
+                    const assetImage = document.querySelector(`#${currentEventId}`);
+
+                    if (assetImage) {
+                        eventsPlane.setAttribute("material", `src: #${currentEventId}`); // Use the ID from <a-assets>
+                        console.log(`Displaying image: ${currentEventId}`);
+                    } else {
+                        console.warn(`Image with ID ${currentEventId} not found in <a-assets>.`);
+                    }
+
+                    // Loop through images every 2 seconds
+                    window.imageLoopInterval = setInterval(() => {
+                        currentIndex = (currentIndex + 1) % eventIds.length; // Loop back to the start
+                        const nextEventId = eventIds[currentIndex];
+                        const nextAssetImage = document.querySelector(`#${nextEventId}`);
+
+                        if (nextAssetImage) {
+                            eventsPlane.setAttribute("material", `src: #${nextEventId}`); // Use the ID from <a-assets>
+                            console.log(`Displaying image: ${nextEventId}`);
+                        } else {
+                            console.warn(`Image with ID ${nextEventId} not found in <a-assets>.`);
+                        }
+                    }, 2000); // Change image every 2 seconds
                 } else {
+                    // If no events match, set a default placeholder and clear any existing interval
+                    if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
                     eventsPlane.setAttribute("material", "src: asset/images/no-image-available.png");
                     console.warn(`No events found for ${locationEntityName}`);
                 }
@@ -359,6 +373,8 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         });
     } catch (error) {
         console.error("Error resolving entity ID or fetching events:", error);
+        // Clear interval in case of an error
+        if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
         eventsPlane.setAttribute("material", "src: asset/images/error-image.png"); // Error placeholder
     }
 };
