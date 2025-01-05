@@ -309,7 +309,7 @@ let imageRotationInterval = null; // Store the interval ID globally
 /**
  * Stops the image rotation and resets the plane to a default state.
  */
-function stopAndResetImageRotation() {
+window.stopAndResetImageRotation = async function() {
     const eventsImagePlane = document.querySelector('#events'); // Target the <a-plane> element
 
     // Clear the interval if it's active
