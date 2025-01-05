@@ -309,7 +309,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
     const eventsRef = ref(database, "events");
 
     // Set a default placeholder image while data is loading
-    //eventsImagePlane.setAttribute("material", "src: #okW0vkufRDeNJIMV0clGKwo37182-1736091043865");
+    eventsImagePlane.setAttribute("material", "src: #okW0vkufRDeNJIMV0clGKwo37182-1736091043865");
 
     try {
         // Resolve the entity ID asynchronously
@@ -325,7 +325,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         onValue(eventsRef, (snapshot) => {
             const data = snapshot.val();
             const eventIds = []; // Array to store matching event IDs
-s
+
             if (data) {
                 // Collect all matching event IDs with "#" prepended
                 Object.keys(data).forEach((eventId) => {
@@ -334,14 +334,16 @@ s
                         eventIds.push(`#${eventId}`); // Add event ID with "#" prepended
                     }
                 });
+
                 alert(`Event IDs: ${eventIds.join(", ")}`);
             } else {
                 console.error("No events data found in the database.");
+                alert(`No events data found in the database.`);
             }
         });
     } catch (error) {
         console.error("Error resolving entity ID or fetching events:", error);
-        eventsImagePlane.setAttribute("material", "src: asset/images/error-image.png"); // Error placeholder
+        alert(`cant fetch data`);
     }
 };
 
