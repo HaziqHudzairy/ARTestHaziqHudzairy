@@ -272,3 +272,36 @@ window.showEntityInformation = async function (entityName) {
         }
     });
 };
+
+window.showEventImagesForLocation = function (locationEntityName) {
+    const eventImagePaths = []; // Array to store image paths
+    const eventsRef = ref(database, "events");
+
+    // Fetch data from Firebase Realtime Database
+    onValue(eventsRef, (snapshot) => {
+        const data = snapshot.val();
+
+        if (data) {
+            Object.keys(data).forEach((eventId) => {
+                const event = data[eventId];
+
+                // Check if the event's location matches the given locationEntityName
+                if (event.eventLocation === locationEntityName) {
+                    // Construct the image path based on event ID
+                    const imagePath = `asset/EventsImages/${eventId}.png`;
+                    eventImagePaths.push(imagePath); // Add the image path to the array
+                }
+            });
+
+            if (eventImagePaths.length > 0) {
+                alert(`Image paths for ${locationEntityName}:\n\n` + eventImagePaths.join("\n"));
+            } else {
+                alert(`No images available for ${locationEntityName}.`);
+            }
+        } else {
+            console.error("No events data found in the database.");
+        }
+    });
+};
+
+
