@@ -273,35 +273,79 @@ window.showEntityInformation = async function (entityName) {
     });
 };
 
-window.showEventImagesForLocation = function (locationEntityName) {
+window.findEntityIdByName = function (entityName) {
+    const entitiesRef = ref(database, "entities"); // Reference to the entities node
+
+    return new Promise((resolve, reject) => {
+        onValue(entitiesRef, (snapshot) => {
+            const data = snapshot.val();
+            if (!data) {
+                console.error("No data found in the database.");
+                return reject("No data found.");
+            }
+
+            for (const category in data) {
+                const entities = data[category]; // Get the entities under a category
+                for (const entityId in entities) {
+                    if (entities[entityId].name && entities[entityId].name.toLowerCase() === entityName.toLowerCase()) {
+                        console.log(`Entity found: Name: ${entityName}, ID: ${entityId}`);
+                        return resolve(entityId); // Return the matching entity ID
+                    }
+                }
+            }
+
+            console.warn(`Entity not found for name: ${entityName}`);
+            resolve(null); // Resolve with null if no matching entity is found
+        }, (error) => {
+            console.error("Error fetching data:", error);
+            reject(error); // Handle errors gracefully
+        });
+    });
+};
+
+
+window.showEventImagesForLocation = async function (locationEntityName) {
     const eventImagePaths = []; // Array to store image paths
     const eventsRef = ref(database, "events");
 
-    // Fetch data from Firebase Realtime Database
-    onValue(eventsRef, (snapshot) => {
-        const data = snapshot.val();
+    try {
+        // Resolve the entity ID asynchronously
+        const entityId = await window.findEntityIdByName(locationEntityName);
 
-        if (data) {
-            Object.keys(data).forEach((eventId) => {
-                const event = data[eventId];
-                alert(`${event.eventLocation}`);
-                // Check if the event's location matches the given locationEntityName
-                if (event.eventLocation === locationEntityName) {
-                    // Construct the image path based on event ID
-                    const imagePath = `asset/EventsImages/${eventId}.png`;
-                    eventImagePaths.push(imagePath); // Add the image path to the array
-                }
-            });
-
-            if (eventImagePaths.length > 0) {
-                alert(`Image paths for ${locationEntityName}:\n\n` + eventImagePaths.join("\n"));
-            } else {
-                alert(`No images available for ${locationEntityName}.`);
-            }
-        } else {
-            console.error("No events data found in the database.");
+        if (!entityId) {
+            alert(`Entity not found for name: ${locationEntityName}`);
+            return;
         }
-    });
+
+        // Fetch data from Firebase Realtime Database
+        onValue(eventsRef, (snapshot) => {
+            const data = snapshot.val();
+
+            if (data) {
+                Object.keys(data).forEach((eventId) => {
+                    const event = data[eventId];
+                    console.log(`Checking event: ${eventId}, Location: ${event.eventLocation}`);
+                    // Check if the event's location matches the resolved entity ID
+                    if (event.eventLocation === entityId) {
+                        // Construct the image path based on event ID
+                        const imagePath = `asset/EventsImages/${eventId}.png`;
+                        eventImagePaths.push(imagePath); // Add the image path to the array
+                    }
+                });
+
+                if (eventImagePaths.length > 0) {
+                    alert(`Image paths for ${locationEntityName}:\n\n` + eventImagePaths.join("\n"));
+                } else {
+                    alert(`No images available for ${locationEntityName}.`);
+                }
+            } else {
+                console.error("No events data found in the database.");
+            }
+        });
+    } catch (error) {
+        console.error("Error resolving entity ID or fetching events:", error);
+    }
 };
+
 
 
