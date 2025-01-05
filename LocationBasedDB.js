@@ -314,7 +314,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
 
         if (!entityId) {
             console.warn(`Entity not found for name: ${locationEntityName}`);
-            eventsPlane.setAttribute("material", "src: asset/images/no-image-available.png"); // Default image
+            eventsPlane.setAttribute("material", "src: asset/images/UMAR_info_image.png"); // Default image
             return;
         }
 
