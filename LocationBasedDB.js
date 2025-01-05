@@ -351,8 +351,8 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 if (eventIds.length > 0) {
                     // Use the first image from the array
                     const firstEventId = eventIds[0];
-                    alert('material', `src: ${firstEventId}`)
-                    const targetImage = document.querySelector(firstEventId); // Already includes '#'
+                    alert(`src: ${firstEventId}`);
+                    const targetImage = document.querySelector(`${firstEventId}`); // Already includes '#'
                     alert("Target Image Found!");
                     if (targetImage) {
                         // Update the material to display the first image
