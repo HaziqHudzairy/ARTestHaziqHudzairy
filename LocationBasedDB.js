@@ -304,12 +304,49 @@ window.findEntityIdByName = function (entityName) {
 };
 
 
+// Function to handle automatic image changing
+function changeEventImage(eventsImagePlane, eventIds) {
+    let currentIndex = 0;
+
+    // Check if there are valid event IDs
+    if (eventIds.length === 0) {
+        console.warn("No event IDs to display.");
+        eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
+        return;
+    }
+
+    // Set the first image immediately
+    const firstImageId = eventIds[0];
+    const firstImage = document.querySelector(firstImageId);
+    if (firstImage) {
+        eventsImagePlane.setAttribute("material", `src: ${firstImageId}`);
+        console.log(`Displayed the first image: ${firstImageId}`);
+    } else {
+        console.warn(`First image with ID ${firstImageId} not found.`);
+        eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
+    }
+
+    // Set up interval to change images
+    window.imageLoopInterval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % eventIds.length; // Loop back to the start
+        const currentImageId = eventIds[currentIndex];
+        const currentImage = document.querySelector(currentImageId);
+
+        if (currentImage) {
+            eventsImagePlane.setAttribute("material", `src: ${currentImageId}`);
+            console.log(`Displayed image: ${currentImageId}`);
+        } else {
+            console.warn(`Image with ID ${currentImageId} not found.`);
+        }
+    }, 2000); // Change image every 2 seconds
+}
+
 window.showEventImagesForLocation = async function (locationEntityName) {
     const eventsImagePlane = document.querySelector('#events'); // Target the <a-plane> element
     const eventsRef = ref(database, "events");
 
     // Set a default placeholder image while data is loading
-    eventsImagePlane.setAttribute("material", "src: #okW0vkufRDeNJIMV0clGKwo37182-1736091043865");
+    eventsImagePlane.setAttribute("material", "src: asset/images/loading-image.png");
 
     try {
         // Resolve the entity ID asynchronously
@@ -335,25 +372,11 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     }
                 });
 
-                if (eventIds.length > 0) {
-                    // Use the first image from the array
-                    const firstEventId = eventIds[0];
-                    const targetImage = document.querySelector(firstEventId); // Already includes '#'
-
-                    if (targetImage) {
-                        // Update the material to display the first image
-                        eventsImagePlane.setAttribute('material', `src: ${firstEventId}`);
-                        console.log(`Displayed the first image: ${firstEventId}`);
-                    } else {
-                        console.warn(`Image with ID ${firstEventId} not found in <a-assets>.`);
-                        eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
-                    }
-                } else {
-                    console.warn(`No matching events for location: ${locationEntityName}`);
-                    eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
-                }
+                // Call the new function to handle image changing
+                changeEventImage(eventsImagePlane, eventIds);
             } else {
                 console.error("No events data found in the database.");
+                eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
             }
         });
     } catch (error) {
@@ -361,6 +384,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         eventsImagePlane.setAttribute("material", "src: asset/images/error-image.png"); // Error placeholder
     }
 };
+
 
 
 
