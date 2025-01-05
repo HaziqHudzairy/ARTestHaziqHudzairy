@@ -336,22 +336,15 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 });
 
                 const isArray = Array.isArray(eventIds);
-                alert(`Data type of eventIds: ${typeof eventIds} (Is it an array? ${isArray})`);
 
                 // Ensure the array exists and has elements
                 if (eventIds && eventIds.length > 0) {
-                    eventIds.forEach((eventId, index) => {
-                        // Alert each item in the array
-                        alert(`Item ${index + 1}: ${eventId}`);
-                    });
-
                     // Start rotating images
                     let currentIndex = 0;
 
                     const rotateImages = () => {
                         const currentEventId = eventIds[currentIndex];
                         eventsImagePlane.setAttribute('material', `src: ${currentEventId}`);
-                        alert(`Displaying image: ${currentEventId}`);
                         currentIndex = (currentIndex + 1) % eventIds.length; // Loop back to the first image
                     };
 
