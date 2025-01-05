@@ -356,8 +356,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 
                     try {
                 
-                        // Use the escaped ID with querySelector
-                        const targetImage = document.querySelector(escapedEventId);
+                        const targetImage = document.querySelector(firstEventId);
                         alert(`Step 2: Target Image: ${targetImage ? 'Found' : 'Not Found'}`);
                 
                         if (targetImage) {
