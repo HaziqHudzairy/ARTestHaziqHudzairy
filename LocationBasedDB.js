@@ -315,7 +315,6 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         if (!entityId) {
             console.warn(`Entity not found for name: ${locationEntityName}`);
             eventsPlane.setAttribute("material", "src: asset/images/UMAR_info_image.png"); // Default image
-            eventsPlane.setAttribute("material", `shader: flat; src: ${eventImagePaths[currentIndex]}`);
             return;
         }
 
@@ -336,23 +335,11 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 });
 
                 if (eventImagePaths.length > 0) {
-                    // Clear any existing interval to avoid duplicates
-                    if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
-
-                    // Set the first image immediately
-                    let currentIndex = 0;
-                    eventsPlane.setAttribute("material", `shader: flat; src: ${eventImagePaths[currentIndex]}`);
-                    console.log(`Displaying image: ${eventImagePaths[currentIndex]}`);
-
-                    // Loop through images every 2 seconds
-                    window.imageLoopInterval = setInterval(() => {
-                        currentIndex = (currentIndex + 1) % eventImagePaths.length; // Loop back to the start
-                        eventsPlane.setAttribute("material", `src: ${eventImagePaths[currentIndex]}`);
-                        console.log(`Displaying image: ${eventImagePaths[currentIndex]}`);
-                    }, 2000); // Change image every 2 seconds
+                    // Use only the first image
+                    eventsPlane.setAttribute("material", `shader: flat; src: ${eventImagePaths[0]}`);
+                    console.log(`Displaying first image: ${eventImagePaths[0]}`);
                 } else {
-                    // If no images match, set a default placeholder and clear any existing interval
-                    if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
+                    // If no images match, set a default placeholder
                     eventsPlane.setAttribute("material", "src: asset/images/no-image-available.png");
                     console.warn(`No events found for ${locationEntityName}`);
                 }
@@ -362,11 +349,10 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         });
     } catch (error) {
         console.error("Error resolving entity ID or fetching events:", error);
-        // Clear interval in case of an error
-        if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
         eventsPlane.setAttribute("material", "src: asset/images/error-image.png"); // Error placeholder
     }
 };
+
 
 
 
