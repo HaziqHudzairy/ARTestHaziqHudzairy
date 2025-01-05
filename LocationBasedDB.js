@@ -335,8 +335,6 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     }
                 });
 
-                const isArray = Array.isArray(eventIds);
-
                 // Ensure the array exists and has elements
                 if (eventIds && eventIds.length > 0) {
                     // Start rotating images

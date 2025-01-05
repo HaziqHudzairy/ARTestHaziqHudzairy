@@ -387,13 +387,13 @@
                 </a-text>
 
             </a-plane>
-            <!-- <a-plane id="events" position="-5.4 0 -2.99" height="2"
+            <a-plane id="events" position="-5.4 0 -2.99" height="2"
                 material="shader: flat; depthTest: false; src: asset/EventsImages/14mZWGjcBzeXAm0HWBr7DxxY5AE3-1735995533117.png;">
-            </a-plane> -->
-
-            <a-plane id="events" position="0 0 19.5" height="4.8" width="4.8" rotation="0 -180 0"
-            material="src: #14mZWGjcBzeXAm0HWBr7DxxY5AE3-1735995533117">
             </a-plane>
+
+            <!-- <a-plane id="events" position="0 0 19.5" height="4.8" width="4.8" rotation="0 -180 0"
+                    material="src: #14mZWGjcBzeXAm0HWBr7DxxY5AE3-1735995533117">
+            </a-plane> -->
 
             
 
@@ -580,7 +580,7 @@
             const loadingMessage = document.getElementById('loading-message');
             let progress = 0;
 
-            // Simulate the loading process
+            // Function to update progress
             const updateProgress = (increment, message) => {
                 progress += increment;
                 progressBar.style.width = `${progress}%`;
@@ -598,9 +598,13 @@
             updateProgress(10, "Loading assets...");
             setTimeout(() => updateProgress(20, "Initializing AR components..."), 1000);
             setTimeout(() => updateProgress(30, "Connecting to Firebase..."), 2000);
-            setTimeout(() => updateProgress(40, "Fetching location data..."), 3000);
-            setTimeout(() => updateProgress(20, "Configuring UI..."), 4000);
-            setTimeout(() => updateProgress(20, "Finalizing setup..."), 5000);
+            setTimeout(() => updateProgress(20, "Fetching location data..."), 3000);
+
+            // Monitor the scene initialization
+            const scene = document.querySelector('a-scene');
+            scene.addEventListener('loaded', () => {
+                updateProgress(20, "Scene fully initialized!");
+            });
 
             // Example: AR camera loading listener
             const camera = document.querySelector('a-camera[gps-camera]');
@@ -610,6 +614,7 @@
                 });
             }
         });
+
 
     </script>
 
