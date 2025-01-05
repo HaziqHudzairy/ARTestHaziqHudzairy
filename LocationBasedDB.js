@@ -305,7 +305,7 @@ window.findEntityIdByName = function (entityName) {
 
 
 window.showEventImagesForLocation = async function (locationEntityName) {
-    const eventsPlane = document.querySelector('#events'); // Target the a-plane element
+    const eventsImage = document.querySelector('#events'); // Target the <a-image> element
     const eventsRef = ref(database, "events");
 
     try {
@@ -314,7 +314,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
 
         if (!entityId) {
             console.warn(`Entity not found for name: ${locationEntityName}`);
-            eventsPlane.setAttribute("material", "src: asset/images/UMAR_info_image.png"); // Default image
+            eventsImage.setAttribute("src", "asset/images/no-image-available.png"); // Default image
             return;
         }
 
@@ -332,9 +332,14 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     }
                 });
 
+                console.log("Fetched event IDs:", eventIds);
+
                 if (eventIds.length > 0) {
                     // Clear any existing interval to avoid duplicates
-                    if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
+                    if (window.imageLoopInterval) {
+                        clearInterval(window.imageLoopInterval);
+                        console.log("Cleared existing interval.");
+                    }
 
                     // Set the first image immediately
                     let currentIndex = 0;
@@ -342,7 +347,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     const assetImage = document.querySelector(`#${currentEventId}`);
 
                     if (assetImage) {
-                        eventsPlane.setAttribute("material", `src: #${currentEventId}`); // Use the ID from <a-assets>
+                        eventsImage.setAttribute("src", `#${currentEventId}`); // Use the ID from <a-assets>
                         console.log(`Displaying image: ${currentEventId}`);
                     } else {
                         console.warn(`Image with ID ${currentEventId} not found in <a-assets>.`);
@@ -355,7 +360,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                         const nextAssetImage = document.querySelector(`#${nextEventId}`);
 
                         if (nextAssetImage) {
-                            eventsPlane.setAttribute("material", `src: #${nextEventId}`); // Use the ID from <a-assets>
+                            eventsImage.setAttribute("src", `#${nextEventId}`); // Use the ID from <a-assets>
                             console.log(`Displaying image: ${nextEventId}`);
                         } else {
                             console.warn(`Image with ID ${nextEventId} not found in <a-assets>.`);
@@ -364,7 +369,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 } else {
                     // If no events match, set a default placeholder and clear any existing interval
                     if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
-                    eventsPlane.setAttribute("material", "src: asset/images/no-image-available.png");
+                    eventsImage.setAttribute("src", "asset/images/no-image-available.png");
                     console.warn(`No events found for ${locationEntityName}`);
                 }
             } else {
@@ -375,9 +380,10 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         console.error("Error resolving entity ID or fetching events:", error);
         // Clear interval in case of an error
         if (window.imageLoopInterval) clearInterval(window.imageLoopInterval);
-        eventsPlane.setAttribute("material", "src: asset/images/error-image.png"); // Error placeholder
+        eventsImage.setAttribute("src", "asset/images/error-image.png"); // Error placeholder
     }
 };
+
 
 
 
