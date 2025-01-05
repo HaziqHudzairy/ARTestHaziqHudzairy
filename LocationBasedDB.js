@@ -344,7 +344,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     //     clearInterval(window.imageLoopInterval);
                     //     console.log("Cleared existing interval.");
                     // }
-
+                    alert(`Asset image found: ${eventIds[0]}`);
                     // Set the first image immediately
                     let currentIndex = 0;
                     const currentEventId = eventIds[currentIndex];
