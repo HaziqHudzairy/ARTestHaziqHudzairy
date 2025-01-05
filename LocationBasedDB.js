@@ -304,6 +304,16 @@ window.findEntityIdByName = function (entityName) {
 };
 
 
+window.preloadImages = function (imagePaths) {
+    const assets = document.querySelector('a-assets');
+    imagePaths.forEach((path, index) => {
+        const img = document.createElement('img');
+        img.setAttribute('id', `preloadedImage${index}`);
+        img.setAttribute('src', path);
+        assets.appendChild(img);
+    });
+};
+
 window.showEventImagesForLocation = async function (locationEntityName) {
     const eventsPlane = document.querySelector('#events'); // Target the a-plane element
     const eventsRef = ref(database, "events");
@@ -327,19 +337,19 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 // Collect all matching images
                 Object.keys(data).forEach((eventId) => {
                     const event = data[eventId];
-                    console.log(`Checking event: ${eventId}, Location: ${event.eventLocation}`);
                     if (event.eventLocation === entityId) {
-                        // Add image path to array
                         eventImagePaths.push(`asset/EventsImages/${eventId}.png`);
                     }
                 });
 
                 if (eventImagePaths.length > 0) {
-                    // Use only the first image
-                    eventsPlane.setAttribute("material", `shader: flat; src: ${eventImagePaths[0]}`);
-                    console.log(`Displaying first image: ${eventImagePaths[0]}`);
+                    // Preload images
+                    window.preloadImages(eventImagePaths);
+
+                    // Set the first image after preloading
+                    eventsPlane.setAttribute("material", `src: #preloadedImage0`);
+                    console.log(`Displaying first preloaded image: ${eventImagePaths[0]}`);
                 } else {
-                    // If no images match, set a default placeholder
                     eventsPlane.setAttribute("material", "src: asset/images/no-image-available.png");
                     console.warn(`No events found for ${locationEntityName}`);
                 }
