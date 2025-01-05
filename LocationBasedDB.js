@@ -303,7 +303,9 @@ window.findEntityIdByName = function (entityName) {
     });
 };
 
-
+document.querySelector('a-assets').addEventListener('loaded', () => {
+    alert("Assets fully loaded!");
+});
 window.showEventImagesForLocation = async function (locationEntityName) {
     const eventsImagePlane = document.querySelector('#events'); // Target the <a-plane> element
     const eventsRef = ref(database, "events");
@@ -331,7 +333,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 Object.keys(data).forEach((eventId) => {
                     const event = data[eventId];
                     if (event.eventLocation === entityId) {
-                        eventIds.push("#" + eventId); // Add event ID with "#" prepended
+                        eventIds.push(eventId); // Add event ID with "#" prepended
                     }
                 });
 
@@ -377,6 +379,8 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     alert("Step 5: No matching events for location.");
                     eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
                 }
+                
+                
                 
                 
             } else {
