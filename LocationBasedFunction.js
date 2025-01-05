@@ -477,7 +477,7 @@ function handleNotificationClick() {
     //virtualSpace.setAttribute('visible', true);
     // showEntityInformation(currentEntityID);S
     showEntityInformation(currentEntityName);
-    window.showEventImagesForLocation(currentEntityName);
+    showEventImagesForLocation(currentEntityName);
     virtualSpace.setAttribute('follow-camera', '');
     virtualSpace.setAttribute('position', '0 1.6 -5');
     debugVirtualSpaceState();
