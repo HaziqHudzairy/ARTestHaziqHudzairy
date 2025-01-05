@@ -325,7 +325,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         onValue(eventsRef, (snapshot) => {
             const data = snapshot.val();
             const eventIds = []; // Array to store matching event IDs
-
+s
             if (data) {
                 // Collect all matching event IDs with "#" prepended
                 Object.keys(data).forEach((eventId) => {
@@ -335,26 +335,6 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     }
                 });
                 alert(`Event IDs: ${eventIds.join(", ")}`);
-
-                if (eventIds.length > 0) {
-                    alert(`Event IDs: it got here`);
-                    // Use the first image from the array
-                    const firstEventId = eventIds[0];
-                    alert(`Event IDs: ${firstEventId}`);
-                    const targetImage = document.querySelector(firstEventId); // Already includes '#'
-                    alert(`Event IDs: ${targetImage}`);
-                    if (targetImage) {
-                        // Update the material to display the first image
-                        eventsImagePlane.setAttribute("material", "src: " + targetImage);
-                        console.log(`Displayed the first image: ${firstEventId}`);
-                    } else {
-                        console.warn(`Image with ID ${firstEventId} not found in <a-assets>.`);
-                        eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
-                    }
-                } else {
-                    console.warn(`No matching events for location: ${locationEntityName}`);
-                    eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
-                }
             } else {
                 console.error("No events data found in the database.");
             }
