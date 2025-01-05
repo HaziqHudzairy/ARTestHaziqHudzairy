@@ -360,6 +360,9 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                         eventsImagePlane.setAttribute("material", "src: #14mZWGjcBzeXAm0HWBr7DxxY5AE3-1735996254022");
                         alert(`SImage set with src: #14mZWGjcBzeXAm0HWBr7DxxY5AE3-1735996254022`);
 
+                        eventsImagePlane.setAttribute('material', `src: ${firstEventId}`);
+                        alert(`Step 4: Image set with src: ${firstEventId}`);
+
                         const testImage = document.querySelector('#14mZWGjcBzeXAm0HWBr7DxxY5AE3-1735996254022');
                         alert(`Step 3: Test Image: ${testImage ? 'Found' : 'Not Found'}`);
                         // Use the escaped ID with querySelector
