@@ -333,7 +333,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 Object.keys(data).forEach((eventId) => {
                     const event = data[eventId];
                     if (event.eventLocation === entityId) {
-                        eventIds.push(eventId); // Add event ID with "#" prepended
+                        eventIds.push("asset/EventsImages/"+eventId); // Add event ID with "#" prepended
                     }
                 });
 
