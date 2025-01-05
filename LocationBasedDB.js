@@ -351,21 +351,29 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 if (eventIds.length > 0) {
                     // Use the first image from the array
                     const firstEventId = `${eventIds[0]}`;
-                    alert(`src: ${firstEventId}`);
-                    const targetImage = document.querySelector(firstEventId); // Already includes '#'
-                    alert("Target Image Found!");
-                    if (targetImage) {
-                        // Update the material to display the first image
-                        eventsImagePlane.setAttribute('material', `src: ${firstEventId}`);
-                        console.log(`Displayed the first image: ${firstEventId}`);
-                    } else {
-                        console.warn(`Image with ID ${firstEventId} not found in <a-assets>.`);
-                        eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
+                    alert(`Step 1: First Event ID: ${firstEventId}`);
+                
+                    try {
+                        const targetImage = document.querySelector(firstEventId); // Querying the DOM
+                        alert(`Step 2: Target Image: ${targetImage ? 'Found' : 'Not Found'}`);
+                        
+                        if (targetImage) {
+                            // Update the material to display the first image
+                            eventsImagePlane.setAttribute('material', `src: ${firstEventId}`);
+                            alert(`Step 3: Image set with src: ${firstEventId}`);
+                        } else {
+                            alert(`Step 3: Image NOT found with ID: ${firstEventId}`);
+                            eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
+                        }
+                    } catch (error) {
+                        // Catch and alert any runtime errors
+                        alert(`Error occurred: ${error.message}`);
                     }
                 } else {
-                    console.warn(`No matching events for location: ${locationEntityName}`);
+                    alert("Step 4: No matching events for location.");
                     eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
                 }
+                
             } else {
                 console.error("No events data found in the database.");
             }
