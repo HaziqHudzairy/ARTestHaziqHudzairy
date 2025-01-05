@@ -329,59 +329,43 @@ window.showEventImagesForLocation = async function (locationEntityName) {
             const eventIds = []; // Array to store matching event IDs
 
             if (data) {
-                // Collect all matching event IDs with "#" prepended
+                // Collect all matching event image file paths
                 Object.keys(data).forEach((eventId) => {
                     const event = data[eventId];
                     if (event.eventLocation === entityId) {
-                        eventIds.push("asset/EventsImages/"+eventId); // Add event ID with "#" prepended
+                        eventIds.push("asset/EventsImages/" + eventId); // Store the full directory path
                     }
                 });
-
+            
                 const isArray = Array.isArray(eventIds);
                 alert(`Data type of eventIds: ${typeof eventIds} (Is it an array? ${isArray})`);
-
+            
                 // Ensure the array exists and has elements
                 if (eventIds && eventIds.length > 0) {
                     eventIds.forEach((eventId, index) => {
                         // Alert each item in the array
                         alert(`Item ${index + 1}: ${eventId}`);
                     });
-                } else {
-                    alert("No items in the event IDs array.");
-                }
-
-                if (eventIds.length > 0) {
-                    const firstEventId = `${eventIds[0]}`; // Example: "#event1"
-                    alert(`Step 1: First Event ID: ${firstEventId}`);
-                
+            
+                    const firstEventId = eventIds[0]; // First directory path
+                    alert(`Step 1: First Event Directory: ${firstEventId}`);
+            
                     try {
-                
-                        const targetImage = document.querySelector(firstEventId);
-                        alert(`Step 2: Target Image: ${targetImage ? 'Found' : 'Not Found'}`);
-                
-                        if (targetImage) {
-                            // Update the material to display the first image
-                            eventsImagePlane.setAttribute('material', `src: ${firstEventId}`);
-                            alert(`Step 3: Image set with src: ${firstEventId}`);
-                        } else {
-                            alert(`Step 3: Image NOT found with ID: ${firstEventId}`);
-                            eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
-                        }
+                        // Use the directory path directly
+                        eventsImagePlane.setAttribute('material', `src: ${firstEventId}`);
+                        alert(`Step 2: Image set with src: ${firstEventId}`);
                     } catch (error) {
                         // Catch and alert any runtime errors
                         alert(`Error occurred: ${error.message}`);
                     }
                 } else {
-                    alert("Step 5: No matching events for location.");
+                    alert("No items in the event IDs array.");
                     eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
                 }
-                
-                
-                
-                
             } else {
                 console.error("No events data found in the database.");
             }
+            
         });
     } catch (error) {
         console.error("Error resolving entity ID or fetching events:", error);
