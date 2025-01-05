@@ -336,34 +336,18 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                 });
 
                 if (eventIds.length > 0) {
-                    // Initialize index for looping through the array
-                    let currentIndex = 0;
-
-                    // Display the first image immediately
+                    // Use the first image from the array
                     const firstEventId = eventIds[0];
-                    const targetImage = document.querySelector(firstEventId);
+                    const targetImage = document.querySelector(firstEventId); // Already includes '#'
 
                     if (targetImage) {
-                        eventsImagePlane.setAttribute('material', `src: ${firstEventId}`);
+                        // Update the material to display the first image
+                        eventsImagePlane.setAttribute("material", "src: " + firstEventId);
                         console.log(`Displayed the first image: ${firstEventId}`);
                     } else {
                         console.warn(`Image with ID ${firstEventId} not found in <a-assets>.`);
                         eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
                     }
-
-                    // Set up an interval to change images every 2 seconds
-                    window.imageLoopInterval = setInterval(() => {
-                        currentIndex = (currentIndex + 1) % eventIds.length; // Loop through the array
-                        const nextEventId = eventIds[currentIndex];
-                        const nextImage = document.querySelector(nextEventId);
-
-                        if (nextImage) {
-                            eventsImagePlane.setAttribute('material', `src: ${nextEventId}`);
-                            console.log(`Displayed image: ${nextEventId}`);
-                        } else {
-                            console.warn(`Image with ID ${nextEventId} not found in <a-assets>.`);
-                        }
-                    }, 2000); // Change image every 2 seconds
                 } else {
                     console.warn(`No matching events for location: ${locationEntityName}`);
                     eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
@@ -377,7 +361,6 @@ window.showEventImagesForLocation = async function (locationEntityName) {
         eventsImagePlane.setAttribute("material", "src: asset/images/error-image.png"); // Error placeholder
     }
 };
-
 
 
 
