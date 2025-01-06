@@ -213,15 +213,16 @@ async function renderRoute() {
         // Append the wrapper to the scene
         document.querySelector('a-scene').appendChild(wrapper);
     });
-    // Add Start and End labels
+    // Add Start Marker
     const [startLon, startLat] = route[0];
-    const startLabel = document.createElement('a-text');
-    startLabel.setAttribute('value', 'Start');
-    startLabel.setAttribute('gps-entity-place', `latitude: ${startLat}; longitude: ${startLon}`);
-    startLabel.setAttribute('color', 'white');
-    startLabel.setAttribute('scale', '10 10 10');
-    startLabel.classList.add('route-marker'); // Add a unique class
-    document.querySelector('a-scene').appendChild(startLabel);
+    const startMarker = document.createElement('a-entity');
+    startMarker.setAttribute('gps-entity-place', `latitude: ${startLat}; longitude: ${startLon}`);
+    startMarker.setAttribute('geometry', 'primitive: cylinder; radius: 0.6; height: 0.7');
+    startMarker.setAttribute('material', 'color: blue');
+    startMarker.setAttribute('scale', '1 1 1'); // Adjust scale if needed
+    startMarker.classList.add('route-marker'); // Add a unique class
+    document.querySelector('a-scene').appendChild(startMarker);
+
 
     const [endLon, endLat] = route[route.length - 1];
     const endMarker = document.createElement('a-entity');

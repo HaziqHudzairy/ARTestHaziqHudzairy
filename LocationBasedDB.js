@@ -380,8 +380,8 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     // Change the image every 5 seconds
                     imageRotationInterval = setInterval(rotateImages, 5000);
                 } else {
-                    alert("No items in the event IDs array.");
-                    eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
+                    // alert("No items in the event IDs array.");
+                    eventsImagePlane.setAttribute("material", "src: asset/AR_Environment_Info/stickynotes.png");
                 }
             } else {
                 console.error("No events data found in the database.");
