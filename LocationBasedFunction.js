@@ -386,7 +386,7 @@ function unhideEventBtn() {
 
     //resetAnimation(notification);
     // Add the event listener
-    btnContent.addEventListener("click", handleShowEvents());
+    //btnContent.addEventListener("click", handleShowEvents());
 }
 
 function handleShowEvents(){
