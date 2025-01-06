@@ -384,7 +384,9 @@ function unhideEventBtn() {
     eventBtn.classList.remove('hidden');
     eventBtn.classList.add('slide-in-left');
 
-    //eventBtn.addEventListener("click", handleShowEvents());
+
+    //Here is the problem future haziq
+    eventBtn.addEventListener("click", handleShowEvents());
 }
 
 function handleShowEvents(){

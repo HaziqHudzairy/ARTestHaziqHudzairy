@@ -781,7 +781,82 @@ form:hover .fa {
   margin: 20px;
 }
 
+.event-slider-container {
+  position: relative;
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 99999;
+}
+
+.event-card {
+  position: absolute;
+  height: auto;
+  max-height: 70%;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  
+  text-align: center;
+  padding: 20px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.event-card img {
+  width: 100%;
+  height: 50%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.event-card h3 {
+  margin: 10px 0 5px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.event-card p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+.event-card button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.event-card button:hover {
+  background-color: #0056b3;
+}
+
+.event-slider-container.hidden {
+  display: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+  z-index: 9999; /* Ensure it appears above other elements */
+  pointer-events: none; /* Prevent interaction with the overlay */
+}
+
 .btn-events {
+  font-family: "Roboto", sans-serif;
   z-index: 9998;
   position: fixed;
   top: 55px;
@@ -1090,78 +1165,4 @@ form:hover .fa {
 .logoTop-load {
   height: 40px;
   object-fit: contain;
-}
-
-.event-slider-container {
-  position: relative;
-  width: 100%;
-  height: 90vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  z-index: 99999;
-}
-
-.event-card {
-  position: absolute;
-  height: auto;
-  max-height: 70%;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  
-  text-align: center;
-  padding: 20px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.event-card img {
-  width: 100%;
-  height: 50%;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.event-card h3 {
-  margin: 10px 0 5px;
-  font-size: 1.5rem;
-  color: #333;
-}
-
-.event-card p {
-  margin: 5px 0;
-  font-size: 1rem;
-  color: #666;
-}
-
-.event-card button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.event-card button:hover {
-  background-color: #0056b3;
-}
-
-.event-slider-container.hidden {
-  display: none;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
-  z-index: 9999; /* Ensure it appears above other elements */
-  pointer-events: none; /* Prevent interaction with the overlay */
 }
