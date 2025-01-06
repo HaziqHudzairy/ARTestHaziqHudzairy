@@ -463,11 +463,11 @@ function createEventCard(event) {
 
     // Card content
     card.innerHTML = `
-        <img src="${event.image || 'https://via.placeholder.com/300'}" alt="Event Image">
-        <h3>${event.name || 'Unnamed Event'}</h3>
-        <p>Date: ${event.date || 'N/A'}</p>
-        <p>Time: ${event.time || 'N/A'}</p>
-        <p>Description: ${event.description || 'No description available.'}</p>
+        <img src="${event.eventPosterUrl || 'https://via.placeholder.com/300'}" alt="Event Image">
+        <h3>${event.eventName || 'Unnamed Event'}</h3>
+        <p>Date: ${event.eventDate || 'N/A'}</p>
+        <p>Time: ${event.eventTime || 'N/A'}</p>
+        <p>Description: ${event.eventDetails || 'No description available.'}</p>
     `;
 
     // Stop propagation for click events
