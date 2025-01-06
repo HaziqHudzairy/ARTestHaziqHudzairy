@@ -416,7 +416,7 @@ window.fetchAndRenderEventsByLocation = async function (locationEntityName) {
         onValue(eventsRef, (snapshot) => {
             const data = snapshot.val();
             const eventDetails = []; // Array to store event details
-            alert(`Entity: ${entityId}`);
+            // alert(`Entity: ${entityId}`);
 
             if (data) {
                 // Filter events for the matching location
@@ -425,7 +425,7 @@ window.fetchAndRenderEventsByLocation = async function (locationEntityName) {
                     if (event.eventLocation === entityId) {
                         // Collect event details
                         eventDetails.push({ id: eventId, ...event });
-                        alert(`Entity: ${eventId}`);
+                        // alert(`Entity: ${eventId}`);
                     }
                 });
 
