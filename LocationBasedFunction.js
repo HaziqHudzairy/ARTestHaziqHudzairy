@@ -380,17 +380,15 @@ function unhideExitEnv() {
 }
 
 function unhideEventBtn() {
-    const btnContent = document.querySelector('.btn-events');
-    btnContent.classList.remove('hidden');
-    btnContent.classList.add('slide-in-left');
+    const eventBtn = document.querySelector('.btn-events');
+    eventBtn.classList.remove('hidden');
+    eventBtn.classList.add('slide-in-left');
 
-    //resetAnimation(notification);
-    // Add the event listener
-    //btnContent.addEventListener("click", handleShowEvents());
+    //eventBtn.addEventListener("click", handleShowEvents());
 }
 
 function handleShowEvents(){
-    ShowAllEvents();
+    //ShowAllEvents();
     hideEventBtn();
 }
 
