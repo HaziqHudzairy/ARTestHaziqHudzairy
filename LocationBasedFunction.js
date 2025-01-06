@@ -397,7 +397,6 @@ function ShowAllEvents(){
     const overlay = document.querySelector('.overlay');
     events.classList.remove('hidden');
     overlay.classList.remove('hidden');
-
     eventBtn.addEventListener("click", hideAllEvents);
 }
 
@@ -405,7 +404,7 @@ function hideAllEvents(){
     const events = document.querySelector('.event-slider-container');
     const overlay = document.querySelector('.overlay');
     events.classList.add('hidden');
-    overlay.classList.ad('hidden');
+    overlay.classList.add('hidden');
 }
 
 function slideOutNotification() {
