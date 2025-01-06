@@ -438,23 +438,28 @@ function slideOutNotification() {
     notification.classList.add('hide-notification'); // Add fade-in class
     notification.style.display = 'none'; // Ensure it's visible
 
-    // Reset animation classes
-    notification.classList.remove('slide-in-left');
-    //resetAnimation(notification);
+    // // Reset animation classes
+    // notification.classList.remove('slide-in-left');
+    // //resetAnimation(notification);
 
-    // Add slide-out animation
-    notification.classList.add('slide-out-left');
+    // // Add slide-out animation
+    // notification.classList.add('slide-out-left');
 }
 
 function slideInNotification() {
     const notification = document.querySelector('.notification-container');
 
-    // Reset animation classes
-    notification.classList.remove('slide-out-left');
-    //resetAnimation(notification);
 
-    // Add slide-in animation
-    notification.classList.add('slide-in-left');
+    notification.classList.remove('hide-notification'); // Remove fade-out class
+    notification.classList.add('show-notification'); // Add fade-in class
+    notification.style.display = 'flex'; // Ensure it's visible
+
+    // // Reset animation classes
+    // notification.classList.remove('slide-out-left');
+    // //resetAnimation(notification);
+
+    // // Add slide-in animation
+    // notification.classList.add('slide-in-left');
 }
 
 function hideEventBtn() {
@@ -515,9 +520,7 @@ function showNotification(entityname) {
     const notification = document.querySelector('.notification-container');
     const locationName = document.querySelector('.notification-box h1');
     locationName.textContent = entityname;
-    notification.classList.remove('hide-notification'); // Remove fade-out class
-    notification.classList.add('show-notification'); // Add fade-in class
-    notification.style.display = 'flex'; // Ensure it's visible
+    slideInNotification();
 
     notification.addEventListener('click', handleNotificationClick);
 }
