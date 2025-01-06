@@ -1,6 +1,12 @@
-// Update the location continuously with system popup for errors
+let locationWatchId = null; // Global variable to store the watch ID
+
 function updateLocation() {
-    navigator.geolocation.watchPosition(
+    // Clear any existing watch ID to avoid duplicates
+    if (locationWatchId !== null) {
+        navigator.geolocation.clearWatch(locationWatchId);
+    }
+
+    locationWatchId = navigator.geolocation.watchPosition(
         function (position) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
@@ -12,7 +18,6 @@ function updateLocation() {
             checkProximity(latitude, longitude, window.dynamicEntities, 30);
         },
         function (error) {
-            // Handle different types of errors and show system alert popup
             let message = "";
             switch (error.code) {
                 case 1:
@@ -28,13 +33,12 @@ function updateLocation() {
                     message = "An unknown error occurred. Please refresh and try again.";
                     break;
             }
-            // Display system alert popup
             alert(message);
         },
         {
             enableHighAccuracy: true,
             maximumAge: 0,
-            timeout: 5000
+            timeout: 5000,
         }
     );
 }
@@ -366,20 +370,11 @@ function handleExitEnv() {
     clearVirtualSpace();
     stopAndResetImageRotation();
 
-    // Get the user's current location (will also update automatically in updateLocation)
-    navigator.geolocation.getCurrentPosition(
-        function (position) {
-            const userLat = position.coords.latitude;
-            const userLon = position.coords.longitude;
-
-            // Trigger a proximity check to update notification immediately
-            checkProximity(userLat, userLon, window.dynamicEntities, 30);
-        },
-        function (error) {
-            console.warn("Unable to get current location for proximity check:", error);
-        }
-    );
+    // Restart location updates
+    updateLocation();
+    console.log("Location updates restarted.");
 }
+
 
 
 function unhideExitEnv() {
@@ -487,15 +482,16 @@ function checkProximity(userLat, userLon, entities, radius) {
 
             currentEntityName = entity.name;
             CurrentEntityID = getIDBasedOnNames(currentEntityName, entities); // Set CurrentEntityID globally
-            showNotification(entity.name);
+            showNotification(entity.name); // Show notification only if near an entity
         }
     });
 
     if (!isNearAnyEntity) {
         CurrentEntityID = null; // Reset CurrentEntityID if no entity is near
-        hideNotification();
+        hideNotification(); // Ensure notification is hidden when not near any entity
     }
 }
+
 
 // Function to get the ID based on the name
 function getIDBasedOnNames(entityName, entities) {
@@ -536,17 +532,22 @@ function debugVirtualSpaceState() {
 
 function handleNotificationClick() {
     const virtualSpace = document.querySelector('#virtual-space');
+
+    // Stop location updates
+    if (locationWatchId !== null) {
+        navigator.geolocation.clearWatch(locationWatchId);
+        locationWatchId = null;
+        console.log("Location updates stopped.");
+    }
+
     unhideExitEnv();
     unhideEventBtn();
     slideOutNotification();
-    //virtualSpace.setAttribute('visible', true);
-    // showEntityInformation(currentEntityID);S
     showEntityInformation(currentEntityName);
     showEventImagesForLocation(currentEntityName);
     virtualSpace.setAttribute('follow-camera', '');
     virtualSpace.setAttribute('position', '0 1.6 -5');
     debugVirtualSpaceState();
-    
 }
 
 
