@@ -395,7 +395,7 @@ function handleShowEvents(){
 
 function ShowAllEvents(){
     const events = document.querySelector('.event-slider-container');
-    const overlay = document.getElementById('overlay');
+    const overlay = document.querySelector('overlay');
     events.classList.remove('hidden');
     overlay.classList.remove('hidden');
 

@@ -792,13 +792,13 @@ form:hover .fa {
 }
 
 .event-card {
-  top: 200px;
+  top: 100px;
   z-index: 10000;
   position: absolute;
   height: auto;
   max-height: 70%;
+  width: 80vw;
   overflow-y: auto;
-  width: 80%;
   background: #fff;
   border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
