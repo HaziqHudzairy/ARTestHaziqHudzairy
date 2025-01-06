@@ -404,18 +404,19 @@ window.fetchAndRenderEventsByLocation = async function (locationEntityName) {
     eventContainer.innerHTML = '';
 
     try {
-        // Step 1: Resolve the `entityId` for the given location name
+        // Resolve the `entityId` for the given location name
         const entityId = await window.findEntityIdByName(locationEntityName);
 
         if (!entityId) {
-            console.warn(`Entity not found for name: ${locationEntityName}`);
+            alert(`Entity not found for name: ${locationEntityName}`);
             return;
         }
 
-        // Step 2: Fetch events related to the resolved `entityId`
+        // Fetch events related to the resolved `entityId`
         onValue(eventsRef, (snapshot) => {
             const data = snapshot.val();
             const eventDetails = []; // Array to store event details
+            alert(`Entity: ${entityId}`);
 
             if (data) {
                 // Filter events for the matching location
@@ -424,10 +425,11 @@ window.fetchAndRenderEventsByLocation = async function (locationEntityName) {
                     if (event.eventLocation === entityId) {
                         // Collect event details
                         eventDetails.push({ id: eventId, ...event });
+                        alert(`Entity: ${eventId}`);
                     }
                 });
 
-                // Step 3: Render the event details in the slider
+                // Render the event details in the slider
                 if (eventDetails.length > 0) {
                     eventDetails.forEach((event) => {
                         const card = createEventCard(event); // Create a card for each event
@@ -450,6 +452,7 @@ window.fetchAndRenderEventsByLocation = async function (locationEntityName) {
         eventContainer.innerHTML = `<p>Error fetching events for this location.</p>`;
     }
 };
+
 
 /**
  * Create a card dynamically for an event.
