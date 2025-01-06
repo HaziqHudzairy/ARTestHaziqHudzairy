@@ -545,43 +545,10 @@
 
         </a-entity>
 
-
-
-
-        </a-entity>
-
-        <!-- <a-entity id="dynamic-model"></a-entity> -->
-
-
-
         <a-light type="directional" position="2 4 -3" intensity="1"></a-light>
         <a-light type="ambient" intensity="0.5"></a-light>
 
         <a-camera gps-camera look-controls rotation-reader position="0 1.6 0"></a-camera>
-
-        <!-- <script>
-            AFRAME.registerComponent('follow-camera', {
-                init: function () {
-                    this.camera = document.querySelector('#camera');
-                    this.virtualSpace = document.querySelector('#virtual-space');
-                },
-
-                tick: function () {
-                    if (!this.camera || !this.virtualSpace) return;
-
-                    // Get the camera's position
-                    const cameraPosition = new THREE.Vector3();
-                    this.camera.object3D.getWorldPosition(cameraPosition);
-
-                    // Update the virtual space's position based on the camera's position
-                    this.virtualSpace.object3D.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
-
-                    // Optionally, make the virtual space a bit ahead of the camera
-                    this.virtualSpace.object3D.position.z -= 5;  // Adjust this value as needed
-                }
-            });
-        </script> -->
-
 
     </a-scene>
 
@@ -655,53 +622,40 @@
 
     <script type="module">
         import './LocationBasedDB.js';
+    
         // Function to get query parameters
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param); // Returns null if the parameter is not found
         }
-
+    
         // Check for the entityID parameter
         const entityId = getQueryParam("entityID");
-
-
-        // Debugging: Log the entityID or show an appropriate message
+    
         if (entityId) {
             console.log("Entity ID passed:", entityId);
-
-            window.findEntityById(entityId, (entity) => {
-                if (entity) {
-                    console.log("Entity data:", entity);
-
-                    clickSuggestion(entity)
-                } else {
-                    console.warn("Entity not found for ID:", entityId);
-                }
+    
+            // Monitor the scene initialization
+            const scene = document.querySelector('a-scene');
+            scene.addEventListener('loaded', () => {
+                console.log("Scene fully initialized!");
+    
+                // Begin navigation after the scene is fully initialized
+                window.findEntityById(entityId, (entity) => {
+                    if (entity) {
+                        console.log("Entity data:", entity);
+    
+                        clickSuggestion(entity); // Perform your suggestion click action
+    
+                        // Set navigation coordinates
+                        window.setNavigationCoordinates(destinationLatitude, destinationLongitude);
+                    } else {
+                        console.warn("Entity not found for ID:", entityId);
+                    }
+                });
             });
-            window.setNavigationCoordinates(destinationLatitude, destinationLongitude);
         }
-
-        
-
     </script>
-
-    <!-- <script>
-
-        
-
-
-        
-
-        // showDebugMessage(`
-        //     Debug Info: <br>
-        //     Viewport Dimensions: ${viewportWidth}px x ${viewportHeight}px <br>
-        //     Scene Dimensions: ${sceneRect.width}px x ${sceneRect.height}px <br>
-        //     Scene Position: Top ${sceneRect.top}px, Left ${sceneRect.left}px <br>
-        //     Camera FOV: ${fov}° <br>
-        //     Camera Aspect Ratio: ${aspectRatio}
-        // `);
-
-    </script> -->
 </body>
 
 </html>

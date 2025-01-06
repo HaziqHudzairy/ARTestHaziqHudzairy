@@ -227,10 +227,10 @@ async function renderRoute() {
     const endMarker = document.createElement('a-entity');
     endMarker.setAttribute('gps-entity-place', `latitude: ${endLat}; longitude: ${endLon}`);
     endMarker.setAttribute('gltf-model', '#locationPinDestination'); // Reference to the asset item ID
-    endMarker.setAttribute('scale', '10 10 10'); // Adjust scale if needed
+    endMarker.setAttribute('scale', '1 1 1'); // Adjust scale if needed
+    endMarker.setAttribute('animation-mixer', ''); // Ensures the animation in the GLB plays
     endMarker.classList.add('route-marker'); // Add a unique class
     document.querySelector('a-scene').appendChild(endMarker);
-
 }
 
 // Call the render function after the scene is loaded
