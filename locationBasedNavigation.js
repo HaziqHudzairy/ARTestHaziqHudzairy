@@ -182,7 +182,7 @@ async function renderRoute() {
 
         // Create the actual marker as a child of the wrapper
         const marker = document.createElement('a-entity');
-        marker.setAttribute('geometry', 'primitive: box; depth: 1; height: 0.5; width: 0.2');
+        marker.setAttribute('geometry', 'primitive: cylinder; radius: 0.5; height: 0.5');
         marker.setAttribute('material', 'color: red');
         marker.setAttribute('scale', '0.5 0.5 0.5');
         marker.setAttribute('look-at', '[gps-camera]');
@@ -227,7 +227,7 @@ async function renderRoute() {
     const endMarker = document.createElement('a-entity');
     endMarker.setAttribute('gps-entity-place', `latitude: ${endLat}; longitude: ${endLon}`);
     endMarker.setAttribute('gltf-model', '#locationPinDestination'); // Reference to the asset item ID
-    endMarker.setAttribute('scale', '1 1 1'); // Adjust scale if needed
+    endMarker.setAttribute('scale', '4 4 4'); // Adjust scale if needed
     endMarker.setAttribute('animation-mixer', ''); // Ensures the animation in the GLB plays
     endMarker.classList.add('route-marker'); // Add a unique class
     document.querySelector('a-scene').appendChild(endMarker);
