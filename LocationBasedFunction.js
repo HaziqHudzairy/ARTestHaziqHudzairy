@@ -390,7 +390,6 @@ function unhideEventBtn() {
 
 function handleShowEvents(){
     ShowAllEvents();
-    hideEventBtn();
 }
 
 function ShowAllEvents(){
@@ -399,18 +398,14 @@ function ShowAllEvents(){
     events.classList.remove('hidden');
     overlay.classList.remove('hidden');
 
-    overlay.addEventListener('click', () => {
-        hideAllEvents();
-    });
+    eventBtn.addEventListener("click", hideAllEvents);
 }
 
 function hideAllEvents(){
     const events = document.querySelector('.event-slider-container');
-    const overlay = document.getElementById('overlay');
+    const overlay = document.querySelector('.overlay');
     events.classList.add('hidden');
     overlay.classList.ad('hidden');
-
-    unhideEventBtn();
 }
 
 function slideOutNotification() {
