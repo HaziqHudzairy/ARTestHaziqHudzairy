@@ -233,7 +233,7 @@
     <div class="overlay hidden"></div>
     <div class="event-slider-container hidden">
         <div class="event-card" id="event-card-1">
-            <img src="https://via.placeholder.com/300" alt="Event Image">
+            <img src="asset/EventsImages/14mZWGjcBzeXAm0HWBr7DxxY5AE3-1735996191895.jpg" alt="Event Image">
             <h3>Event Name 1</h3>
             <p>Date: Jan 10, 2025</p>
             <p>Time: 5:00 PM</p>
@@ -685,6 +685,7 @@ let startX = 0;
 let currentX = 0;
 let isDragging = false;
 
+// Show the specified card
 function showCard(index) {
     cards.forEach((card, i) => {
         if (i === index) {
@@ -699,6 +700,7 @@ function showCard(index) {
     });
 }
 
+// Handle touch start
 function handleTouchStart(event) {
     const touch = event.touches[0];
     startX = touch.clientX;
@@ -706,6 +708,7 @@ function handleTouchStart(event) {
     currentX = startX;
 }
 
+// Handle touch move
 function handleTouchMove(event) {
     if (!isDragging) return;
 
@@ -717,6 +720,7 @@ function handleTouchMove(event) {
     card.style.transform = `translateX(${deltaX}px)`;
 }
 
+// Handle touch end
 function handleTouchEnd() {
     if (!isDragging) return;
 
@@ -740,12 +744,22 @@ function handleTouchEnd() {
     }
 }
 
-document.addEventListener('touchstart', handleTouchStart);
-document.addEventListener('touchmove', handleTouchMove);
-document.addEventListener('touchend', handleTouchEnd);
+// Prevent clicks on cards from propagating to overlay
+cards.forEach(card => {
+    // Attach touch events to each card
+    card.addEventListener('touchstart', handleTouchStart);
+    card.addEventListener('touchmove', handleTouchMove);
+    card.addEventListener('touchend', handleTouchEnd);
+
+    // Prevent click events from propagating to the overlay
+    card.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevents overlay from being triggered
+    });
+});
 
 // Show the initial card
 showCard(currentIndex);
+
 
     </script>
 

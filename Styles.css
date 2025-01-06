@@ -854,7 +854,7 @@ form:hover .fa {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
   z-index: 9999; /* Ensure it appears above other elements */
-  pointer-events: none; /* Prevent interaction with the overlay */
+  pointer-events: auto;
 }
 
 .btn-events {
