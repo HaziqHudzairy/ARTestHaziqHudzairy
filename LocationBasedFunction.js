@@ -379,6 +379,16 @@ function unhideExitEnv() {
     btnContent.addEventListener("click", handleExitEnv);
 }
 
+function unhideEventBtn() {
+    const btnContent = document.querySelector('.btn-events');
+    btnContent.classList.remove('hidden');
+    btnContent.classList.add('slide-in-left');
+
+    //resetAnimation(notification);
+    // Add the event listener
+    //btnContent.addEventListener("click", ShowAllEvents());
+}
+
 function slideOutNotification() {
     const notification = document.querySelector('.notification-container');
 
@@ -401,12 +411,19 @@ function slideInNotification(entityname) {
     notification.classList.add('slide-in-left');
 }
 
+function hideEventBtn() {
+    const btnContent = document.querySelector('.btn-events');
+    btnContent.classList.add('slide-out-left');
+    btnContent.classList.add('hidden');
+    clearEnvEvent(btnContent);
+}
 
 function hideExitEnv() {
     const btnContent = document.querySelector('.btn-content2');
     btnContent.classList.add('slide-out-left');
     btnContent.classList.add('hidden');
-    clearEnvEvent(btnContent)
+    clearEnvEvent(btnContent);
+    hideEventBtn();
 }
 
 let currentEntityName = "";
@@ -474,6 +491,7 @@ function debugVirtualSpaceState() {
 function handleNotificationClick() {
     const virtualSpace = document.querySelector('#virtual-space');
     unhideExitEnv();
+    unhideEventBtn();
     slideOutNotification();
     //virtualSpace.setAttribute('visible', true);
     // showEntityInformation(currentEntityID);S
