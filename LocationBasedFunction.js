@@ -386,13 +386,12 @@ function unhideEventBtn() {
 
     //resetAnimation(notification);
     // Add the event listener
-    btnContent.addEventListener("click", ShowAllEvents());
+    //btnContent.addEventListener("click", ShowAllEvents());
 }
 
 function ShowAllEvents(){
-    alert(`events button clicked`);
-    // const btnContent = document.querySelector('.event-slider-container');
-    // btnContent.classList.remove('hidden');
+    const btnContent = document.querySelector('.event-slider-container');
+    btnContent.classList.remove('hidden');
 }
 
 function slideOutNotification() {
