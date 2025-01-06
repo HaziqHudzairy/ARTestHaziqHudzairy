@@ -436,6 +436,7 @@ function slideOutNotification() {
 
     notification.classList.remove('show-notification'); // Remove fade-out class
     notification.classList.add('hide-notification'); // Add fade-in class
+    notification.style.display = 'none'; // Ensure it's visible
 
     // Reset animation classes
     notification.classList.remove('slide-in-left');
@@ -511,7 +512,6 @@ function getIDBasedOnNames(entityName, entities) {
 }
 
 function showNotification(entityname) {
-    alert(`Showing Notification`)
     const notification = document.querySelector('.notification-container');
     const locationName = document.querySelector('.notification-box h1');
     locationName.textContent = entityname;
