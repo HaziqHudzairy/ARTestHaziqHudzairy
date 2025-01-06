@@ -392,20 +392,36 @@ function handleShowEvents(){
     ShowAllEvents();
 }
 
-function ShowAllEvents(){
+function ShowAllEvents() {
     const events = document.querySelector('.event-slider-container');
     const overlay = document.querySelector('.overlay');
+
+    // Fetch and render events for the current entity
+    if (currentEntityName) {
+        fetchAndRenderEventsByLocation(currentEntityName);
+    } else {
+        console.warn('No current entity selected to fetch events for.');
+        return;
+    }
+
+    // Show the events container and overlay
     events.classList.remove('hidden');
     overlay.classList.remove('hidden');
+
+    // Add event listener to hide events when clicking the overlay
     overlay.addEventListener("click", hideAllEvents);
 }
 
-function hideAllEvents(){
+
+function hideAllEvents() {
     const events = document.querySelector('.event-slider-container');
     const overlay = document.querySelector('.overlay');
+
+    // Hide the events container and overlay
     events.classList.add('hidden');
     overlay.classList.add('hidden');
 }
+
 
 function slideOutNotification() {
     const notification = document.querySelector('.notification-container');

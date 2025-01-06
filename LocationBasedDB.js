@@ -393,6 +393,166 @@ window.showEventImagesForLocation = async function (locationEntityName) {
     }
 };
 
+/**
+ * Fetch events based on location and display them in the slider.
+ */
+window.fetchAndRenderEventsByLocation = async function (locationEntityName) {
+    const eventsRef = ref(database, "events");
+    const eventContainer = document.querySelector('.event-slider-container');
+
+    // Clear the existing event slider
+    eventContainer.innerHTML = '';
+
+    try {
+        // Step 1: Resolve the `entityId` for the given location name
+        const entityId = await window.findEntityIdByName(locationEntityName);
+
+        if (!entityId) {
+            console.warn(`Entity not found for name: ${locationEntityName}`);
+            return;
+        }
+
+        // Step 2: Fetch events related to the resolved `entityId`
+        onValue(eventsRef, (snapshot) => {
+            const data = snapshot.val();
+            const eventDetails = []; // Array to store event details
+
+            if (data) {
+                // Filter events for the matching location
+                Object.keys(data).forEach((eventId) => {
+                    const event = data[eventId];
+                    if (event.eventLocation === entityId) {
+                        // Collect event details
+                        eventDetails.push({ id: eventId, ...event });
+                    }
+                });
+
+                // Step 3: Render the event details in the slider
+                if (eventDetails.length > 0) {
+                    eventDetails.forEach((event) => {
+                        const card = createEventCard(event); // Create a card for each event
+                        eventContainer.appendChild(card);
+                    });
+
+                    // Initialize the slider
+                    initializeSlider();
+                } else {
+                    console.warn(`No events found for location: ${locationEntityName}`);
+                    eventContainer.innerHTML = `<p>No events available for this location.</p>`;
+                }
+            } else {
+                console.error("No events data found in the database.");
+                eventContainer.innerHTML = `<p>Error fetching event data.</p>`;
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching events for location:", error);
+        eventContainer.innerHTML = `<p>Error fetching events for this location.</p>`;
+    }
+};
+
+/**
+ * Create a card dynamically for an event.
+ */
+function createEventCard(event) {
+    const card = document.createElement('div');
+    card.className = 'event-card hidden'; // Initially hidden
+
+    // Card content
+    card.innerHTML = `
+        <img src="${event.image || 'https://via.placeholder.com/300'}" alt="Event Image">
+        <h3>${event.name || 'Unnamed Event'}</h3>
+        <p>Date: ${event.date || 'N/A'}</p>
+        <p>Time: ${event.time || 'N/A'}</p>
+        <p>Description: ${event.description || 'No description available.'}</p>
+    `;
+
+    // Stop propagation for click events
+    card.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+
+    return card;
+}
+
+/**
+ * Initialize the card slider with swipe functionality.
+ */
+function initializeSlider() {
+    const cards = document.querySelectorAll('.event-card');
+    let currentIndex = 0;
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+
+    function showCard(index) {
+        cards.forEach((card, i) => {
+            if (i === index) {
+                card.classList.remove('hidden');
+                card.style.transform = 'translateX(0)';
+                card.style.opacity = '1';
+            } else {
+                card.classList.add('hidden');
+                card.style.transform = 'translateX(100%)';
+                card.style.opacity = '0';
+            }
+        });
+    }
+
+    function handleTouchStart(event) {
+        const touch = event.touches[0];
+        startX = touch.clientX;
+        isDragging = true;
+        currentX = startX;
+    }
+
+    function handleTouchMove(event) {
+        if (!isDragging) return;
+
+        const touch = event.touches[0];
+        currentX = touch.clientX;
+        const deltaX = currentX - startX;
+
+        const card = cards[currentIndex];
+        card.style.transform = `translateX(${deltaX}px)`;
+    }
+
+    function handleTouchEnd() {
+        if (!isDragging) return;
+
+        const deltaX = currentX - startX;
+        const card = cards[currentIndex];
+        isDragging = false;
+
+        // If swipe distance is significant, move to the next card
+        if (Math.abs(deltaX) > 100) {
+            const direction = deltaX > 0 ? 'right' : 'left';
+            card.style.transform = `translateX(${direction === 'left' ? '-150%' : '150%'})`;
+            card.style.opacity = '0';
+
+            currentIndex = (currentIndex + (direction === 'left' ? 1 : -1) + cards.length) % cards.length;
+            setTimeout(() => {
+                showCard(currentIndex);
+            }, 300);
+        } else {
+            // Reset the position if swipe is not significant
+            card.style.transform = 'translateX(0)';
+        }
+    }
+
+    // Attach touch events to each card
+    cards.forEach(card => {
+        card.addEventListener('touchstart', handleTouchStart);
+        card.addEventListener('touchmove', handleTouchMove);
+        card.addEventListener('touchend', handleTouchEnd);
+    });
+
+    // Show the initial card
+    showCard(currentIndex);
+}
+
+
+
 
 
 
