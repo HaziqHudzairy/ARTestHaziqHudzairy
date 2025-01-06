@@ -792,6 +792,7 @@ form:hover .fa {
 }
 
 .event-card {
+  top: 200px;
   z-index: 10000;
   position: absolute;
   height: auto;
@@ -865,6 +866,10 @@ form:hover .fa {
   left: -10px;
   text-align: center;
   margin: 20px;
+}
+
+.btn-events span{
+  font-size: 12px;
 }
 
 .btn-custom3 {
