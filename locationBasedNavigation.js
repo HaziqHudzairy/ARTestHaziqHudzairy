@@ -1,6 +1,7 @@
 // Your Mapbox Token Specifically for UM.AR domain
 const MAPBOX_TOKEN = 'sk.eyJ1IjoiaGF6aXFodWR6YWlyeTAyIiwiYSI6ImNtM3VvYzduZDBqazgyanIzOTdibXM1c3IifQ.IRA9AZlLo-eF9uXsQkzdmg';
 
+
 let start = []; // User's coordinates
 let end = [];   // Destination coordinates
 
