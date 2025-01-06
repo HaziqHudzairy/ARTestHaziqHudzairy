@@ -434,6 +434,9 @@ function hideAllEvents() {
 function slideOutNotification() {
     const notification = document.querySelector('.notification-container');
 
+    notification.classList.remove('show-notification'); // Remove fade-out class
+    notification.classList.add('hide-notification'); // Add fade-in class
+
     // Reset animation classes
     notification.classList.remove('slide-in-left');
     //resetAnimation(notification);
