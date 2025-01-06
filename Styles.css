@@ -789,10 +789,10 @@ form:hover .fa {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  z-index: 99999;
 }
 
 .event-card {
+  z-index: 10000;
   position: absolute;
   height: auto;
   max-height: 70%;
