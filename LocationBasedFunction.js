@@ -386,7 +386,12 @@ function unhideEventBtn() {
 
     //resetAnimation(notification);
     // Add the event listener
-    btnContent.addEventListener("click", ShowAllEvents());
+    btnContent.addEventListener("click", handleShowEvents());
+}
+
+function handleShowEvents(){
+    ShowAllEvents();
+    hideEventBtn();
 }
 
 function ShowAllEvents(){
@@ -398,8 +403,6 @@ function ShowAllEvents(){
     overlay.addEventListener('click', () => {
         hideAllEvents();
     });
-
-    hideEventBtn();
 }
 
 function hideAllEvents(){
