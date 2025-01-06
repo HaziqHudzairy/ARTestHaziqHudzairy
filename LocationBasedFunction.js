@@ -390,8 +390,9 @@ function unhideEventBtn() {
 }
 
 function ShowAllEvents(){
-    const btnContent = document.querySelector('.event-slider-container');
-    btnContent.classList.remove('hidden');
+    alert(`events button clicked`);
+    // const btnContent = document.querySelector('.event-slider-container');
+    // btnContent.classList.remove('hidden');
 }
 
 function slideOutNotification() {
