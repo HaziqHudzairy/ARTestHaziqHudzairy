@@ -386,12 +386,29 @@ function unhideEventBtn() {
 
     //resetAnimation(notification);
     // Add the event listener
-    //btnContent.addEventListener("click", ShowAllEvents());
+    btnContent.addEventListener("click", ShowAllEvents());
 }
 
 function ShowAllEvents(){
-    const btnContent = document.querySelector('.event-slider-container');
-    btnContent.classList.remove('hidden');
+    const events = document.querySelector('.event-slider-container');
+    const overlay = document.getElementById('overlay');
+    events.classList.remove('hidden');
+    overlay.classList.remove('hidden');
+
+    overlay.addEventListener('click', () => {
+        hideAllEvents();
+    });
+
+    hideEventBtn();
+}
+
+function hideAllEvents(){
+    const events = document.querySelector('.event-slider-container');
+    const overlay = document.getElementById('overlay');
+    events.classList.add('hidden');
+    overlay.classList.ad('hidden');
+
+    unhideEventBtn();
 }
 
 function slideOutNotification() {
