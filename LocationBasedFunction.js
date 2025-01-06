@@ -397,7 +397,7 @@ function ShowAllEvents(){
     const overlay = document.querySelector('.overlay');
     events.classList.remove('hidden');
     overlay.classList.remove('hidden');
-    eventBtn.addEventListener("click", hideAllEvents);
+    overlay.addEventListener("click", hideAllEvents);
 }
 
 function hideAllEvents(){
