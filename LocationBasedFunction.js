@@ -364,10 +364,23 @@ function clearEnvEvent(btnContent) {
 function handleExitEnv() {
     hideExitEnv();
     clearVirtualSpace();
-    stopAndResetImageRotation()
-    slideInNotification();
+    stopAndResetImageRotation();
 
+    // Get the user's current location (will also update automatically in updateLocation)
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            const userLat = position.coords.latitude;
+            const userLon = position.coords.longitude;
+
+            // Trigger a proximity check to update notification immediately
+            checkProximity(userLat, userLon, window.dynamicEntities, 30);
+        },
+        function (error) {
+            console.warn("Unable to get current location for proximity check:", error);
+        }
+    );
 }
+
 
 function unhideExitEnv() {
     const btnContent = document.querySelector('.btn-content2');
@@ -434,7 +447,7 @@ function slideOutNotification() {
     notification.classList.add('slide-out-left');
 }
 
-function slideInNotification(entityname) {
+function slideInNotification() {
     const notification = document.querySelector('.notification-container');
 
     // Reset animation classes
@@ -478,7 +491,6 @@ function checkProximity(userLat, userLon, entities, radius) {
         }
     });
 
-    // Hide the center menu if the user is not near any entity
     if (!isNearAnyEntity) {
         CurrentEntityID = null; // Reset CurrentEntityID if no entity is near
         hideNotification();
