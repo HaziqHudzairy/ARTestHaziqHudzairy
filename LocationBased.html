@@ -262,8 +262,10 @@
     <a-scene apply-toon-material renderer="logarithmicDepthBuffer: true; debugUIEnabled: false;" embedded
         loading-screen="enabled: false;" arjs="sourceType: webcam; cameraParametersUrl: camera_para.dat;" id="ar-scene">
         <a-assets>
-<img id="threeTone" src="asset/middle_button/threeTone.jpg">
+            <img id="threeTone" src="asset/middle_button/threeTone.jpg">
             <img id="fiveTone" src="asset/middle_button/fiveTone.jpg">
+
+            <a-asset-item id="locationPinDestination" src="asset/LocationPin.glb"></a-asset-item>
 
             <!-- Faculties -->
             <a-asset-item id="locationPinMedicine" src="asset/FacultyEntity/Medicine.glb"></a-asset-item>

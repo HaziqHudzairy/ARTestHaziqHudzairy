@@ -18,13 +18,12 @@ function setNavigationCoordinates(destinationLatitude, destinationLongitude) {
 
             // Call showDebugMessage with the formatted message
             //showDebugMessage(debugMessage);
-            alert(debugMessage);
             renderRoute();
 
             // Optionally perform additional actions, like fetching routes or updating UI
         },
         (error) => {
-            alert(`Error getting user's location: ${error.message}`);
+            console.error(`Error getting user's location: ${error.message}`);
         }
     );
 }
@@ -225,13 +224,13 @@ async function renderRoute() {
     document.querySelector('a-scene').appendChild(startLabel);
 
     const [endLon, endLat] = route[route.length - 1];
-    const endLabel = document.createElement('a-text');
-    endLabel.setAttribute('value', 'End');
-    endLabel.setAttribute('gps-entity-place', `latitude: ${endLat}; longitude: ${endLon}`);
-    endLabel.setAttribute('color', 'white');
-    endLabel.setAttribute('scale', '10 10 10');
-    endLabel.classList.add('route-marker'); // Add a unique class
-    document.querySelector('a-scene').appendChild(endLabel);
+    const endMarker = document.createElement('a-entity');
+    endMarker.setAttribute('gps-entity-place', `latitude: ${endLat}; longitude: ${endLon}`);
+    endMarker.setAttribute('gltf-model', '#locationPinDestination'); // Reference to the asset item ID
+    endMarker.setAttribute('scale', '10 10 10'); // Adjust scale if needed
+    endMarker.classList.add('route-marker'); // Add a unique class
+    document.querySelector('a-scene').appendChild(endMarker);
+
 }
 
 // Call the render function after the scene is loaded
