@@ -1100,6 +1100,7 @@ form:hover .fa {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  z-index: 9999999;
 }
 
 .event-card {
@@ -1148,4 +1149,9 @@ form:hover .fa {
 
 .event-card button:hover {
   background-color: #0056b3;
+}
+
+
+.hidden {
+  display: none;
 }

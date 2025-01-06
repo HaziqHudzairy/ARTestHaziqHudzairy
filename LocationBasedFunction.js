@@ -386,7 +386,12 @@ function unhideEventBtn() {
 
     //resetAnimation(notification);
     // Add the event listener
-    //btnContent.addEventListener("click", ShowAllEvents());
+    btnContent.addEventListener("click", ShowAllEvents());
+}
+
+function ShowAllEvents(){
+    const btnContent = document.querySelector('.event-slider-container');
+    btnContent.classList.remove('hidden');
 }
 
 function slideOutNotification() {
