@@ -77,6 +77,7 @@ fetchEvents();
 // Data structure for locations
 const locations = {
     facilities: {
+        entity24HrsStudy: "24 Hours Study Room",
         entityAcademyIslam: "Academy of Islamic Studies Musolla",
         entityAidil: "E307",
         entityBangunanCanseleri: "Bangunan Canseleri",
