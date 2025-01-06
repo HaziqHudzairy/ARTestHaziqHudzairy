@@ -508,6 +508,7 @@ function getIDBasedOnNames(entityName, entities) {
 }
 
 function showNotification(entityname) {
+    alert(`Showing Notification`)
     const notification = document.querySelector('.notification-container');
     const locationName = document.querySelector('.notification-box h1');
     locationName.textContent = entityname;
