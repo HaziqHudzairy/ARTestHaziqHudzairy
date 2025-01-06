@@ -679,35 +679,73 @@
         }
 
         const cards = document.querySelectorAll('.event-card');
-        let currentIndex = 0;
+let currentIndex = 0;
+let startX = 0;
+let currentX = 0;
+let isDragging = false;
 
-        function showCard(index) {
-            cards.forEach((card, i) => {
-                if (i === index) {
-                    card.classList.remove('hidden');
-                    card.style.transform = 'translateX(0)';
-                    card.style.opacity = '1';
-                } else {
-                    card.classList.add('hidden');
-                    card.style.transform = 'translateX(100%)';
-                    card.style.opacity = '0';
-                }
-            });
-        }
-
-        function handleSwipe(event) {
-            const card = cards[currentIndex];
-            card.style.transform = 'translateX(-150%)';
+function showCard(index) {
+    cards.forEach((card, i) => {
+        if (i === index) {
+            card.classList.remove('hidden');
+            card.style.transform = 'translateX(0)';
+            card.style.opacity = '1';
+        } else {
+            card.classList.add('hidden');
+            card.style.transform = 'translateX(100%)';
             card.style.opacity = '0';
-
-            currentIndex = (currentIndex + 1) % cards.length;
-            setTimeout(() => {
-                showCard(currentIndex);
-            }, 300);
         }
+    });
+}
 
-        document.addEventListener('click', handleSwipe);
-        showCard(currentIndex);
+function handleTouchStart(event) {
+    const touch = event.touches[0];
+    startX = touch.clientX;
+    isDragging = true;
+    currentX = startX;
+}
+
+function handleTouchMove(event) {
+    if (!isDragging) return;
+
+    const touch = event.touches[0];
+    currentX = touch.clientX;
+    const deltaX = currentX - startX;
+
+    const card = cards[currentIndex];
+    card.style.transform = `translateX(${deltaX}px)`;
+}
+
+function handleTouchEnd() {
+    if (!isDragging) return;
+
+    const deltaX = currentX - startX;
+    const card = cards[currentIndex];
+    isDragging = false;
+
+    // If swipe distance is significant, move to the next card
+    if (Math.abs(deltaX) > 100) {
+        const direction = deltaX > 0 ? 'right' : 'left';
+        card.style.transform = `translateX(${direction === 'left' ? '-150%' : '150%'})`;
+        card.style.opacity = '0';
+
+        currentIndex = (currentIndex + (direction === 'left' ? 1 : -1) + cards.length) % cards.length;
+        setTimeout(() => {
+            showCard(currentIndex);
+        }, 300);
+    } else {
+        // Reset the position if swipe is not significant
+        card.style.transform = 'translateX(0)';
+    }
+}
+
+document.addEventListener('touchstart', handleTouchStart);
+document.addEventListener('touchmove', handleTouchMove);
+document.addEventListener('touchend', handleTouchEnd);
+
+// Show the initial card
+showCard(currentIndex);
+
     </script>
 
     <!-- <script>
