@@ -1151,6 +1151,6 @@ form:hover .fa {
   background-color: #0056b3;
 }
 
-.event-slider-container .hidden {
+.event-slider-container.hidden {
   display: none;
 }
