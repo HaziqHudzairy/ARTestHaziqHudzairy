@@ -803,9 +803,10 @@ form:hover .fa {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  text-align: center;
+  text-align: left;
   padding: 20px;
   transition: transform 0.3s ease, opacity 0.3s ease;
+  font-family: "Roboto", sans-serif;
 }
 
 .event-card img {
