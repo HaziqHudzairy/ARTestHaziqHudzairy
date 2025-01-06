@@ -390,7 +390,7 @@ function unhideEventBtn() {
 }
 
 function handleShowEvents(){
-    //ShowAllEvents();
+    ShowAllEvents();
     hideEventBtn();
 }
 
