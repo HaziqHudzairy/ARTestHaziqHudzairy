@@ -267,7 +267,7 @@ body {
 /* Form styling */
 form {
   position: fixed;
-  top: 11%;
+  top: 75px;
   right: 10px;
   width: 50px;
   /* Initial collapsed width */
@@ -336,7 +336,7 @@ form:hover .fa {
   overflow-y: auto;
   display: block;
   position: fixed;
-  top: 20%;
+  top: 140px;
   left: 15px;
   right: 15px;
   background: #cececed0;
@@ -712,7 +712,7 @@ form:hover .fa {
 .btn-content {
   z-index: 9999;
   position: fixed;
-  top: 9%;
+  top: 55px;
   right: -10px;
   text-align: center;
   margin: 20px;
@@ -775,8 +775,8 @@ form:hover .fa {
 .btn-content2 {
   z-index: 9998;
   position: fixed;
-  top: 15%;
-  right: -10px;
+  top: 110px;
+  left: -10px;
   text-align: center;
   margin: 20px;
 }
@@ -784,8 +784,8 @@ form:hover .fa {
 .btn-events {
   z-index: 9998;
   position: fixed;
-  top: 9%;
-  left: 4px;
+  top: 55px;
+  left: -10px;
   text-align: center;
   margin: 20px;
 }
