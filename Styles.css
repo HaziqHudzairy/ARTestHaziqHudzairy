@@ -713,7 +713,7 @@ form:hover .fa {
   z-index: 9999;
   position: fixed;
   top: 9%;
-  right: 4px;
+  right: -10px;
   text-align: center;
   margin: 20px;
 }
@@ -729,7 +729,7 @@ form:hover .fa {
   font-size: 10px;
   font-weight: bold;
   text-decoration: none;
-  border-radius: 10px;
+  border-radius: 25px;
   padding: 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -751,19 +751,37 @@ form:hover .fa {
 }
 
 .btn-custom .icon-container {
-  height: 100%;
-  width: 100%;
-  display: flex;
+  height: 50px;
+  width: 80px;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  background-color: #ba181b;
-  /* Darker green for the pointy section */
-  padding: 16px 25px;
-  border-radius: 10px;
-  clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
+  justify-content:center;
+  background: #ba181b;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 25px;
+  padding: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+
 }
 
+
 .btn-content2 {
+  z-index: 9998;
+  position: fixed;
+  top: 15%;
+  right: -10px;
+  text-align: center;
+  margin: 20px;
+}
+
+.btn-events {
   z-index: 9998;
   position: fixed;
   top: 9%;
@@ -772,18 +790,55 @@ form:hover .fa {
   margin: 20px;
 }
 
+.btn-custom3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, #4CAF50, #2ECC71);
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 20px;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.btn-custom3:hover {
+  background: linear-gradient(90deg, #2ECC71, #4CAF50);
+  transform: translateY(-3px);
+}
+
+.btn-custom3:active {
+  transform: translateY(1px);
+}
+
+.btn-custom3 .fas {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.btn-custom3 .title {
+  margin-left: 5px;
+}
+
+
 /* Button Styling */
 .btn-custom2 {
+  height: 50px;
+  width: 80px;
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content:center;
   background: #ba181b;
   color: #fff;
   font-family: Arial, sans-serif;
-  font-size: 10px;
+  font-size: 20px;
   font-weight: bold;
   text-decoration: none;
-  border-radius: 10px;
+  border-radius: 25px;
   padding: 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s, box-shadow 0.2s;

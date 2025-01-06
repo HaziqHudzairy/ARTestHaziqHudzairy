@@ -368,6 +368,27 @@ function handleExitEnv() {
     slideInNotification();
 
 }
+function unhideEventBtn() {
+    const btnContent = document.querySelector('.btn-events');
+    btnContent.classList.remove('hidden');
+    btnContent.classList.add('slide-in-left');
+
+    //resetAnimation(notification);
+    // Add the event listener
+    btnContent.addEventListener("click", showEvents());
+}
+
+function hideEventBtn() {
+    const btnContent = document.querySelector('.btn-eventss');
+    btnContent.classList.add('slide-out-left');
+    btnContent.classList.add('hidden');
+    clearEnvEvent(btnContent);
+}
+
+
+function showEvents(){
+    hideEventBtn();
+}
 
 function unhideExitEnv() {
     const btnContent = document.querySelector('.btn-content2');
@@ -406,7 +427,7 @@ function hideExitEnv() {
     const btnContent = document.querySelector('.btn-content2');
     btnContent.classList.add('slide-out-left');
     btnContent.classList.add('hidden');
-    clearEnvEvent(btnContent)
+    clearEnvEvent(btnContent);
 }
 
 let currentEntityName = "";
@@ -473,7 +494,7 @@ function debugVirtualSpaceState() {
 
 function handleNotificationClick() {
     const virtualSpace = document.querySelector('#virtual-space');
-    unhideExitEnv();
+    unhideEventBtn();
     slideOutNotification();
     //virtualSpace.setAttribute('visible', true);
     // showEntityInformation(currentEntityID);S
