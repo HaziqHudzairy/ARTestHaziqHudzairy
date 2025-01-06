@@ -17,13 +17,13 @@ function setNavigationCoordinates(destinationLatitude, destinationLongitude) {
 
             // Call showDebugMessage with the formatted message
             //showDebugMessage(debugMessage);
-
+            alert(debugMessage);
             renderRoute();
 
             // Optionally perform additional actions, like fetching routes or updating UI
         },
         (error) => {
-            console.error("Error getting user's location:", error);
+            alert(`Error getting user's location: ${error.message}`);
         }
     );
 }
