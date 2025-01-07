@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Touchscreen Drawing App</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overscroll-behavior: none;
+            overflow: hidden !important;
+            /* Disable horizontal scrolling */
+            width: 100%;
+            /* Ensure the body fits within the viewport */
+
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            background: #e9ebee;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+            font-family: "Roboto", sans-serif !important;
+            background: #2980b9 url('https://static.tumblr.com/03fbbc566b081016810402488936fbae/pqpk3dn/MRSmlzpj3/tumblr_static_bg3.png') repeat 0 0;
+            animation: 10s linear 0s normal none infinite animate;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            height: auto;
+        }
+
+        @keyframes animate {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 500px 0;
+            }
+        }
+
+        .drawing-container {
+            background-color: rgb(255, 255, 255);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+            box-sizing: border-box;
+            width: calc(100% - 20px);
+            max-width: 600px;
+        }
+
+        .drawing-canvas {
+            border: 1px solid #000;
+            touch-action: none;
+            background-color: yellow;
+            width: 100%;
+            height: auto;
+            /* Maintain aspect ratio */
+        }
+
+        .drawing-controls {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .drawing-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+        }
+
+        .drawing-button-eraser {
+            background: url('https://img.icons8.com/ios-glyphs/30/000000/eraser.png') no-repeat center;
+            background-size: 50%;
+            background-color: #fff;
+            border: 2px solid rgb(175, 175, 175);
+        }
+
+        .drawing-button-undo {
+            background: url('https://img.icons8.com/ios-glyphs/30/000000/undo.png') no-repeat center;
+            background-size: 50%;
+            background-color: #fff;
+            border: 2px solid rgb(175, 175, 175);
+        }
+
+        .drawing-button-red {
+            background-color: red;
+            border: 2px solid rgb(175, 175, 175);
+        }
+
+        .drawing-button-blue {
+            background-color: blue;
+            border: 2px solid rgb(175, 175, 175);
+        }
+
+        .drawing-button-green {
+            background-color: green;
+            border: 2px solid rgb(175, 175, 175);
+        }
+
+        .drawing-button-black {
+            background-color: black;
+            border: 2px solid rgb(175, 175, 175);
+        }
+
+        .drawing-button.selected {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .drawing-button-undo:active {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .slider-container input {
+            flex-grow: 1;
+        }
+
+        .drawing-download-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            gap: 12px;
+            background-color: rgb(255, 255, 255);
+            pointer-events: none;
+            /* Disables all pointer events */
+            touch-action: none;
+            /* Disables touch-specific actions */
+        }
+
+        .logoTop {
+            width: auto;
+            height: 40px;
+        }
+
+        .back-button {
+            z-index: 10000;
+            height: 20px;
+            width: 20px;
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .back-button button {
+            background: none;
+            border: none;
+            color: #2980b9;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0;
+        }
+
+        .back-button button:hover {
+            text-decoration: underline;
+            color: #1f5c87;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logo-container">
+        <img src="asset/University_of_Malaya-Logo.png" alt="UM Logo" class="logoTop">
+        <img src="asset/UM.AR_Logo_Font_Black.png" alt="UM AR Logo" class="logoTop">
+    </div>
+    <div class="drawing-container">
+        <div class="back-button">
+            <button onclick="window.location.href=''">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+        <h1 style="text-align: center; color: #2980b9; font-weight: 900;">Edit Your Notes</h1>
+        <canvas id="drawingCanvas" class="drawing-canvas"></canvas>
+        <div class="drawing-controls">
+            <div class="button-row">
+                <button id="undoButton" class="drawing-button drawing-button-undo"></button>
+                <button id="eraserButton" class="drawing-button drawing-button-eraser"></button>
+                <button id="colorRed" class="drawing-button drawing-button-red"></button>
+                <button id="colorBlue" class="drawing-button drawing-button-blue"></button>
+                <button id="colorGreen" class="drawing-button drawing-button-green"></button>
+                <button id="colorBlack" class="drawing-button drawing-button-black"></button>
+            </div>
+            <div class="slider-container">
+                <label for="sizeSlider">Marker/Eraser Size:</label>
+                <input id="sizeSlider" type="range" min="0.1" max="6" step="0.1" value="3">
+            </div>
+            <h4 style="margin-top: 40px; margin-bottom: 0; color: red; text-align: center;">Remember not to create
+                inappropriate notes! <br> Your notes will be verified by Admin before being send.</h4>
+            <button id="downloadButton" class="drawing-download-button">Send Notes</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        const downloadButton = document.getElementById('downloadButton');
+        const eraserButton = document.getElementById('eraserButton');
+        const undoButton = document.getElementById('undoButton');
+        const sizeSlider = document.getElementById('sizeSlider');
+        const colorButtons = {
+            red: document.getElementById('colorRed'),
+            blue: document.getElementById('colorBlue'),
+            green: document.getElementById('colorGreen'),
+            black: document.getElementById('colorBlack')
+        };
+
+        // Adjust canvas dimensions to match its style size
+        const resizeCanvas = () => {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientWidth; // Ensure square aspect ratio
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        };
+
+        resizeCanvas();
+
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let strokeColor = '#000';
+        let lineWidth = parseFloat(sizeSlider.value);
+        let drawingHistory = [];
+
+        const setActiveButton = (button) => {
+            document.querySelectorAll('.drawing-button').forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+        };
+
+        const startDrawing = (e) => {
+            isDrawing = true;
+            const { x, y } = getEventPosition(e);
+            lastX = x;
+            lastY = y;
+            saveCanvasState();
+        };
+
+        const stopDrawing = () => {
+            isDrawing = false;
+            ctx.beginPath();
+        };
+
+        const draw = (e) => {
+            if (!isDrawing) return;
+
+            const { x, y } = getEventPosition(e);
+            ctx.lineWidth = lineWidth;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = strokeColor;
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+
+            lastX = x;
+            lastY = y;
+        };
+
+        const getEventPosition = (e) => {
+            const rect = canvas.getBoundingClientRect();
+            if (e.touches) {
+                return {
+                    x: e.touches[0].clientX - rect.left,
+                    y: e.touches[0].clientY - rect.top,
+                };
+            } else {
+                return {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top,
+                };
+            }
+        };
+
+        const saveCanvasState = () => {
+            drawingHistory.push(canvas.toDataURL());
+            if (drawingHistory.length > 20) {
+                drawingHistory.shift();
+            }
+        };
+
+        const undoLastAction = () => {
+            if (drawingHistory.length > 0) {
+                const previousState = drawingHistory.pop();
+                const img = new Image();
+                img.src = previousState;
+                img.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                };
+            }
+        };
+
+        eraserButton.addEventListener('click', () => {
+            strokeColor = 'yellow';
+            setActiveButton(eraserButton);
+        });
+
+        undoButton.addEventListener('click', () => {
+            undoLastAction();
+            undoButton.classList.add('selected');
+            setTimeout(() => undoButton.classList.remove('selected'), 200);
+        });
+
+        Object.entries(colorButtons).forEach(([color, button]) => {
+            button.addEventListener('click', () => {
+                strokeColor = color;
+                setActiveButton(button);
+            });
+        });
+
+        sizeSlider.addEventListener('input', () => {
+            lineWidth = parseFloat(sizeSlider.value);
+        });
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            draw(e);
+        });
+
+        downloadButton.addEventListener('click', async () => {
+            const imageData = canvas.toDataURL('image/png');
+
+            try {
+                const response = await fetch('/.netlify/functions/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ imageData }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    alert('Your note has been successfully sent!');
+                    console.log('Saved file:', data.fileName);
+                } else {
+                    alert('Failed to save your note. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while saving your note.');
+            }
+        });
+
+
+        window.addEventListener('resize', resizeCanvas);
+    </script>
+</body>
+
+</html>
