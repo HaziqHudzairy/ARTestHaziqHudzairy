@@ -405,6 +405,29 @@ function unhideEventBtn() {
     eventBtn.addEventListener("click", handleShowEvents);
 }
 
+function hideEventBtn() {
+    const btnContent = document.querySelector('.btn-events');
+    btnContent.classList.add('slide-out-left');
+    btnContent.classList.add('hidden');
+    clearEnvEvent(btnContent);
+}
+
+function hideNotesBtn() {
+    const btnContent = document.querySelector('.btn-notes');
+    btnContent.classList.add('slide-out-left');
+    btnContent.classList.add('hidden');
+    clearEnvEvent(btnContent);
+}
+
+function hideExitEnv() {
+    const btnContent = document.querySelector('.btn-content2');
+    btnContent.classList.add('slide-out-left');
+    btnContent.classList.add('hidden');
+    clearEnvEvent(btnContent);
+    hideEventBtn();
+    hideNotesBtn();
+}
+
 function handleShowEvents(){
     ShowAllEvents();
 }
@@ -469,29 +492,6 @@ function slideInNotification() {
 
     // // Add slide-in animation
     // notification.classList.add('slide-in-left');
-}
-
-function hideEventBtn() {
-    const btnContent = document.querySelector('.btn-events');
-    btnContent.classList.add('slide-out-left');
-    btnContent.classList.add('hidden');
-    clearEnvEvent(btnContent);
-}
-
-function hideNotesBtn() {
-    const btnContent = document.querySelector('.btn-notes');
-    btnContent.classList.add('slide-out-left');
-    btnContent.classList.add('hidden');
-    clearEnvEvent(btnContent);
-}
-
-function hideExitEnv() {
-    const btnContent = document.querySelector('.btn-content2');
-    btnContent.classList.add('slide-out-left');
-    btnContent.classList.add('hidden');
-    clearEnvEvent(btnContent);
-    hideEventBtn();
-    hideNotesBtn();
 }
 
 let currentEntityName = "";
