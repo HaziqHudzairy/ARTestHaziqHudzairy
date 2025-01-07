@@ -369,24 +369,23 @@
 
         downloadButton.addEventListener('click', async () => {
             const imageData = canvas.toDataURL('image/png');
+            const fileName = `drawing_${Date.now()}.png`; // Unique file name
+            const folderName = 'user-drawings'; // Target folder in your repo
 
             try {
-                const response = await fetch('/.netlify/functions/upload', {
+                const response = await fetch('/.netlify/functions/upload-to-github', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ imageData }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ imageData, fileName, folderName }),
                 });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    alert('Your note has been successfully sent!');
-                    console.log('Saved file:', data.fileName);
-                } else {
-                    alert('Failed to save your note. Please try again.');
-                }
+                const result = await response.text();
+                alert(result);
             } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while saving your note.');
+                console.error('Error uploading image:', error);
+                alert('Failed to upload image.');
             }
         });
 
