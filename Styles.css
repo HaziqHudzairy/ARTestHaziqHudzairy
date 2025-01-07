@@ -771,11 +771,57 @@ form:hover .fa {
 
 }
 
+.btn-notes {
+  font-family: "Roboto", sans-serif;
+  z-index: 9998;
+  position: fixed;
+  top: 112px;
+  left: -10px;
+  text-align: center;
+  margin: 20px;
+}
+
+/* Button Styling */
+.btn-notesInside {
+  width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, #a8af4c, #ccc12e);
+  border: none;
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 15px 20px;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.btn-notesInside:hover {
+  background: linear-gradient(90deg, #2ECC71, #4CAF50);
+  transform: translateY(-3px);
+}
+
+.btn-notesInside:active {
+  transform: translateY(1px);
+}
+
+.btn-notesInside .fas {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.btn-notesInside .title {
+  margin-left: 5px;
+}
+
 
 .btn-content2 {
   z-index: 9998;
   position: fixed;
-  top: 110px;
+  top: 170px;
   left: -10px;
   text-align: center;
   margin: 20px;
@@ -869,10 +915,11 @@ form:hover .fa {
 }
 
 .btn-events span{
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .btn-custom3 {
+  width: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -881,7 +928,7 @@ form:hover .fa {
   color: white;
   font-size: 16px;
   font-weight: bold;
-  padding: 12px 20px;
+  padding: 15px 20px;
   border-radius: 50px;
   text-decoration: none;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -1172,4 +1219,37 @@ form:hover .fa {
 .logoTop-load {
   height: 40px;
   object-fit: contain;
+}
+
+/* Button styling */
+.notes-button {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #3b82f6; /* Blue color */
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.notes-button i {
+  margin-right: 8px; /* Space between icon and text */
+  font-size: 18px; /* Icon size */
+}
+
+/* Hover effects */
+.notes-button:hover {
+  background-color: #2563eb; /* Darker blue */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Focus effects */
+.notes-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Blue focus ring */
 }

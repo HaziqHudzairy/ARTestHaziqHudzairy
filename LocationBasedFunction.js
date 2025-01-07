@@ -387,6 +387,15 @@ function unhideExitEnv() {
     btnContent.addEventListener("click", handleExitEnv);
 }
 
+function unhideNotesBtn() {
+    const eventBtn = document.querySelector('.btn-notes');
+    eventBtn.classList.remove('hidden');
+    eventBtn.classList.add('slide-in-left');
+
+    //Here is the problem future haziq
+    // eventBtn.addEventListener("click", handleShowEvents);
+}
+
 function unhideEventBtn() {
     const eventBtn = document.querySelector('.btn-events');
     eventBtn.classList.remove('hidden');
@@ -469,12 +478,20 @@ function hideEventBtn() {
     clearEnvEvent(btnContent);
 }
 
+function hideNotesBtn() {
+    const btnContent = document.querySelector('.btn-notes');
+    btnContent.classList.add('slide-out-left');
+    btnContent.classList.add('hidden');
+    clearEnvEvent(btnContent);
+}
+
 function hideExitEnv() {
     const btnContent = document.querySelector('.btn-content2');
     btnContent.classList.add('slide-out-left');
     btnContent.classList.add('hidden');
     clearEnvEvent(btnContent);
     hideEventBtn();
+    hideNotesBtn();
 }
 
 let currentEntityName = "";
@@ -549,6 +566,7 @@ function handleNotificationClick() {
 
     unhideExitEnv();
     unhideEventBtn();
+    unhideNotesBtn();
     slideOutNotification();
     showEntityInformation(currentEntityName);
     showEventImagesForLocation(currentEntityName);
