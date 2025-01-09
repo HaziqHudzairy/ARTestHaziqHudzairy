@@ -41,6 +41,6 @@ const overlay = document.getElementById('unique-overlay');
         // Hide board when clicking overlay
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
-                overlay.style.display = 'none';
+                overlay.classList.add('hidden');
             }
         });

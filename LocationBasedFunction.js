@@ -430,8 +430,8 @@ function hideExitEnv() {
 }
 
 function handleShowNotes(){
-    const notes = document.querySelector('.btn-content2');
-    notes.style.display = 'flex';
+    const notes = document.querySelector('.unique-overlay');
+    notes.classList.remove('hidden');
 }
 
 
