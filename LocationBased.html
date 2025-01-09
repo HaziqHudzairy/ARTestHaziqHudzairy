@@ -569,45 +569,76 @@
 
 
         document.addEventListener('DOMContentLoaded', () => {
-            const loadingScreen = document.getElementById('loading-screen');
-            const progressBar = document.getElementById('progress-bar');
-            const loadingMessage = document.getElementById('loading-message');
-            let progress = 0;
+    const loadingScreen = document.getElementById('loading-screen');
+    const progressBar = document.getElementById('progress-bar');
+    const loadingMessage = document.getElementById('loading-message');
+    let progress = 0;
 
-            // Function to update progress
-            const updateProgress = (increment, message) => {
-                progress += increment;
-                progressBar.style.width = `${progress}%`;
-                loadingMessage.textContent = message;
+    const updateProgress = (increment, message) => {
+        progress += increment;
+        progressBar.style.width = `${progress}%`;
+        loadingMessage.textContent = message;
 
-                // When loading is complete, hide the loading screen
-                if (progress >= 100) {
-                    setTimeout(() => {
-                        loadingScreen.style.display = 'none';
-                    }, 500); // Add a slight delay for smooth transition
-                }
-            };
+        console.log(`[Progress] ${message} - ${progress}%`);
 
-            // Simulated stages of loading
-            updateProgress(10, "Loading assets...");
-            setTimeout(() => updateProgress(20, "Initializing AR components..."), 1000);
-            setTimeout(() => updateProgress(30, "Connecting to Firebase..."), 2000);
-            setTimeout(() => updateProgress(20, "Fetching location data..."), 3000);
+        if (progress >= 100) {
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                console.log('[Loading Screen] Hidden');
+            }, 500);
+        }
+    };
 
-            // Monitor the scene initialization
-            const scene = document.querySelector('a-scene');
-            scene.addEventListener('loaded', () => {
-                updateProgress(20, "Scene fully initialized!");
+    console.log('[Initialization] Starting simulated loading stages...');
+
+    // Simulated stages of loading
+    updateProgress(10, "Loading assets...");
+    setTimeout(() => updateProgress(20, "Initializing AR components..."), 1000);
+    setTimeout(() => updateProgress(20, "Connecting to Firebase..."), 2000);
+
+    // Track asset loading progress
+    const scene = document.querySelector('a-scene');
+    const assets = document.querySelector('a-assets');
+    let totalAssets = 0;
+    let loadedAssets = 0;
+
+    if (assets) {
+        totalAssets = assets.children.length;
+        console.log(`[Assets] Total assets to load: ${totalAssets}`);
+
+        if (totalAssets > 0) {
+            // Listen for each asset loaded
+            assets.addEventListener('asset-loaded', () => {
+                loadedAssets++;
+                const progressPercentage = Math.round((loadedAssets / totalAssets) * 100);
+                updateProgress(progressPercentage - progress, `Initializing Scene ${loadedAssets}/${totalAssets}`);
+                console.log(`[Assets] Loaded ${loadedAssets} of ${totalAssets} assets.`);
             });
+        } else {
+            console.warn("[Assets] No assets found to load.");
+        }
+    } else {
+        console.warn("[Assets] <a-assets> tag not found.");
+    }
 
-            // Example: AR camera loading listener
-            const camera = document.querySelector('a-camera[gps-camera]');
-            if (camera) {
-                camera.addEventListener('loaded', () => {
-                    updateProgress(20, "Camera ready!");
-                });
-            }
+    // Monitor when the scene is fully initialized
+    scene.addEventListener('loaded', () => {
+        updateProgress(100 - progress, "Scene fully initialized!");
+        console.log("[Scene] Scene fully initialized.");
+    });
+
+    // Example: AR camera loading listener
+    const camera = document.querySelector('a-camera[gps-camera]');
+    if (camera) {
+        camera.addEventListener('loaded', () => {
+            updateProgress(20, "Camera ready!");
+            console.log("[Camera] Camera fully loaded.");
         });
+    } else {
+        console.warn("[Camera] <a-camera> with gps-camera not found.");
+    }
+});
+
 
 
     </script>
