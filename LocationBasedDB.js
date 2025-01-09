@@ -571,15 +571,17 @@ window.updateStickyNotesByLocation = async function (locationEntityName) {
 
         // Reference to the database path for the entity's image filenames
         const drawingsRef = ref(database, `user-drawings/${entityId}`);
+        alert(`Entity: ${entityId}`);
 
         // Fetch data from Firebase Realtime Database
         onValue(drawingsRef, (snapshot) => {
             const data = snapshot.val();
-
+            alert(`Entity: ${data}`);
             // Clear the existing notes
             board.innerHTML = '';
 
             if (data) {
+                alert(`found data`);
                 // Loop through the fetched filenames
                 Object.keys(data).forEach((key) => {
                     const filename = data[key];
