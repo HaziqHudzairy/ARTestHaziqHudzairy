@@ -618,8 +618,8 @@ window.updateStickyNotesByLocation = async function (locationEntityName) {
 
 document.getElementById('unique-add-note-btn').addEventListener('click', () => {
     if (currentEntityId) {
-        // Redirect to drawing.html with the stored entityId
-        window.location.href = `drawing.html?entityId=${currentEntityId}`;
+        // Open drawing.html in a new tab with the entityId as a query parameter
+        window.open(`drawing.html?entityId=${currentEntityId}`, '_blank');
     } else {
         console.warn('No entity selected. Cannot add a new note.');
         alert('No entity selected. Please select a location first.');

@@ -236,6 +236,7 @@
     </div>
 
     <script>
+
         const canvas = document.getElementById('drawingCanvas');
         const ctx = canvas.getContext('2d');
         const downloadButton = document.getElementById('downloadButton');
@@ -369,8 +370,18 @@
 
         downloadButton.addEventListener('click', async () => {
             const imageData = canvas.toDataURL('image/png');
-            const fileName = `drawing_${Date.now()}.png`; // Unique file name
-            const folderName = 'user-drawings'; // Target folder in your repo
+
+            // Retrieve entityId from the query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const entityId = urlParams.get('entityId');
+
+            if (!entityId) {
+                alert('Entity ID not found. Cannot upload the note.');
+                return;
+            }
+
+            const folderName = `user-drawings/${entityId}`;
+            const fileName = `${entityId}_${Date.now()}.png`; // e.g., "12345_1672538765432.png"
 
             try {
                 const response = await fetch('/.netlify/functions/upload-to-github', {
@@ -383,6 +394,8 @@
 
                 const result = await response.text();
                 alert(result);
+
+                window.close();
             } catch (error) {
                 console.error('Error uploading image:', error);
                 alert('Failed to upload image.');
