@@ -582,7 +582,6 @@ window.updateStickyNotesByLocation = async function (locationEntityName) {
                 Object.keys(data).forEach((key) => {
                     const filename = data[key];
                     const imageUrl = `${baseDirectory}/${entityId}/${filename}`; // Construct the URL
-                    alert(`imageUrl`);
                     // Create a new sticky note
                     const newNote = document.createElement('div');
                     newNote.classList.add('unique-sticky-note');
@@ -613,6 +612,68 @@ window.updateStickyNotesByLocation = async function (locationEntityName) {
         board.innerHTML = '<p>Error loading sticky notes.</p>';
     }
 };
+
+
+window.updateVirtualSpaceNotes = async function (locationEntityName) {
+    const entityId = await window.findEntityIdByName(locationEntityName);
+    const baseDirectory = 'user-drawings/'; 
+    const planes = document.querySelectorAll('#virtual-space > a-entity > a-plane'); // Select all 8 planes
+
+    if (!entityId) {
+        console.warn(`Entity not found for name: ${locationEntityName}`);
+        planes.forEach((plane) => {
+            // Reset the plane material to a default state
+            plane.setAttribute('material', 'shader: flat; color: gray; depthTest: false;');
+        });
+        return;
+    }
+
+    // Reference to the database path for the entity's notes images
+    const drawingsRef = ref(database, `user-drawings/${entityId}`);
+
+    // Fetch data from Firebase Realtime Database
+    onValue(drawingsRef, (snapshot) => {
+        const data = snapshot.val();
+
+        if (!data) {
+            console.warn(`No images found for entity ID: ${entityId}`);
+            planes.forEach((plane) => {
+                // Reset the plane material to a default state
+                plane.setAttribute('material', 'shader: flat; color: yellow; depthTest: false;');
+            });
+            return;
+        }
+
+        // Construct the list of full image URLs
+        const imageUrls = Object.values(data).map((filename) => `${baseDirectory}/${entityId}/${filename}`);
+
+        alert(`${imageUrls}`);
+
+        // Update the planes with the first 8 images (or fewer)
+        planes.forEach((plane, index) => {
+            if (index < imageUrls.length) {
+                plane.setAttribute('material', `shader: flat; src: ${imageUrls[index]}; depthTest: false;`);
+            } else {
+                // Reset planes with no corresponding image
+                plane.setAttribute('material', 'shader: flat; color: gray; depthTest: false;');
+            }
+        });
+
+        // Log if there are more than 8 images
+        if (imageUrls.length > planes.length) {
+            console.warn(
+                `More than ${planes.length} images found for entity ID: ${entityId}. Only the first ${planes.length} images are displayed.`
+            );
+        }
+    }, (error) => {
+        console.error("Error fetching data from user-drawings directory:", error);
+        planes.forEach((plane) => {
+            // Reset the plane material to a default state on error
+            plane.setAttribute('material', 'shader: flat; color: gray; depthTest: false;');
+        });
+    });
+};
+
 
 
 

@@ -578,6 +578,7 @@ function handleNotificationClick() {
     updateStickyNotesByLocation(currentEntityName);
     showEntityInformation(currentEntityName);
     showEventImagesForLocation(currentEntityName);
+    updateVirtualSpaceNotes(currentEntityName);
     virtualSpace.setAttribute('follow-camera', '');
     virtualSpace.setAttribute('position', '0 1.6 -5');
     debugVirtualSpaceState();
