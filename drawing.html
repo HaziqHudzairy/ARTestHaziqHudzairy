@@ -399,8 +399,8 @@
                 const result = await response.text();
                 alert(result);
 
-                if (typeof addNotesToDatabase === 'function') {
-                    await addNotesToDatabase(entityId, [fileDirectory]);
+                if (typeof window.addNotesToDatabase === 'function') {
+                    await window.addNotesToDatabase(entityId, [fileDirectory]);
                     alert('Note successfully added to the database.');
                 } else {
                     console.warn('addNotesToDatabase function is not defined.');

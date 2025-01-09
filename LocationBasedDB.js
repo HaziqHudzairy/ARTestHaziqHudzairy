@@ -309,7 +309,7 @@ let imageRotationInterval = null; // Store the interval ID globally
 /**
  * Stops the image rotation and resets the plane to a default state.
  */
-window.stopAndResetImageRotation = async function() {
+window.stopAndResetImageRotation = async function () {
     const eventsImagePlane = document.querySelector('#events'); // Target the <a-plane> element
 
     // Clear the interval if it's active
@@ -629,7 +629,7 @@ document.getElementById('unique-add-note-btn').addEventListener('click', () => {
 
 window.updateVirtualSpaceNotes = async function (locationEntityName) {
     const entityId = await window.findEntityIdByName(locationEntityName);
-    const baseDirectory = 'user-drawings/'; 
+    const baseDirectory = 'user-drawings/';
     const planes = document.querySelectorAll('#virtual-space > a-entity > a-plane'); // Select all 8 planes
 
     if (!entityId) {
@@ -689,8 +689,9 @@ window.updateVirtualSpaceNotes = async function (locationEntityName) {
 
 window.addNotesToDatabase = async function (entityID, notes) {
     try {
+
         if (!entityID) {
-            console.warn(`Entity ID is missing.`);
+            console.warn(`Entity not found for name: ${entityID}`);
             alert('Entity not found. Cannot add notes.');
             return;
         }
@@ -704,21 +705,28 @@ window.addNotesToDatabase = async function (entityID, notes) {
         // Construct the database reference
         const notesRef = ref(database, `user-drawings/${entityID}`);
 
-        // Retrieve the current notes from Firebase (one-time fetch)
-        const snapshot = await get(notesRef);
-        const existingNotes = snapshot.val() || {};
-        const nextIndex = Object.keys(existingNotes).length; // Calculate the next numeric index
+        // Retrieve the current notes from Firebase to determine the next index
+        onValue(notesRef, (snapshot) => {
+            const existingNotes = snapshot.val() || {};
+            const nextIndex = Object.keys(existingNotes).length; // Calculate the next numeric index
 
-        // Add new notes starting from the next index
-        const updatedNotes = { ...existingNotes };
-        notes.forEach((note, index) => {
-            updatedNotes[nextIndex + index] = note; // Use numeric keys
+            // Add new notes starting from the next index
+            const updatedNotes = { ...existingNotes };
+            notes.forEach((note, index) => {
+                updatedNotes[nextIndex + index] = note; // Use numeric keys
+            });
+
+            // Write updated notes back to the database
+            set(notesRef, updatedNotes)
+                .then(() => {
+                    console.log(`Successfully added notes for entity ID: ${entityID}`);
+                    alert('Notes added successfully!');
+                })
+                .catch((error) => {
+                    console.error('Error writing notes to the database:', error);
+                    alert('Failed to add notes. Please try again.');
+                });
         });
-
-        // Write updated notes back to the database
-        await set(notesRef, updatedNotes);
-        console.log(`Successfully added notes for entity ID: ${entityID}`);
-        alert('Notes added successfully!');
     } catch (error) {
         console.error('Error adding notes to the database:', error);
         alert('Failed to add notes. Please try again.');
