@@ -440,7 +440,7 @@ window.fetchAndRenderEventsByLocation = async function (locationEntityName) {
                     initializeSlider();
                 } else {
                     console.warn(`No events found for location: ${locationEntityName}`);
-                    eventContainer.innerHTML = `<p style="color:white">No events available for this location. Click anywhere to continue</p>`;
+                    eventContainer.innerHTML = `<p style="color:white !important;">No events available for this location. Click anywhere to continue</p>`;
                 }
             } else {
                 console.error("No events data found in the database.");
@@ -555,7 +555,7 @@ function initializeSlider() {
 }
 
 
-window.updateStickyNotesByLocation = async function(locationEntityName) {
+window.updateStickyNotesByLocation = async function (locationEntityName) {
     const board = document.getElementById('unique-board'); // Board container
 
     try {
@@ -568,51 +568,46 @@ window.updateStickyNotesByLocation = async function(locationEntityName) {
             return;
         }
 
-        // Reference to the file directory for the entity's images
-        const drawingsRef = ref(database, `user-drawings/${entityId}`);
+        // Clear the existing notes
+        board.innerHTML = '';
 
-        // Fetch data from Firebase Realtime Database
-        onValue(drawingsRef, (snapshot) => {
-            const data = snapshot.val();
+        // Define the directory path for the entity's images
+        const directoryPath = `user-drawings/${entityId}/`;
 
-            // Clear the existing notes
-            board.innerHTML = '';
+        // Assuming you know the filenames follow a pattern, like "image1.jpg", "image2.jpg", etc.
+        const imageFilenames = ['image1.jpg', 'image2.jpg', 'image3.jpg']; // Update this list as needed
 
-            if (data) {
-                // Loop through the fetched images
-                Object.keys(data).forEach((key) => {
-                    const imageUrl = data[key];
+        // Loop through the image filenames and create sticky notes
+        imageFilenames.forEach((filename) => {
+            const imageUrl = `${directoryPath}${filename}`;
 
-                    // Create a new sticky note
-                    const newNote = document.createElement('div');
-                    newNote.classList.add('unique-sticky-note');
-                    newNote.innerHTML = `<img src="${imageUrl}" alt="Image ${key}">`;
+            // Create a new sticky note
+            const newNote = document.createElement('div');
+            newNote.classList.add('unique-sticky-note');
+            newNote.innerHTML = `<img src="${imageUrl}" alt="${filename}">`;
 
-                    // Add click event to show the image in the modal
-                    newNote.addEventListener('click', () => {
-                        const modal = document.getElementById('unique-modal');
-                        const modalImage = document.getElementById('unique-modal-image');
+            // Add click event to show the image in the modal
+            newNote.addEventListener('click', () => {
+                const modal = document.getElementById('unique-modal');
+                const modalImage = document.getElementById('unique-modal-image');
 
-                        modalImage.src = imageUrl;
-                        modal.classList.add('active');
-                    });
+                modalImage.src = imageUrl;
+                modal.classList.add('active');
+            });
 
-                    // Append the new sticky note to the board
-                    board.appendChild(newNote);
-                });
-            } else {
-                console.warn(`No images found in user-drawings/${entityId}.`);
-                board.innerHTML = '<p>No sticky notes available for this location.</p>';
-            }
-        }, (error) => {
-            console.error("Error fetching data from user-drawings directory:", error);
-            board.innerHTML = '<p>Error loading sticky notes.</p>';
+            // Append the new sticky note to the board
+            board.appendChild(newNote);
         });
+
+        if (board.innerHTML === '') {
+            board.innerHTML = '<p>No sticky notes available for this location.</p>';
+        }
     } catch (error) {
         console.error("Error updating sticky notes by location:", error);
         board.innerHTML = '<p>Error loading sticky notes.</p>';
     }
 };
+
 
 
 
