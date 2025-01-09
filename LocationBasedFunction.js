@@ -575,6 +575,7 @@ function handleNotificationClick() {
     unhideEventBtn();
     unhideNotesBtn();
     slideOutNotification();
+    updateStickyNotesByLocation(currentEntityName);
     showEntityInformation(currentEntityName);
     showEventImagesForLocation(currentEntityName);
     virtualSpace.setAttribute('follow-camera', '');
