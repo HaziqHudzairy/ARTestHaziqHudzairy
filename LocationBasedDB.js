@@ -554,7 +554,7 @@ function initializeSlider() {
     showCard(currentIndex);
 }
 
-
+let currentEntityId = null;
 window.updateStickyNotesByLocation = async function (locationEntityName) {
     const board = document.getElementById('unique-board'); // Board container
     const baseDirectory = 'user-drawings/'; // Base directory for images on your website
@@ -566,8 +566,11 @@ window.updateStickyNotesByLocation = async function (locationEntityName) {
         if (!entityId) {
             console.warn(`Entity not found for name: ${locationEntityName}`);
             board.innerHTML = '<p>No sticky notes available for this location.</p>';
+            currentEntityId = null;
             return;
         }
+
+        currentEntityId = entityId;
 
         // Reference to the database path for the entity's image filenames
         const drawingsRef = ref(database, `user-drawings/${entityId}`);
@@ -613,6 +616,16 @@ window.updateStickyNotesByLocation = async function (locationEntityName) {
     }
 };
 
+document.getElementById('unique-add-note-btn').addEventListener('click', () => {
+    if (currentEntityId) {
+        // Redirect to drawing.html with the stored entityId
+        window.location.href = `drawing.html?entityId=${currentEntityId}`;
+    } else {
+        console.warn('No entity selected. Cannot add a new note.');
+        alert('No entity selected. Please select a location first.');
+    }
+});
+
 
 window.updateVirtualSpaceNotes = async function (locationEntityName) {
     const entityId = await window.findEntityIdByName(locationEntityName);
@@ -655,7 +668,7 @@ window.updateVirtualSpaceNotes = async function (locationEntityName) {
                 plane.setAttribute('material', `shader: flat; src: ${imageUrls[index]}; depthTest: false;`);
             } else {
                 // Reset planes with no corresponding image
-                plane.setAttribute('material', 'shader: flat; color: gray; depthTest: false;');
+                plane.setAttribute('material', 'shader: flat; color: #e3a610; depthTest: false;');
             }
         });
 
