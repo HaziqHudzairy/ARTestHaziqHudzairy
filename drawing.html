@@ -375,7 +375,7 @@
 
             // Retrieve entityId from the query parameter
             const urlParams = new URLSearchParams(window.location.search);
-            const entityId = urlParams.get('entityId');
+            const entityId = urlParams.get('entityID');
             
 
             if (!entityId) {
@@ -385,7 +385,6 @@
 
             const folderName = `user-drawings/${entityId}`;
             const fileName = `${entityId}_${Date.now()}.png`; // e.g., "12345_1672538765432.png"
-            const fileDirectory = `${folderName}/${fileName}`;
 
             try {
                 const response = await fetch('/.netlify/functions/upload-to-github', {
@@ -397,13 +396,13 @@
                 });
 
                 const result = await response.text();
-                alert(result);
+                //alert(result);
 
                 if (typeof window.addNotesToDatabase === 'function') {
-                    await window.addNotesToDatabase(entityId, [fileDirectory]);
-                    alert('Note successfully added to the database.');
+                    await window.addNotesToDatabase(entityId, fileName);
+                    //alert('Note successfully added to the database.');
                 } else {
-                    console.warn('addNotesToDatabase function is not defined.');
+                    alert('addNotesToDatabase function is not defined.');
                 }
 
                 window.close();

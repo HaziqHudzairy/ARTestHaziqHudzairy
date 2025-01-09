@@ -1,4 +1,4 @@
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+import { getDatabase, ref, onValue, get, set } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 
 // Firebase Initialization
@@ -16,6 +16,42 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+
+window.addNotesToDatabase = async function (entityID, note) {
+    try {
+        if (!entityID) {
+            console.warn(`Entity ID is missing: ${entityID}`);
+            alert('Entity ID not found. Cannot add note.');
+            return;
+        }
+
+        if (!note) {
+            console.warn('No note provided.');
+            alert('No note to add.');
+            return;
+        }
+
+        // Construct the database reference
+        const notesRef = ref(database, `user-drawings/${entityID}`);
+
+        // Retrieve the current notes from Firebase (once)
+        const snapshot = await get(notesRef);
+        const existingNotes = snapshot.val() || {};
+        const nextIndex = Object.keys(existingNotes).length; // Calculate the next numeric index
+
+        // Add the new note with the next index
+        const newNoteKey = `${nextIndex}`;
+        const updatedNotes = { ...existingNotes, [newNoteKey]: note };
+
+        // Write the updated notes back to the database
+        await set(notesRef, updatedNotes);
+        console.log(`Successfully added note for entity ID: ${entityID}`);
+        alert('Note added successfully!');
+    } catch (error) {
+        console.error('Error adding note to the database:', error);
+        //alert('Failed to add note. Please try again.');
+    }
+};
 
 // Global array to store entities
 window.dynamicEntities = [];
@@ -660,7 +696,7 @@ window.updateVirtualSpaceNotes = async function (locationEntityName) {
         // Construct the list of full image URLs
         const imageUrls = Object.values(data).map((filename) => `${baseDirectory}/${entityId}/${filename}`);
 
-        alert(`${imageUrls}`);
+        //alert(`${imageUrls}`);
 
         // Update the planes with the first 8 images (or fewer)
         planes.forEach((plane, index) => {
@@ -685,52 +721,6 @@ window.updateVirtualSpaceNotes = async function (locationEntityName) {
             plane.setAttribute('material', 'shader: flat; color: gray; depthTest: false;');
         });
     });
-};
-
-window.addNotesToDatabase = async function (entityID, notes) {
-    try {
-
-        if (!entityID) {
-            console.warn(`Entity not found for name: ${entityID}`);
-            alert('Entity not found. Cannot add notes.');
-            return;
-        }
-
-        if (!Array.isArray(notes) || notes.length === 0) {
-            console.warn('No notes provided.');
-            alert('No notes to add.');
-            return;
-        }
-
-        // Construct the database reference
-        const notesRef = ref(database, `user-drawings/${entityID}`);
-
-        // Retrieve the current notes from Firebase to determine the next index
-        onValue(notesRef, (snapshot) => {
-            const existingNotes = snapshot.val() || {};
-            const nextIndex = Object.keys(existingNotes).length; // Calculate the next numeric index
-
-            // Add new notes starting from the next index
-            const updatedNotes = { ...existingNotes };
-            notes.forEach((note, index) => {
-                updatedNotes[nextIndex + index] = note; // Use numeric keys
-            });
-
-            // Write updated notes back to the database
-            set(notesRef, updatedNotes)
-                .then(() => {
-                    console.log(`Successfully added notes for entity ID: ${entityID}`);
-                    alert('Notes added successfully!');
-                })
-                .catch((error) => {
-                    console.error('Error writing notes to the database:', error);
-                    alert('Failed to add notes. Please try again.');
-                });
-        });
-    } catch (error) {
-        console.error('Error adding notes to the database:', error);
-        alert('Failed to add notes. Please try again.');
-    }
 };
 
 
