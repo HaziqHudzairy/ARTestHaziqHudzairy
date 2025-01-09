@@ -267,6 +267,29 @@
         </div>
     </div>
 
+    <div class="unique-overlay" id="unique-overlay">
+        <div class="unique-board-container">
+            <button class="unique-add-note-btn" id="unique-add-note-btn">Add New Note +</button>
+            <div class="unique-board" id="unique-board">
+                <!-- Existing Sticky Notes -->
+                <div class="unique-sticky-note">
+                    <img src="drawing_1736217978924.png" alt="Image 1">
+                </div>
+                <div class="unique-sticky-note">
+                    <img src="drawing_1736221793673.png" alt="Image 2">
+                </div>
+                <div class="unique-sticky-note">
+                    <img src="drawing_1736253802455.png" alt="Image 3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="unique-modal" id="unique-modal">
+        <div class="unique-modal-close" id="unique-close-modal">&times;</div>
+        <img src="" alt="Focused Image" id="unique-modal-image">
+    </div>
+
 
     <!--  -->
     <a-scene apply-toon-material renderer="logarithmicDepthBuffer: true; debugUIEnabled: false;" embedded
@@ -589,7 +612,7 @@
 
 
     </script>
-
+    <script src="NotesContainer.js"></script>
     <script src="LocationBasedDB.js" type="module"></script>
     <script src="LocationBasedFunction.js"></script>
     <script src="locationBasedNavigation.js"></script>

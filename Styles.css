@@ -1253,3 +1253,130 @@ form:hover .fa {
   outline: none;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Blue focus ring */
 }
+
+.unique-add-note-btn {
+  margin: 16px;
+  height: 40px;
+  padding: 12px 24px;
+  font-size: 12px;
+  background: linear-gradient(45deg, #ffc107, #ff9800);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.unique-add-note-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 4px 8px 12px rgba(0, 0, 0, 0.4);
+}
+
+.unique-add-note-btn:active {
+  transform: translateY(0);
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.unique-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 99998;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.unique-board-container {
+  width: 90%;
+  max-width: 600px;
+  height: 70vh;
+  padding: 16px;
+  background-color: #fff8dc;
+  border: 2px solid #e6e6e6;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.unique-board {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  position: relative;
+  padding: 16px;
+}
+
+.unique-sticky-note {
+  width: 100px;
+  height: 100px;
+  background-color: #fffae6;
+  border: 2px solid #ffc107;
+  border-radius: 6px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  transform: rotate(calc(-5deg + 10deg * var(--rotation)));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.unique-sticky-note img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Dynamic rotation */
+.unique-sticky-note:nth-child(odd) {
+  --rotation: -1;
+}
+
+.unique-sticky-note:nth-child(even) {
+  --rotation: 1;
+}
+
+/* Modal styles */
+.unique-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+.unique-modal img {
+  max-width: 100%;
+  max-height: 100%;
+  border: 4px solid #fff;
+  border-radius: 8px;
+}
+
+.unique-modal.active {
+  display: flex;
+}
+
+.unique-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 99999;
+}

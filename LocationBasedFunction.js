@@ -393,8 +393,9 @@ function unhideNotesBtn() {
     eventBtn.classList.add('slide-in-left');
 
     //Here is the problem future haziq
-    // eventBtn.addEventListener("click", handleShowEvents);
+    eventBtn.addEventListener("click", handleShowNotes);
 }
+
 
 function unhideEventBtn() {
     const eventBtn = document.querySelector('.btn-events');
@@ -427,6 +428,12 @@ function hideExitEnv() {
     hideEventBtn();
     hideNotesBtn();
 }
+
+function handleShowNotes(){
+    const notes = document.querySelector('.btn-content2');
+    notes.style.display = 'flex';
+}
+
 
 function handleShowEvents(){
     ShowAllEvents();
