@@ -557,6 +557,7 @@ function initializeSlider() {
 
 window.updateStickyNotesByLocation = async function (locationEntityName) {
     const board = document.getElementById('unique-board'); // Board container
+    const baseDirectory = '/user-drawings/'; // Base directory for images on your website
 
     try {
         // Get the entityId for the locationEntityName
@@ -568,40 +569,47 @@ window.updateStickyNotesByLocation = async function (locationEntityName) {
             return;
         }
 
-        // Clear the existing notes
-        board.innerHTML = '';
+        // Reference to the database path for the entity's image filenames
+        const drawingsRef = ref(database, `user-drawings/${entityId}`);
 
-        // Define the directory path for the entity's images
-        const directoryPath = `user-drawings/${entityId}/`;
+        // Fetch data from Firebase Realtime Database
+        onValue(drawingsRef, (snapshot) => {
+            const data = snapshot.val();
 
-        // Assuming you know the filenames follow a pattern, like "image1.jpg", "image2.jpg", etc.
-        const imageFilenames = ['image1.jpg', 'image2.jpg', 'image3.jpg']; // Update this list as needed
+            // Clear the existing notes
+            board.innerHTML = '';
 
-        // Loop through the image filenames and create sticky notes
-        imageFilenames.forEach((filename) => {
-            const imageUrl = `${directoryPath}${filename}`;
+            if (data) {
+                // Loop through the fetched filenames
+                Object.keys(data).forEach((key) => {
+                    const filename = data[key];
+                    const imageUrl = `${baseDirectory}${entityId}/${filename}`; // Construct the URL
 
-            // Create a new sticky note
-            const newNote = document.createElement('div');
-            newNote.classList.add('unique-sticky-note');
-            newNote.innerHTML = `<img src="${imageUrl}" alt="${filename}">`;
+                    // Create a new sticky note
+                    const newNote = document.createElement('div');
+                    newNote.classList.add('unique-sticky-note');
+                    newNote.innerHTML = `<img src="${imageUrl}" alt="Image ${key}">`;
 
-            // Add click event to show the image in the modal
-            newNote.addEventListener('click', () => {
-                const modal = document.getElementById('unique-modal');
-                const modalImage = document.getElementById('unique-modal-image');
+                    // Add click event to show the image in the modal
+                    newNote.addEventListener('click', () => {
+                        const modal = document.getElementById('unique-modal');
+                        const modalImage = document.getElementById('unique-modal-image');
 
-                modalImage.src = imageUrl;
-                modal.classList.add('active');
-            });
+                        modalImage.src = imageUrl;
+                        modal.classList.add('active');
+                    });
 
-            // Append the new sticky note to the board
-            board.appendChild(newNote);
+                    // Append the new sticky note to the board
+                    board.appendChild(newNote);
+                });
+            } else {
+                console.warn(`No images found for entity ID: ${entityId}`);
+                board.innerHTML = '<p>No sticky notes available for this location.</p>';
+            }
+        }, (error) => {
+            console.error("Error fetching data from user-drawings directory:", error);
+            board.innerHTML = '<p>Error loading sticky notes.</p>';
         });
-
-        if (board.innerHTML === '') {
-            board.innerHTML = '<p>No sticky notes available for this location.</p>';
-        }
     } catch (error) {
         console.error("Error updating sticky notes by location:", error);
         board.innerHTML = '<p>Error loading sticky notes.</p>';
