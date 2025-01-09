@@ -6,17 +6,17 @@ const overlay = document.getElementById('unique-overlay');
         const closeModal = document.getElementById('unique-close-modal');
 
         // Add new sticky note
-        addNoteBtn.addEventListener('click', () => {
-            const newNote = document.createElement('div');
-            newNote.classList.add('unique-sticky-note');
-            newNote.innerHTML = `<img src="https://via.placeholder.com/150" alt="New Image">`;
-            board.appendChild(newNote);
+        // addNoteBtn.addEventListener('click', () => {
+        //     const newNote = document.createElement('div');
+        //     newNote.classList.add('unique-sticky-note');
+        //     newNote.innerHTML = `<img src="https://via.placeholder.com/150" alt="New Image">`;
+        //     board.appendChild(newNote);
 
-            newNote.addEventListener('click', () => {
-                modalImage.src = newNote.querySelector('img').src;
-                modal.classList.add('active');
-            });
-        });
+        //     newNote.addEventListener('click', () => {
+        //         modalImage.src = newNote.querySelector('img').src;
+        //         modal.classList.add('active');
+        //     });
+        // });
 
         // Add event listeners to sticky notes
         document.querySelectorAll('.unique-sticky-note').forEach((note) => {

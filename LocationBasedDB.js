@@ -687,6 +687,43 @@ window.updateVirtualSpaceNotes = async function (locationEntityName) {
     });
 };
 
+window.addNotesToDatabase = async function (entityID, notes) {
+    try {
+        if (!entityID) {
+            console.warn(`Entity ID is missing.`);
+            alert('Entity not found. Cannot add notes.');
+            return;
+        }
+
+        if (!Array.isArray(notes) || notes.length === 0) {
+            console.warn('No notes provided.');
+            alert('No notes to add.');
+            return;
+        }
+
+        // Construct the database reference
+        const notesRef = ref(database, `user-drawings/${entityID}`);
+
+        // Retrieve the current notes from Firebase (one-time fetch)
+        const snapshot = await get(notesRef);
+        const existingNotes = snapshot.val() || {};
+        const nextIndex = Object.keys(existingNotes).length; // Calculate the next numeric index
+
+        // Add new notes starting from the next index
+        const updatedNotes = { ...existingNotes };
+        notes.forEach((note, index) => {
+            updatedNotes[nextIndex + index] = note; // Use numeric keys
+        });
+
+        // Write updated notes back to the database
+        await set(notesRef, updatedNotes);
+        console.log(`Successfully added notes for entity ID: ${entityID}`);
+        alert('Notes added successfully!');
+    } catch (error) {
+        console.error('Error adding notes to the database:', error);
+        alert('Failed to add notes. Please try again.');
+    }
+};
 
 
 
