@@ -69,7 +69,7 @@ function addModelToMap(entity) {
             this.renderer = new THREE.WebGLRenderer({
                 canvas: map.getCanvas(),
                 context: gl,
-                antialias: false
+                antialias: true
             });
             this.renderer.autoClear = false;
             this.clock = new THREE.Clock();
@@ -148,7 +148,7 @@ async function loadAndScatterTrees() {
         const treeModelUrl = 'asset/VR/tree.glb';
 
         let batchIndex = 0;
-        const BATCH_SIZE = 10;
+        const BATCH_SIZE = 5;
 
         function delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
@@ -166,7 +166,7 @@ async function loadAndScatterTrees() {
                         name: `tree-${batchIndex}`
                     });
                 }
-                await delay(50); // Pause for 50ms before processing the next batch
+                await delay(100); // Pause for 50ms before processing the next batch
             }
         }
 

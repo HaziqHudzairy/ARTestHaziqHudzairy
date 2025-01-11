@@ -624,7 +624,7 @@ window.updateStickyNotesByLocation = async function (locationEntityName) {
                     // Create a new sticky note
                     const newNote = document.createElement('div');
                     newNote.classList.add('unique-sticky-note');
-                    newNote.innerHTML = `<img src="${imageUrl}" alt="Image ${key}">`;
+                    newNote.innerHTML = `<img src="${imageUrl}" alt="This note is still loading, please refresh the page to see.">`;
 
                     // Add click event to show the image in the modal
                     newNote.addEventListener('click', () => {
@@ -704,7 +704,7 @@ window.updateVirtualSpaceNotes = async function (locationEntityName) {
                 plane.setAttribute('material', `shader: flat; src: ${imageUrls[index]}; depthTest: false;`);
             } else {
                 // Reset planes with no corresponding image
-                plane.setAttribute('material', 'shader: flat; color: #e3a610; depthTest: false;');
+                plane.setAttribute('material', 'shader: flat; color: yellow; depthTest: false;');
             }
         });
 

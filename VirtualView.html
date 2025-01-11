@@ -15,6 +15,9 @@
         }
 
         #map {
+            transform: translateZ(0);
+            /* Force GPU acceleration */
+            will-change: transform;
             position: absolute;
             top: 0;
             bottom: 0;
@@ -28,20 +31,24 @@
             height: 150px;
             z-index: 10;
 
-            user-select: none; /* Prevent text selection */
-            -webkit-user-select: none; /* Prevent text selection on WebKit browsers */
-            -ms-user-select: none; /* Prevent text selection on older Microsoft browsers */
-            -moz-user-select: none; /* Prevent text selection on Firefox */
+            user-select: none;
+            /* Prevent text selection */
+            -webkit-user-select: none;
+            /* Prevent text selection on WebKit browsers */
+            -ms-user-select: none;
+            /* Prevent text selection on older Microsoft browsers */
+            -moz-user-select: none;
+            /* Prevent text selection on Firefox */
         }
 
         #joystick-container-move {
-            bottom: 50px;
-            left: 50px;
+            bottom: 250px;
+            left: 150px;
         }
 
         #joystick-container-rotate {
-            bottom: 50px;
-            right: 50px;
+            bottom: 250px;
+            right: 150px;
         }
     </style>
 </head>
@@ -49,6 +56,7 @@
 <body>
     <script src="https://unpkg.com/three@0.126.0/build/three.min.js"></script>
     <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="virtualView.js" type="module"></script>
     <div id="map"></div>
     <div id="joystick-container-move"></div>
     <div id="joystick-container-rotate"></div>
@@ -58,10 +66,10 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v12',
             center: [101.662398, 3.118806], // Initial coordinates
-            zoom: 150,
-            pitch: 90, // Default tilt
+            zoom: 22,
+            pitch: 85, // Default tilt
             bearing: -90, // Default rotation
-            antialias: false,
+            antialias: true,
             accessToken: 'pk.eyJ1IjoiamFpcnkxOTExIiwiYSI6ImNsd3dscGdyMDExb3gyaXBncjlydWRzd2sifQ.vllbvi2AvqhKk6KIs85Mtg',
         });
 
@@ -69,8 +77,8 @@
 
         // Disable default drag for moving the map
         map.dragPan.disable();
-        map.touchZoomRotate.enableRotation();
-        map.touchZoomRotate.enable();
+        map.touchZoomRotate.disableRotation();
+        //map.touchZoomRotate.enable();
 
         // Polygon boundary from GeoJSON
         const boundaryPolygon = [
@@ -119,6 +127,25 @@
                     'line-width': 2
                 }
             });
+
+            if (map.getSource('composite')) {
+                map.addLayer({
+                    id: '3d-buildings',
+                    source: 'composite',
+                    'source-layer': 'building',
+                    filter: ['==', 'extrude', 'true'],
+                    type: 'fill-extrusion',
+                    minzoom: 15,
+                    paint: {
+                        'fill-extrusion-color': '#aaa',
+                        'fill-extrusion-height': ['get', 'height'],
+                        'fill-extrusion-base': ['get', 'min_height'],
+                        'fill-extrusion-opacity': 0.8
+                    }
+                });
+            } else {
+                console.error("Composite source not available.");
+            }
         });
 
         // Load the restricted area polygon from GeoJSON
@@ -148,7 +175,7 @@
         const centerDotElement = document.createElement('div');
         centerDotElement.style.width = '100px'; // Set the width of the dot
         centerDotElement.style.height = '100px'; // Set the height of the dot
-        centerDotElement.style.backgroundImage = 'url("asset/VR/car.png")'; // Replace with your image path or URL
+        centerDotElement.style.backgroundImage = 'url("asset/VR/crosshair.png")'; // Replace with your image path or URL
         centerDotElement.style.backgroundSize = 'cover';
         centerDotElement.style.borderRadius = '50%'; // Optional: Make it circular if the image isn't circular
         centerDotElement.style.pointerEvents = 'none'; // Prevent interactions with the marker
@@ -201,7 +228,7 @@
                     const deltaLat = movementSpeed * Math.sin(radianAngle) * movementDirection.distance;
 
                     const newCenter = [center.lng + deltaLng, center.lat + deltaLat];
-                    if (isPointInPolygon(newCenter, boundaryPolygon) && !isPointInBuilding(newCenter) && !isPointInPolygon(newCenter, restrictedPolygon)) {
+                    if (isPointInPolygon(newCenter, boundaryPolygon) && !isPointInPolygon(newCenter, restrictedPolygon)) {
                         map.setCenter(newCenter); // Update map center
                         centerDot.setLngLat(newCenter); // Update the center dot
                     }
@@ -247,47 +274,25 @@
         }
         animate();
 
-
-        map.on('load', () => {
-            if (map.getSource('composite')) {
-                map.addLayer({
-                    id: '3d-buildings',
-                    source: 'composite',
-                    'source-layer': 'building',
-                    filter: ['==', 'extrude', 'true'],
-                    type: 'fill-extrusion',
-                    minzoom: 15,
-                    paint: {
-                        'fill-extrusion-color': '#aaa',
-                        'fill-extrusion-height': ['get', 'height'],
-                        'fill-extrusion-base': ['get', 'min_height'],
-                        'fill-extrusion-opacity': 0.8
-                    }
-                });
-            } else {
-                console.error("Composite source not available.");
-            }
-        });
-
         function isPointInBuilding(point) {
-    // Check if the '3d-buildings' layer exists in the map
-    if (!map.getLayer('3d-buildings')) {
-        console.warn("The '3d-buildings' layer does not exist in the map's style.");
-        return false;
-    }
+            // Check if the '3d-buildings' layer exists in the map
+            if (!map.getLayer('3d-buildings')) {
+                console.warn("The '3d-buildings' layer does not exist in the map's style.");
+                return false;
+            }
 
-    // Query the 3D buildings layer for features
-    const features = map.queryRenderedFeatures(map.project(point), {
-        layers: ['3d-buildings'], // Use the 3D building layer ID
-    });
+            // Query the 3D buildings layer for features
+            const features = map.queryRenderedFeatures(map.project(point), {
+                layers: ['3d-buildings'], // Use the 3D building layer ID
+            });
 
-    // Check if any features (buildings) are at this point
-    return features && features.length > 0;
-}
+            // Check if any features (buildings) are at this point
+            return features && features.length > 0;
+        }
 
     </script>
 
-<script src="virtualView.js" type="module"></script>
+
 
 </body>
 
