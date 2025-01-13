@@ -198,10 +198,10 @@ async function renderRoute() {
         marker.setAttribute('animation__scale', `
             property: scale;
             dir: alternate;
-            dur: 2500;
+            dur: 2000;
             easing: easeInOutSine;
             loop: true;
-            to: 0.5 1 0.5;
+            to: 0.5 1.5 0.5;
             delay: ${index * 200};
         `);
         marker.setAttribute('animation__color', `

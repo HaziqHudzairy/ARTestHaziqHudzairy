@@ -356,7 +356,7 @@ window.stopAndResetImageRotation = async function () {
     }
 
     // Reset the plane to a default state
-    eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png");
+    eventsImagePlane.setAttribute("material", "src: asset/EventsImages/No_events.png");
     console.log("Plane reset to default state.");
 }
 
@@ -368,7 +368,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
     const eventsRef = ref(database, "events");
 
     // Set a default placeholder image while data is loading
-    eventsImagePlane.setAttribute("material", "src: #okW0vkufRDeNJIMV0clGKwo37182-1736091043865");
+    eventsImagePlane.setAttribute("material", "src: asset/EventsImages/No_events.png");
 
     try {
         // Resolve the entity ID asynchronously
@@ -376,7 +376,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
 
         if (!entityId) {
             console.warn(`Entity not found for name: ${locationEntityName}`);
-            eventsImagePlane.setAttribute("material", "src: asset/images/no-image-available.png"); // Default image
+            eventsImagePlane.setAttribute("material", "src: asset/EventsImages/No_events.png"); // Default image
             return;
         }
 
@@ -417,7 +417,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     imageRotationInterval = setInterval(rotateImages, 5000);
                 } else {
                     // alert("No items in the event IDs array.");
-                    eventsImagePlane.setAttribute("material", "src: asset/AR_Environment_Info/stickynotes.png");
+                    eventsImagePlane.setAttribute("material", "src: asset/EventsImages/No_events.png.png");
                 }
             } else {
                 console.error("No events data found in the database.");
@@ -476,7 +476,7 @@ window.fetchAndRenderEventsByLocation = async function (locationEntityName) {
                     initializeSlider();
                 } else {
                     console.warn(`No events found for location: ${locationEntityName}`);
-                    eventContainer.innerHTML = `<p style="color:white !important;">No events available for this location. Click anywhere to continue</p>`;
+                    eventContainer.innerHTML = `<p style="color:white !important;">No events available for this location.\nClick anywhere to continue</p>`;
                 }
             } else {
                 console.error("No events data found in the database.");
