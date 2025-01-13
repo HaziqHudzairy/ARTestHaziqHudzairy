@@ -155,13 +155,18 @@ function interpolatePoints(lat1, lon1, lat2, lon2, interval) {
     return points;
 }
 
+function clearMemory() {
+    start = [];
+    end = [];
+    // Clear other global arrays or references if necessary
+}
+
 function clearMarkers() {
     const scene = document.querySelector('a-scene');
-
-    // Select and remove all route markers and wrappers (including start/end labels)
     scene.querySelectorAll('.route-marker-wrapper, .route-marker').forEach((marker) => {
         marker.parentNode.removeChild(marker);
     });
+    clearMemory();
 }
 
 // Render AR markers for the densified route
