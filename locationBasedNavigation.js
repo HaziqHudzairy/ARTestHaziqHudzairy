@@ -171,7 +171,6 @@ function clearMarkers() {
 
 // Render AR markers for the densified route
 async function renderRoute() {
-    clearMarkers(); // Clear existing markers for the route
 
     const route = await fetchRoute(start, end); // Fetch route
     if (!route || route.length === 0) return;
