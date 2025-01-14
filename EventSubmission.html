@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Event</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Background Image */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('asset/images/backgroundAdmin.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(5px); /* Add blur to background */
+            z-index: -1; /* Ensure background stays behind content */
+        }
+    </style>
+</head>
+<body class="relative">
+    <div class="background"></div>
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white shadow-md rounded-lg p-6 w-full max-w-lg">
+            <h1 class="text-2xl font-bold mb-4 text-gray-700 text-center">Submit an Event</h1>
+            <form id="eventForm" class="space-y-4">
+                <!-- Event Name -->
+                <div>
+                    <label for="eventName" class="block text-gray-700 font-medium mb-1">Event Name:</label>
+                    <input type="text" id="eventName" name="eventName" required
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+
+                <!-- Event Date -->
+                <div>
+                    <label for="eventDate" class="block text-gray-700 font-medium mb-1">Event Date:</label>
+                    <input type="date" id="eventDate" name="eventDate" required
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+
+                <!-- Event Time -->
+                <div>
+                    <label for="eventTime" class="block text-gray-700 font-medium mb-1">Event Time:</label>
+                    <input type="time" id="eventTime" name="eventTime" required
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+
+                <!-- Event Details -->
+                <div>
+                    <label for="eventDetails" class="block text-gray-700 font-medium mb-1">Event Details:</label>
+                    <textarea id="eventDetails" name="eventDetails" required
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+                </div>
+
+                <!-- Category Filter -->
+                <div>
+                    <label for="categoryFilter" class="block text-gray-700 font-medium mb-1">Category:</label>
+                    <select id="categoryFilter" name="categoryFilter"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option value="" disabled selected>Select a location</option>
+                        <option value="facilities">Facilities</option>
+                        <option value="faculties">Faculties</option>
+                        <option value="libraries">Libraries</option>
+                        <option value="residentialColleges">Residential Colleges</option>
+                        <option value="sportsAndRecreation">Sports and Recreation</option>
+                    </select>
+                </div>
+
+                <!-- Event Location -->
+                <div>
+                    <label for="eventLocation" class="block text-gray-700 font-medium mb-1">Event Location:</label>
+                    <select id="eventLocation" name="eventLocation" required
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <!-- Dynamically populated options -->
+                    </select>
+                </div>
+
+                <!-- Event Poster -->
+                <div>
+                    <label for="eventPoster" class="block text-gray-700 font-medium mb-1">Event Poster:</label>
+                    <input type="file" id="eventPoster" name="eventPoster" accept="image/*" required
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                    class="w-full bg-blue-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
+                    Submit
+                </button>
+
+                <button type="cancel"
+                    class="w-full bg-red-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300">
+                    Cancel
+                </button>
+
+                <a href="Dashboard.html" style="position: absolute; top: 20px; left: 20px; width: auto; padding: 20px 50px;"
+                    class="w-full bg-red-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300">
+                    Back
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
+
+
+        // Firebase Initialization
+        const firebaseConfig = {
+            apiKey: "AIzaSyB1NEkxuhsfBrsTgfei80LWmF4o_IQwO8",
+            authDomain: "um-ar-d0418.firebaseapp.com",
+            databaseURL: "https://um-ar-d0418-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "um-ar-d0418",
+            storageBucket: "um-ar-d0418.firebasestorage.app",
+            messagingSenderId: "624669072499",
+            appId: "1:624669072499:web:315e91c12fad88513c6d52",
+            measurementId: "G-XWM53Y6FBZ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const storage = getStorage(app);
+
+        // Check connection status
+        const connectedRef = ref(db, ".info/connected");
+        onValue(connectedRef, (snapshot) => {
+            if (snapshot.val() === true) {
+                alert("Database connected successfully!");
+                console.log("Database connected.");
+            } else {
+                alert("Database connection lost.");
+                console.log("Database connection lost.");
+            }
+        });
+
+        
+
+        // Data structure for locations
+        const locations = {
+            facilities: {
+                entityAcademyIslam: "Academy of Islamic Studies Musolla",
+                entityAidil: "E307",
+                entityBangunanCanseleri: "Bangunan Canseleri",
+                entityBankIslam: "Bank Islam",
+                entityDTC: "Dewan Tunku Canselor (DTC)",
+                entityExamHall: "Examination Hall",
+                entityKPS: "KPS Complex",
+                entityMasjid: "Masjid Ar-Rahman",
+                entityPanggung: "Panggung Eksperimen",
+                entityTemple: "Sri Sivan Temple",
+                entityUMCentral: "UM Central",
+                entityUser: "F315"
+            },
+            faculties: {
+                entityAkademiIslam: "Islamic Studies Academy",
+                entityAkademiMelayu: "Malay Studies Academy",
+                entityArts: "Faculty of Arts and Social Sciences",
+                entityBuiltEnvironment: "Faculty of Built Environment",
+                entityBusiness: "Faculty of Business and Economics",
+                entityCS: "Faculty of Computer Science",
+                entityCreativeArts: "Faculty of Creative Arts",
+                entityDentistry: "Faculty of Dentistry",
+                entityEducation: "Faculty of Education",
+                entityEngineering: "Faculty of Engineering",
+                entityInstituteAdvancedStudies: "Institute of Advanced Studies",
+                entityLanguages: "Faculty of Languages",
+                entityLaw: "Faculty of Law",
+                entityMedicine: "Faculty of Medicine",
+                entityPharmacy: "Faculty of Pharmacy",
+                entityPusatAsasi: "Foundation Centre",
+                entityScience: "Faculty of Science",
+                entitySport: "Faculty of Sports Science"
+            },
+            libraries: {
+                entityDentalLibrary: "UM Dental Library",
+                entityIslamicLibrary: "Islamic Studies Library",
+                entityLawLibrary: "Tan Sri Prof. Ahmad Ibrahim Law Library",
+                entityMedicalLibrary: "TJ Danaraj Medical Library",
+                entityUMLibrary: "UM Main Library",
+                entityZabaLibrary: "Za'ba Memorial Library"
+            },
+            residentialColleges: {
+                entityKolej1: "Kolej Kediaman 1",
+                entityKolej10: "Kolej Kediaman 10",
+                entityKolej11: "Kolej Kediaman 11",
+                entityKolej12: "Kolej Kediaman 12",
+                entityKolej13: "Kolej Kediaman 13",
+                entityKolej2: "Kolej Kediaman 2",
+                entityKolej3: "Kolej Kediaman 3",
+                entityKolej4: "Kolej Kediaman 4",
+                entityKolej5: "Kolej Kediaman 5",
+                entityKolej6: "Kolej Kediaman 6",
+                entityKolej7: "Kolej Kediaman 7",
+                entityKolej8: "Kolej Kediaman 8",
+                entityKolej9: "Kolej Kediaman 9",
+                entityRumahUniversiti: "Rumah Universiti"
+            },
+            sportsAndRecreation: {
+                entityKayaks: "Kayak at Varsity Lake UM",
+                entityLadangMini: "Ladang Mini ISB UM",
+                entityMustafaRiver: "Mustafa River UM",
+                entityPadangC: "Padang C UM",
+                entityRimbaIlmu: "Rimba Ilmu Botanical Garden UM",
+                entitySwimmingPool: "Swimming Pool UM Sports Center",
+                entityUMArenaStadium: "UM Arena Stadium",
+                entityUMPark: "UM Park",
+                entityUMSportsCentre: "UM Sports Centre",
+                entityUMWallSquash: "UM Wall Squash Complex",
+                entityVarsityGreen: "UM Varsity Green"
+            }
+
+        };
+
+        const categoryFilter = document.getElementById('categoryFilter');
+        const eventLocation = document.getElementById('eventLocation');
+
+        // Populate locations based on selected category
+        categoryFilter.addEventListener('change', () => {
+            const selectedCategory = categoryFilter.value;
+            const categoryLocations = locations[selectedCategory];
+
+            // Clear existing options
+            eventLocation.innerHTML = '<option value="" disabled selected>Select a location</option>';
+
+            // Add new options
+            for (const [key, value] of Object.entries(categoryLocations)) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = value;
+                eventLocation.appendChild(option);
+            }
+        });
+
+        const eventForm = document.getElementById('eventForm');
+   // Form submission
+
+   eventForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const eventName = document.getElementById('eventName').value;
+        const eventDate = document.getElementById('eventDate').value;
+        const eventTime = document.getElementById('eventTime').value;
+        const eventDetails = document.getElementById('eventDetails').value;
+        const eventLocationValue = eventLocation.value;
+        const eventPoster = document.getElementById('eventPoster').files[0];
+
+        try {
+            if (!eventPoster) throw new Error("No poster selected.");
+
+            // Upload poster and get the URL
+            const posterUrl = await uploadImage(eventPoster);
+
+            // Generate a unique event ID
+            const eventId = Date.now(); // Or use a library like UUID for more complex IDs
+
+            // Save event details to Firebase Realtime Database
+            await set(ref(db, `events/${eventId}`), {
+                eventName,
+                eventDate,
+                eventTime,
+                eventDetails,
+                eventOrganizer: "Admin",
+                eventLocation: eventLocationValue,
+                eventPosterUrl: posterUrl,
+            });
+
+            alert('Event submitted successfully!');
+            eventForm.reset();
+        } catch (error) {
+            console.error('Error:', error);
+            alert(`Failed to submit the event: ${error.message}`);
+        }
+    });
+
+    // Function to upload an image
+    async function uploadImage(file) {
+        try {
+            // Create a storage reference
+            const fileRef = storageRef(storage, `uploads/${file.name}`);
+
+            // Upload the file
+            const snapshot = await uploadBytes(fileRef, file);
+            console.log('Uploaded a file successfully:', snapshot.metadata);
+
+            // Get the file's download URL
+            const downloadURL = await getDownloadURL(fileRef);
+            console.log('File available at:', downloadURL);
+
+            return downloadURL;
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            throw error;
+        }
+    }
+    </script>
+</body>
+
+</html>
