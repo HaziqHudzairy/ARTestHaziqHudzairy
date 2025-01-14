@@ -211,7 +211,7 @@ async function renderRoute() {
             easing: easeInOutSine;
             loop: true;
             to: yellow;
-            delay: ${index * 200};
+            delay: ${index * 600};
         `);
 
         // Append the wrapper to the scene

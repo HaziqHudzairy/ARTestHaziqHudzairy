@@ -427,7 +427,7 @@ window.showEventImagesForLocation = async function (locationEntityName) {
                     imageRotationInterval = setInterval(rotateImages, 5000);
                 } else {
                     // alert("No items in the event IDs array.");
-                    eventsImagePlane.setAttribute("material", "src: asset/EventsImages/No_events.png.png");
+                    eventsImagePlane.setAttribute("material", "src: #NoImage");
                 }
             } else {
                 console.error("No events data found in the database.");

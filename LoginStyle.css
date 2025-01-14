@@ -152,7 +152,7 @@ body {
 .register {
     height: 100%;
     width: 50%; /* Initially 50% width */
-    background-image: url('asset/AccountAsset/backgroundAdmin.png');
+    background-image: url('asset/images/backgroundAdmin.png');
     background-size: cover;
     background-position: center;
     background-color: #fafafa; /* Initial background color */
