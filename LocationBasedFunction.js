@@ -14,7 +14,7 @@ function updateLocation() {
             // Update the user's location display
             updateLocationDisplay(latitude, longitude);
 
-            // Check if the user is near any entity (within a 25-meter radius)
+            // Check if the user is near any entity (within a 30-meter radius)
             checkProximity(latitude, longitude, window.dynamicEntities, 30);
         },
         function (error) {
