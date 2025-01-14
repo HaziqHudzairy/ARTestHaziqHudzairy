@@ -97,7 +97,7 @@ const locations = {
         entityArts: "Faculty of Arts and Social Sciences",
         entityBuiltEnvironment: "Faculty of Built Environment",
         entityBusiness: "Faculty of Business and Economics",
-        entityCS: "Faculty of Computer Science",
+        entityCS: "Faculty of Computer Science and Information Technology",
         entityCreativeArts: "Faculty of Creative Arts",
         entityDentistry: "Faculty of Dentistry",
         entityEducation: "Faculty of Education",

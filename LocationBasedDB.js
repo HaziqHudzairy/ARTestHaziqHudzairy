@@ -263,6 +263,16 @@ window.createAREntity = function (entity, id, parentCategory = null) {
 //     });
 // };
 
+
+function formatTextForAText(rawText) {
+    // Replace HTML tags with A-Frame compatible formatting
+    return rawText
+        .replace(/<br\s*\/?>/gi, '\n')        // Replace <br> with \n
+        .replace(/<strong>(.*?)<\/strong>/gi, '*$1*') // Replace <strong> with *
+        .replace(/<\/?[^>]+(>|$)/g, '');      // Strip other HTML tags (optional)
+}
+
+
 window.showEntityInformation = async function (entityName) {
     const virtualSpace = document.querySelector('#virtual-space');
     const nameElement = document.querySelector('#Name');
@@ -293,9 +303,9 @@ window.showEntityInformation = async function (entityName) {
             if (foundEntity) {
                 // Update elements with found data
                 nameElement.setAttribute('value', foundEntity.name || "N/A");
-                descriptionElement.setAttribute('value', foundEntity.description || "Description not available.");
-                operatingHoursElement.setAttribute('value', foundEntity.operating_hours || "Operating hours not available.");
-                contactInformationElement.setAttribute('value', foundEntity.contact_information || "Contact information not available.");
+                descriptionElement.setAttribute('value', formatTextForAText(foundEntity.description) || "Description not available.");
+                operatingHoursElement.setAttribute('value', formatTextForAText(foundEntity.operating_hours) || "Operating hours not available.");
+                contactInformationElement.setAttribute('value', formatTextForAText(foundEntity.contact_information) || "Contact information not available.");
 
                 virtualSpace.setAttribute('visible', true); // Make the virtual space visible
             } else {
