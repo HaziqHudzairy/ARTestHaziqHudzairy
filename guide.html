@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bug/Problem Report</title>
-    <link rel="stylesheet" href="contactHelp.css">
+    <link rel="stylesheet" href="guide.css">
     <!-- Google Font Awesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -33,87 +33,425 @@
                     <div class="icon-container">
                         <i class="fas fa-map-signs"></i>
                     </div>
-                    
+
                     <h1>Guide on Using UM.AR</h1>
                     <p>Below are some guide on how to use UM.AR properly.</p>
 
                     <div class="guide-container">
 
-                        
                         <section class="guide-section">
-                            <h2>1. How to Use Location-Based AR Navigation and Exploration</h2>
-                            <p>[Description of this feature]</p>
-                            <div class="guide-image">
-                                <!-- Add your guide image here -->
-                                <img src="path/to/image" alt="Location-Based AR Navigation Guide" />
+                            <h2 class="dropdown-header">How to Navigate in the main page</h2>
+                            <div class="dropdown-content">
+                                <h3>Buttons and Input</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/MainPageButtons.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <p>All the input buttons has their own functionality</p>
+                                <ol style="padding-inline-start: 30px;">
+                                    <li><strong>Search Bar:</strong> <br> Used to search locations in UM.AR</li>
+                                    <br>
+                                    <li><strong>Event Organizer Login Button:</strong><br> For event organizers to login
+                                        and manage their dashboard.</li><br>
+                                    <li><strong>Location Based AR Button:</strong><br> To redirect and use Location
+                                        Based AR page for exploring and navigating in UM's AR Environment.</li><br>
+                                    <li><strong>Marker Based AR Button:</strong><br> To redirect and use Marker Based AR
+                                        page for scanning any UM.AR markers around UM.</li><br>
+                                    <li><strong>Guide Button:</strong><br> You're here already, chill.</li><br>
+                                    <li><strong>Help Button:</strong><br> To redirect to contact help page where you can
+                                        email the developer when finding difficulties in using the website, found any
+                                        bug or failure in the system, etc.</li>
+                                </ol>
+                                <br>
+                                <h3>Events</h3>
+                                <div class="guide-image">
+                                    <video controls autoplay muted loop style="max-width: 100%; height: auto;">
+                                        <source
+                                            src="https://firebasestorage.googleapis.com/v0/b/um-ar-d0418.firebasestorage.app/o/GuidePage%2FeventsMainPage.webm?alt=media&token=0a2f335f-8645-4084-84ee-116a085bc3f6"
+                                            type="video/webm">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Event Card</strong> <br> You can view event details when you click any
+                                        of the event cards.</li>
+                                </ul>
+                                <br>
+                                <h3>Location Suggestions</h3>
+                                <div class="guide-image">
+                                    <video controls autoplay muted loop style="max-width: 100%; height: auto;">
+                                        <source
+                                            src="https://firebasestorage.googleapis.com/v0/b/um-ar-d0418.firebasestorage.app/o/GuidePage%2FlocationSuggestions.webm?alt=media&token=48170672-26c0-4ef5-9f17-04d971a92b30"
+                                            type="video/webm">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>View Suggestions</strong> <br> You can see all location suggested based
+                                        on what we have populated in UM.AR.</li>
+                                    <li><strong>Filter Suggestions</strong> <br> You can filter the location suggestions
+                                        by clicking the filter button.</li>
+                                    <li><strong>View Location Detais</strong> <br> You can view location details when
+                                        you click the respective location, in the details card, you can also redirect to
+                                        the location websites.</li>
+                                    <li><strong>Show Directions in AR Button</strong> <br> You can redirect to Location
+                                        Based AR with navigation automatically initialize for you to navigate to your
+                                        destination.</li>
+                                </ul>
+
                             </div>
-                            <ul>
-                                <li>[Step 1]</li>
-                                <li>[Step 2]</li>
-                                <li>[Step 3]</li>
-                            </ul>
                         </section>
-                    
+
                         <section class="guide-section">
-                            <h2>2. How to Use Marker-Based AR</h2>
-                            <p>[Description of this feature]</p>
-                            <div class="guide-image">
-                                <!-- Add your guide image here -->
-                                <img src="path/to/image" alt="Marker-Based AR Guide" />
+                            <h2 class="dropdown-header">How to Use Location Based for Exploration</h2>
+                            <div class="dropdown-content">
+                                <h3>AR Innitialization</h3>
+                                <div class="guide-image">
+                                    <video controls autoplay muted loop style="max-width: 100%; height: auto;">
+                                        <source
+                                            src="https://firebasestorage.googleapis.com/v0/b/um-ar-d0418.firebasestorage.app/o/GuidePage%2FLoading.webm?alt=media&token=09f37c97-32c7-44eb-925a-ace861a8bdb1"
+                                            type="video/webm">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Loading</strong> <br> When the page loads, it initialize the Location
+                                        Based AR. This can take some times depending on your network connectivity and
+                                        device specifications. Please wait patiently while all the AR and 3D assets
+                                        being initialized.</li>
+                                    <li><strong>Permission</strong> <br> You need to allow some permissions (Geolocation
+                                        service, Motion and Camera) in order for the Location Based AR to be used.
+                                        Please accept the permission for your browser. Don't worry, no data being
+                                        recorded or stolen. UM.AR only use all the permission in the AR environment.
+                                    </li>
+                                </ul>
+                                <br>
+                                <h3>Moving in AR Space</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/Location Suggestions.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>View Waypoints/Markers in the AR View</strong> <br> Turn your mobile
+                                        phone camera around and you can see multiple waypoints around you based on
+                                        respective locations.</li>
+                                </ul>
+                                <br>
+                                <h3>AR Environment Based on each Waypoint</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/Location Suggestions.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Notification</strong> <br> When you are near a waypoint (approximately
+                                        30 meters), there will be a notification at the top left of your screen. The
+                                        notification shows the current location that you are nearby. You can click this
+                                        notification to view AR Environment for the respective Waypoint.</li>
+                                    <li><strong>View Information About the Location</strong> <br> In the respective AR
+                                        Environment, you can see the details description of the place, operating hours,
+                                        contact information, and events available at that place.</li>
+                                    <li><strong>Closing the Waypoint AR Environment</strong> <br> Click the hide button
+                                        (The red button with stright through eye icon) to close the environment and
+                                        continue using the Location Based AR.</li>
+                                </ul>
+                                <br>
+                                <h3>Events Based on each Waypoint</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/Location Suggestions.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Events in the AR Environment</strong> <br> You can see events posters
+                                        being shown in the container. These are the evetns that will be specifically
+                                        held in the respective locations.</li>
+                                    <li><strong>View Events in Card View</strong> <br> You can also view available
+                                        events by clicking on the view events button at the top left of your page. To
+                                        view next event in the list, just simply swipe left or right so the card will
+                                        swap to the next event. </li>
+                                </ul>
+                                <br>
+                                <h3>Notes Based on each Waypoint</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/Location Suggestions.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Notes in the AR Environment</strong> <br> As you move around the AR
+                                        Environment, you can see a billboard that shows some sticky notes on it. This
+                                        notes are being left by people that visited this waypoint.</li>
+                                    <li><strong>View Notes in Card View</strong> <br> You can also view notes by
+                                        clicking on the view notes button (the second one) at the top left of your page.
+                                        This will show all available notes at this waypoint.</li>
+                                </ul>
+                                <br>
+                                <h3>Adding Your Notes Into The Environment</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/Location Suggestions.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Add New Notes</strong> <br> You can click the add new notes button to
+                                        customize your own notes to be put in the AR Environment. This action will
+                                        redirect you to a new page where you can customize your stikcy notes by drawing
+                                        or writing. Once finish editing, you can click send notes to finalize.</li>
+                                    <li><strong>Notes Shown in the Environment</strong> <br> After sending the notes,
+                                        the drawing page will be closed and you will be redirect back to the Location
+                                        Based AR page. Please be note that your sticky notes may took some time to be
+                                        included in the environment. If you can't see your notes, you can try to refresh
+                                        the page and your notes will be updated. If the issue still persist, try to
+                                        reopen the Location Based AR Page in a new window.</li>
+                                </ul>
                             </div>
-                            <ul>
-                                <li>[Step 1]</li>
-                                <li>[Step 2]</li>
-                                <li>[Step 3]</li>
-                            </ul>
                         </section>
-                    
+
                         <section class="guide-section">
-                            <h2>3. How to Register and Use the Dashboard for Event Organizers</h2>
-                            <p>[Description of this feature]</p>
-                            <div class="guide-image">
-                                <!-- Add your guide image here -->
-                                <img src="path/to/image" alt="Dashboard Guide" />
+                            <h2 class="dropdown-header">How to Use Location Based for Navigation</h2>
+                            <div class="dropdown-content">
+                                <h3>Using the Search Function</h3>
+                                <div class="guide-image">
+                                    <video controls autoplay muted loop style="max-width: 100%; height: auto;">
+                                        <source
+                                            src="https://firebasestorage.googleapis.com/v0/b/um-ar-d0418.firebasestorage.app/o/GuidePage%2FLoading.webm?alt=media&token=09f37c97-32c7-44eb-925a-ace861a8bdb1"
+                                            type="video/webm">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Search Button</strong> <br> You can click the search button at the
+                                        top right of the page to bring out the search bar. If you're not placing any
+                                        input in the search bar, it will show the list of all waypoints available in
+                                        the system. You can select any item from this list if you want to navigate
+                                        to that waypoint.</li>
+                                    <li><strong>Search Input</strong><br> You can fill in the search bar to search
+                                        waypoint that you want to go. When the suggestion appear, you can click the
+                                        item to navigate to the waypoint in AR Mode.</li>
+                                </ul>
+                                <br>
+                                <h3>Navigation in the Location Based AR</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/Location Suggestions.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Navigation Indicator</strong> <br> After you enable the navigation,
+                                        the indicator will show up in the AR View. This indicaator will show you the
+                                        path to your destination. Please be note that this path is based on
+                                        pedestrian path. Be careful while using the AR Navigation and stay alert on
+                                        your surroundings. While in the navigation mode, you can still interact with
+                                        AR Environment for each waypoints if you are near one of them.</li>
+                                    <li><strong>Exit the Navigation</strong><br> You can exit the AR Navigation
+                                        whenever you like. When you arrive at your destination or while you are in
+                                        the middle of the navigation. Simply click the exit button (red button with
+                                        exit icon) at the top right of the page.</li>
+                                </ul>
+                                <br>
+                                <h3>Start Navigation from Main Page</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/Location Suggestions.png"
+                                        alt="Location-Based AR Navigation Guide" />
+
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Show Directions in AR</strong><br> When you click the show
+                                        directions in AR button, it will redirect to the Location Based AR Page with
+                                        the navigation automatically being initialized.</li>
+                                </ul>
                             </div>
-                            <ul>
-                                <li>[Step 1]</li>
-                                <li>[Step 2]</li>
-                                <li>[Step 3]</li>
-                            </ul>
                         </section>
-                    
+
                         <section class="guide-section">
-                            <h2>4. How to Interact with AR Environment</h2>
-                            <p>[Description of this feature]</p>
-                            <div class="guide-image">
-                                <!-- Add your guide image here -->
-                                <img src="path/to/image" alt="AR Environment Interaction Guide" />
+                            <h2 class="dropdown-header">How to Use Marker Based AR</h2>
+                            <div class="dropdown-content">
+                                <h3>AR Innitialization</h3>
+                                <div class="guide-image">
+                                    <video controls autoplay muted loop style="max-width: 100%; height: auto;">
+                                        <source
+                                            src="https://firebasestorage.googleapis.com/v0/b/um-ar-d0418.firebasestorage.app/o/GuidePage%2FLoading.webm?alt=media&token=09f37c97-32c7-44eb-925a-ace861a8bdb1"
+                                            type="video/webm">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Permission</strong> <br> You may need to allow some permissions (Motion
+                                        and Camera) in order for the Marker Based AR to be used.
+                                        Please accept the permission for your browser. Don't worry, no data being
+                                        recorded or stolen. UM.AR only use all the permission in the AR environment.
+                                    </li>
+                                    <li><strong>Scanning AR Marker</strong> <br> If you found a UM.AR Marker, simply
+                                        scan the marker with your Marker Based AR Camera</li>
+                                </ul>
+                                <br>
+                                <h3>Marker Based AR: Bus Route AR View</h3>
+                                <div class="guide-image">
+                                    <video controls autoplay muted loop style="max-width: 100%; height: auto;">
+                                        <source
+                                            src="https://firebasestorage.googleapis.com/v0/b/um-ar-d0418.firebasestorage.app/o/GuidePage%2FLoading.webm?alt=media&token=09f37c97-32c7-44eb-925a-ace861a8bdb1"
+                                            type="video/webm">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>AR View</strong> <br> When you scan a Bus Route Marker, it will enable
+                                        an AR environment for you to see available routes for the respective location.
+                                    </li>
+                                    <li><strong>Interacting with the Bus Route AR View</strong> <br> You can interact
+                                        with the AR scene by clicking the bus icon button at top right of the page, and
+                                        find your destination. The AR View will be updated based on the destination you
+                                        choose. It will show available bus route to go to your destination. From here,
+                                        you can easily analyze which bus you should take for your trip to your
+                                        destination.</li>
+                                </ul>
                             </div>
-                            <ul>
-                                <li>[Step 1]</li>
-                                <li>[Step 2]</li>
-                                <li>[Step 3]</li>
-                            </ul>
                         </section>
-                    
+
                         <section class="guide-section">
-                            <h2>5. How to Switch from AR to VR</h2>
-                            <p>[Description of this feature]</p>
-                            <div class="guide-image">
-                                <!-- Add your guide image here -->
-                                <img src="path/to/image" alt="AR to VR Switch Guide" />
+                            <h2 class="dropdown-header">How to Log In, Sign Up and Use the Dashboard for Event
+                                Organizers
+                            </h2>
+                            <div class="dropdown-content">
+                                <h3>Navigate to Login/Signup Page</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/NavigateAccount.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Account Button</strong> <br> Click on the account button in the main
+                                        page,
+                                        it will redirect you to the login/signup page.</li>
+                                </ul>
+                                <br>
+                                <h3>Sign Up for an Account</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/SignUp.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Sign Up Form</strong> <br> In the login/signup page, scroll down until
+                                        you see register section. Click on the register button to get the registration
+                                        form. Fill in all the required field in order for you to register. Put you
+                                        actual club name and its level. After verifying all the details. Click on the
+                                        submit button to finalize your registration.</li>
+                                </ul>
+                                <br>
+                                <h3>Login</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/Login.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Login</strong> <br> If you already have an account, you can go to login
+                                        section and fill in your email and password. Click the login button to proceed
+                                        on the login process.</li>
+                                </ul>
+                                <br>
+                                <h3>Viewing Dashboard</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/DasboardView.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Dashboard View</strong> <br> In the main dashboard view, you can see all
+                                        of your events in the list. At the bottom, you can view all events available in
+                                        UM.AR system.</li>
+                                </ul>
+
+                                <br>
+                                <h3>Adding New Events</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/AddNewEvent.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Add New Events Button</strong> <br> Click on the add new events button
+                                        at top right of the page. It will pop up an event form for you to fill. Complete
+                                        the form by putting event name, event date, event time, event details, category
+                                        of location and the location in which the event will be held. You also need to
+                                        upload a poster for your events. Preferebally the poster need to have a square
+                                        margin to look nice in the AR Environment. Please note that your event will
+                                        appear in the AR Environment the next day. This is because the system will
+                                        undergo maintenance at midnight to automatically transfer the posters into te AR
+                                        Environment.</li>
+                                </ul>
+                                <br>
+                                <h3>Edit/Delete Events</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/EditEvent.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>View Your Event</strong> <br> You can view in detail of your event by
+                                        selecting an event from the list. A popup will show up and you have an option to
+                                        edit the event or not.</li>
+                                    <li><strong>Edit Event</strong> <br> If you click on edit button, another popup will
+                                        show. This is where you can modify the content and details of your events. After
+                                        finish editing, you can continue by clicking save changes. Then your event will
+                                        be updated to the latest one.</li>
+                                    <li><strong>Deleting an Event</strong> <br> If you want to delete the event, simply
+                                        click the delete button in edit mode. A confirmation popup will appear and you
+                                        can proceed to delete the events.</li>
+                                </ul>
+
                             </div>
-                            <ul>
-                                <li>[Step 1]</li>
-                                <li>[Step 2]</li>
-                                <li>[Step 3]</li>
-                            </ul>
                         </section>
+
+                        <section class="guide-section">
+                            <h2 class="dropdown-header">Contact Help</h2>
+                            <div class="dropdown-content">
+                                <h3>Contact for Help/Enquiry/Report page</h3>
+                                <div class="guide-image">
+                                    <img src="asset/PageDesign/GuidePage/helpPage.png"
+                                        alt="Location-Based AR Navigation Guide" />
+                                </div>
+                                <ul style="padding-inline-start: 10px;">
+                                    <li><strong>Email to Function</strong> <br> You can choose to fill in the forms to
+                                        email the developers on the issues/report/help/enquiries. Click send to email
+                                        your content.</li>
+                                    <li><strong>WhatsApp Redirect Link</strong><br> If you are facing serious and urgent
+                                        issues, feel free to reach out via WhatsApp to get faster response. Remember,
+                                        only use this option when it is necessary.</li>
+                                </ul>
+                            </div>
+                        </section>
+
                     </div>
                 </div>
             </div>
         </div>
-        
+
+        <script>
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const headers = document.querySelectorAll('.dropdown-header');
+
+                headers.forEach(header => {
+                    header.addEventListener('click', () => {
+                        const content = header.nextElementSibling;
+
+                        // Hide all other dropdown contents
+                        document.querySelectorAll('.dropdown-content').forEach(item => {
+                            if (item !== content) {
+                                item.classList.remove('active');
+                                item.style.maxHeight = '0';
+                            }
+                        });
+
+                        // Toggle the current content
+                        content.classList.toggle('active');
+
+                        // Adjust max-height dynamically
+                        if (content.classList.contains('active')) {
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                        } else {
+                            content.style.maxHeight = '0';
+                        }
+                    });
+                });
+            });
+
+
+
+        </script>
+
 </body>
 <footer class="new_footer_area">
     <footer class="new_footer_area bg_color">

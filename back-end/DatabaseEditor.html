@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Editable Entity-Attribute Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .actions {
+            margin-top: 10px;
+        }
+        .actions input, .actions button {
+            margin-right: 10px;
+            padding: 5px 10px;
+        }
+        h2 {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Editable Entity-Attribute Viewer</h1>
+    <input type="file" id="fileInput" accept=".json">
+    <div id="tables-container">
+        <!-- Dynamic tables for each section -->
+    </div>
+    <button id="saveChanges" style="bottom: 20px; position: fixed;">Save Changes</button>
+
+    <script>
+        let jsonData = {};
+
+        // Handle file input
+        document.getElementById("fileInput").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                jsonData = JSON.parse(e.target.result);
+                displayEntities(jsonData);
+            };
+            reader.readAsText(file);
+        });
+
+        // Display all sections
+        function displayEntities(data) {
+            const container = document.getElementById("tables-container");
+            container.innerHTML = ""; // Clear previous content
+
+            for (const [sectionName, sectionData] of Object.entries(data)) {
+                if (typeof sectionData === "object" && sectionData !== null) {
+                    const sectionContainer = document.createElement("div");
+                    sectionContainer.innerHTML = `<h2>Section: ${sectionName}</h2>`;
+                    container.appendChild(sectionContainer);
+
+                    if (Array.isArray(sectionData)) {
+                        // Handle arrays
+                        const table = createArrayTable(sectionName, sectionData);
+                        sectionContainer.appendChild(table);
+                    } else {
+                        // Handle nested objects
+                        for (const [entityType, entities] of Object.entries(sectionData)) {
+                            const table = document.createElement("table");
+                            const caption = document.createElement("caption");
+                            caption.textContent = `Entity Type: ${entityType}`;
+                            table.appendChild(caption);
+
+                            const headers = Object.keys(Object.values(entities)[0] || {});
+                            const thead = document.createElement("thead");
+                            const headerRow = document.createElement("tr");
+                            headerRow.innerHTML = `<th>Entity ID</th>${headers.map(attr => `<th>${attr}</th>`).join("")}<th>Actions</th>`;
+                            thead.appendChild(headerRow);
+                            table.appendChild(thead);
+
+                            const tbody = document.createElement("tbody");
+                            for (const [entityId, attributes] of Object.entries(entities)) {
+                                const row = createRow(sectionName, entityType, entityId, attributes, headers);
+                                tbody.appendChild(row);
+                            }
+                            table.appendChild(tbody);
+
+                            const addRowDiv = document.createElement("div");
+                            addRowDiv.classList.add("actions");
+                            addRowDiv.innerHTML = `
+                                <button onclick="addRow('${sectionName}', '${entityType}')">Add Row</button>
+                                <button onclick="addColumn('${sectionName}', '${entityType}')">Add Column</button>
+                                <button onclick="removeColumn('${sectionName}', '${entityType}')">Remove Column</button>
+                            `;
+
+                            sectionContainer.appendChild(table);
+                            sectionContainer.appendChild(addRowDiv);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Create table for arrays like "events"
+        function createArrayTable(sectionName, dataArray) {
+            const table = document.createElement("table");
+            const thead = document.createElement("thead");
+            const headers = Object.keys(dataArray[0] || {});
+            const headerRow = document.createElement("tr");
+            headerRow.innerHTML = `${headers.map(attr => `<th>${attr}</th>`).join("")}<th>Actions</th>`;
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            const tbody = document.createElement("tbody");
+            dataArray.forEach((item, index) => {
+                const row = document.createElement("tr");
+                headers.forEach(attr => {
+                    const cell = document.createElement("td");
+                    cell.contentEditable = true;
+                    cell.textContent = item[attr] || "";
+                    cell.addEventListener("blur", () => {
+                        jsonData[sectionName][index][attr] = cell.textContent;
+                    });
+                    row.appendChild(cell);
+                });
+
+                const actionsCell = document.createElement("td");
+                actionsCell.innerHTML = `<button onclick="deleteArrayRow('${sectionName}', ${index})">Delete</button>`;
+                row.appendChild(actionsCell);
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+
+            return table;
+        }
+
+        // Create rows for nested objects
+        function createRow(sectionName, entityType, entityId, attributes, headers) {
+            const row = document.createElement("tr");
+
+            const idCell = document.createElement("td");
+            idCell.textContent = entityId;
+            row.appendChild(idCell);
+
+            headers.forEach(attr => {
+                const cell = document.createElement("td");
+                cell.contentEditable = true;
+                cell.textContent = attributes[attr] || "";
+                cell.addEventListener("blur", () => updateCell(sectionName, entityType, entityId, attr, cell.textContent));
+                row.appendChild(cell);
+            });
+
+            const actionsCell = document.createElement("td");
+            actionsCell.innerHTML = `<button onclick="deleteRow('${sectionName}', '${entityType}', '${entityId}')">Delete</button>`;
+            row.appendChild(actionsCell);
+
+            return row;
+        }
+
+        // Update cell value
+        function updateCell(sectionName, entityType, entityId, attr, value) {
+            jsonData[sectionName][entityType][entityId][attr] = value;
+        }
+
+        // Add row to nested objects
+        function addRow(sectionName, entityType) {
+            const entityId = prompt("Enter new entity ID:");
+            if (!entityId) return;
+
+            const entityData = jsonData[sectionName][entityType];
+            const headers = Object.keys(Object.values(entityData)[0] || {});
+            const newRowData = {};
+            headers.forEach(header => (newRowData[header] = ""));
+
+            jsonData[sectionName][entityType][entityId] = newRowData;
+            displayEntities(jsonData);
+        }
+
+        // Add column
+        function addColumn(sectionName, entityType) {
+            const columnName = prompt("Enter new column name:");
+            if (!columnName) return;
+
+            const entityData = jsonData[sectionName][entityType];
+            Object.keys(entityData).forEach(entityId => {
+                jsonData[sectionName][entityType][entityId][columnName] = "";
+            });
+
+            displayEntities(jsonData);
+        }
+
+        // Remove column
+        function removeColumn(sectionName, entityType) {
+            const columnName = prompt("Enter column name to remove:");
+            if (!columnName) return;
+
+            const entityData = jsonData[sectionName][entityType];
+            Object.keys(entityData).forEach(entityId => {
+                delete jsonData[sectionName][entityType][entityId][columnName];
+            });
+
+            displayEntities(jsonData);
+        }
+
+        // Delete row from nested objects
+        function deleteRow(sectionName, entityType, entityId) {
+            if (!confirm(`Are you sure you want to delete entity "${entityId}"?`)) return;
+            delete jsonData[sectionName][entityType][entityId];
+            displayEntities(jsonData);
+        }
+
+        // Delete row from arrays
+        function deleteArrayRow(sectionName, index) {
+            jsonData[sectionName].splice(index, 1);
+            displayEntities(jsonData);
+        }
+
+        // Save changes to file
+        document.getElementById("saveChanges").addEventListener("click", function() {
+            const jsonString = JSON.stringify(jsonData, null, 2);
+            const blob = new Blob([jsonString], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "updated_data.json";
+            a.click();
+        });
+    </script>
+</body>
+</html>
