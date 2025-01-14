@@ -27,7 +27,7 @@ function updateLocation() {
                     message = "Position unavailable. Please check your GPS or internet connection.";
                     break;
                 case 3:
-                    message = "Request timed out. Please try again.";
+                    message = "Your have poor connection, please retry again...";
                     break;
                 default:
                     message = "An unknown error occurred. Please refresh and try again.";
