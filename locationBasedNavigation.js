@@ -202,7 +202,7 @@ async function renderRoute() {
             easing: easeInOutSine;
             loop: true;
             to: 0.5 1.5 0.5;
-            delay: ${index * 600};
+            delay: ${index * 400};
         `);
         marker.setAttribute('animation__color', `
             property: material.color;
