@@ -578,7 +578,7 @@ async function deleteNotif(eventID) {
 
 
 async function saveChanges(currentEventId) {
-    deleteEvent(currentEventId)
+    deleteEvent(currentEventId);
     const detailsContainer = document.querySelector('.details-event');
 
     // Get updated values from inputs
